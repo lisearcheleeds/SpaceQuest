@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using RoboQuest;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public static class PlayerAI
     {

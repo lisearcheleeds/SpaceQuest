@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using RoboQuest;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class QuestData
     {

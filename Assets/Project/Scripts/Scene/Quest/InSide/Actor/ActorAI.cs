@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class ActorAI
     {
@@ -199,41 +200,6 @@ namespace RoboQuest.Quest.InSide
             {
                 return;
             }
-                    
-            AreaTransitionObject targetMapTransitionObject = null;
-
-            // routeAreaIdsが近い順に遷移先を検索
-            foreach (var routeAreaIndex in routeAreaIndexes)
-            {
-                foreach (var interact in actorAIHandler.InteractionObjects)
-                {
-                    if (interact is AreaTransitionObject areaTransitionObject)
-                    {
-                        if (areaTransitionObject.AreaTransitionInteractData.TransitionAreaIndex == routeAreaIndex)
-                        {
-                            targetMapTransitionObject = areaTransitionObject;
-                        }
-                    }
-                }
-            }
-            
-            interruptActorAIState = ActorAIState.Check;
-
-            // 移動先変更
-            var removeTargets = actorAIHandler.ActorData.InteractOrder.Where(x => x is AreaTransitionInteractData).ToArray();
-            foreach (var removeTarget in removeTargets)
-            {
-                actorAIHandler.ActorData.InteractOrder.Remove(removeTarget);
-            }
-
-            if (targetMapTransitionObject == null)
-            {
-                Debug.LogError($"隣接するマップ情報が変です \n" +
-                               $"Actorが持っている隣接エリア情報 {string.Join(", ", actorAIHandler.InteractionObjects.OfType<AreaTransitionObject>().Select(x => x.AreaTransitionInteractData.TransitionAreaIndex))} \n" +
-                               $"Actorが進むエリア情報 {string.Join(", ", routeAreaIndexes)} \n");
-            }
-
-            actorAIHandler.ActorData.InteractOrder.Add(targetMapTransitionObject.AreaTransitionInteractData);
         }
     }
 }

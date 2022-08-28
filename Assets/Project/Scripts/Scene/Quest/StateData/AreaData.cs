@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class AreaData
     {
@@ -27,18 +28,6 @@ namespace RoboQuest.Quest
                         return new ItemInteractData(itemData, index, position);
                     })
                     .ToList());
-
-            InteractData.AddRange(
-                adjacentIndexes
-                    .Select(adjacentIndex =>
-                    {
-                        return new AreaTransitionInteractData(
-                            index,
-                            adjacentIndex.AreaDirection,
-                            adjacentIndex.Index,
-                            areaAssetVO.AreaSize);
-                    })
-                    .ToArray());
         }
 
         public void AddInteractData(IInteractData interactData)

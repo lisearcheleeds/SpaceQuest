@@ -1,8 +1,9 @@
 ﻿using System;
+using RoboQuest;
 using UnityEditor;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class MissileLauncherWeaponData : WeaponData
     {

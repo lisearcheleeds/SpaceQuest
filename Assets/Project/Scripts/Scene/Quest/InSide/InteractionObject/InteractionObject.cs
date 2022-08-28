@@ -1,7 +1,8 @@
 ﻿using System;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public abstract class InteractionObject : CacheableGameObject, IInteractionObject
     {

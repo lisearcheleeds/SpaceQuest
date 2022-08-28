@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using RoboQuest.Quest.InSide;
 using UnityEngine;
 using System.Linq;
+using AloneSpace.InSide;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class ActorDataViewList : MonoBehaviour
     {

@@ -1,6 +1,9 @@
+using System;
+using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public static class AreaCellVertex
     {
@@ -32,21 +35,37 @@ namespace RoboQuest.Quest
             new(0.0f, 0.5f, 0.25f), // 23
         };
 
-        public static readonly Vector3[] Top = {Points[23], Points[21], Points[19], Points[16]};
-        public static readonly Vector3[] Bottom = {Points[10], Points[1], Points[2], Points[6]};
-        public static readonly Vector3[] Front = {Points[22], Points[14], Points[11], Points[12]};
-        public static readonly Vector3[] Back = {Points[18], Points[9], Points[3], Points[4]};
-        public static readonly Vector3[] Right = {Points[20], Points[13], Points[7], Points[8]};
-        public static readonly Vector3[] Left = {Points[17], Points[5], Points[0], Points[15]};
+        static readonly Vector3[] Top = {Points[23], Points[21], Points[19], Points[16]};
+        static readonly Vector3[] Bottom = {Points[10], Points[1], Points[2], Points[6]};
+        static readonly Vector3[] Front = {Points[22], Points[14], Points[11], Points[12]};
+        static readonly Vector3[] Back = {Points[18], Points[9], Points[3], Points[4]};
+        static readonly Vector3[] Right = {Points[20], Points[13], Points[7], Points[8]};
+        static readonly Vector3[] Left = {Points[17], Points[5], Points[0], Points[15]};
 
-        public static readonly Vector3[] TopFrontLeft = {Points[23], Points[16], Points[17], Points[15], Points[14], Points[22]};
-        public static readonly Vector3[] TopFrontRight = {Points[21], Points[23], Points[22], Points[12], Points[13], Points[20]};
-        public static readonly Vector3[] TopBackLeft = {Points[16], Points[19], Points[18], Points[4], Points[5], Points[17]};
-        public static readonly Vector3[] TopBackRight = {Points[19], Points[21], Points[20], Points[8], Points[9], Points[18]};
-        public static readonly Vector3[] BottomFrontLeft = {Points[10], Points[6], Points[7], Points[13], Points[12], Points[11]};
-        public static readonly Vector3[] BottomFrontRight = {Points[1], Points[10], Points[11], Points[14], Points[15], Points[0]};
-        public static readonly Vector3[] BottomBackLeft = {Points[2], Points[1], Points[0], Points[5], Points[4], Points[3]};
-        public static readonly Vector3[] BottomBackRight = {Points[6], Points[2], Points[3], Points[9], Points[8], Points[7]};
+        static readonly Vector3[] TopFrontLeft = {Points[23], Points[16], Points[17], Points[15], Points[14], Points[22]};
+        static readonly Vector3[] TopFrontRight = {Points[21], Points[23], Points[22], Points[12], Points[13], Points[20]};
+        static readonly Vector3[] TopBackLeft = {Points[16], Points[19], Points[18], Points[4], Points[5], Points[17]};
+        static readonly Vector3[] TopBackRight = {Points[19], Points[21], Points[20], Points[8], Points[9], Points[18]};
+        static readonly Vector3[] BottomFrontLeft = {Points[10], Points[6], Points[7], Points[13], Points[12], Points[11]};
+        static readonly Vector3[] BottomFrontRight = {Points[1], Points[10], Points[11], Points[14], Points[15], Points[0]};
+        static readonly Vector3[] BottomBackLeft = {Points[2], Points[1], Points[0], Points[5], Points[4], Points[3]};
+        static readonly Vector3[] BottomBackRight = {Points[6], Points[2], Points[3], Points[9], Points[8], Points[7]};
+        
+        static readonly Vector3 TopDirection = (Top.Aggregate((x, y) => x + y) / Top.Length).normalized;
+        static readonly Vector3 BottomDirection  = (Bottom.Aggregate((x, y) => x + y) / Bottom.Length).normalized;
+        static readonly Vector3 FrontDirection  = (Front.Aggregate((x, y) => x + y) / Front.Length).normalized;
+        static readonly Vector3 BackDirection  = (Back.Aggregate((x, y) => x + y) / Back.Length).normalized;
+        static readonly Vector3 RightDirection  = (Right.Aggregate((x, y) => x + y) / Right.Length).normalized;
+        static readonly Vector3 LeftDirection  = (Left.Aggregate((x, y) => x + y) / Left.Length).normalized;
+
+        static readonly Vector3 TopFrontLeftDirection = (TopFrontLeft.Aggregate((x, y) => x + y) / TopFrontLeft.Length).normalized;
+        static readonly Vector3 TopFrontRightDirection = (TopFrontRight.Aggregate((x, y) => x + y) / TopFrontRight.Length).normalized;
+        static readonly Vector3 TopBackLeftDirection = (TopBackLeft.Aggregate((x, y) => x + y) / TopBackLeft.Length).normalized;
+        static readonly Vector3 TopBackRightDirection = (TopBackRight.Aggregate((x, y) => x + y) / TopBackRight.Length).normalized;
+        static readonly Vector3 BottomFrontLeftDirection = (BottomFrontLeft.Aggregate((x, y) => x + y) / BottomFrontLeft.Length).normalized;
+        static readonly Vector3 BottomFrontRightDirection = (BottomFrontRight.Aggregate((x, y) => x + y) / BottomFrontRight.Length).normalized;
+        static readonly Vector3 BottomBackLeftDirection = (BottomBackLeft.Aggregate((x, y) => x + y) / BottomBackLeft.Length).normalized;
+        static readonly Vector3 BottomBackRightDirection = (BottomBackRight.Aggregate((x, y) => x + y) / BottomBackRight.Length).normalized;
 
         public static Vector3[] GetPrimitives(AreaDirection areaDirection)
         {
@@ -68,7 +87,30 @@ namespace RoboQuest.Quest
                 case AreaDirection.BottomBackRight: return BottomBackRight;
             }
 
-            return null;
+            throw new NotImplementedException();
+        }
+        
+        public static Vector3 GetDirection(AreaDirection areaDirection)
+        {
+            switch (areaDirection)
+            {
+                case AreaDirection.Top: return TopDirection;
+                case AreaDirection.Bottom: return BottomDirection;
+                case AreaDirection.Front: return FrontDirection;
+                case AreaDirection.Back: return BackDirection;
+                case AreaDirection.Right: return RightDirection;
+                case AreaDirection.Left: return LeftDirection;
+                case AreaDirection.TopFrontLeft: return TopFrontLeftDirection;
+                case AreaDirection.TopFrontRight: return TopFrontRightDirection;
+                case AreaDirection.TopBackLeft: return TopBackLeftDirection;
+                case AreaDirection.TopBackRight: return TopBackRightDirection;
+                case AreaDirection.BottomFrontLeft: return BottomFrontLeftDirection;
+                case AreaDirection.BottomFrontRight: return BottomFrontRightDirection;
+                case AreaDirection.BottomBackLeft: return BottomBackLeftDirection;
+                case AreaDirection.BottomBackRight: return BottomBackRightDirection;
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

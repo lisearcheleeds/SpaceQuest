@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using VariableInventorySystem;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class InventoryDataView : MonoBehaviour
     {

@@ -2,24 +2,22 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
+using RoboQuest;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class ActorList
     {
         bool isDirty = false;
         int areaIndex;
-        AreaTransitionObject[] areaTransitionObjects;
         MonoBehaviour coroutineWorker;
         
         List<Actor> actors = new List<Actor>();
         
         public void Initialize()
         {
-            MessageBus.Instance.ManagerCommandArriveActor.AddListener(OnArriveActor);
-            MessageBus.Instance.ManagerCommandLeaveActor.AddListener(OnLeaveActor);
             MessageBus.Instance.SubscribeUpdateAll.AddListener(SubscribeUpdateAll);
             MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
         }
@@ -35,8 +33,6 @@ namespace RoboQuest.Quest.InSide
 
         public void Finalize()
         {
-            MessageBus.Instance.ManagerCommandArriveActor.RemoveListener(OnArriveActor);
-            MessageBus.Instance.ManagerCommandLeaveActor.RemoveListener(OnLeaveActor);
             MessageBus.Instance.SubscribeUpdateAll.RemoveListener(SubscribeUpdateAll);
             MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
         }

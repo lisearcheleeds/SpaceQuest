@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class CollisionChecker
     {

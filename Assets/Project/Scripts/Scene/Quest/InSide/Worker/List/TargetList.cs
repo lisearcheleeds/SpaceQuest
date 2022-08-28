@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class TargetList
     {

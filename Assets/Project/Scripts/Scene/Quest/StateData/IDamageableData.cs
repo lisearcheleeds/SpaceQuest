@@ -1,4 +1,4 @@
-﻿namespace RoboQuest.Quest
+﻿namespace AloneSpace
 {
     public interface IDamageableData
     {

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class PlayerManager : MonoBehaviour
     {

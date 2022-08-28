@@ -1,21 +1,18 @@
-﻿using SimpleNavMesh;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class ActorPathFinder
     {
-        public bool HasPath => navMeshPathTracer.HasPath;
+        public bool HasPath { get; private set; }
         public Vector3? NextPosition => nextShortcutPosition ?? nextPosition;
         public bool IsNextEndPosition => NextPosition == endPosition;
         
 #if UNITY_EDITOR
-        public Vector3[] Corners => navMeshPathTracer.Corners;
+        public Vector3[] Corners { get; private set; }
         public Vector3 EndPosition => endPosition;
 #endif
-        
-        NavMeshPathTracer navMeshPathTracer;
         
         Vector3 endPosition;
 
@@ -29,12 +26,10 @@ namespace RoboQuest.Quest.InSide
         {
             this.tolerance = tolerance;
             this.actorWidth = actorWidth;
-            navMeshPathTracer = new NavMeshPathTracer(areaMask, tolerance);
         }
 
         public void CalculatePath(Vector3 startPosition, Vector3 endPosition)
         {
-            navMeshPathTracer.CalculatePath(startPosition, endPosition);
             this.endPosition = endPosition;
         }
 
@@ -52,14 +47,10 @@ namespace RoboQuest.Quest.InSide
                 return;
             }
 
-            if (navMeshPathTracer.UpdatePathIndex(currentPosition))
-            {
-                // 目的地へのコーナーを曲がる度にショートカットのチェックをする
-                nextShortcutPosition = GetShortcutPosition(currentPosition, endPosition);
-                return;
-            }
+            // 目的地へのコーナーを曲がる度にショートカットのチェックをする
+            // nextShortcutPosition = GetShortcutPosition(currentPosition, endPosition);
 
-            nextPosition = navMeshPathTracer.NextPosition;
+            nextPosition = endPosition;
         }
 
         Vector3? GetShortcutPosition(Vector3 currentPosition, Vector3 endPosition)

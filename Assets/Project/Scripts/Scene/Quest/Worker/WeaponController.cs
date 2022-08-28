@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using RoboQuest.Quest.InSide;
+using AloneSpace.InSide;
+using RoboQuest;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class WeaponController
     {

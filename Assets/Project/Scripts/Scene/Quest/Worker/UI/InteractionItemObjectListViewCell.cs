@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using FancyScrollView;
+using RoboQuest;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class InteractionItemObjectListViewCell : FancyScrollRectCell<InteractionItemObjectListViewCell.CellData, InteractionItemObjectListViewCell.CellContext>
     {

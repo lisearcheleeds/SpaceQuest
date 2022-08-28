@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class MapData
     {
         public int MapSizeX => mapPresetVO.MapSizeX;
         public int MapSizeY => mapPresetVO.MapSizeY;
+        public int MapSizeZ => mapPresetVO.MapSizeZ;
         public int MapSize => mapPresetVO.MapSize;
 
         public AreaData[] AreaData { get; }
@@ -25,15 +27,25 @@ namespace RoboQuest.Quest
 
         public AreaDirection? GetAreaDirection(int currentIndex, int nextIndex)
         {
-            var row = currentIndex / MapSizeX;
-            var isEvenNumberRow = row % 2 == 0;
+            // XYZは横縦奥で、奥が奇数であれば半分ずつ座標をずらす
+            var depth = currentIndex / (MapSizeX * MapSizeY);
+            var isEvenNumberDepth = depth % 2 == 0;
 
-            if (GetNextIndex(currentIndex, AreaDirection.Top, isEvenNumberRow) == nextIndex) return AreaDirection.Top;
-            if (GetNextIndex(currentIndex, AreaDirection.TopLeft, isEvenNumberRow) == nextIndex) return AreaDirection.TopLeft;
-            if (GetNextIndex(currentIndex, AreaDirection.TopRight, isEvenNumberRow) == nextIndex) return AreaDirection.TopRight;
-            if (GetNextIndex(currentIndex, AreaDirection.BottomLeft, isEvenNumberRow) == nextIndex) return AreaDirection.BottomLeft;
-            if (GetNextIndex(currentIndex, AreaDirection.BottomRight, isEvenNumberRow) == nextIndex) return AreaDirection.BottomRight;
-            if (GetNextIndex(currentIndex, AreaDirection.Bottom, isEvenNumberRow) == nextIndex) return AreaDirection.Bottom;
+            if (GetNextIndex(currentIndex, AreaDirection.Top, isEvenNumberDepth) == nextIndex) return AreaDirection.Top;
+            if (GetNextIndex(currentIndex, AreaDirection.Bottom, isEvenNumberDepth) == nextIndex) return AreaDirection.Bottom;
+            if (GetNextIndex(currentIndex, AreaDirection.Front, isEvenNumberDepth) == nextIndex) return AreaDirection.Front;
+            if (GetNextIndex(currentIndex, AreaDirection.Back, isEvenNumberDepth) == nextIndex) return AreaDirection.Back;
+            if (GetNextIndex(currentIndex, AreaDirection.Right, isEvenNumberDepth) == nextIndex) return AreaDirection.Right;
+            if (GetNextIndex(currentIndex, AreaDirection.Left, isEvenNumberDepth) == nextIndex) return AreaDirection.Left;
+            if (GetNextIndex(currentIndex, AreaDirection.TopFrontLeft, isEvenNumberDepth) == nextIndex) return AreaDirection.TopFrontLeft;
+            if (GetNextIndex(currentIndex, AreaDirection.TopFrontRight, isEvenNumberDepth) == nextIndex) return AreaDirection.TopFrontRight;
+            if (GetNextIndex(currentIndex, AreaDirection.TopBackLeft, isEvenNumberDepth) == nextIndex) return AreaDirection.TopBackLeft;
+            if (GetNextIndex(currentIndex, AreaDirection.TopBackRight, isEvenNumberDepth) == nextIndex) return AreaDirection.TopBackRight;
+            if (GetNextIndex(currentIndex, AreaDirection.BottomFrontLeft, isEvenNumberDepth) == nextIndex) return AreaDirection.BottomFrontLeft;
+            if (GetNextIndex(currentIndex, AreaDirection.BottomFrontRight, isEvenNumberDepth) == nextIndex) return AreaDirection.BottomFrontRight;
+            if (GetNextIndex(currentIndex, AreaDirection.BottomBackLeft, isEvenNumberDepth) == nextIndex) return AreaDirection.BottomBackLeft;
+            if (GetNextIndex(currentIndex, AreaDirection.BottomBackRight, isEvenNumberDepth) == nextIndex) return AreaDirection.BottomBackRight;
+            
             return null;
         }
 
@@ -62,134 +74,131 @@ namespace RoboQuest.Quest
         {
             return new[]
                 {
-                    (AreaDirection.Top, GetAdjacentIndex(index, AreaDirection.Top)),
-                    (AreaDirection.TopLeft, GetAdjacentIndex(index, AreaDirection.TopLeft)),
-                    (AreaDirection.TopRight, GetAdjacentIndex(index, AreaDirection.TopRight)),
-                    (AreaDirection.BottomLeft, GetAdjacentIndex(index, AreaDirection.BottomLeft)),
-                    (AreaDirection.BottomRight, GetAdjacentIndex(index, AreaDirection.BottomRight)),
-                    (AreaDirection.Bottom, GetAdjacentIndex(index, AreaDirection.Bottom)),
+                    (AreaDirection.Top, GetAdjacentIndex(index, AreaDirection.Top)), 
+                    (AreaDirection.Bottom, GetAdjacentIndex(index, AreaDirection.Bottom)), 
+                    (AreaDirection.Front, GetAdjacentIndex(index, AreaDirection.Front)), 
+                    (AreaDirection.Back, GetAdjacentIndex(index, AreaDirection.Back)), 
+                    (AreaDirection.Right, GetAdjacentIndex(index, AreaDirection.Right)), 
+                    (AreaDirection.Left, GetAdjacentIndex(index, AreaDirection.Left)), 
+                    (AreaDirection.TopFrontLeft, GetAdjacentIndex(index, AreaDirection.TopFrontLeft)), 
+                    (AreaDirection.TopFrontRight, GetAdjacentIndex(index, AreaDirection.TopFrontRight)), 
+                    (AreaDirection.TopBackLeft, GetAdjacentIndex(index, AreaDirection.TopBackLeft)), 
+                    (AreaDirection.TopBackRight, GetAdjacentIndex(index, AreaDirection.TopBackRight)), 
+                    (AreaDirection.BottomFrontLeft, GetAdjacentIndex(index, AreaDirection.BottomFrontLeft)), 
+                    (AreaDirection.BottomFrontRight, GetAdjacentIndex(index, AreaDirection.BottomFrontRight)), 
+                    (AreaDirection.BottomBackLeft, GetAdjacentIndex(index, AreaDirection.BottomBackLeft)), 
+                    (AreaDirection.BottomBackRight, GetAdjacentIndex(index, AreaDirection.BottomBackRight)), 
                 }
                 .Where(x => x.Item2.HasValue)
                 .Select(x => (x.Item1, x.Item2.Value))
                 .ToArray();
         }
 
-        int? GetAdjacentIndex(int index, AreaDirection areaDirection)
+        int? GetAdjacentIndex(int currentIndex, AreaDirection areaDirection)
         {
-            var row = index / MapSizeX;
-            var isEvenNumberRow = row % 2 == 0;
-            var adjacentIndex = (int?)GetNextIndex(index, areaDirection, isEvenNumberRow);
+            // XYZは横縦奥で、奥が奇数であれば半分ずつ座標をずらす
+            var depth = currentIndex / (MapSizeX * MapSizeY);
+            var isEvenNumberDepth = depth % 2 == 0;
+            var adjacentIndex = (int?)GetNextIndex(currentIndex, areaDirection, isEvenNumberDepth);
 
             // マップの外周判定
             // indexから各Directionの行数を予想して一致していなかったらマップ端として判定する
-            var expectedRow = row;
+            var xPos = currentIndex % MapSizeX;
+            var xyPos = currentIndex % (MapSizeX * MapSizeY);
             switch (areaDirection)
             {
-                case AreaDirection.Top:
-                    expectedRow += 2;
-                    break;
-
-                case AreaDirection.TopLeft:
-                case AreaDirection.TopRight:
-                    expectedRow++;
-                    break;
-
-                case AreaDirection.Bottom:
-                    expectedRow -= 2;
-                    break;
-
-                case AreaDirection.BottomLeft:
-                case AreaDirection.BottomRight:
-                    expectedRow--;
-                    break;
+                case AreaDirection.Top when MapSizeX * MapSizeY - MapSizeX < xyPos : return null;
+                case AreaDirection.Bottom when xyPos - MapSizeX < 0 : return null;
+                case AreaDirection.Front when depth == MapSizeZ : return null;
+                case AreaDirection.Back when depth == 0 : return null;
+                case AreaDirection.Right when xPos == MapSizeX : return null;
+                case AreaDirection.Left when xPos == 0 : return null;
+                case AreaDirection.TopFrontLeft when (isEvenNumberDepth && xPos == 0) || depth == MapSizeZ || MapSizeX * MapSizeY - MapSizeX < xyPos : return null;
+                case AreaDirection.TopFrontRight when (!isEvenNumberDepth && xPos == MapSizeX) || depth == MapSizeZ || MapSizeX * MapSizeY - MapSizeX < xyPos : return null;
+                case AreaDirection.TopBackLeft when (isEvenNumberDepth && xPos == 0) || depth == 0 || MapSizeX * MapSizeY - MapSizeX < xyPos : return null;
+                case AreaDirection.TopBackRight when (!isEvenNumberDepth && xPos == MapSizeX) || depth == 0 || MapSizeX * MapSizeY - MapSizeX < xyPos : return null;
+                case AreaDirection.BottomFrontLeft when (isEvenNumberDepth && xPos == 0) || depth == MapSizeZ || xyPos - MapSizeX < 0 : return null;
+                case AreaDirection.BottomFrontRight when (!isEvenNumberDepth && xPos == MapSizeX) || depth == MapSizeZ || xyPos - MapSizeX < 0 : return null;
+                case AreaDirection.BottomBackLeft when (isEvenNumberDepth && xPos == 0) || depth == 0 || xyPos - MapSizeX < 0 : return null;
+                case AreaDirection.BottomBackRight when (!isEvenNumberDepth && xPos == MapSizeX) || depth == 0 || xyPos - MapSizeX < 0 : return null;
             }
 
-            if (adjacentIndex < 0)
-            {
-                adjacentIndex = null;
-            }
-
-            return adjacentIndex / MapSizeX == expectedRow ? adjacentIndex : null;
+            return adjacentIndex;
         }
 
         (RouteAreaData RouteAreaData, int? NextIndex) GetRouteCell(int currentAreaIndex, int toAreaIndex)
         {
             var diffX = toAreaIndex % MapSizeX - currentAreaIndex % MapSizeX;
             var diffY = toAreaIndex / MapSizeX - currentAreaIndex / MapSizeX;
+            var diffZ = toAreaIndex / (MapSizeX * MapSizeY) - currentAreaIndex / (MapSizeX * MapSizeY);
 
             // 偶数行かどうか
-            var isEvenNumberRow = (currentAreaIndex / MapSizeX) % 2 == 0;
+            // XYZは横縦奥で、奥が奇数であれば半分ずつ座標をずらす
+            var depth = currentAreaIndex / (MapSizeX * MapSizeY);
+            var isEvenNumberDepth = depth % 2 == 0;
 
-            // 基本縦にはまっすぐいけるので縦のラインを合わせるように動く
-            if (diffX == 0)
-            {
-                if (diffY % 2 == 0)
-                {
-                    // 差が偶数行 真上か真下に移動
-                    if (diffY != 0)
-                    {
-                        var direction = diffY > 0 ? AreaDirection.Top : AreaDirection.Bottom;
-                        return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberRow));
-                    }
-                    else
-                    {
-                        return (new RouteAreaData(currentAreaIndex, null), null);
-                    }
-                }
-                else
-                {
-                    // 差が奇数行
-                    if (isEvenNumberRow)
-                    {
-                        // 今の位置が偶数行の場合は左にずらす
-                        var direction = diffY > 0 ? AreaDirection.TopRight : AreaDirection.BottomRight;
-                        return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberRow));
-                    }
-                    else
-                    {
-                        // 今の位置が奇数行の場合は右にずらす
-                        var direction = diffY > 0 ? AreaDirection.TopLeft : AreaDirection.BottomLeft;
-                        return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberRow));
-                    }
-                }
-            }
+            AreaDirection areaDirection = default;
 
-            if (diffY > 0 || currentAreaIndex < MapSizeX)
+            // 基本縦横奥にはまっすぐいける
+            if (diffX == 0 && diffY == 0 && diffZ == 0) return (new RouteAreaData(currentAreaIndex, null), null);
+
+            if (diffX == 0 && diffY == 0 && diffZ % 2 == 0 && diffZ > 0) return GetTuple(AreaDirection.Front);
+            if (diffX == 0 && diffY == 0 && diffZ % 2 == 0 && diffZ < 0) return GetTuple(AreaDirection.Back);
+            if (diffX == 0 && diffY == 0 && diffZ % 2 != 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontRight);
+            if (diffX == 0 && diffY == 0 && diffZ % 2 != 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackRight);
+            if (diffX == 0 && diffY > 0 && diffZ == 0) return GetTuple(AreaDirection.Top);
+            if (diffX == 0 && diffY < 0 && diffZ == 0) return GetTuple(AreaDirection.Bottom);
+            if (diffX == 0 && diffY > 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontRight);
+            if (diffX == 0 && diffY > 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackRight);
+            if (diffX == 0 && diffY < 0 && diffZ > 0) return GetTuple(AreaDirection.BottomFrontRight);
+            if (diffX == 0 && diffY < 0 && diffZ < 0) return GetTuple(AreaDirection.BottomBackRight);
+
+            if (diffX > 0 && diffY == 0 && diffZ == 0) return GetTuple(AreaDirection.Right);
+            if (diffX > 0 && diffY == 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontRight);
+            if (diffX > 0 && diffY == 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackRight);
+            if (diffX > 0 && diffY > 0 && diffZ == 0) return GetTuple(AreaDirection.Top);
+            if (diffX > 0 && diffY > 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontRight);
+            if (diffX > 0 && diffY > 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackRight);
+            if (diffX > 0 && diffY < 0 && diffZ == 0) return GetTuple(AreaDirection.Bottom);
+            if (diffX > 0 && diffY < 0 && diffZ > 0) return GetTuple(AreaDirection.BottomFrontRight);
+            if (diffX > 0 && diffY < 0 && diffZ < 0) return GetTuple(AreaDirection.BottomBackRight);
+            
+            if (diffX < 0 && diffY == 0 && diffZ == 0) return GetTuple(AreaDirection.Left);
+            if (diffX < 0 && diffY == 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontLeft);
+            if (diffX < 0 && diffY == 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackLeft);
+            if (diffX < 0 && diffY > 0 && diffZ == 0) return GetTuple(AreaDirection.Top);
+            if (diffX < 0 && diffY > 0 && diffZ > 0) return GetTuple(AreaDirection.TopFrontLeft);
+            if (diffX < 0 && diffY > 0 && diffZ < 0) return GetTuple(AreaDirection.TopBackLeft);
+            if (diffX < 0 && diffY < 0 && diffZ == 0) return GetTuple(AreaDirection.Bottom);
+            if (diffX < 0 && diffY < 0 && diffZ > 0) return GetTuple(AreaDirection.BottomFrontLeft);
+            if (diffX < 0 && diffY < 0 && diffZ < 0) return GetTuple(AreaDirection.BottomBackLeft);
+
+            throw new NotImplementedException();
+            
+            (RouteAreaData RouteAreaData, int? NextIndex) GetTuple(AreaDirection direction)
             {
-                // 上方向に左右移動
-                var direction = diffX > 0 ? AreaDirection.TopRight : AreaDirection.TopLeft;
-                return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberRow));
-            }
-            else
-            {
-                // 下方向に左右移動
-                var direction = diffX > 0 ? AreaDirection.BottomRight : AreaDirection.BottomLeft;
-                return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberRow));
+                return (new RouteAreaData(currentAreaIndex, direction), GetNextIndex(currentAreaIndex, direction, isEvenNumberDepth));
             }
         }
 
-        int GetNextIndex(int index, AreaDirection areaDirection, bool isEvenNumberRow)
+        int GetNextIndex(int index, AreaDirection areaDirection, bool isEvenNumberDepth)
         {
             switch (areaDirection)
             {
-                case AreaDirection.Top:
-                    return index + MapSizeX + MapSizeX;
-
-                case AreaDirection.TopRight:
-                    return index + MapSizeX + (isEvenNumberRow ? 0 : 1);
-
-                case AreaDirection.TopLeft:
-                    return index + MapSizeX + (isEvenNumberRow ? -1 : 0);
-
-                case AreaDirection.BottomRight:
-                    return index - MapSizeX + (isEvenNumberRow ? 0 : 1);
-
-                case AreaDirection.BottomLeft:
-                    return index - MapSizeX + (isEvenNumberRow ? -1 : 0);
-
-                case AreaDirection.Bottom:
-                    return index - MapSizeX - MapSizeX;
-
+                case AreaDirection.Top: return index + MapSizeX;
+                case AreaDirection.Bottom: return index - MapSizeX;
+                case AreaDirection.Front: return index + MapSizeX * MapSizeY;
+                case AreaDirection.Back: return index - MapSizeX * MapSizeY;
+                case AreaDirection.Right: return index + 1;
+                case AreaDirection.Left: return index - 1;
+                case AreaDirection.TopFrontLeft: return index + MapSizeX * MapSizeY + (isEvenNumberDepth ? -1 : 0);
+                case AreaDirection.TopFrontRight: return index + MapSizeX * MapSizeY + (isEvenNumberDepth ? 0 : 1);
+                case AreaDirection.TopBackLeft: return index - MapSizeX * MapSizeY + (isEvenNumberDepth ? -1 : 0);
+                case AreaDirection.TopBackRight: return index - MapSizeX * MapSizeY + (isEvenNumberDepth ? 0 : 1);
+                case AreaDirection.BottomFrontLeft: return index + MapSizeX * MapSizeY - MapSizeX + (isEvenNumberDepth ? -1 : 0);
+                case AreaDirection.BottomFrontRight: return index + MapSizeX * MapSizeY - MapSizeX + (isEvenNumberDepth ? 0 : 1);
+                case AreaDirection.BottomBackLeft: return index - MapSizeX * MapSizeY - MapSizeX + (isEvenNumberDepth ? -1 : 0);
+                case AreaDirection.BottomBackRight: return index - MapSizeX * MapSizeY - MapSizeX + (isEvenNumberDepth ? 0 : 1);
                 default:
                     throw new ArgumentException();
             }

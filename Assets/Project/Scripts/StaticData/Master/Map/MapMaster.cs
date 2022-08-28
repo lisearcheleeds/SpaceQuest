@@ -9,12 +9,14 @@ namespace RoboQuest
             public int Id { get; }
             public int MapSizeX { get; }
             public int MapSizeY { get; }
+            public int MapSizeZ { get; }
 
-            public Row(int id, int mapSizeX, int mapSizeY)
+            public Row(int id, int mapSizeX, int mapSizeY, int mapSizeZ)
             {
                 Id = id;
                 MapSizeX = mapSizeX;
                 MapSizeY = mapSizeY;
+                MapSizeZ = mapSizeZ;
             }
         }
         
@@ -43,7 +45,7 @@ namespace RoboQuest
         {
             record = new[]
             {
-                new Row(1, 7, 14),
+                new Row(1, 7, 2, 14),
             };
         }
     }

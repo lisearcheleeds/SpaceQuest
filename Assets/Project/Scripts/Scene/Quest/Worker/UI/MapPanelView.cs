@@ -1,19 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class MapPanelView : MonoBehaviour
     {
         public bool IsOpen => gameObject.activeSelf;
 
-        [SerializeField] GlobalMapPanel mapPanel;
+        [SerializeField] MapPanel mapPanel;
         [SerializeField] Button closeMapButton;
         
-        public void Initialize(QuestData questData)
+        public void Initialize()
         {
-            mapPanel.Initialize(questData);
-            
             Close();
             closeMapButton.onClick.AddListener(OnClickCloseMap);
         }
@@ -21,11 +19,13 @@ namespace RoboQuest.Quest
         public void Open()
         {
             gameObject.SetActive(true);
+            mapPanel.ApplyViewMode(MapPanel.MapPanelViewMode.All);
         }
 
         public void Close()
         {
             gameObject.SetActive(false);
+            mapPanel.ApplyViewMode(MapPanel.MapPanelViewMode.Mini);
         }
 
         void OnClickCloseMap()

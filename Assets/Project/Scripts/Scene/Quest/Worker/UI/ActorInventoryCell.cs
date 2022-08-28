@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using VariableInventorySystem;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class ActorInventoryCell : StandardCell
     {

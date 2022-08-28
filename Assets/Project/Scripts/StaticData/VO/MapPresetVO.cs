@@ -7,7 +7,8 @@ namespace RoboQuest
         public int MapId => mapMaster.Id;
         public int MapSizeX => mapMaster.MapSizeX;
         public int MapSizeY => mapMaster.MapSizeY;
-        public int MapSize => MapSizeX * MapSizeY;
+        public int MapSizeZ => mapMaster.MapSizeZ;
+        public int MapSize => MapSizeX * MapSizeY * MapSizeZ;
 
         public AreaAssetVO[] AreaAssetVOs { get; }
 

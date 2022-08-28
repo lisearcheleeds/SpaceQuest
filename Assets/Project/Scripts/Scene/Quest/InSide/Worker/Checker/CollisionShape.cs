@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public abstract class CollisionShape
     {

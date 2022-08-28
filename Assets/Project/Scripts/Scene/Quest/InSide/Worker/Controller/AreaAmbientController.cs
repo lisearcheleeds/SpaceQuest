@@ -1,15 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using SimpleNavMesh;
+using RoboQuest;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class AreaAmbientController : MonoBehaviour
     {
-        [SerializeField] NavMeshController navMeshController;
         [SerializeField] Transform ambientObjectParent;
         [SerializeField] Transform placedObjectParent;
         Transform ambientObject;
@@ -45,8 +44,6 @@ namespace RoboQuest.Quest.InSide
             yield return new ParallelCoroutine(
                 AssetLoader.LoadAsync<Transform>(areaAssetVO.AmbientObjectAsset, target => ambientObject = Instantiate(target, ambientObjectParent)),
                 AssetLoader.LoadAsync<Transform>(areaAssetVO.PlacedObjectAsset, target => placedObject = Instantiate(target, placedObjectParent)));
-
-            yield return navMeshController.GenerateNavMesh();
         }
     }
 }

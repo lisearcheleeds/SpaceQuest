@@ -1,6 +1,7 @@
 ﻿using System;
+using RoboQuest;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class PlayerQuestData
     {

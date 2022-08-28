@@ -1,7 +1,8 @@
 ﻿using System;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class RifleWeaponData : WeaponData
     {

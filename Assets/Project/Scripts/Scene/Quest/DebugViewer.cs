@@ -2,7 +2,7 @@
 using System.Linq;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class DebugViewer : MonoBehaviour
     {

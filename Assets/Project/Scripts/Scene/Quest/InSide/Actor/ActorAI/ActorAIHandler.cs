@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using SimpleNavMesh;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class ActorAIHandler
     {

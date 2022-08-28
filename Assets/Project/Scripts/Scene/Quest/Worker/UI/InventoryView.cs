@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VariableInventorySystem;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class InventoryView : MonoBehaviour
     {

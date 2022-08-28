@@ -16,10 +16,5 @@
         BottomFrontRight,
         BottomBackLeft,
         BottomBackRight,
-        
-        TopLeft,
-        TopRight,
-        BottomLeft,
-        BottomRight,
     }
 }

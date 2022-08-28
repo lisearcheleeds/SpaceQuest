@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using RoboQuest.Quest.InSide;
+using AloneSpace.InSide;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class AreaController : MonoBehaviour
     {

@@ -1,7 +1,8 @@
 ﻿using System;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     /// <summary>
     /// Pistol, Rifle, MachineGun, ShotGun, Rocket, Missile などの武器で生成される

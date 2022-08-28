@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class MessageBus : MonoSingleton<MessageBus>
     {
@@ -40,6 +40,8 @@ namespace RoboQuest.Quest
         public MessageBusDefine.UserCommandSetCameraFocusObject UserCommandSetCameraFocusObject { get; } = new MessageBusDefine.UserCommandSetCameraFocusObject();
         public MessageBusDefine.UserCommandGlobalMapFocusCell UserCommandGlobalMapFocusCell { get; } = new MessageBusDefine.UserCommandGlobalMapFocusCell();
         public MessageBusDefine.UserCommandUpdateInventory UserCommandUpdateInventory { get; } = new MessageBusDefine.UserCommandUpdateInventory();
+        public MessageBusDefine.UserCommandRotateCamera UserCommandRotateCamera { get; } = new MessageBusDefine.UserCommandRotateCamera();
+        public MessageBusDefine.UserCommandSetCameraAngle UserCommandSetCameraAngle { get; } = new MessageBusDefine.UserCommandSetCameraAngle();
         
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetDestinateAreaIndex PlayerCommandSetDestinateAreaIndex { get; } = new MessageBusDefine.PlayerCommandSetDestinateAreaIndex();
@@ -50,9 +52,7 @@ namespace RoboQuest.Quest
         // Managerによるゲームコマンド Actor周り
         // ActorのArea移動
         public MessageBusDefine.ManagerCommandActorAreaTransition ManagerCommandActorAreaTransition { get; } = new MessageBusDefine.ManagerCommandActorAreaTransition();
-        public MessageBusDefine.ManagerCommandLeaveActor ManagerCommandLeaveActor { get; } = new MessageBusDefine.ManagerCommandLeaveActor();
         public MessageBusDefine.ManagerCommandTransitionActor ManagerCommandTransitionActor { get; } = new MessageBusDefine.ManagerCommandTransitionActor();
-        public MessageBusDefine.ManagerCommandArriveActor ManagerCommandArriveActor { get; } = new MessageBusDefine.ManagerCommandArriveActor();
         
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandStoreItem ManagerCommandStoreItem { get; } = new MessageBusDefine.ManagerCommandStoreItem();

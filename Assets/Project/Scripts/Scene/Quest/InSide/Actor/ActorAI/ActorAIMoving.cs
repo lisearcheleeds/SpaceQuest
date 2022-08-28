@@ -1,7 +1,8 @@
 ﻿using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class ActorAIMoving : IActorAIState
     {

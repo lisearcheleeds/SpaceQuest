@@ -1,9 +1,10 @@
 ﻿using System;
+using RoboQuest;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class UIManager : MonoBehaviour
     {
@@ -14,15 +15,19 @@ namespace RoboQuest.Quest
         [SerializeField] Button inventoryButton;
         
         [Header("Side")]
-        [SerializeField] GlobalMapPanel miniMapPanel;
         [SerializeField] ActorDataViewList actorDataViewList;
         
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
+        [SerializeField] CameraAngleController cameraAngleController;
         [SerializeField] InteractionItemObjectList interactionItemObjectList;
         [SerializeField] TacticsView tacticsView;
         [SerializeField] ItemDataMenu itemDataMenu;
         [SerializeField] InventoryView inventoryView;
+        
+        [Header("3D")]
+        [SerializeField] MapPanel mapPanel;
+        [SerializeField] CameraAngleControllerEffect cameraAngleControllerEffect;
 
         QuestData questData;
         
@@ -30,8 +35,11 @@ namespace RoboQuest.Quest
         {
             this.questData = questData;
 
-            mapPanelView.Initialize(questData);
-            miniMapPanel.Initialize(questData);
+            mapPanel.Initialize(questData);
+            cameraAngleControllerEffect.Initialize();
+            
+            mapPanelView.Initialize();
+            cameraAngleController.Initialize();
             actorDataViewList.Initialize(questData);
             interactionItemObjectList.Initialize(questData);
             tacticsView.Initialize(OnClickTactics);

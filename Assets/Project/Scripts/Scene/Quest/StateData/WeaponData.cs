@@ -1,8 +1,9 @@
 ﻿using System;
+using RoboQuest;
 using UnityEngine;
 using VariableInventorySystem;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public abstract class WeaponData
     {

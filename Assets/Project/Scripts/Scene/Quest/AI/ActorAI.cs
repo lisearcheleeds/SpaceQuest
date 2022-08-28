@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     /// <summary>
     /// ・ActorはPlayerの目的地に向かって最短ルートでArea移動する
@@ -155,32 +156,12 @@ namespace RoboQuest.Quest
 
         static void UpdateRoute(QuestData questData, ActorData actorData)
         {
-            var areaTransitionOrder = actorData.InteractOrder.FirstOrDefault(x => x is AreaTransitionInteractData);
-            if (areaTransitionOrder != null)
-            {
-                // 既に設定されている場合はスルー
-                return;
-            }
-
             var routeAreaIndexes = actorData.GetRouteAreaData()?.Select(x => x.AreaIndex).ToArray();
             if (routeAreaIndexes == null || routeAreaIndexes?.Length == 0)
             {
                 // 目的地が無い場合はスルー
                 return;
             }
-            
-            // 移動したいエリア
-            var areaData = questData.MapData.AreaData[actorData.CurrentAreaIndex];
-            AreaTransitionInteractData areaTransitionInteractData = null;
-            foreach (var routeAreaIndex in routeAreaIndexes)
-            {
-                areaTransitionInteractData = areaData.InteractData
-                    .Where(x => x is AreaTransitionInteractData)
-                    .Cast<AreaTransitionInteractData>()
-                    .FirstOrDefault(x => x.TransitionAreaIndex == routeAreaIndex) ?? areaTransitionInteractData;
-            }
-            
-            actorData.InteractOrder.Add(areaTransitionInteractData);
         }
     }
 }

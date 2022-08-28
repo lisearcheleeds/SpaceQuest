@@ -2,7 +2,7 @@
 using FancyScrollView;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class InteractionItemObjectListView : FancyScrollRect<InteractionItemObjectListViewCell.CellData, InteractionItemObjectListViewCell.CellContext>
     {

@@ -1,8 +1,9 @@
 ﻿using System;
-using RoboQuest.Quest.InSide;
+using AloneSpace.InSide;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class MessageBusDefine
     {
@@ -34,6 +35,8 @@ namespace RoboQuest.Quest
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
         public class UserCommandGlobalMapFocusCell : MessageBusBroadcaster<int, bool>{}
         public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
+        public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
+        public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         
         public class PlayerCommandSetDestinateAreaIndex : MessageBusBroadcaster<Guid, int?>{}
         public class PlayerCommandAddInteractItemOrder : MessageBusBroadcaster<ActorData, ItemObject>{}
@@ -41,9 +44,7 @@ namespace RoboQuest.Quest
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         
         public class ManagerCommandActorAreaTransition : MessageBusBroadcaster<ActorData, int>{}
-        public class ManagerCommandLeaveActor : MessageBusBroadcaster<ActorData>{}
         public class ManagerCommandTransitionActor : MessageBusBroadcaster<ActorData, int>{}
-        public class ManagerCommandArriveActor : MessageBusBroadcaster<ActorData>{}
         
         public class ManagerCommandStoreItem : MessageBusBroadcaster<int, InventoryData, ItemData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}

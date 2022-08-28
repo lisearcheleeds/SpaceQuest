@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
+using RoboQuest;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class Actor : MonoBehaviour, IActor, ITarget, ICollision
     {

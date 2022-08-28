@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class InteractManager : MonoBehaviour
     {
@@ -27,37 +28,9 @@ namespace RoboQuest.Quest
 
         void ActorAreaTransition(ActorData actorData, int toAreaIndex)
         {
-            StartCoroutine(ActorAreaTransitionCoroutine());
-
-            IEnumerator ActorAreaTransitionCoroutine()
-            {
-                MessageBus.Instance.ManagerCommandLeaveActor.Broadcast(actorData);
-
-                yield return new WaitForSeconds(2.0f);
-
-                // 通常の遷移であれば、エリアの中央を起点に反対の位置に移動する
-                Vector3 offset = Vector3.zero;
-                if (actorData.CurrentAreaIndex != toAreaIndex)
-                {
-                    var data = (AreaTransitionInteractData)questData.MapData.AreaData
-                        .First(x => x.Index == actorData.CurrentAreaIndex)
-                        .InteractData
-                        .First(x => x is AreaTransitionInteractData interactAreaTransitionData && interactAreaTransitionData.TransitionAreaIndex == toAreaIndex);
-
-                    offset = data.Position * -2.0f;
-                }
-
-                actorData.SetPosition(actorData.Position + offset);
-                actorData.SetCurrentAreaIndex(toAreaIndex);
-                actorData.SetActorState(ActorState.Transition);
-                
-                MessageBus.Instance.ManagerCommandTransitionActor.Broadcast(actorData, toAreaIndex);
-                
-                yield return new WaitForSeconds(2.0f);
-                
-                actorData.SetActorState(ActorState.Running);
-                MessageBus.Instance.ManagerCommandArriveActor.Broadcast(actorData);
-            };
+            actorData.SetCurrentAreaIndex(toAreaIndex);
+            MessageBus.Instance.ManagerCommandTransitionActor.Broadcast(actorData, toAreaIndex);
+            actorData.SetActorState(ActorState.Running);
         }
 
         void StoreItem(int areaIndex, InventoryData toInventory, ItemData itemData)

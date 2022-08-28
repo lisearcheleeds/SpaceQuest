@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public class InteractList
     {
@@ -102,17 +103,6 @@ namespace RoboQuest.Quest.InSide
                         {
                             itemObject.Apply(interactItemData); 
                             itemObject.IsActive = true;
-                            onCreate?.Invoke();
-                        });
-                    break;
-                    
-                case AreaTransitionInteractData interactAreaTransitionData:
-                    GameObjectCache.Instance.GetAsset<AreaTransitionObject>(
-                        ConstantAssetPath.AreaTransitionObjectPathVO,
-                        areaTransitionObject =>
-                        {
-                            areaTransitionObject.Apply(interactAreaTransitionData); 
-                            areaTransitionObject.IsActive = true;
                             onCreate?.Invoke();
                         });
                     break;

@@ -1,4 +1,6 @@
-﻿namespace RoboQuest.Quest.InSide
+﻿using RoboQuest;
+
+namespace AloneSpace.InSide
 {
     public interface ICauseDamage
     {

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using RoboQuest;
+using UnityEngine;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public interface IActorAIState
     {

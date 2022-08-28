@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class ItemDetail : MonoBehaviour
     {

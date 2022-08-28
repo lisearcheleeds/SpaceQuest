@@ -1,7 +1,8 @@
 ﻿using System;
+using RoboQuest;
 using VariableInventorySystem;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class ItemData : IVariableInventoryCellData
     {

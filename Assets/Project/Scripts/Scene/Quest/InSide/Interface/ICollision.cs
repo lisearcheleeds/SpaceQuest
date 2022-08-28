@@ -1,4 +1,4 @@
-﻿namespace RoboQuest.Quest.InSide
+﻿namespace AloneSpace.InSide
 {
     public interface ICollision : IPlayer
     {

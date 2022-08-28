@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class ActorData : ITargetData, IDamageableData
     {
@@ -48,7 +49,7 @@ namespace RoboQuest.Quest
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
             
-            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x => Quest.WeaponData.CreateData(playerQuestDataInstanceId, InstanceId, x)).ToArray();
+            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x => AloneSpace.WeaponData.CreateData(playerQuestDataInstanceId, InstanceId, x)).ToArray();
             
             // FIXME ここから移動する
             HitPoint = ActorSpecData.Endurance;
@@ -129,11 +130,6 @@ namespace RoboQuest.Quest
                             var insertableInventory = InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
                             MessageBus.Instance.ManagerCommandStoreItem.Broadcast(itemInteractData.AreaIndex, insertableInventory, itemInteractData.ItemData);
                             break;
-                        case AreaTransitionInteractData areaTransitionInteractData:
-                            InteractOrder.Remove(InteractingData);
-                            SetInteract(null);
-                            MessageBus.Instance.ManagerCommandActorAreaTransition.Broadcast(this, areaTransitionInteractData.TransitionAreaIndex);
-                            break;
                         case BrokenActorInteractData brokenActorInteractData:
                             throw new NotImplementedException();
                             break;
@@ -147,7 +143,7 @@ namespace RoboQuest.Quest
 
         public IInteractData GetNextInteractOrder()
         {
-            var nextOrder = InteractOrder.FirstOrDefault(x => !(x is AreaTransitionInteractData));
+            var nextOrder = InteractOrder.FirstOrDefault();
             if (nextOrder != null)
             {
                 return nextOrder;

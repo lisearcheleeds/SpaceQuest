@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Linq;
+using RoboQuest;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class AreaCellTest : MonoBehaviour
     {
 	    [SerializeField] LineRenderer lineRenderer;
 	    
 	    Vector3[] target = {};
+	    bool showDirection;
 
 	    void Awake()
 	    {
@@ -30,89 +32,106 @@ namespace RoboQuest.Quest
 		        lineRenderer.SetPosition(i, target[i]);
 	        }
         }
+
+	    void OnDrawGizmos()
+	    {
+		    if (showDirection)
+		    {
+			    foreach (AreaDirection areaDirection in Enum.GetValues(typeof(AreaDirection)))
+			    {
+				    Gizmos.DrawLine(transform.position, transform.position + AreaCellVertex.GetDirection(areaDirection) * 10);
+			    }
+		    }
+	    }
+
+	    [ContextMenu("OnClickDirection")]
+	    void OnClickDirection()
+	    {
+		    showDirection = !showDirection;
+	    }
         
         [ContextMenu("OnClickTop")]
         void OnClickTop()
         {
-	        target = AreaCellVertex.Top.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Top).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickBottom")]
         void OnClickBottom()
         {
-	        target = AreaCellVertex.Bottom.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Bottom).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickFront")]
         void OnClickFront()
         {
-	        target = AreaCellVertex.Front.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Front).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickBack")]
         void OnClickBack()
         {
-	        target = AreaCellVertex.Back.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Back).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickRight")]
         void OnClickRight()
         {
-	        target = AreaCellVertex.Right.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Right).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickLeft")]
         void OnClickLeft()
         {
-	        target = AreaCellVertex.Left.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.Left).Select(x => x + transform.position).ToArray();
         }
         
         [ContextMenu("OnClickTopFrontLeft")]
         void OnClickTopFrontLeft()
         {
-	        target = AreaCellVertex.TopFrontLeft.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.TopFrontLeft).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickTopFrontRight")]
         void OnClickTopFrontRight()
         {
-	        target = AreaCellVertex.TopFrontRight.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.TopFrontRight).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickTopBackLeft")]
         void OnClickTopBackLeft()
         {
-	        target = AreaCellVertex.TopBackLeft.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.TopBackLeft).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickTopBackRight")]
         void OnClickTopBackRight()
         {
-	        target = AreaCellVertex.TopBackRight.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.TopBackRight).Select(x => x + transform.position).ToArray();
         }
         
         [ContextMenu("OnClickBottomFrontLeft")]
         void OnClickBottomFrontLeft()
         {
-	        target = AreaCellVertex.BottomFrontLeft.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.BottomFrontLeft).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickBottomFrontRight")]
         void OnClickBottomFrontRight()
         {
-	        target = AreaCellVertex.BottomFrontRight.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.BottomFrontRight).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickBottomBackLeft")]
         void OnClickBottomBackLeft()
         {
-	        target = AreaCellVertex.BottomBackLeft.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.BottomBackLeft).Select(x => x + transform.position).ToArray();
         }
 
         [ContextMenu("OnClickBottomBackRight")]
         void OnClickBottomBackRight()
         {
-	        target = AreaCellVertex.BottomBackRight.Select(x => x + transform.position).ToArray();
+	        target = AreaCellVertex.GetPrimitives(AreaDirection.BottomBackRight).Select(x => x + transform.position).ToArray();
         }
     }
 }

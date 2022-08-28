@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RoboQuest.Quest.InSide
+namespace AloneSpace.InSide
 {
     public interface IPlayer
     {

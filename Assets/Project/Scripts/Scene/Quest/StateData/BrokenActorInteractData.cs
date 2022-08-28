@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class BrokenActorInteractData : IInteractData
     {

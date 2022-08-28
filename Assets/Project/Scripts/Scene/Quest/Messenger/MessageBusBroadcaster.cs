@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public interface IMessageBusBroadcaster
     {

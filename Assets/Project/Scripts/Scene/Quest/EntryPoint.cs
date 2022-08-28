@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using RoboQuest;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class EntryPoint : MonoBehaviour
     {

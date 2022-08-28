@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace RoboQuest.Quest
+namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
