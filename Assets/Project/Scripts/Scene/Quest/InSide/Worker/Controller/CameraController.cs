@@ -66,7 +66,7 @@ namespace AloneSpace.InSide
 
         void UserCommandSetObserveActor(Guid observeActorId)
         {
-            var actor = actors.FirstOrDefault(x => x.InstanceId == observeActorId);
+            var actor = actors?.FirstOrDefault(x => x.InstanceId == observeActorId);
             if (actor != null)
             {
                 MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.FocusObject);

@@ -14,23 +14,14 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.ManagerCommandActorAreaTransition.AddListener(ActorAreaTransition);
             MessageBus.Instance.ManagerCommandStoreItem.AddListener(StoreItem);
             MessageBus.Instance.ManagerCommandTransferItem.AddListener(TransferItem);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ManagerCommandActorAreaTransition.RemoveListener(ActorAreaTransition);
             MessageBus.Instance.ManagerCommandStoreItem.RemoveListener(StoreItem);
             MessageBus.Instance.ManagerCommandTransferItem.RemoveListener(TransferItem);
-        }
-
-        void ActorAreaTransition(ActorData actorData, int toAreaIndex)
-        {
-            actorData.SetCurrentAreaIndex(toAreaIndex);
-            MessageBus.Instance.ManagerCommandTransitionActor.Broadcast(actorData, toAreaIndex);
-            actorData.SetActorState(ActorState.Running);
         }
 
         void StoreItem(int areaIndex, InventoryData toInventory, ItemData itemData)

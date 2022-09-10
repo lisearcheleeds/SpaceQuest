@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Codice.Client.BaseCommands;
 using RoboQuest;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,10 +14,13 @@ namespace AloneSpace
         public List<PlayerQuestData> PlayerQuestData { get; private set; } = new List<PlayerQuestData>();
         public List<ActorData> ActorData { get; private set; } = new List<ActorData>();
 
+        public (AreaDirection? AreaDirection, AreaData AreaData)[] ObserveAdjacentAreaData { get; private set; }
+        
         public PlayerQuestData ObservePlayer => PlayerQuestData.First(x => x.InstanceId == observePlayerId);
         public ActorData ObserveActor => ActorData.First(x => x.InstanceId == observeActorId);
         public ActorData[] ObservePlayerActors => ActorData.Where(x => ObservePlayer.InstanceId == x.PlayerQuestDataInstanceId).ToArray();
 
+        public int ObserveAreaIndex { get; private set; }
         Guid observePlayerId;
         Guid observeActorId;
         
@@ -24,7 +28,7 @@ namespace AloneSpace
         {
             MapData = new MapData(mapPresetVO);
             InitializePlayer();
-            PlaceEnemyAllArea();
+            // PlaceEnemyAllArea();
         }
 
         public void UserCommandSetObservePlayer(Guid playerInstanceId)
@@ -36,7 +40,18 @@ namespace AloneSpace
         {
             observeActorId = actorInstanceId;
         }
-        
+
+        public void SetObserveArea(int observeAreaIndex)
+        {
+            ObserveAreaIndex = observeAreaIndex;
+
+            var adjacentAreaIndexes = MapData.AreaData[observeAreaIndex].AdjacentAreaIndexes
+                .Select(x => ((AreaDirection?) x.AreaDirection, x.Index))
+                .Concat(new (AreaDirection? AreaDirection, int Index)[] {(null, observeAreaIndex)});
+
+            ObserveAdjacentAreaData = adjacentAreaIndexes.Select(x => (x.Item1, MapData.AreaData[x.Index])).ToArray();
+        }
+
         void InitializePlayer()
         {
             /*
@@ -52,12 +67,12 @@ namespace AloneSpace
 
             var spawnAreaIndexList = new List<int>();
             var xOddNumber = Enumerable.Range(0, MapData.MapSizeX).Where(x => x % 2 == 1).ToArray();
-            var yOddNumber = Enumerable.Range(0, MapData.MapSizeY / 2).Where(y => y % 2 == 1).ToArray();
+            var zOddNumber = Enumerable.Range(0, MapData.MapSizeZ / 2).Where(z => z % 2 == 1).ToArray();
             
             spawnAreaIndexList.AddRange(xOddNumber);
-            spawnAreaIndexList.AddRange(yOddNumber.Select(y => (y * MapData.MapSizeY) - 1).ToArray());
-            spawnAreaIndexList.AddRange(yOddNumber.Select(y => (y + 1) * MapData.MapSizeY).ToArray());
-            spawnAreaIndexList.AddRange(xOddNumber.Select(x => MapData.MapSizeX * (MapData.MapSizeY - 1) + x).ToArray());
+            spawnAreaIndexList.AddRange(zOddNumber.Select(z => (z * MapData.MapSizeZ) - 1).ToArray());
+            spawnAreaIndexList.AddRange(zOddNumber.Select(z => (z + 1) * MapData.MapSizeZ).ToArray());
+            spawnAreaIndexList.AddRange(xOddNumber.Select(x => MapData.MapSizeX * (MapData.MapSizeZ - 1) + x).ToArray());
 
             foreach (var spawnAreaIndex in spawnAreaIndexList)
             {
@@ -105,7 +120,7 @@ namespace AloneSpace
                 enemy1ActorSpecData.Setup(enemy1BluePrint);
                 
                 var actorData = new ActorData(enemy1ActorSpecData, scavPlayer.InstanceId, MapData);
-                actorData.SetCurrentAreaIndex(areaData.Index);
+                actorData.SetCurrentAreaIndex(areaData.AreaIndex);
                 actorData.SetPosition(new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f)));
                 ActorData.Add(actorData);
             }

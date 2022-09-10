@@ -5,6 +5,7 @@ namespace AloneSpace.InSide
     public class ActorDebugger : MonoBehaviour
     {
         [SerializeField] string actorId;
+        [SerializeField] string actorState;
         
         ActorAI actorAI;
         
@@ -20,7 +21,7 @@ namespace AloneSpace.InSide
             {
                 return;
             }
-
+            
             DrawGizmosCheckJump();
             DrawGizmoActorPathFinder();
         }

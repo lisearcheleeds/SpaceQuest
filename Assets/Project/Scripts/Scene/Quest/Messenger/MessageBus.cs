@@ -51,7 +51,6 @@ namespace AloneSpace
         
         // Managerによるゲームコマンド Actor周り
         // ActorのArea移動
-        public MessageBusDefine.ManagerCommandActorAreaTransition ManagerCommandActorAreaTransition { get; } = new MessageBusDefine.ManagerCommandActorAreaTransition();
         public MessageBusDefine.ManagerCommandTransitionActor ManagerCommandTransitionActor { get; } = new MessageBusDefine.ManagerCommandTransitionActor();
         
         // ActorのItem収集

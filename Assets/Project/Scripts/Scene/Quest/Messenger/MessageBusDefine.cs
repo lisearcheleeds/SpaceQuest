@@ -43,8 +43,7 @@ namespace AloneSpace
         public class PlayerCommandRemoveInteractItemOrder : MessageBusBroadcaster<ActorData, ItemObject>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         
-        public class ManagerCommandActorAreaTransition : MessageBusBroadcaster<ActorData, int>{}
-        public class ManagerCommandTransitionActor : MessageBusBroadcaster<ActorData, int>{}
+        public class ManagerCommandTransitionActor : MessageBusBroadcaster<ActorData, int, int>{}
         
         public class ManagerCommandStoreItem : MessageBusBroadcaster<int, InventoryData, ItemData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}

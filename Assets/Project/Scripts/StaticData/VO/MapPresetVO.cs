@@ -11,7 +11,8 @@ namespace RoboQuest
         public int MapSize => MapSizeX * MapSizeY * MapSizeZ;
 
         public AreaAssetVO[] AreaAssetVOs { get; }
-
+        public IAssetPath AmbientObjectAsset { get; }
+        
         MapMaster.Row mapMaster;
         
         public MapPresetVO(int id)
@@ -22,9 +23,10 @@ namespace RoboQuest
                 .Select(i =>
                 {
                     var row = AreaMaster.Instance.Get(MapId, i);
-                    return new AreaAssetVO(row.AreaId, row.AmbientObjectAssetId, row.PlacedObjectAssetId, row.AreaSize);
+                    return new AreaAssetVO(row.AreaId, row.PlacedObjectAssetId, row.AreaSize);
                 })
                 .ToArray();
+            AmbientObjectAsset = AmbientObjectAssetMaster.Instance.Get(mapMaster.AmbientObjectAssetId);
         }
     }
 }

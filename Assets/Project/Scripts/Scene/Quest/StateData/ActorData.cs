@@ -13,8 +13,8 @@ namespace AloneSpace
 
         public ActorState ActorState { get; private set; }
 
-        public int CurrentAreaIndex { get; private set; }
-        public int? DestinateAreaIndex { get; private set; }
+        public int AreaIndex { get; private set; }
+        public IPosition MoveTarget { get; private set; }
 
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
@@ -26,7 +26,6 @@ namespace AloneSpace
         public WeaponData[] WeaponData { get; }
 
         public bool IsAlive => ActorState == ActorState.Running;
-        public bool IsTargetable => ActorState == ActorState.Running;
         public bool IsBroken => ActorState == ActorState.Broken;
 
         public float HitPoint { get; private set; }
@@ -60,24 +59,14 @@ namespace AloneSpace
             ActorState = actorState;
         }
         
-        public void SetCurrentAreaIndex(int areaIndex)
+        public void SetAreaIndex(int areaIndex)
         {
-            CurrentAreaIndex = areaIndex;
+            AreaIndex = areaIndex;
         }
         
-        public void SetDestinateAreaIndex(int? areaIndex)
+        public void SetMoveTarget(IPosition moveTarget)
         {
-            DestinateAreaIndex = areaIndex;
-        }
-
-        public RouteAreaData[] GetRouteAreaData()
-        {
-            if (!DestinateAreaIndex.HasValue || DestinateAreaIndex.Value == CurrentAreaIndex)
-            {
-                return null;
-            }
-
-            return MapData.GetRouteAreaData(CurrentAreaIndex, DestinateAreaIndex.Value);
+            MoveTarget = moveTarget;
         }
 
         public void SetPosition(Vector3 position)

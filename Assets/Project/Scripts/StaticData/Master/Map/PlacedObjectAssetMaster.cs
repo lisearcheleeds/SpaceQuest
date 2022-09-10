@@ -41,7 +41,7 @@ namespace RoboQuest
         {
             record = new[]
             {
-                new Row(0, "AreaAmbientObjects/Default"),
+                new Row(0, "AreaPlacedObjects/Default"),
             };
         }
     }

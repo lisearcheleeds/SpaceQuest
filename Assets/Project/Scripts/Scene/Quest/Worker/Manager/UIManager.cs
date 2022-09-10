@@ -14,9 +14,6 @@ namespace AloneSpace
         [SerializeField] Button tacticsButton;
         [SerializeField] Button inventoryButton;
         
-        [Header("Side")]
-        [SerializeField] ActorDataViewList actorDataViewList;
-        
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
         [SerializeField] CameraAngleController cameraAngleController;
@@ -40,7 +37,6 @@ namespace AloneSpace
             
             mapPanelView.Initialize();
             cameraAngleController.Initialize();
-            actorDataViewList.Initialize(questData);
             interactionItemObjectList.Initialize(questData);
             tacticsView.Initialize(OnClickTactics);
             itemDataMenu.Initialize();

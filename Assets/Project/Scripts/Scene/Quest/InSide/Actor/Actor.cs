@@ -37,12 +37,12 @@ namespace AloneSpace.InSide
         /// <summary>
         /// ActorStatusからActorを作成
         /// </summary>
-        public static IEnumerator CreateActor(ActorData actorData, Action<Actor> onCreated)
+        public static IEnumerator CreateActor(ActorData actorData, Transform parent, Action<Actor> onCreated)
         {
             Actor actor = null;
             yield return AssetLoader.LoadAsync<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
             {
-                actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation);
+                actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation, parent);
             });
 
             actor.actorAI = new ActorAI(actor, actorData, actor);

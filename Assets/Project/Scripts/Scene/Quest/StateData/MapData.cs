@@ -12,9 +12,14 @@ namespace AloneSpace
         public int MapSizeY => mapPresetVO.MapSizeY;
         public int MapSizeZ => mapPresetVO.MapSizeZ;
         public int MapSize => mapPresetVO.MapSize;
+        public IAssetPath AmbientObjectAsset => mapPresetVO.AmbientObjectAsset;
+
+        public float AreaSize => 1000.0f;
 
         public AreaData[] AreaData { get; }
-        
+        public (int X, int Y, int Z)[] MapPosition { get; }
+        public Vector3[] MapLayout { get; }
+
         MapPresetVO mapPresetVO;
 
         public MapData(MapPresetVO mapPresetVO)
@@ -23,6 +28,16 @@ namespace AloneSpace
             AreaData = Enumerable.Range(0, MapSize)
                 .Select(i => new AreaData(i, mapPresetVO.AreaAssetVOs[i], GetAdjacentIndexes(i)))
                 .ToArray();
+
+            MapPosition = Enumerable.Range(0, MapSize).Select(i => GetPosition(i)).ToArray();
+            
+            MapLayout = MapPosition.Select(v =>
+            {
+                var (x, y, z) = v;
+                var isEvenNumberZ = z % 2 == 0;
+                var evenNumberOffset = isEvenNumberZ ? 0.0f : 0.5f;
+                return new Vector3(x + evenNumberOffset, y + evenNumberOffset, z / 2.0f);
+            }).ToArray();
         }
 
         public AreaDirection? GetAreaDirection(int currentIndex, int nextIndex)
@@ -187,8 +202,8 @@ namespace AloneSpace
             {
                 case AreaDirection.Top: return index + MapSizeX;
                 case AreaDirection.Bottom: return index - MapSizeX;
-                case AreaDirection.Front: return index + MapSizeX * MapSizeY;
-                case AreaDirection.Back: return index - MapSizeX * MapSizeY;
+                case AreaDirection.Front: return index + MapSizeX * MapSizeY + MapSizeX * MapSizeY;
+                case AreaDirection.Back: return index - MapSizeX * MapSizeY - MapSizeX * MapSizeY;
                 case AreaDirection.Right: return index + 1;
                 case AreaDirection.Left: return index - 1;
                 case AreaDirection.TopFrontLeft: return index + MapSizeX * MapSizeY + (isEvenNumberDepth ? -1 : 0);
@@ -202,6 +217,16 @@ namespace AloneSpace
                 default:
                     throw new ArgumentException();
             }
+        }
+        
+        (int x, int y, int z) GetPosition(int index)
+        {
+            var z = index / (MapSizeX * MapSizeY);
+            var zi = index % (MapSizeX * MapSizeY);
+            var y = zi / MapSizeX;
+            var x = zi % MapSizeX;
+            
+            return (x, y, z);
         }
     }
 }

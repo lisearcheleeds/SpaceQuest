@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using RoboQuest;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AloneSpace.InSide
 {
     public class AreaAmbientController : MonoBehaviour
     {
         [SerializeField] Transform ambientObjectParent;
-        [SerializeField] Transform placedObjectParent;
         Transform ambientObject;
-        Transform placedObject;
+        
+        [SerializeField] Transform placedObjectParent;
+
+        Dictionary<int, (AreaDirection? AreaDirection, Transform Transform)> loadedPlacedObjects =
+            new Dictionary<int, (AreaDirection? AreaDirection, Transform Transform)>();
         
         public void Initialize()
         {
@@ -20,30 +22,54 @@ namespace AloneSpace.InSide
 
         public void Finalize()
         {
-        }
-
-        public void ResetArea()
-        {
             if (ambientObject != null)
             {
                 Destroy(ambientObject.gameObject);
                 ambientObject = null;
             }
-
-            if (placedObject != null)
-            {
-                Destroy(placedObject.gameObject);
-                placedObject = null;
-            }
         }
 
-        public IEnumerator LoadArea(QuestData questData, int areaIndex)
+        public IEnumerator LoadArea(QuestData questData)
         {
-            var areaAssetVO = questData.MapData.AreaData[areaIndex].AreaAssetVO;
+            List<IEnumerator> coroutines = new List<IEnumerator>();
+
+            if (ambientObject != null)
+            {
+                coroutines.Add(AssetLoader.LoadAsync<Transform>(questData.MapData.AmbientObjectAsset, target => Instantiate(target, ambientObjectParent)));
+            }
             
-            yield return new ParallelCoroutine(
-                AssetLoader.LoadAsync<Transform>(areaAssetVO.AmbientObjectAsset, target => ambientObject = Instantiate(target, ambientObjectParent)),
-                AssetLoader.LoadAsync<Transform>(areaAssetVO.PlacedObjectAsset, target => placedObject = Instantiate(target, placedObjectParent)));
+            // 次のエリアに引き継がないオブジェクトを削除
+            foreach (var loadedAreaIndex in loadedPlacedObjects.Keys)
+            {
+                if (questData.ObserveAdjacentAreaData.All(adjacentAreaData => loadedAreaIndex != adjacentAreaData.AreaData.AreaIndex))
+                {
+                    Destroy(loadedPlacedObjects[loadedAreaIndex].Transform);
+                    loadedPlacedObjects.Remove(loadedAreaIndex);
+                }
+            }
+
+            // 次のエリアで新規生成する必要があるオブジェクトを生成
+            foreach (var adjacentAreaData in questData.ObserveAdjacentAreaData)
+            {
+                if (!loadedPlacedObjects.ContainsKey(adjacentAreaData.AreaData.AreaIndex))
+                {
+                    coroutines.Add(AssetLoader.LoadAsync<Transform>(
+                        questData.MapData.AreaData[adjacentAreaData.AreaData.AreaIndex].AreaAssetVO.PlacedObjectAsset,
+                        target => loadedPlacedObjects.Add(adjacentAreaData.AreaData.AreaIndex, (adjacentAreaData.AreaDirection, Instantiate(target, placedObjectParent)))));
+                }
+            }
+            
+            yield return new ParallelCoroutine(coroutines);
+            
+            // エリアの周辺のオブジェクトの位置調整
+            foreach (var loadedPlacedObjectValue in loadedPlacedObjects.Values)
+            {
+                var offset = loadedPlacedObjectValue.AreaDirection.HasValue
+                    ? AreaCellVertex.GetVector(loadedPlacedObjectValue.AreaDirection.Value)
+                    : Vector3.zero;
+
+                loadedPlacedObjectValue.Transform.localPosition = offset * questData.MapData.AreaSize;
+            }
         }
     }
 }

@@ -38,15 +38,15 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
+            MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
+            MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
         }
 
-        void ManagerCommandTransitionActor(ActorData actorData, int areaId)
+        void SetObserveArea(int toAreaIndex)
         {
             UpdatePlayerQuestDataView();
         }

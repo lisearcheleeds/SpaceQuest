@@ -51,21 +51,37 @@ namespace AloneSpace
         static readonly Vector3[] BottomBackLeft = {Points[2], Points[1], Points[0], Points[5], Points[4], Points[3]};
         static readonly Vector3[] BottomBackRight = {Points[6], Points[2], Points[3], Points[9], Points[8], Points[7]};
         
-        static readonly Vector3 TopDirection = (Top.Aggregate((x, y) => x + y) / Top.Length).normalized;
-        static readonly Vector3 BottomDirection  = (Bottom.Aggregate((x, y) => x + y) / Bottom.Length).normalized;
-        static readonly Vector3 FrontDirection  = (Front.Aggregate((x, y) => x + y) / Front.Length).normalized;
-        static readonly Vector3 BackDirection  = (Back.Aggregate((x, y) => x + y) / Back.Length).normalized;
-        static readonly Vector3 RightDirection  = (Right.Aggregate((x, y) => x + y) / Right.Length).normalized;
-        static readonly Vector3 LeftDirection  = (Left.Aggregate((x, y) => x + y) / Left.Length).normalized;
+        static readonly Vector3 TopVector = Top.Aggregate((x, y) => x + y) / Top.Length;
+        static readonly Vector3 BottomVector = Bottom.Aggregate((x, y) => x + y) / Bottom.Length;
+        static readonly Vector3 FrontVector = Front.Aggregate((x, y) => x + y) / Front.Length;
+        static readonly Vector3 BackVector = Back.Aggregate((x, y) => x + y) / Back.Length;
+        static readonly Vector3 RightVector = Right.Aggregate((x, y) => x + y) / Right.Length;
+        static readonly Vector3 LeftVector = Left.Aggregate((x, y) => x + y) / Left.Length;
+        
+        static readonly Vector3 TopFrontLeftVector = TopFrontLeft.Aggregate((x, y) => x + y) / TopFrontLeft.Length;
+        static readonly Vector3 TopFrontRightVector = TopFrontRight.Aggregate((x, y) => x + y) / TopFrontRight.Length;
+        static readonly Vector3 TopBackLeftVector = TopBackLeft.Aggregate((x, y) => x + y) / TopBackLeft.Length;
+        static readonly Vector3 TopBackRightVector = TopBackRight.Aggregate((x, y) => x + y) / TopBackRight.Length;
+        static readonly Vector3 BottomFrontLeftVector = BottomFrontLeft.Aggregate((x, y) => x + y) / BottomFrontLeft.Length;
+        static readonly Vector3 BottomFrontRightVector = BottomFrontRight.Aggregate((x, y) => x + y) / BottomFrontRight.Length;
+        static readonly Vector3 BottomBackLeftVector = BottomBackLeft.Aggregate((x, y) => x + y) / BottomBackLeft.Length;
+        static readonly Vector3 BottomBackRightVector = BottomBackRight.Aggregate((x, y) => x + y) / BottomBackRight.Length;
+        
+        static readonly Vector3 TopDirection = TopVector.normalized;
+        static readonly Vector3 BottomDirection = BottomVector.normalized;
+        static readonly Vector3 FrontDirection = FrontVector.normalized;
+        static readonly Vector3 BackDirection = BackVector.normalized;
+        static readonly Vector3 RightDirection = RightVector.normalized;
+        static readonly Vector3 LeftDirection = LeftVector.normalized;
 
-        static readonly Vector3 TopFrontLeftDirection = (TopFrontLeft.Aggregate((x, y) => x + y) / TopFrontLeft.Length).normalized;
-        static readonly Vector3 TopFrontRightDirection = (TopFrontRight.Aggregate((x, y) => x + y) / TopFrontRight.Length).normalized;
-        static readonly Vector3 TopBackLeftDirection = (TopBackLeft.Aggregate((x, y) => x + y) / TopBackLeft.Length).normalized;
-        static readonly Vector3 TopBackRightDirection = (TopBackRight.Aggregate((x, y) => x + y) / TopBackRight.Length).normalized;
-        static readonly Vector3 BottomFrontLeftDirection = (BottomFrontLeft.Aggregate((x, y) => x + y) / BottomFrontLeft.Length).normalized;
-        static readonly Vector3 BottomFrontRightDirection = (BottomFrontRight.Aggregate((x, y) => x + y) / BottomFrontRight.Length).normalized;
-        static readonly Vector3 BottomBackLeftDirection = (BottomBackLeft.Aggregate((x, y) => x + y) / BottomBackLeft.Length).normalized;
-        static readonly Vector3 BottomBackRightDirection = (BottomBackRight.Aggregate((x, y) => x + y) / BottomBackRight.Length).normalized;
+        static readonly Vector3 TopFrontLeftDirection = TopFrontLeftVector.normalized;
+        static readonly Vector3 TopFrontRightDirection = TopFrontRightVector.normalized;
+        static readonly Vector3 TopBackLeftDirection = TopBackLeftVector.normalized;
+        static readonly Vector3 TopBackRightDirection = TopBackRightVector.normalized;
+        static readonly Vector3 BottomFrontLeftDirection = BottomFrontLeftVector.normalized;
+        static readonly Vector3 BottomFrontRightDirection = BottomFrontRightVector.normalized;
+        static readonly Vector3 BottomBackLeftDirection = BottomBackLeftVector.normalized;
+        static readonly Vector3 BottomBackRightDirection = BottomBackRightVector.normalized;
 
         public static Vector3[] GetPrimitives(AreaDirection areaDirection)
         {
@@ -85,6 +101,29 @@ namespace AloneSpace
                 case AreaDirection.BottomFrontRight: return BottomFrontRight;
                 case AreaDirection.BottomBackLeft: return BottomBackLeft;
                 case AreaDirection.BottomBackRight: return BottomBackRight;
+            }
+
+            throw new NotImplementedException();
+        }
+        
+        public static Vector3 GetVector(AreaDirection areaDirection)
+        {
+            switch (areaDirection)
+            {
+                case AreaDirection.Top: return TopVector;
+                case AreaDirection.Bottom: return BottomVector;
+                case AreaDirection.Front: return FrontVector;
+                case AreaDirection.Back: return BackVector;
+                case AreaDirection.Right: return RightVector;
+                case AreaDirection.Left: return LeftVector;
+                case AreaDirection.TopFrontLeft: return TopFrontLeftVector;
+                case AreaDirection.TopFrontRight: return TopFrontRightVector;
+                case AreaDirection.TopBackLeft: return TopBackLeftVector;
+                case AreaDirection.TopBackRight: return TopBackRightVector;
+                case AreaDirection.BottomFrontLeft: return BottomFrontLeftVector;
+                case AreaDirection.BottomFrontRight: return BottomFrontRightVector;
+                case AreaDirection.BottomBackLeft: return BottomBackLeftVector;
+                case AreaDirection.BottomBackRight: return BottomBackRightVector;
             }
 
             throw new NotImplementedException();

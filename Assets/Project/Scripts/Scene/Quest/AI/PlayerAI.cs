@@ -23,8 +23,8 @@ namespace AloneSpace
                 .ToArray();
             
             var scavengerPlayer = questData.PlayerQuestData.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);
-            var isExistScavenger = areaActorData.Any(x => x.PlayerQuestDataInstanceId == scavengerPlayer.InstanceId);
-            var isExistOtherPlayer = areaActorData.Any(x => x.PlayerQuestDataInstanceId != scavengerPlayer.InstanceId && x.PlayerQuestDataInstanceId != playerQuestData.InstanceId);
+            var isExistScavenger = areaActorData.Any(x => x.PlayerQuestDataInstanceId == scavengerPlayer?.InstanceId);
+            var isExistOtherPlayer = areaActorData.Any(x => x.PlayerQuestDataInstanceId != scavengerPlayer?.InstanceId && x.PlayerQuestDataInstanceId != playerQuestData.InstanceId);
             
             switch (playerQuestData.PlayerStance)
             {

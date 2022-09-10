@@ -97,14 +97,14 @@ namespace AloneSpace
         void UpdateView()
         {
             var routeIndexes = questData.ObserveActor.GetRouteAreaData().Select(x => x.AreaIndex).ToArray();
-            var (_, currentY, currentZ) = GetPosition(questData.ObserveActor.CurrentAreaIndex);
+            var (_, currentY, currentZ) = questData.MapData.MapPosition[questData.ObserveActor.CurrentAreaIndex];
             var isCurrentOdd = currentZ % 2 == 1;
             
             for (var i = 0; i < mapPanelCells.Length; i++)
             {
                 if (ViewMode == MapPanelViewMode.All)
                 {
-                    var (__, y, z) = GetPosition(i);
+                    var (__, y, z) = questData.MapData.MapPosition[i];
                     var isOdd = currentZ % 2 == 1;
                     if (currentY < (y + ((isCurrentOdd && isOdd) ? -1 : 0)))
                     {
@@ -147,10 +147,8 @@ namespace AloneSpace
                 mapPanelCells[index] = Instantiate(cellTemplate, cellParent);
                 mapPanelCells[index].Initialize();
                 
-                var (x, y, z) = GetPosition(i);
-                var isEvenNumberZ = z % 2 == 0;
-                var evenNumberOffset = isEvenNumberZ ? 0.0f : 0.5f;
-                mapPanelCells[i].transform.localPosition = new Vector3(x + evenNumberOffset, y + evenNumberOffset, z / 2.0f);
+                mapPanelCells[i].transform.localPosition = questData.MapData.MapLayout[index];
+                mapPanelCells[i].name = $"Cell {i}";
             }
         }
 
@@ -178,16 +176,6 @@ namespace AloneSpace
             }
 
             return new Color(0.5f, 0.5f, 0.5f, 0.1f);
-        }
-
-        (int x, int y, int z) GetPosition(int index)
-        {
-            var z = index / (questData.MapData.MapSizeX * questData.MapData.MapSizeY);
-            var zi = index % (questData.MapData.MapSizeX * questData.MapData.MapSizeY);
-            var y = zi / questData.MapData.MapSizeX;
-            var x = zi % questData.MapData.MapSizeX;
-            
-            return (x, y, z);
         }
 
         void SetCameraAngle(Quaternion quaternion)

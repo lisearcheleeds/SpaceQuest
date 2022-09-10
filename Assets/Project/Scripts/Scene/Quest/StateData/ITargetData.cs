@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace RoboQuest
 {
-    public interface ITargetData
+    public interface ITargetData : IPosition
     {
         Guid InstanceId { get; }
-        Vector3 Position { get; }
-        bool IsTargetable { get; }
     }
 }

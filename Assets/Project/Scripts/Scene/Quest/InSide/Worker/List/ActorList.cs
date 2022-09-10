@@ -11,15 +11,19 @@ namespace AloneSpace.InSide
     public class ActorList
     {
         bool isDirty = false;
-        int areaIndex;
         MonoBehaviour coroutineWorker;
         
         List<Actor> actors = new List<Actor>();
-        
-        public void Initialize()
+        Transform variableParent;
+
+        public void Initialize(Transform variableParent, MonoBehaviour coroutineWorker)
         {
             MessageBus.Instance.SubscribeUpdateAll.AddListener(SubscribeUpdateAll);
             MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
+            MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
+
+            this.variableParent = variableParent;
+            this.coroutineWorker = coroutineWorker;
         }
 
         public void LateUpdate()
@@ -35,38 +39,48 @@ namespace AloneSpace.InSide
         {
             MessageBus.Instance.SubscribeUpdateAll.RemoveListener(SubscribeUpdateAll);
             MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
-        }
-
-        public void ResetArea()
-        {
-            foreach (var actor in actors.ToArray())
-            {
-                DestroyActor(actor);
-            }
-
-            isDirty = true;
+            MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
         }
         
-        public IEnumerator LoadArea(QuestData questData, int areaIndex, MonoBehaviour coroutineWorker)
+        public IEnumerator LoadArea(QuestData questData)
         {
-            this.areaIndex = areaIndex;
-            this.coroutineWorker = coroutineWorker;
-            
             // LoadArea時に読み込むPlayerDataはRunnnigがTrueなPlayerのみ
-            var loadActors = questData.ActorData.Where(x => x.CurrentAreaIndex == areaIndex && x.IsAlive).ToArray();
+            var loadActors = questData.ActorData.Where(x => questData.ObserveAdjacentAreaData.Any(y => y.AreaData.AreaIndex == x.CurrentAreaIndex));
+           
+            // 次のエリアに引き継がないオブジェクトを削除
+            foreach (var actor in actors.ToArray())
+            {
+                if (loadActors.All(loadActor => loadActor.InstanceId != actor.ActorData.InstanceId))
+                {
+                    DestroyActor(actor);
+                }
+            }
+            
             var coroutines = new List<IEnumerator>();
-
+            
+            // 次のエリアで新規生成する必要があるオブジェクトを生成
             foreach (var loadActor in loadActors)
             {
-                if (loadActor.ActorState != ActorState.Running)
+                if (actors.All(actor => loadActor.InstanceId != actor.ActorData.InstanceId))
                 {
-                    continue;
+                    coroutines.Add(CreatePlayerActors(loadActor, false));
                 }
-
-                coroutines.Add(CreatePlayerActors(loadActor, false));
             }
 
-            yield return new ParallelCoroutine(coroutines.ToArray());
+            yield return new ParallelCoroutine(coroutines);
+            
+            // エリアの周辺のオブジェクトの位置調整
+            foreach (var actor in actors)
+            {
+                var areaData = questData.ObserveAdjacentAreaData.First(x => x.AreaData.AreaIndex == actor.ActorData.CurrentAreaIndex);
+                var offset = areaData.AreaDirection.HasValue
+                    ? AreaCellVertex.GetVector(areaData.AreaDirection.Value)
+                    : Vector3.zero;
+
+                // FIXME: offsetを適用する
+                // actor.transform.position += offset * questData.MapData.AreaSize;
+                actor.transform.position += actor.ActorData.Position;
+            }
             isDirty = true;
         }
 
@@ -80,29 +94,6 @@ namespace AloneSpace.InSide
             isDirty = true;
         }
 
-        void OnArriveActor(ActorData actorData)
-        {
-            if (areaIndex == actorData.CurrentAreaIndex)
-            {
-                coroutineWorker.StartCoroutine(CreatePlayerActors(actorData, actorData.IsAlive));
-            }
-        }
-
-        void OnLeaveActor(ActorData actorData)
-        {
-            if (areaIndex == actorData.CurrentAreaIndex)
-            {
-                // 初回はnull
-                var actor = actors.FirstOrDefault(x => x.InstanceId == actorData.InstanceId);
-                if (actor != null)
-                {
-                    DestroyActor(actor);
-                }
-            }
-
-            isDirty = true;
-        }
-
         void SubscribeUpdateAll()
         {
             isDirty = true;
@@ -112,15 +103,17 @@ namespace AloneSpace.InSide
         {
             yield return Actor.CreateActor(
                 actorData,
-                actorBase =>
+                variableParent,
+                actor =>
                 {
                     // 既に存在している場合はこのままSpawn
                     if (withSpawn)
                     {
-                        actorBase.Spawn();
+                        actor.Spawn();
                     }
 
-                    actors.Add(actorBase);
+                    actorData.SetActorState(ActorState.Running);
+                    actors.Add(actor);
                 });
 
             isDirty = true;
@@ -147,10 +140,34 @@ namespace AloneSpace.InSide
             isDirty = true;
         }
 
+        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaIndex, int toAreaIndex)
+        {
+            if (toAreaIndex == actorData.CurrentAreaIndex)
+            {
+                // 追加
+                coroutineWorker.StartCoroutine(CreatePlayerActors(actorData, actorData.IsAlive));
+                isDirty = true;
+                return;
+            }
+
+            if (fromAreaIndex == actorData.CurrentAreaIndex)
+            {
+                // 削除
+                // 初回はnull
+                var actor = actors.FirstOrDefault(x => x.InstanceId == actorData.InstanceId);
+                if (actor != null)
+                {
+                    DestroyActor(actor);
+                }
+            }
+        }
+
         void DestroyActor(Actor target)
         {
             target.DestroyActor();
             actors.Remove(target);
+
+            isDirty = true;
         }
     }
 }

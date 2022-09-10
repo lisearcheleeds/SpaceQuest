@@ -8,6 +8,7 @@ namespace AloneSpace
     {
         [SerializeField] AreaAmbientController areaAmbientController;
         [SerializeField] CameraController cameraController;
+        [SerializeField] Transform variableParent;
 
         ActorList actorList = new ActorList();
         CollisionChecker collisionChecker = new CollisionChecker();
@@ -25,7 +26,7 @@ namespace AloneSpace
             areaAmbientController.Initialize();
             cameraController.Initialize(questData);
             
-            actorList.Initialize();
+            actorList.Initialize(variableParent, this);
             collisionChecker.Initialize();
             threatChecker.Initialize();
             targetList.Initialize();
@@ -46,19 +47,10 @@ namespace AloneSpace
             weaponController.Finalize();
         }
 
-        public void ResetArea()
-        {
-            areaAmbientController.ResetArea();
-            actorList.ResetArea();
-            interactList.ResetArea();
-            
-            GameObjectCache.Instance.AllRelease();
-        }
-
         public IEnumerator LoadArea(int nextAreaIndex)
         {
-            yield return areaAmbientController.LoadArea(questData, nextAreaIndex);
-            yield return actorList.LoadArea(questData, nextAreaIndex, this);
+            yield return areaAmbientController.LoadArea(questData);
+            yield return actorList.LoadArea(questData);
             yield return interactList.LoadArea(questData, nextAreaIndex);
         }
 

@@ -155,7 +155,6 @@ namespace AloneSpace.InSide
         void SubscribeUpdateInteractionObjectList(IInteractionObject[] interacts)
         {
             actorAIHandler.InteractionObjects = interacts;
-            
             UpdateRoute();
         }
 
@@ -195,11 +194,17 @@ namespace AloneSpace.InSide
         void UpdateRoute()
         {
             // エリア移動周り
-            var routeAreaIndexes = actorAIHandler.ActorData.GetRouteAreaData()?.Select(x => x.AreaIndex).ToArray();
-            if (routeAreaIndexes == null || routeAreaIndexes.Length == 0 || actorAIHandler.InteractionObjects == null || actorAIHandler.InteractionObjects.Length == 0)
+            var routeAreas = actorAIHandler.ActorData.GetRouteAreaData().ToArray();
+            var firstDirection = routeAreas.FirstOrDefault()?.Direction;
+            if (routeAreas.Length == 0 || !firstDirection.HasValue)
             {
                 return;
             }
+
+            var nearestAreaDirectionPosition = actorAIHandler.ActorData.GetNearestAreaDirectionPosition(firstDirection.Value);
+            actorAIHandler.ActorPathFinder.CalculatePath(actorAIHandler.ActorData.Position, nearestAreaDirectionPosition);
+
+            currentActorAIState = ActorAIState.Check;
         }
     }
 }
