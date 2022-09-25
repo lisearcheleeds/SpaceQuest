@@ -6,6 +6,12 @@ namespace AloneSpace
 {
     public class MessageBusDefine
     {
+        public class AddPlayerQuestData : MessageBusBroadcaster<PlayerQuestData>{}
+        public class AddActorData : MessageBusBroadcaster<ActorData>{}
+        public class RemoveActorData : MessageBusBroadcaster<ActorData>{}
+        public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
+        public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
+        
         public class SendThreat : MessageBusBroadcaster<IThreatData, bool>{}
         public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
         public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
@@ -44,6 +50,5 @@ namespace AloneSpace
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 
         public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, ITargetData, float>{}
-        public class ReleaseWeaponEffect : MessageBusBroadcaster<WeaponEffectData>{}
     }
 }

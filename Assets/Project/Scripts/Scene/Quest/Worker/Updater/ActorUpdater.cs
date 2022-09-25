@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
@@ -21,6 +19,9 @@ namespace AloneSpace
             MessageBus.Instance.NoticeHitCollision.AddListener(NoticeHitCollision);
             MessageBus.Instance.NoticeDamage.AddListener(NoticeDamage);
             MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
+            
+            MessageBus.Instance.AddActorData.AddListener(AddActorData);
+            MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
         }
 
         public void Finalize()
@@ -28,6 +29,9 @@ namespace AloneSpace
             MessageBus.Instance.NoticeHitCollision.RemoveListener(NoticeHitCollision);
             MessageBus.Instance.NoticeDamage.RemoveListener(NoticeDamage);
             MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
+            
+            MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
+            MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
         }
         
         public void OnLateUpdate()
@@ -42,7 +46,7 @@ namespace AloneSpace
             // modifiedになる可能性があるのでコピー ほんとはやめる
             foreach (var actorData in questData.ActorData.ToArray())
             {
-                if (updateTimeStamps.ContainsKey(actorData.InstanceId))
+                if (!updateTimeStamps.ContainsKey(actorData.InstanceId))
                 {
                     updateTimeStamps[actorData.InstanceId] = Time.time - UpdateInterval - 1.0f;
                 }
@@ -94,6 +98,16 @@ namespace AloneSpace
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
             questData.MapData.AreaData[areaIndex].AddInteractData(new InventoryInteractData(inventoryData, areaIndex, actorData.Position));
+        }
+        
+        void AddActorData(ActorData actorData)
+        {
+            MessageBus.Instance.SendCollision.Broadcast(actorData, true);
+        }
+
+        void RemoveActorData(ActorData actorData)
+        {
+            MessageBus.Instance.SendCollision.Broadcast(actorData, false);
         }
     }
 }

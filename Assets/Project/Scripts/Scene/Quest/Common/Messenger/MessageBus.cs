@@ -6,6 +6,12 @@ namespace AloneSpace
 {
     public class MessageBus : MonoSingleton<MessageBus>
     {
+        public MessageBusDefine.AddPlayerQuestData AddPlayerQuestData { get; } = new MessageBusDefine.AddPlayerQuestData();
+        public MessageBusDefine.AddActorData AddActorData { get; } = new MessageBusDefine.AddActorData();
+        public MessageBusDefine.RemoveActorData RemoveActorData { get; } = new MessageBusDefine.RemoveActorData();
+        public MessageBusDefine.AddWeaponEffectData AddWeaponEffectData { get; } = new MessageBusDefine.AddWeaponEffectData();
+        public MessageBusDefine.RemoveWeaponEffectData RemoveWeaponEffectData { get; } = new MessageBusDefine.RemoveWeaponEffectData();
+        
         // 登録系メッセージ
         public MessageBusDefine.SendThreat SendThreat { get; } = new MessageBusDefine.SendThreat();
         public MessageBusDefine.SendIntuition SendIntuition { get; } = new MessageBusDefine.SendIntuition();
@@ -55,6 +61,5 @@ namespace AloneSpace
         
         // Weapon
         public MessageBusDefine.ExecuteTriggerWeapon ExecuteTriggerWeapon { get; } = new MessageBusDefine.ExecuteTriggerWeapon();
-        public MessageBusDefine.ReleaseWeaponEffect ReleaseWeaponEffect { get; } = new MessageBusDefine.ReleaseWeaponEffect();
     }
 }

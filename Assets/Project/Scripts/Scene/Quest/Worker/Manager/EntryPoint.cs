@@ -14,10 +14,8 @@ namespace AloneSpace
         void Awake()
         {
             questData = new QuestData(new MapPresetVO(1));
-            questData.InitializePlayer();
-            
             questManager.Initialize(questData);
-            MessageBus.Instance.UserCommandSetObservePlayer.Broadcast(questData.PlayerQuestData.First().InstanceId);
+            questManager.StartQuest();
         }
 
         void EndQuest()

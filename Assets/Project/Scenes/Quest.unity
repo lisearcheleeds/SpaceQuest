@@ -6971,9 +6971,6 @@ GameObject:
   - component: {fileID: 2073653833}
   - component: {fileID: 2073653834}
   - component: {fileID: 2073653836}
-  - component: {fileID: 2073653838}
-  - component: {fileID: 2073653839}
-  - component: {fileID: 2073653840}
   - component: {fileID: 2073653837}
   m_Layer: 0
   m_Name: EntryPoint
@@ -7024,11 +7021,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759260c7da3e98146a32ba5211a5bddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactManager: {fileID: 2073653840}
-  playerManager: {fileID: 2073653838}
-  noticeManager: {fileID: 2073653839}
   uiManager: {fileID: 457452716}
-  areaController: {fileID: 304588655}
+  areaUpdater: {fileID: 304588655}
   debugViewer: {fileID: 2073653837}
 --- !u!114 &2073653837
 MonoBehaviour:
@@ -7043,42 +7037,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerQuestDataView: []
---- !u!114 &2073653838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073653832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82461139e0a44bbe8c71c4941ff063e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2073653839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073653832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad1b2ac3a88430184b9097f2702e1c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2073653840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073653832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d42a9ea7ce364907b11b00af154bd0d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1509784659674148525
 Transform:
   m_ObjectHideFlags: 0

@@ -55,10 +55,10 @@ namespace AloneSpace
             switch (weaponData.ActorPartsWeaponParameterVO)
             {
                 case ActorPartsWeaponRifleParameterVO rifleParameterVO:
-                    questData.AddWeaponEffectData(new BulletWeaponEffectData(weaponData, targetData, condition));
+                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new BulletWeaponEffectData(weaponData, targetData, condition));
                     return;
                 case ActorPartsWeaponMissileLauncherParameterVO missileLauncherParameterVO:
-                    questData.AddWeaponEffectData(new MissileWeaponEffectData(weaponData, targetData, condition));
+                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new MissileWeaponEffectData(weaponData, targetData, condition));
                     return;
             }
 

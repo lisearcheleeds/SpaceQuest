@@ -46,7 +46,7 @@ namespace AloneSpace
         {
             if (!IsAlive)
             {
-                MessageBus.Instance.ReleaseWeaponEffect.Broadcast(this);
+                MessageBus.Instance.RemoveWeaponEffectData.Broadcast(this);
                 return;
             }
 

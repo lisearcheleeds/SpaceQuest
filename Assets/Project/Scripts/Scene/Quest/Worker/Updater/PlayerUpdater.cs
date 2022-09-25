@@ -13,14 +13,12 @@ namespace AloneSpace
         
         QuestData questData;
 
-        Dictionary<Guid, float> updateIntervals;
+        Dictionary<Guid, float> updateTimeStamps = new Dictionary<Guid, float>();
         
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
 
-            updateIntervals = questData.PlayerQuestData.ToDictionary(data => data.InstanceId, _ => Random.Range(0, UpdateInterval));
-            
             MessageBus.Instance.PlayerCommandSetTacticsType.AddListener(PlayerCommandSetTacticsType);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
         }
@@ -41,13 +39,16 @@ namespace AloneSpace
             var deltaTime = Time.deltaTime;
 
             // modifiedになる可能性があるのでコピー
-            foreach (var key in updateIntervals.Keys.ToArray())
+            foreach (var key in updateTimeStamps.Keys.ToArray())
             {
-                updateIntervals[key] = updateIntervals[key] - deltaTime;
-
-                if (updateIntervals[key] < 0.0f)
+                if (!updateTimeStamps.ContainsKey(key))
                 {
-                    updateIntervals[key] = updateIntervals[key] + UpdateInterval;
+                    updateTimeStamps[key] = Time.time - UpdateInterval - 1.0f;
+                }
+
+                if (updateTimeStamps[key] < Time.time - UpdateInterval)
+                {
+                    updateTimeStamps[key] = Time.time;
                     
                     PlayerAI.Update(questData, questData.PlayerQuestData.First(x => x.InstanceId == key));
                 }

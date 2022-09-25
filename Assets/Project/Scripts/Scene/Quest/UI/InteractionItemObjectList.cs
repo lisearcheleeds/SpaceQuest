@@ -57,6 +57,7 @@ namespace AloneSpace
 
         void Refresh()
         {
+            return;
             if (!interactionItems.Contains(focusInteractionItem))
             {
                 Back();

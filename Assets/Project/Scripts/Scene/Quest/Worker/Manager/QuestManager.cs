@@ -43,11 +43,22 @@ namespace AloneSpace
                 
             debugViewer.Initialize(questData);
             
+            MessageBus.Instance.AddPlayerQuestData.AddListener(AddPlayerQuestData);
+            MessageBus.Instance.AddActorData.AddListener(AddActorData);
+            MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
+            MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
+            
             MessageBus.Instance.UserCommandSetObservePlayer.AddListener(UserCommandSetObservePlayer);
             MessageBus.Instance.UserCommandSetObserveActor.AddListener(UserCommandSetObserveActor);
             MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
             
             MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
+        }
+
+        public void StartQuest()
+        {
+            QuestManagerUtil.InitializePlayer(questData);
         }
 
         public void FinishQuest()
@@ -65,6 +76,12 @@ namespace AloneSpace
             weaponEffectUpdater.Finalize();
             
             debugViewer.Finalize();
+            
+            MessageBus.Instance.AddPlayerQuestData.RemoveListener(AddPlayerQuestData);
+            MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
+            MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
+            MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
             
             MessageBus.Instance.UserCommandSetObservePlayer.RemoveListener(UserCommandSetObservePlayer);
             MessageBus.Instance.UserCommandSetObserveActor.RemoveListener(UserCommandSetObserveActor);
@@ -86,7 +103,32 @@ namespace AloneSpace
             weaponUpdater.OnLateUpdate();
             weaponEffectUpdater.OnLateUpdate();
         }
+        
+        void AddPlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            questData.AddPlayerQuestData(playerQuestData);
+        }
+        
+        void AddActorData(ActorData actorData)
+        {
+            questData.AddActorData(actorData);
+        }
 
+        void RemoveActorData(ActorData actorData)
+        {
+            questData.RemoveActorData(actorData);
+        }
+
+        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.AddWeaponEffectData(weaponEffectData);
+        }
+        
+        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.RemoveWeaponEffectData(weaponEffectData);
+        }
+        
         void UserCommandSetObservePlayer(Guid playerInstanceId)
         {
             questData.UserCommandSetObservePlayer(playerInstanceId);
