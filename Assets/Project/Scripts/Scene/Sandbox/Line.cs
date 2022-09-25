@@ -1,20 +1,27 @@
-﻿using AloneSpace.InSide;
+﻿using System;
+using AloneSpace;
 using UnityEngine;
 
 namespace SandBox
 {
-    public class Line : MonoBehaviour
+    public class Line : MonoBehaviour, IPosition
     {
         [SerializeField] Transform arrow;
         [SerializeField] Vector3 direction;
     
-        CollisionShapeLine line = new CollisionShapeLine(Vector3.zero, Vector3.up, 1);
+        CollisionShapeLine line;
 
         public CollisionShape LineShape => line;
-    
+        public int AreaIndex { get; } = 0;
+        public Vector3 Position => transform.position;
+
+        void Awake()
+        {
+            line = new CollisionShapeLine(this, Vector3.up, 1);
+        }
+
         public void Update()
         {
-            line.Position = transform.position;
             line.Directon = direction;
             
             arrow.LookAt(transform.position + direction);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
@@ -26,14 +27,19 @@ namespace AloneSpace
             Position = position;
         }
         
-        public Vector3 GetClosestPoint(Vector3 position)
+        public Vector3 GetClosestPoint(IPosition position)
         {
             return Position;
         }
 
-        public bool IsInteractionRange(Vector3 position)
+        public bool IsInteractionRange(IPosition position)
         {
-            return (position - Position).magnitude < InteractionRange;
+            return (position.Position - Position).magnitude < InteractionRange;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            Position = position;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     /// <summary>
     /// パーツの武器データ

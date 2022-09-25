@@ -1,11 +1,11 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     public enum ActorAIState
     {
+        None,
         Check,
         Idle,
         Fight,
-        BeginMove,
         Moving,
         Interact,
     }

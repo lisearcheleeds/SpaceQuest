@@ -1,4 +1,4 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     public class AreaAssetVO
     {

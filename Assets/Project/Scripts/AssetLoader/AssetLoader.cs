@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public static class AssetLoader
     {

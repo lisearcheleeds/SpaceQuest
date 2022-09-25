@@ -1,4 +1,4 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     // プレイヤーの目的
     // エリアの目的地の設定方針とTacticsの切り替え

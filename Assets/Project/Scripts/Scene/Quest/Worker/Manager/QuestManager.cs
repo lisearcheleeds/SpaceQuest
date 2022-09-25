@@ -2,42 +2,44 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] InteractManager interactManager;
-        [SerializeField] PlayerManager playerManager;
-        [SerializeField] NoticeManager noticeManager;
-     
         [SerializeField] UIManager uiManager;
-        [SerializeField] AreaController areaController;
+        [SerializeField] AreaUpdater areaUpdater;
         
         [SerializeField] DebugViewer debugViewer;
+        
+        InteractController interactController = new InteractController();
+        
+        PlayerUpdater playerUpdater = new PlayerUpdater();
+        ActorUpdater actorUpdater = new ActorUpdater();
+        CollisionUpdater collisionUpdater = new CollisionUpdater();
+        ThreatUpdater threatUpdater = new ThreatUpdater();
+        WeaponUpdater weaponUpdater = new WeaponUpdater();
+        WeaponEffectUpdater weaponEffectUpdater = new WeaponEffectUpdater();
         
         Action endQuest;
 
         QuestData questData;
-        int? currentAreaIndex;
 
-        public void StartQuest(QuestData questData, Action endQuest)
+        public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            Initialize();
-            
-            MessageBus.Instance.UserCommandSetObservePlayer.Broadcast(questData.PlayerQuestData.First().InstanceId);
-        }
 
-        void Initialize()
-        {
-            interactManager.Initialize(questData);
-            playerManager.Initialize(questData);
-            noticeManager.Initialize(questData);
-            
             uiManager.Initialize(questData);
-            areaController.Initialize(questData);
+            areaUpdater.Initialize(questData);
+            
+            interactController.Initialize(questData);
+            
+            playerUpdater.Initialize(questData);
+            actorUpdater.Initialize(questData);
+            collisionUpdater.Initialize();
+            threatUpdater.Initialize();
+            weaponUpdater.Initialize(questData);
+            weaponEffectUpdater.Initialize(questData);
                 
             debugViewer.Initialize(questData);
             
@@ -48,18 +50,41 @@ namespace AloneSpace
             MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
         }
 
-        void FinishQuest()
+        public void FinishQuest()
         {
-            interactManager.Finalize();
-            playerManager.Finalize();
-            noticeManager.Finalize();
-            
             uiManager.Finalize();
-            areaController.Finalize();
+            areaUpdater.Finalize();
+            
+            interactController.Finalize();
+            
+            playerUpdater.Finalize();
+            actorUpdater.Finalize();
+            collisionUpdater.Finalize();
+            threatUpdater.Finalize();
+            weaponUpdater.Finalize();
+            weaponEffectUpdater.Finalize();
             
             debugViewer.Finalize();
             
+            MessageBus.Instance.UserCommandSetObservePlayer.RemoveListener(UserCommandSetObservePlayer);
+            MessageBus.Instance.UserCommandSetObserveActor.RemoveListener(UserCommandSetObserveActor);
+            MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
+            
+            MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
+            
             endQuest();
+        }
+
+        void LateUpdate()
+        {
+            areaUpdater.OnLateUpdate();
+            
+            playerUpdater.OnLateUpdate();
+            actorUpdater.OnLateUpdate();
+            collisionUpdater.OnLateUpdate();
+            threatUpdater.OnLateUpdate();
+            weaponUpdater.OnLateUpdate();
+            weaponEffectUpdater.OnLateUpdate();
         }
 
         void UserCommandSetObservePlayer(Guid playerInstanceId)
@@ -72,7 +97,7 @@ namespace AloneSpace
         void UserCommandSetObserveActor(Guid actorInstanceId)
         {
             questData.UserCommandSetObserveActor(actorInstanceId);
-            MessageBus.Instance.SetObserveArea.Broadcast(questData.ObserveActor.CurrentAreaIndex);
+            MessageBus.Instance.SetObserveArea.Broadcast(questData.ObserveActor.AreaIndex);
         }
 
         void SetObserveArea(int areaIndex)
@@ -82,7 +107,7 @@ namespace AloneSpace
 
         void ManagerCommandTransitionActor(ActorData actorData, int fromAreaIndex, int toAreaIndex)
         {
-            actorData.SetCurrentAreaIndex(toAreaIndex);
+            actorData.SetAreaIndex(toAreaIndex);
 
             if (questData.ObserveActor.InstanceId == actorData.InstanceId)
             {
@@ -92,21 +117,12 @@ namespace AloneSpace
 
         IEnumerator LoadArea(int areaIndex)
         {
-            if (currentAreaIndex.HasValue)
-            {
-                playerManager.ResetArea();
-                uiManager.ResetArea();
-            }
-            
             questData.SetObserveArea(areaIndex);
 
-            yield return areaController.LoadArea(areaIndex);
+            yield return areaUpdater.LoadArea(areaIndex);
             
-            playerManager.OnLoadedArea(areaIndex);
-            areaController.OnLoadedArea();
+            areaUpdater.OnLoadedArea();
             uiManager.OnLoadedArea();
-
-            currentAreaIndex = areaIndex;
         }
     }
 }

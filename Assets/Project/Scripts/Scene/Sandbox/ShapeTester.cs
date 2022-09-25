@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AloneSpace;
+using UnityEngine;
 
 namespace SandBox
 {
@@ -9,8 +10,10 @@ namespace SandBox
 
         public void Update()
         {
+            /*
             var outwardVector = line.LineShape.GetOutwardVector(transform.position);
             arrow.LookAt(transform.position + outwardVector);
+            */
         }
     }
 }

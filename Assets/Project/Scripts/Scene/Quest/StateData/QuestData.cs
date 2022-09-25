@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Codice.Client.BaseCommands;
-using RoboQuest;
+using AloneSpace;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,14 +11,16 @@ namespace AloneSpace
     public class QuestData
     {
         public MapData MapData { get; }
-        public List<PlayerQuestData> PlayerQuestData { get; private set; } = new List<PlayerQuestData>();
-        public List<ActorData> ActorData { get; private set; } = new List<ActorData>();
+
+        public List<PlayerQuestData> PlayerQuestData { get; } = new List<PlayerQuestData>();
+        public List<ActorData> ActorData { get; } = new List<ActorData>();
+        public List<WeaponEffectData> WeaponEffectData { get; } = new List<WeaponEffectData>();
 
         public (AreaDirection? AreaDirection, AreaData AreaData)[] ObserveAdjacentAreaData { get; private set; }
         
         public PlayerQuestData ObservePlayer => PlayerQuestData.First(x => x.InstanceId == observePlayerId);
         public ActorData ObserveActor => ActorData.First(x => x.InstanceId == observeActorId);
-        public ActorData[] ObservePlayerActors => ActorData.Where(x => ObservePlayer.InstanceId == x.PlayerQuestDataInstanceId).ToArray();
+        public ActorData[] ObservePlayerActors => ActorData.Where(x => ObservePlayer.InstanceId == x.PlayerInstanceId).ToArray();
 
         public int ObserveAreaIndex { get; private set; }
         Guid observePlayerId;
@@ -27,7 +29,6 @@ namespace AloneSpace
         public QuestData(MapPresetVO mapPresetVO)
         {
             MapData = new MapData(mapPresetVO);
-            InitializePlayer();
             // PlaceEnemyAllArea();
         }
 
@@ -52,7 +53,22 @@ namespace AloneSpace
             ObserveAdjacentAreaData = adjacentAreaIndexes.Select(x => (x.Item1, MapData.AreaData[x.Index])).ToArray();
         }
 
-        void InitializePlayer()
+        public void AddPlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            PlayerQuestData.Add(playerQuestData);
+        }
+
+        public void AddActorData(ActorData actorData)
+        {
+            ActorData.Add(actorData);
+        }
+
+        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            WeaponEffectData.Add(weaponEffectData);
+        }
+
+        public void InitializePlayer()
         {
             /*
             Playerの開始位置を適当に決める
@@ -94,7 +110,7 @@ namespace AloneSpace
                 }
                 
                 var playerQuestData = new PlayerQuestData(MapData.MapSize - 1 - spawnAreaIndex, playerStance);
-                playerQuestData.SetDestinateAreaIndex(playerQuestData.ExitAreaIndex);
+                playerQuestData.SetMoveTarget(MapData.AreaData.First(x => x.AreaIndex == playerQuestData.ExitAreaIndex));
                 PlayerQuestData.Add(playerQuestData);
                 
                 var actors = GetTempAddActorData(playerQuestData, spawnAreaIndex, new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f)));
@@ -119,9 +135,9 @@ namespace AloneSpace
                 var enemy1ActorSpecData = new ActorSpecData();
                 enemy1ActorSpecData.Setup(enemy1BluePrint);
                 
-                var actorData = new ActorData(enemy1ActorSpecData, scavPlayer.InstanceId, MapData);
-                actorData.SetCurrentAreaIndex(areaData.AreaIndex);
-                actorData.SetPosition(new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f)));
+                var actorData = new ActorData(enemy1ActorSpecData, scavPlayer.InstanceId);
+                actorData.SetAreaIndex(areaData.AreaIndex);
+                actorData.Position = new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f));
                 ActorData.Add(actorData);
             }
         }
@@ -141,10 +157,10 @@ namespace AloneSpace
                 })
                 .Select((x, index) =>
                 {
-                    var actorData = new ActorData(x, playerQuestData.InstanceId, MapData);
-                    actorData.SetCurrentAreaIndex(areaIndex);
-                    actorData.SetDestinateAreaIndex(playerQuestData.DestinateAreaIndex);
-                    actorData.SetPosition(position);
+                    var actorData = new ActorData(x, playerQuestData.InstanceId);
+                    actorData.SetAreaIndex(areaIndex);
+                    actorData.SetMoveTarget(MapData.AreaData.First(x => x.AreaIndex == playerQuestData.ExitAreaIndex));
+                    actorData.Position = position;
                     
                     var ammoItemData = new ItemData(ammoItemDataVO, 120);
                     var inventory = actorData.InventoryDataList.FirstOrDefault();

@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using VariableInventorySystem;
 
-namespace RoboQuest.Common
+namespace AloneSpace.Common
 {
     public class DragArea : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {

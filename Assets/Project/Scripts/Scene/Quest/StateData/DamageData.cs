@@ -1,19 +1,16 @@
-﻿using RoboQuest;
+﻿using AloneSpace;
 
 namespace AloneSpace
 {
     public class DamageData
     {
-        public WeaponData WeaponData { get; }
-        public ItemVO ResourceItemVO { get; }
+        public ICauseDamageData CauseDamageData { get; }
         public IDamageableData DamageableData { get; }
-
         public int DamageValue { get; }
 
-        public DamageData(WeaponData weaponData, ItemVO resourceItemVO, IDamageableData damageableData)
+        public DamageData(ICauseDamageData causeDamageData, IDamageableData damageableData)
         {
-            WeaponData = weaponData;
-            ResourceItemVO = resourceItemVO;
+            CauseDamageData = causeDamageData;
             DamageableData = damageableData;
 
             DamageValue = 1;

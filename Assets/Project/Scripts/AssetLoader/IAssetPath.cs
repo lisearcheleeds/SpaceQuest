@@ -1,6 +1,6 @@
 ﻿using VariableInventorySystem;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public interface IAssetPath : IVariableInventoryAsset
     {

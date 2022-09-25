@@ -1,17 +1,17 @@
 ﻿using System;
+using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
-    public interface IInteractData
+    public interface IInteractData : IPosition
     {
         Guid InstanceId { get; }
-        int AreaIndex { get; }
-        Vector3 Position { get; set; }
         string Text { get; }
         float InteractTime { get; }
         
-        Vector3 GetClosestPoint(Vector3 position);
-        bool IsInteractionRange(Vector3 position);
+        Vector3 GetClosestPoint(IPosition position);
+        bool IsInteractionRange(IPosition position);
+        void SetPosition(Vector3 position);
     }
 }

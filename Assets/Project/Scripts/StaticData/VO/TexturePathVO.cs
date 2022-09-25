@@ -1,6 +1,6 @@
 ﻿using VariableInventorySystem;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public class TexturePathVO : IVariableInventoryAsset
     {

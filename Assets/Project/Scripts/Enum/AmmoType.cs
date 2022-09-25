@@ -1,4 +1,4 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     // リソースタイプ
     public enum AmmoType

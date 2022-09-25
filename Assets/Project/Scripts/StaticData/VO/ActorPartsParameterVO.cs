@@ -1,4 +1,4 @@
-﻿namespace RoboQuest
+﻿namespace AloneSpace
 {
     /// <summary>
     /// パーツの基本データ

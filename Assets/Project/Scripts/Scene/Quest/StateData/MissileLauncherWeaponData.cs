@@ -1,5 +1,5 @@
 ﻿using System;
-using RoboQuest;
+using AloneSpace;
 using UnityEditor;
 using UnityEngine;
 
@@ -62,7 +62,7 @@ namespace AloneSpace
             this.targetData = targetData;
         }
 
-        public override void Update(float deltaTime)
+        public override void OnLateUpdate(float deltaTime)
         {            
             if (0 < fireTime)
             {
@@ -79,7 +79,7 @@ namespace AloneSpace
 
             if (IsExecutable(targetData))
             {
-                MessageBus.Instance.ExecuteTriggerWeapon.Broadcast(this, currentResources[resourceIndex], targetData, 1.0f);
+                MessageBus.Instance.ExecuteTriggerWeapon.Broadcast(this, targetData, 1.0f);
                 
                 resourceIndex++;
                 fireTime += actorPartsWeaponMissileLauncherParameterVO.LaunchIntervalTime;

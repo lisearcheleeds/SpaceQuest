@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace RoboQuest.Menu
+namespace AloneSpace.Menu
 {
     public class EntryPoint : MonoBehaviour
     {

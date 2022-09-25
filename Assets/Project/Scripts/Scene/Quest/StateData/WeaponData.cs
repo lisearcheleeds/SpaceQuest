@@ -1,5 +1,5 @@
 ﻿using System;
-using RoboQuest;
+using AloneSpace;
 using UnityEngine;
 using VariableInventorySystem;
 
@@ -13,10 +13,11 @@ namespace AloneSpace
         
         public IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO { get; private set; }
 
-        public Vector3 Position { get; private set; }
-        public Quaternion Rotation { get; private set; }
+        public IPosition BasePosition { get; private set; }
+        public Vector3 OffsetPosition { get; private set; }
+        public Quaternion OffsetRotation { get; private set; }
 
-        public static WeaponData CreateData(Guid playerInstanceId, Guid actorInstanceId, IActorPartsWeaponParameterVO actorPartsWeaponParameterVO)
+        public static WeaponData CreateData(Guid playerInstanceId, Guid actorInstanceId, IPosition basePosition, IActorPartsWeaponParameterVO actorPartsWeaponParameterVO)
         {
             WeaponData weaponData;
             
@@ -34,18 +35,19 @@ namespace AloneSpace
 
             weaponData.PlayerInstanceId = playerInstanceId;
             weaponData.ActorInstanceId = actorInstanceId;
+            weaponData.BasePosition = basePosition;
             weaponData.ActorPartsWeaponParameterVO = actorPartsWeaponParameterVO;
             return weaponData;
         }
 
-        public void SetPosition(Vector3 position)
+        public void SetOffsetPosition(Vector3 offsetPosition)
         {
-            Position = position;
+            OffsetPosition = offsetPosition;
         }
 
-        public void SetRotation(Quaternion rotation)
+        public void SetOffsetRotation(Quaternion offsetRotation)
         {
-            Rotation = rotation;
+            OffsetRotation = offsetRotation;
         }
 
         public abstract float GetAvailability(); 
@@ -58,6 +60,6 @@ namespace AloneSpace
         
         public abstract void Execute(ITargetData targetData);
 
-        public abstract void Update(float deltaTime);
+        public abstract void OnLateUpdate(float deltaTime);
     }
 }

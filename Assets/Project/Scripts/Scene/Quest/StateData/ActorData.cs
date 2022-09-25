@@ -1,56 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using RoboQuest;
+using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
-    public class ActorData : ITargetData, IDamageableData
+    public class ActorData : ITargetData, IDamageableData, ICollisionData
     {
         public Guid InstanceId { get; }
-        public Guid PlayerQuestDataInstanceId { get; }
+        public Guid PlayerInstanceId { get; }
 
         public ActorState ActorState { get; private set; }
 
         public int AreaIndex { get; private set; }
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; }
+        
         public IPosition MoveTarget { get; private set; }
-
-        public Vector3 Position { get; private set; }
-        public Quaternion Rotation { get; private set; }
         
         public ActorSpecData ActorSpecData { get; }
-        public MapData MapData { get; }
         public InventoryData[] InventoryDataList { get; }
+        public List<ICollisionData> CollidedList = new List<ICollisionData>();
         
         public WeaponData[] WeaponData { get; }
 
         public bool IsAlive => ActorState == ActorState.Running;
         public bool IsBroken => ActorState == ActorState.Broken;
+        public bool IsCollidable => ActorState == ActorState.Running;
 
         public float HitPoint { get; private set; }
 
-        public List<IInteractData> InteractOrder { get; } = new List<IInteractData>();
+        public ActorAICache ActorAICache { get; } = new ActorAICache();
+        public CollisionShape CollisionShape { get; }
+        public Vector3 MoveDelta { get; }
 
-        public bool IsInteracting => InteractingData != null;
-        public IInteractData InteractingData { get; private set; }
-        public float InteractingTime { get; private set; }
-        public bool IsInteractComplete => InteractingTime > InteractingData.InteractTime;
-
-        public ActorData(ActorSpecData actorSpecData, Guid playerQuestDataInstanceId, MapData mapData)
+        public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
             
             ActorSpecData = actorSpecData;
-            PlayerQuestDataInstanceId = playerQuestDataInstanceId;
-            MapData = mapData;
+            PlayerInstanceId = playerInstanceId;
+
+            ActorAICache.Initialize(playerInstanceId, InstanceId);
 
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
             
-            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x => AloneSpace.WeaponData.CreateData(playerQuestDataInstanceId, InstanceId, x)).ToArray();
+            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x => AloneSpace.WeaponData.CreateData(playerInstanceId, InstanceId, this, x)).ToArray();
             
-            // FIXME ここから移動する
+            CollisionShape = new CollisionShapeSphere(this, 3.0f);
             HitPoint = ActorSpecData.Endurance;
         }
 
@@ -69,24 +68,9 @@ namespace AloneSpace
             MoveTarget = moveTarget;
         }
 
-        public void SetPosition(Vector3 position)
+        public void OnCollision(ICollisionData collision)
         {
-            Position = position;
-
-            foreach (var weaponData in WeaponData)
-            {
-                weaponData.SetPosition(position);
-            }
-        }
-
-        public void SetRotation(Quaternion rotation)
-        {
-            Rotation = rotation;
-            
-            foreach (var weaponData in WeaponData)
-            {
-                weaponData.SetRotation(rotation);
-            }
+            CollidedList.Add(collision);
         }
 
         public void OnDamage(DamageData damageData)
@@ -101,50 +85,16 @@ namespace AloneSpace
 
         public void Update(float deltaTime)
         {
-            foreach (var weaponData in WeaponData)
+            foreach (var collide in CollidedList)
             {
-                weaponData.Update(deltaTime);
-            }
-
-            if (InteractingData != null)
-            {
-                InteractingTime += deltaTime;
-                if (IsInteractComplete)
+                var causeDamage = (collide as ICauseDamageData);
+                if (causeDamage != null)
                 {
-                    switch (InteractingData)
-                    {
-                        case ItemInteractData itemInteractData:
-                            InteractOrder.Remove(InteractingData);
-                            SetInteract(null);
-                            var insertableInventory = InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
-                            MessageBus.Instance.ManagerCommandStoreItem.Broadcast(itemInteractData.AreaIndex, insertableInventory, itemInteractData.ItemData);
-                            break;
-                        case BrokenActorInteractData brokenActorInteractData:
-                            throw new NotImplementedException();
-                            break;
-                        case InventoryInteractData inventoryInteractData:
-                            // ユーザー操作待ち
-                            break;
-                    }
-                }
-            }
-        }
-
-        public IInteractData GetNextInteractOrder()
-        {
-            var nextOrder = InteractOrder.FirstOrDefault();
-            if (nextOrder != null)
-            {
-                return nextOrder;
+                    MessageBus.Instance.NoticeDamage.Broadcast(causeDamage, this);
+                }                
             }
             
-            return InteractOrder.FirstOrDefault(); 
-        }
-
-        public void SetInteract(IInteractData interactData)
-        {
-            InteractingData = interactData;
-            InteractingTime = 0;
+            CollidedList.Clear();
         }
     }
 }

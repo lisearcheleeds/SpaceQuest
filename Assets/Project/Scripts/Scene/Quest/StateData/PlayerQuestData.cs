@@ -1,5 +1,5 @@
 ﻿using System;
-using RoboQuest;
+using AloneSpace;
 
 namespace AloneSpace
 {
@@ -13,7 +13,7 @@ namespace AloneSpace
 
         public int? ExitAreaIndex { get; }
         
-        public int? DestinateAreaIndex { get; private set; }
+        public IPosition MoveTarget { get; private set; }
 
         public ActorData MainActorData { get; private set; }
 
@@ -30,9 +30,9 @@ namespace AloneSpace
             TacticsType = tacticsType;
         }
 
-        public void SetDestinateAreaIndex(int? destinateAreaIndex)
+        public void SetMoveTarget(IPosition moveTarget)
         {
-            DestinateAreaIndex = destinateAreaIndex;
+            MoveTarget = moveTarget;
         }
 
         public void SetMainActorData(ActorData actorData)

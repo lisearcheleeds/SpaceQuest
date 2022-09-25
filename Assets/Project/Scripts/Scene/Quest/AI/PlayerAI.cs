@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using RoboQuest;
+using AloneSpace;
 
 namespace AloneSpace
 {
@@ -19,12 +19,12 @@ namespace AloneSpace
             }
 
             var areaActorData = questData.ActorData
-                .Where(actorData => actorData.CurrentAreaIndex == playerQuestData.MainActorData.CurrentAreaIndex)
+                .Where(actorData => actorData.AreaIndex == playerQuestData.MainActorData.AreaIndex)
                 .ToArray();
             
             var scavengerPlayer = questData.PlayerQuestData.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);
-            var isExistScavenger = areaActorData.Any(x => x.PlayerQuestDataInstanceId == scavengerPlayer?.InstanceId);
-            var isExistOtherPlayer = areaActorData.Any(x => x.PlayerQuestDataInstanceId != scavengerPlayer?.InstanceId && x.PlayerQuestDataInstanceId != playerQuestData.InstanceId);
+            var isExistScavenger = areaActorData.Any(x => x.PlayerInstanceId == scavengerPlayer?.InstanceId);
+            var isExistOtherPlayer = areaActorData.Any(x => x.PlayerInstanceId != scavengerPlayer?.InstanceId && x.PlayerInstanceId != playerQuestData.InstanceId);
             
             switch (playerQuestData.PlayerStance)
             {
@@ -70,7 +70,7 @@ namespace AloneSpace
                 return;
             }
 
-            var areaData = questData.MapData.AreaData[playerQuestData.MainActorData.CurrentAreaIndex];
+            var areaData = questData.MapData.AreaData[playerQuestData.MainActorData.AreaIndex];
         }
     }
 }

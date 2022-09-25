@@ -1,5 +1,5 @@
 ﻿using System;
-using RoboQuest;
+using AloneSpace;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -55,19 +55,15 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
         }
 
-        public void ResetArea()
-        {
-        }
-
         public void OnLoadedArea()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.CurrentAreaIndex, true);
+            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.AreaIndex, true);
             interactionItemObjectList.Close();
         }
 
         void OnClickMap()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.CurrentAreaIndex, true);
+            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.AreaIndex, true);
             
             if (!mapPanelView.IsOpen)
             {

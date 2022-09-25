@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public static class EnumExtension
     {

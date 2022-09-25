@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public class ActorPartsExclusiveMovingParameterVO : IActorPartsExclusiveParameterVO
     {

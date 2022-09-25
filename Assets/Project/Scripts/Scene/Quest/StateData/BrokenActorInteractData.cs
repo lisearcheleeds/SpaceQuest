@@ -1,4 +1,5 @@
 ﻿using System;
+using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
@@ -10,7 +11,7 @@ namespace AloneSpace
         public Guid InstanceId { get; }
 
         public int AreaIndex { get; }
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
         public string Text => ActorData.InstanceId.ToString();
         public float InteractTime => 3.0f;
         
@@ -20,19 +21,24 @@ namespace AloneSpace
         {
             InstanceId = Guid.NewGuid();
 
-            AreaIndex = actorData.CurrentAreaIndex;
+            AreaIndex = actorData.AreaIndex;
             ActorData = actorData;
             Position = position;
         }
         
-        public Vector3 GetClosestPoint(Vector3 position)
+        public Vector3 GetClosestPoint(IPosition position)
         {
             return Position;
         }
 
-        public bool IsInteractionRange(Vector3 position)
+        public bool IsInteractionRange(IPosition position)
         {
-            return (position - Position).magnitude < InteractionRange;
+            return (position.Position - Position).magnitude < InteractionRange;
+        }
+
+        public void SetPosition(Vector3 position)
+        {
+            Position = position;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public class ActorPartsMaster
     {

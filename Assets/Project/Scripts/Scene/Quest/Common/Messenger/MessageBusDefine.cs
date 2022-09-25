@@ -1,0 +1,49 @@
+﻿using System;
+using AloneSpace;
+using UnityEngine;
+
+namespace AloneSpace
+{
+    public class MessageBusDefine
+    {
+        public class SendThreat : MessageBusBroadcaster<IThreatData, bool>{}
+        public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
+        public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
+        
+        public class UpdateInteractData : MessageBusBroadcaster<int, IInteractData[]>{}
+        
+        public class SubscribeUpdateAll : MessageBusBroadcaster{}
+        public class SubscribeUpdateInteractionObjectList : MessageBusBroadcaster<IInteractData[]>{}
+        public class SubscribeUpdateActorList : MessageBusBroadcaster<Actor[]>{}
+        
+        public class NoticeHitThreat : MessageBusBroadcaster<IThreatData, ICollisionData>{}
+        public class NoticeHitCollision : MessageBusBroadcaster<ICollisionData, ICollisionData>{}
+        public class NoticeDamage : MessageBusBroadcaster<ICauseDamageData, IDamageableData>{}
+        public class NoticeBroken : MessageBusBroadcaster<IDamageableData>{}
+        
+        public class SetObserveArea : MessageBusBroadcaster<int>{}
+        
+        public class UserCommandChangeCameraMode : MessageBusBroadcaster<CameraMode>{}
+        public class UserCommandSetCameraFocusObject : MessageBusBroadcaster<Transform>{}
+        public class UserCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
+        public class UserCommandSetObserveActor : MessageBusBroadcaster<Guid>{}
+        public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
+        public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
+        public class UserCommandGlobalMapFocusCell : MessageBusBroadcaster<int, bool>{}
+        public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
+        public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
+        public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
+        
+        public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<Guid, IPosition>{}
+        public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
+        public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
+        
+        public class ManagerCommandTransitionActor : MessageBusBroadcaster<ActorData, int, int>{}
+        
+        public class ManagerCommandStoreItem : MessageBusBroadcaster<int, InventoryData, ItemData>{}
+        public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
+
+        public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, ITargetData, float>{}
+        public class ReleaseWeaponEffect : MessageBusBroadcaster<WeaponEffectData>{}
+    }
+}

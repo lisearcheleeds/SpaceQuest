@@ -1,6 +1,6 @@
 ﻿using TMPro;
 
-namespace RoboQuest.Common
+namespace AloneSpace.Common
 {
     class ProductTextMeshPro : TextMeshProUGUI
     {

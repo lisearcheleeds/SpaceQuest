@@ -1,6 +1,6 @@
 ﻿using AloneSpace;
 
-namespace RoboQuest
+namespace AloneSpace
 {
     public class ActorPartsWeaponMissileLauncherParameterVO : IActorPartsWeaponParameterVO
     {
