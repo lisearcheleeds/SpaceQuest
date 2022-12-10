@@ -19,11 +19,11 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            areaAmbientController.Initialize();
+            areaAmbientController.Initialize(questData);
             cameraController.Initialize(questData);
             
-            actorObjectUpdater.Initialize(variableParent, this);
-            interactObjectUpdater.Initialize();
+            actorObjectUpdater.Initialize(questData, variableParent, this);
+            interactObjectUpdater.Initialize(questData);
         }
 
         public void Finalize()
@@ -35,17 +35,11 @@ namespace AloneSpace
             interactObjectUpdater.Finalize();
         }
 
-        public IEnumerator LoadArea(int nextAreaIndex)
+        public IEnumerator LoadArea()
         {
-            yield return areaAmbientController.LoadArea(questData);
-            yield return actorObjectUpdater.LoadArea(questData);
-            yield return interactObjectUpdater.LoadArea(questData, nextAreaIndex);
-        }
-
-        public void OnLoadedArea()
-        {
-            actorObjectUpdater.OnLoadedArea();
-            interactObjectUpdater.OnLoadedArea();
+            yield return areaAmbientController.LoadArea();
+            yield return actorObjectUpdater.LoadArea();
+            yield return interactObjectUpdater.LoadArea();
         }
 
         public void OnLateUpdate()

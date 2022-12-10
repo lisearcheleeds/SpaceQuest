@@ -57,13 +57,13 @@ namespace AloneSpace
 
         public void OnLoadedArea()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.AreaIndex, true);
+            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObservePlayerQuestData.MainActorData.AreaId, true);
             interactionItemObjectList.Close();
         }
 
         void OnClickMap()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObserveActor.AreaIndex, true);
+            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObservePlayerQuestData.MainActorData.AreaId, true);
             
             if (!mapPanelView.IsOpen)
             {
@@ -106,7 +106,7 @@ namespace AloneSpace
             if (!inventoryView.IsOpen)
             {
                 inventoryView.Open();
-                inventoryView.ApplyInventoryData(questData.ObserveActor.InventoryDataList, true);
+                inventoryView.ApplyInventoryData(questData.ObservePlayerQuestData.MainActorData.InventoryDataList, true);
             }
             else
             {
@@ -118,12 +118,12 @@ namespace AloneSpace
 
         void OnClickTactics(TacticsType tacticsType)
         {
-            MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(questData.ObservePlayer.InstanceId, tacticsType);
+            MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(questData.ObservePlayerQuestData.MainActorData.PlayerInstanceId, tacticsType);
         }
 
         void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)
         {
-            if (questData.ObservePlayer.InstanceId == playerInstanceId)
+            if (questData.ObservePlayerQuestData.MainActorData.PlayerInstanceId == playerInstanceId)
             {
                 tacticsView.ChangeTactics(tacticsType);
             }

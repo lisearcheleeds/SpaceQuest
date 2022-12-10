@@ -34,7 +34,7 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId });
 
                 // エリアデータからアイテムを削除
-                foreach (var interactData in questData.MapData.AreaData[areaIndex].InteractData.ToArray())
+                foreach (var interactData in questData.StarSystemData.AreaData[areaIndex].InteractData.ToArray())
                 {
                     if (!(interactData is ItemInteractData interactItemData))
                     {
@@ -43,7 +43,7 @@ namespace AloneSpace
 
                     if (interactItemData.ItemData == itemData)
                     {
-                        questData.MapData.AreaData[areaIndex].RemoveInteractData(interactItemData);
+                        questData.StarSystemData.AreaData[areaIndex].RemoveInteractData(interactItemData);
                         return;
                     }
                 }

@@ -33,8 +33,6 @@ namespace AloneSpace
                         return new ItemExclusiveActorPartsVO(ItemExclusiveActorPartsMaster.Instance.Get(master.ItemExclusiveId));
                     case ItemType.Chip:
                         return new ItemExclusiveChipVO(ItemExclusiveChipMaster.Instance.Get(master.ItemExclusiveId));
-                    case ItemType.Ammo:
-                        return  new ItemExclusiveAmmoVO(ItemExclusiveAmmoMaster.Instance.Get(master.ItemExclusiveId));
                     case ItemType.Tactics:
                         return  new ItemExclusiveTacticsVO(ItemExclusiveTacticsMaster.Instance.Get(master.ItemExclusiveId));
                     default:

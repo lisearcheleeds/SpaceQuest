@@ -15,7 +15,7 @@ namespace AloneSpace
                 return ActorAIState.Check;
             }
             
-            if (!actorData.ActorAICache.AroundInteractDataList.Contains(actorData.ActorAICache.InteractOrder))
+            if (!questData.ObserveAreaData.InteractData.Contains(actorData.ActorAICache.InteractOrder))
             {
                 actorData.ActorAICache.InteractOrder = null;
                 return ActorAIState.Check;
@@ -35,7 +35,7 @@ namespace AloneSpace
                     case ItemInteractData itemInteractData:
                         actorData.ActorAICache.InteractOrder = null;
                         var insertableInventory = actorData.InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
-                        MessageBus.Instance.ManagerCommandStoreItem.Broadcast(itemInteractData.AreaIndex, insertableInventory, itemInteractData.ItemData);
+                        MessageBus.Instance.ManagerCommandStoreItem.Broadcast(itemInteractData.AreaId, insertableInventory, itemInteractData.ItemData);
                         break;
                     case BrokenActorInteractData brokenActorInteractData:
                         throw new NotImplementedException();

@@ -53,16 +53,16 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(0, "Rifle Ammo(degraded)", Rarity.Common, 1, 1, 120, new Texture2DPathVO(0, "Image/rifle_ammo_degraded")),
-                new Row(1, "Rifle Ammo", Rarity.Common, 1, 1, 120, new Texture2DPathVO(0, "Image/rifle_ammo_normal")),
-                new Row(2, "Rifle Ammo(light)", Rarity.Rare, 1, 1, 120, new Texture2DPathVO(0, "Image/rifle_ammo_light")),
-                new Row(3, "Rifle Ammo(impact)", Rarity.Rare, 1, 1, 120, new Texture2DPathVO(0, "Image/rifle_ammo_impact")),
-                new Row(4, "Rifle Ammo(ap)", Rarity.Rare, 1, 1, 120, new Texture2DPathVO(0, "Image/rifle_ammo_armor_piercing")),
-                new Row(5, "Missile Ammo(degraded)", Rarity.Common, 1, 1, 24, new Texture2DPathVO(0, "Image/missile_ammo_degraded")),
-                new Row(6, "Missile Ammo", Rarity.Common, 1, 1, 24, new Texture2DPathVO(0, "Image/missile_ammo_normal")),
-                new Row(7, "Missile Ammo(homing)", Rarity.Rare, 1, 1, 24, new Texture2DPathVO(0, "Image/missile_ammo_homing")),
-                new Row(8, "Missile Ammo(explosive)", Rarity.Rare, 1, 1, 24, new Texture2DPathVO(0, "Image/missile_ammo_explosive")),
-                new Row(9, "Chip", Rarity.Unique, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(0, "Chip1", Rarity.Common, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(1, "Chip2", Rarity.Rare, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(2, "Chip3", Rarity.Common, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(3, "Chip4", Rarity.Common, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(4, "Chip5", Rarity.Common, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(5, "Chip6", Rarity.Common, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(6, "Chip7", Rarity.Rare, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(7, "Chip8", Rarity.Legend, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(8, "Chip9", Rarity.SuperRare, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
+                new Row(9, "Chip10", Rarity.Unique, 1, 1, null, new Texture2DPathVO(0, "Image/chip")),
             };
         }
     }

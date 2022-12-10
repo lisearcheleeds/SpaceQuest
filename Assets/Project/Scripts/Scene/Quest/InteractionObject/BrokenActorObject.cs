@@ -1,6 +1,4 @@
-﻿using AloneSpace;
-
-namespace AloneSpace
+﻿namespace AloneSpace
 {
     public class BrokenActorObject : InteractionObject
     {
@@ -12,8 +10,7 @@ namespace AloneSpace
         public void Apply(BrokenActorInteractData brokenActorInteractData)
         {
             BrokenActorInteractData = brokenActorInteractData;
-
-            transform.position = brokenActorInteractData.Position + GetPlaceOffsetHeight();
+            transform.position = brokenActorInteractData.Position;
         }
 
         protected override void OnRelease()

@@ -12,12 +12,13 @@ namespace AloneSpace
         [SerializeField] Transform placedObjectParent;
         
         Transform ambientObject;
+        QuestData questData;
 
-        Dictionary<int, (AreaDirection? AreaDirection, Transform Transform)> loadedPlacedObjects =
-            new Dictionary<int, (AreaDirection? AreaDirection, Transform Transform)>();
+        List<Transform> loadedPlacedObjects = new List<Transform>();
         
-        public void Initialize()
+        public void Initialize(QuestData questData)
         {
+            this.questData = questData;
         }
 
         public void Finalize()
@@ -29,46 +30,35 @@ namespace AloneSpace
             }
         }
 
-        public IEnumerator LoadArea(QuestData questData)
+        public IEnumerator LoadArea()
         {
             List<IEnumerator> coroutines = new List<IEnumerator>();
 
             if (ambientObject != null)
             {
-                coroutines.Add(AssetLoader.LoadAsync<Transform>(questData.MapData.AmbientObjectAsset, target => Instantiate(target, ambientObjectParent)));
+                coroutines.Add(AssetLoader.LoadAsync<Transform>(questData.StarSystemData.AmbientObjectAsset, target => Instantiate(target, ambientObjectParent)));
             }
             
             // 次のエリアに引き継がないオブジェクトを削除
-            foreach (var loadedAreaIndex in loadedPlacedObjects.Keys)
+            foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
-                if (questData.ObserveAdjacentAreaData.All(adjacentAreaData => loadedAreaIndex != adjacentAreaData.AreaData.AreaIndex))
-                {
-                    Destroy(loadedPlacedObjects[loadedAreaIndex].Transform);
-                    loadedPlacedObjects.Remove(loadedAreaIndex);
-                }
+                Destroy(loadedPlacedObject);
             }
+            
+            loadedPlacedObjects.Clear();
 
             // 次のエリアで新規生成する必要があるオブジェクトを生成
-            foreach (var adjacentAreaData in questData.ObserveAdjacentAreaData)
-            {
-                if (!loadedPlacedObjects.ContainsKey(adjacentAreaData.AreaData.AreaIndex))
-                {
-                    coroutines.Add(AssetLoader.LoadAsync<Transform>(
-                        questData.MapData.AreaData[adjacentAreaData.AreaData.AreaIndex].AreaAssetVO.PlacedObjectAsset,
-                        target => loadedPlacedObjects.Add(adjacentAreaData.AreaData.AreaIndex, (adjacentAreaData.AreaDirection, Instantiate(target, placedObjectParent)))));
-                }
-            }
+            coroutines.Add(AssetLoader.LoadAsync<Transform>(
+                questData.ObserveAreaData.PlacedObjectAsset,
+                target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
             
             yield return new ParallelCoroutine(coroutines);
             
             // エリアの周辺のオブジェクトの位置調整
-            foreach (var loadedPlacedObjectValue in loadedPlacedObjects.Values)
+            foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
-                var offset = loadedPlacedObjectValue.AreaDirection.HasValue
-                    ? AreaCellVertex.GetVector(loadedPlacedObjectValue.AreaDirection.Value)
-                    : Vector3.zero;
-
-                loadedPlacedObjectValue.Transform.localPosition = offset * questData.MapData.AreaSize;
+                // FIXME: 複数個対応
+                loadedPlacedObject.localPosition = Vector3.zero;
             }
         }
     }

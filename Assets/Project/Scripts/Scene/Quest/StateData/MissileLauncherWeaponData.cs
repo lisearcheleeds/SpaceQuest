@@ -14,7 +14,6 @@ namespace AloneSpace
         float fireTime;
         float reloadTime;
         int resourceIndex;
-        ItemVO[] currentResources;
         
         public override Guid InstanceId { get; }
         
@@ -31,13 +30,7 @@ namespace AloneSpace
                 return 0.0f;
             }
 
-            if (currentResources == null)
-            {
-                return 0.0f;
-            }
-
-            var resourcesAvailability = ((float)currentResources.Length - resourceIndex) / currentResources.Length;
-            return Math.Max(0.0f, resourcesAvailability);
+            return 1.0f;
         }
 
         public override bool IsReloadable()
@@ -45,16 +38,15 @@ namespace AloneSpace
             return reloadTime == 0 && resourceIndex != 0;
         }
         
-        public override void Reload(ItemVO[] resources)
+        public override void Reload()
         {
             resourceIndex = 0;
-            currentResources = resources;
             reloadTime += actorPartsWeaponMissileLauncherParameterVO.ReloadTime;
         }
 
         public override bool IsExecutable(ITargetData targetData)
         {
-            return reloadTime == 0 && fireTime == 0 && resourceIndex < (currentResources?.Length ?? -1) && targetData != null;
+            return reloadTime == 0 && fireTime == 0 && resourceIndex != 0 && targetData != null;
         }
 
         public override void Execute(ITargetData targetData)

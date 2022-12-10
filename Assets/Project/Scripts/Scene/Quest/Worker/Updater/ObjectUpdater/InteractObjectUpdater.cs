@@ -2,95 +2,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using AloneSpace;
+using System.Threading;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class InteractObjectUpdater : IUpdater
     {
-        bool isDirty = false;
-        int areaIndex;
-        List<IInteractData> interactList = new List<IInteractData>();
+        List<InteractionObject> interactionObjectList = new List<InteractionObject>();
         
-        public void Initialize()
+        QuestData questData;
+        
+        public void Initialize(QuestData questData)
         {
-            MessageBus.Instance.UpdateInteractData.AddListener(UpdateInteractData);
-            MessageBus.Instance.SubscribeUpdateAll.AddListener(SubscribeUpdateAll);
+            this.questData = questData;
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UpdateInteractData.RemoveListener(UpdateInteractData);
-            MessageBus.Instance.SubscribeUpdateAll.RemoveListener(SubscribeUpdateAll);
         }
 
         public void OnLateUpdate()
         {
-            if (isDirty)
-            {
-                MessageBus.Instance.SubscribeUpdateInteractionObjectList.Broadcast(interactList.ToArray());
-                isDirty = false;
-            }
         }
         
-        public void ResetArea()
+        public IEnumerator LoadArea()
         {
-            isDirty = true;
+            return RefreshInteractObject();
         }
-        
-        public IEnumerator LoadArea(QuestData questData, int areaIndex)
+
+        public IEnumerator RefreshInteractObject()
         {
-            this.areaIndex = areaIndex;
-            var waitCount = questData.MapData.AreaData[areaIndex].InteractData.Count;
-            var waitCounter = 0;
+            var interactData = questData.ObserveAreaData.InteractData;
             
-            foreach (var interactData in questData.MapData.AreaData[areaIndex].InteractData)
+            // 不要なオブジェクトを消す
+            foreach (var interactionObject in interactionObjectList.ToArray())
             {
-                CreateInteractData(interactData, () =>
-                {
-                    waitCounter++;
-                });
+                interactionObject.Release();
+                interactionObjectList.Remove(interactionObject);
+            }
+            
+            // 必要なオブジェクトを作る
+            var waitCount = 0;
+            var waitCounter = 0;
+            foreach (var data in interactData)
+            {
+                waitCount++;
+                CreateInteractObject(questData, data, () => waitCounter++);
             }
 
             yield return new WaitWhile(() => waitCount != waitCounter);
         }
 
-        public void OnLoadedArea()
-        {
-            isDirty = true;
-        }
-
-        void UpdateInteractData(int areaIndex, IInteractData[] interactData)
-        {
-            // DataとObjectをあわせる
-            if (this.areaIndex != areaIndex)
-            {
-                return;
-            }
-
-            foreach (var createTarget in interactData)
-            {
-                // 無ければ作る
-                if (interactList.All(x => x.InstanceId != createTarget.InstanceId))
-                {
-                    CreateInteractData(createTarget, () => isDirty = true);
-                }
-            }
-
-            foreach (var deleteTarget in interactList.ToArray())
-            {
-                // 不要なので消す
-                if (interactData.All(x => x.InstanceId != deleteTarget.InstanceId))
-                {
-                    ((InteractionObject)deleteTarget).Release();
-                    interactList.Remove(deleteTarget);
-                    isDirty = true;
-                }
-            }
-        }
-        
-        void CreateInteractData(IInteractData interactData, Action onCreate = null)
+        void CreateInteractObject(QuestData questData, IInteractData interactData, Action onCreate = null)
         {
             switch (interactData)
             {
@@ -101,6 +65,7 @@ namespace AloneSpace
                         {
                             itemObject.Apply(interactItemData); 
                             itemObject.IsActive = true;
+                            interactionObjectList.Add(itemObject);
                             onCreate?.Invoke();
                         });
                     break;
@@ -112,6 +77,7 @@ namespace AloneSpace
                         {
                             brokenActorObject.Apply(interactBrokenActorData); 
                             brokenActorObject.IsActive = true;
+                            interactionObjectList.Add(brokenActorObject);
                             onCreate?.Invoke();
                         });
                     break;
@@ -123,29 +89,11 @@ namespace AloneSpace
                         {
                             inventoryObject.Apply(inventoryInteractData); 
                             inventoryObject.IsActive = true;
+                            interactionObjectList.Add(inventoryObject);
                             onCreate?.Invoke();
                         });
                     break;
             } 
-        }
-
-        void SendInteractionObject(IInteractData interactData, bool isEntry)
-        {
-            if (isEntry)
-            {
-                interactList.Add(interactData);
-            }
-            else
-            {
-                interactList.Remove(interactData);
-            }
-
-            isDirty = true;
-        }
-
-        void SubscribeUpdateAll()
-        {
-            isDirty = true;
         }
     }
 }

@@ -25,9 +25,6 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
             MessageBus.Instance.UserCommandSetCameraFocusObject.AddListener(UserCommandSetCameraFocusObject);
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
-            
-            MessageBus.Instance.UserCommandSetObserveActor.AddListener(UserCommandSetObserveActor);
-            MessageBus.Instance.SubscribeUpdateActorList.AddListener(SubscribeUpdateActorList);
         }
 
         public void Finalize()
@@ -35,9 +32,6 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.RemoveListener(UserCommandSetCameraMode);
             MessageBus.Instance.UserCommandSetCameraFocusObject.RemoveListener(UserCommandSetCameraFocusObject);
             MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
-            
-            MessageBus.Instance.UserCommandSetObserveActor.RemoveListener(UserCommandSetObserveActor);
-            MessageBus.Instance.SubscribeUpdateActorList.RemoveListener(SubscribeUpdateActorList);
         }
 
         void Update()
@@ -72,11 +66,6 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.FocusObject);
                 MessageBus.Instance.UserCommandSetCameraFocusObject.Broadcast(actor.transform);
             }
-        }
-        
-        void SubscribeUpdateActorList(Actor[] actors)
-        {
-            this.actors = actors;
         }
 
         void FocusObject()

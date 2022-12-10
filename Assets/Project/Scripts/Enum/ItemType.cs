@@ -4,7 +4,6 @@
     {
         ActorParts,
         Chip,
-        Ammo,
         Tactics,
         Loot,
         Money,

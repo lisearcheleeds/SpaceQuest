@@ -10,7 +10,7 @@ namespace AloneSpace
     /// </summary>
     public abstract class ProjectileWeaponEffectData : WeaponEffectData
     {
-        public override int AreaIndex { get; protected set; }
+        public override int AreaId { get; protected set; }
         public override Vector3 Position { get; protected set; }
         
         public override bool IsAlive { get; protected set; }
@@ -31,7 +31,7 @@ namespace AloneSpace
         /// <param name="condition">使用時の状態(1.0最高 ~ 0.0最低)</param>
         public ProjectileWeaponEffectData(WeaponData weaponData, ITargetData targetData, float condition) : base(weaponData)
         {
-            AreaIndex = weaponData.BasePosition.AreaIndex;
+            AreaId = weaponData.BasePosition.AreaId;
             Position = weaponData.BasePosition.Position;
             
             IsAlive = true;

@@ -2,14 +2,12 @@
 
 namespace AloneSpace
 {
-    public class AreaMaster
+    public class StarSystemMaster
     {
         public class Row
         {
-            public int StarSystemId { get; }
-            
-            public int AreaId { get; }
-            public int PlacedObjectAssetId { get; }
+            public int Id { get; }
+            public int AmbientObjectAssetId { get; }
             
             public int SpaceSizeX { get; }
             public int SpaceSizeY { get; }
@@ -18,11 +16,10 @@ namespace AloneSpace
             public int? PositionX { get; }
             public int? PositionY { get; }
             public int? PositionZ { get; }
-            
+
             public Row(
-                int starSystemId,
-                int areaId,
-                int placedObjectAssetId,
+                int id,
+                int ambientObjectAssetId,
                 int spaceSizeX,
                 int spaceSizeY,
                 int spaceSizeZ,
@@ -30,10 +27,9 @@ namespace AloneSpace
                 int? positionY,
                 int? positionZ)
             {
-                StarSystemId = starSystemId;
-                AreaId = areaId;
-                PlacedObjectAssetId = placedObjectAssetId;
-
+                Id = id;
+                AmbientObjectAssetId = ambientObjectAssetId;
+                
                 SpaceSizeX = spaceSizeX;
                 SpaceSizeY = spaceSizeY;
                 SpaceSizeZ = spaceSizeZ;
@@ -44,33 +40,32 @@ namespace AloneSpace
             }
         }
         
-        static AreaMaster instance;
+        static StarSystemMaster instance;
         Row[] record;
 
-        public static AreaMaster Instance
+        public static StarSystemMaster Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new AreaMaster();
+                    instance = new StarSystemMaster();
                 }
 
                 return instance;
             }
         }
 
-        public Row[] GetRange(int starSystemId)
+        public Row Get(int id)
         {
-            return record.Where(x => x.StarSystemId == starSystemId).ToArray();
+            return record.First(x => x.Id == id);
         }
 
-        AreaMaster()
+        StarSystemMaster()
         {
             record = new[]
             {
-                new Row(1, 1, 0, 7, 2, 14, null, null, null),
-                new Row(1, 2, 0, 7, 2, 14, null, null, null),
+                new Row(1, 0, 7, 2, 14, null, null, null),
             };
         }
     }

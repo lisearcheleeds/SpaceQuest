@@ -1,55 +1,39 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Codice.Client.BaseCommands;
-using AloneSpace;
-using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
     public class QuestData
     {
-        public MapData MapData { get; }
+        public StarSystemData StarSystemData { get; }
 
         public List<PlayerQuestData> PlayerQuestData { get; } = new List<PlayerQuestData>();
         public List<ActorData> ActorData { get; } = new List<ActorData>();
-        public List<WeaponEffectData> WeaponEffectData { get; } = new List<WeaponEffectData>();
 
-        public (AreaDirection? AreaDirection, AreaData AreaData)[] ObserveAdjacentAreaData { get; private set; }
-        
-        public PlayerQuestData ObservePlayer => PlayerQuestData.First(x => x.InstanceId == observePlayerId);
-        public ActorData ObserveActor => ActorData.First(x => x.InstanceId == observeActorId);
-        public ActorData[] ObservePlayerActors => ActorData.Where(x => ObservePlayer.InstanceId == x.PlayerInstanceId).ToArray();
+        public PlayerQuestData ObservePlayerQuestData { get; private set; }
+        public AreaData ObserveAreaData { get; private set; }
 
-        public int ObserveAreaIndex { get; private set; }
-        Guid observePlayerId;
-        Guid observeActorId;
-        
-        public QuestData(MapPresetVO mapPresetVO)
+        public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
-            MapData = new MapData(mapPresetVO);
+            StarSystemData = new StarSystemData(starSystemPresetVo);
         }
 
-        public void UserCommandSetObservePlayer(Guid playerInstanceId)
+        public void Initialize()
         {
-            observePlayerId = playerInstanceId;
+            var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(10, StarSystemData.AreaData.Length);
+            PlayerQuestData.AddRange(players);
+            ActorData.AddRange(actors);
         }
-        
-        public void UserCommandSetObserveActor(Guid actorInstanceId)
+
+        public void SetObservePlayer(Guid playerInstanceId)
         {
-            observeActorId = actorInstanceId;
+            ObservePlayerQuestData = PlayerQuestData.First(x => x.InstanceId == playerInstanceId);
         }
 
         public void SetObserveArea(int observeAreaIndex)
         {
-            ObserveAreaIndex = observeAreaIndex;
-
-            var adjacentAreaIndexes = MapData.AreaData[observeAreaIndex].AdjacentAreaIndexes
-                .Select(x => ((AreaDirection?) x.AreaDirection, x.Index))
-                .Concat(new (AreaDirection? AreaDirection, int Index)[] {(null, observeAreaIndex)});
-
-            ObserveAdjacentAreaData = adjacentAreaIndexes.Select(x => (x.Item1, MapData.AreaData[x.Index])).ToArray();
+            ObserveAreaData = StarSystemData.AreaData[observeAreaIndex];
         }
 
         public void AddPlayerQuestData(PlayerQuestData playerQuestData)
@@ -67,14 +51,9 @@ namespace AloneSpace
             ActorData.Remove(actorData);
         }
 
-        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        public ActorData[] GetObservePlayerActors()
         {
-            WeaponEffectData.Add(weaponEffectData);
-        }
-
-        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
-        {
-            WeaponEffectData.Remove(weaponEffectData);
+            return ActorData.Where(x => ObservePlayerQuestData.InstanceId == x.PlayerInstanceId).ToArray();
         }
     }
 }

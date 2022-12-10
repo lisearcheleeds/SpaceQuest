@@ -16,7 +16,6 @@ namespace AloneSpace
 
         public IInteractData InteractOrder { get; set; }
         public float InteractingTime { get; set; }
-        public IInteractData[] AroundInteractDataList { get; private set; } = Array.Empty<IInteractData>();
 
         public List<IThreatData> ThreatList { get; } = new List<IThreatData>();
         public ITargetData[] AroundTargets { get; private set; } = Array.Empty<ITargetData>();
@@ -30,7 +29,6 @@ namespace AloneSpace
             
             MessageBus.Instance.PlayerCommandSetInteractOrder.AddListener(PlayerCommandSetInteractOrder);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
-            MessageBus.Instance.SubscribeUpdateInteractionObjectList.AddListener(SubscribeUpdateInteractionObjectList);
             MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
         }
 
@@ -38,7 +36,6 @@ namespace AloneSpace
         {
             MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
-            MessageBus.Instance.SubscribeUpdateInteractionObjectList.RemoveListener(SubscribeUpdateInteractionObjectList);
             MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
         }
 
@@ -56,11 +53,6 @@ namespace AloneSpace
             {
                 MoveTarget = moveTarget;
             }
-        }
-
-        void SubscribeUpdateInteractionObjectList(IInteractData[] interactionObjects)
-        {
-            AroundInteractDataList = interactionObjects;
         }
 
         void NoticeHitThreat(IThreatData threatData, ICollisionData collisionData)

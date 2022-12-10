@@ -17,7 +17,7 @@ namespace AloneSpace
 
             // FIXME: AreaIndex加味する
             // 今はまだゆっくり向いて固定値進むだけ
-            var direction = actorData.MoveTarget.Position - actorData.Position;
+            var direction = questData.StarSystemData.GetOffsetPosition(actorData.MoveTarget, actorData);
             actorData.Rotation = Quaternion.Lerp(actorData.Rotation, Quaternion.LookRotation(direction), 0.1f);
             actorData.Position = actorData.Position + actorData.Rotation * Vector3.forward;
 

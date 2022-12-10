@@ -86,18 +86,18 @@ namespace AloneSpace
                 return;
             }
 
-            var areaIndex = actorData.AreaIndex;
+            var areaIndex = actorData.AreaId;
             
             // 一覧から削除
             questData.ActorData.Remove(actorData);
             
             // 残骸を設置
-            var interactBrokenActorData = new BrokenActorInteractData(actorData, actorData.Position);
-            questData.MapData.AreaData[areaIndex].AddInteractData(interactBrokenActorData);
+            var interactBrokenActorData = new BrokenActorInteractData(actorData);
+            questData.StarSystemData.AreaData[areaIndex].AddInteractData(interactBrokenActorData);
             
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
-            questData.MapData.AreaData[areaIndex].AddInteractData(new InventoryInteractData(inventoryData, areaIndex, actorData.Position));
+            questData.StarSystemData.AreaData[areaIndex].AddInteractData(new InventoryInteractData(inventoryData, actorData));
         }
         
         void AddActorData(ActorData actorData)

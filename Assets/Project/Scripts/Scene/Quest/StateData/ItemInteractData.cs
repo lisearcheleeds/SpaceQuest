@@ -10,7 +10,7 @@ namespace AloneSpace
         
         public Guid InstanceId { get; }
 
-        public int AreaIndex { get; }
+        public int AreaId { get; }
         public Vector3 Position { get; set; }
         public string Text => ItemData.ItemVO.Text;
         public float InteractTime => 3.0f;
@@ -22,7 +22,7 @@ namespace AloneSpace
             InstanceId = Guid.NewGuid();
 
             ItemData = itemData;
-            AreaIndex = areaId;
+            AreaId = areaId;
             Position = position;
         }
         

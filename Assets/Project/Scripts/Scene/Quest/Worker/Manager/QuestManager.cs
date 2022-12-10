@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -21,10 +20,8 @@ namespace AloneSpace
         WeaponUpdater weaponUpdater = new WeaponUpdater();
         WeaponEffectUpdater weaponEffectUpdater = new WeaponEffectUpdater();
         
-        Action endQuest;
-
         QuestData questData;
-
+        
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
@@ -39,26 +36,22 @@ namespace AloneSpace
             collisionUpdater.Initialize();
             threatUpdater.Initialize();
             weaponUpdater.Initialize(questData);
-            weaponEffectUpdater.Initialize(questData);
+            weaponEffectUpdater.Initialize();
                 
             debugViewer.Initialize(questData);
             
             MessageBus.Instance.AddPlayerQuestData.AddListener(AddPlayerQuestData);
             MessageBus.Instance.AddActorData.AddListener(AddActorData);
             MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
-            MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
-            MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
             
-            MessageBus.Instance.UserCommandSetObservePlayer.AddListener(UserCommandSetObservePlayer);
-            MessageBus.Instance.UserCommandSetObserveActor.AddListener(UserCommandSetObserveActor);
             MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
             
             MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
         }
 
-        public void StartQuest()
+        public IEnumerator Start()
         {
-            QuestManagerUtil.InitializePlayer(questData);
+            return LoadArea();
         }
 
         public void FinishQuest()
@@ -80,16 +73,10 @@ namespace AloneSpace
             MessageBus.Instance.AddPlayerQuestData.RemoveListener(AddPlayerQuestData);
             MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
             MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
-            MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
-            MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
             
-            MessageBus.Instance.UserCommandSetObservePlayer.RemoveListener(UserCommandSetObservePlayer);
-            MessageBus.Instance.UserCommandSetObserveActor.RemoveListener(UserCommandSetObserveActor);
             MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
             
             MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
-            
-            endQuest();
         }
 
         void LateUpdate()
@@ -118,52 +105,26 @@ namespace AloneSpace
         {
             questData.RemoveActorData(actorData);
         }
-
-        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
-        {
-            questData.AddWeaponEffectData(weaponEffectData);
-        }
         
-        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
-        {
-            questData.RemoveWeaponEffectData(weaponEffectData);
-        }
-        
-        void UserCommandSetObservePlayer(Guid playerInstanceId)
-        {
-            questData.UserCommandSetObservePlayer(playerInstanceId);
-            MessageBus.Instance.UserCommandSetObserveActor.Broadcast(
-                questData.PlayerQuestData.First(playerQuestData => playerQuestData.InstanceId == playerInstanceId).MainActorData.InstanceId);
-        }
-
-        void UserCommandSetObserveActor(Guid actorInstanceId)
-        {
-            questData.UserCommandSetObserveActor(actorInstanceId);
-            MessageBus.Instance.SetObserveArea.Broadcast(questData.ObserveActor.AreaIndex);
-        }
-
         void SetObserveArea(int areaIndex)
         {
-            StartCoroutine(LoadArea(areaIndex));
+            questData.SetObserveArea(areaIndex);
+            StartCoroutine(LoadArea());
         }
 
         void ManagerCommandTransitionActor(ActorData actorData, int fromAreaIndex, int toAreaIndex)
         {
             actorData.SetAreaIndex(toAreaIndex);
 
-            if (questData.ObserveActor.InstanceId == actorData.InstanceId)
+            if (questData.ObservePlayerQuestData.MainActorData.InstanceId == actorData.InstanceId)
             {
                 MessageBus.Instance.SetObserveArea.Broadcast(toAreaIndex);
             }
         }
 
-        IEnumerator LoadArea(int areaIndex)
+        IEnumerator LoadArea()
         {
-            questData.SetObserveArea(areaIndex);
-
-            yield return areaUpdater.LoadArea(areaIndex);
-            
-            areaUpdater.OnLoadedArea();
+            yield return areaUpdater.LoadArea();
             uiManager.OnLoadedArea();
         }
     }

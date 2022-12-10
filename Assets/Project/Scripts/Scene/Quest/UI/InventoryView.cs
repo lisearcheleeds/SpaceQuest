@@ -38,8 +38,6 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.UserCommandSetObservePlayer.AddListener(UserCommandSetObservePlayer);
-            MessageBus.Instance.UserCommandSetObserveActor.AddListener(UserCommandSetObserveActor);
             MessageBus.Instance.UserCommandUpdateInventory.AddListener(UserCommandUpdateInventory);
             inventoryCore.Initialize();
             Close();
@@ -82,16 +80,6 @@ namespace AloneSpace
                 leftData.Add(data);
             }
 
-            UpdateView();
-        }
-        
-        void UserCommandSetObservePlayer(Guid playerInstanceId)
-        {
-            UpdateView();
-        }
-
-        void UserCommandSetObserveActor(Guid actorInstanceId)
-        {
             UpdateView();
         }
 

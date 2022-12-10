@@ -18,13 +18,11 @@ namespace AloneSpace
         public void Apply(InventoryInteractData inventoryInteractData)
         {
             InventoryInteractData = inventoryInteractData;
-
             Rarity = inventoryInteractData.InventoryData.Max(x => x.VariableInventoryViewData.CellData.Max(y => (y as ItemData)?.ItemVO.Rarity ?? Rarity.Common));
 
             var particleSetting = particleSystem.main;
             particleSetting.startColor = Rarity.GetRarityColor();
-            
-            transform.position = inventoryInteractData.Position + GetPlaceOffsetHeight();
+            transform.position = inventoryInteractData.Position;
         }
 
         protected override void OnRelease()

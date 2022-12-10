@@ -20,11 +20,6 @@ namespace AloneSpace
         // QuestDataの変更通知
         public MessageBusDefine.UpdateInteractData UpdateInteractData { get; } = new MessageBusDefine.UpdateInteractData();
         
-        // リストに更新があった時の通知メッセージ
-        public MessageBusDefine.SubscribeUpdateAll SubscribeUpdateAll { get; } = new MessageBusDefine.SubscribeUpdateAll();
-        public MessageBusDefine.SubscribeUpdateInteractionObjectList SubscribeUpdateInteractionObjectList { get; } = new MessageBusDefine.SubscribeUpdateInteractionObjectList();
-        public MessageBusDefine.SubscribeUpdateActorList SubscribeUpdateActorList { get; } = new MessageBusDefine.SubscribeUpdateActorList();
-        
         // イベント通知
         public MessageBusDefine.NoticeHitThreat NoticeHitThreat { get; } = new MessageBusDefine.NoticeHitThreat();
         public MessageBusDefine.NoticeHitCollision NoticeHitCollision { get; } = new MessageBusDefine.NoticeHitCollision();
@@ -35,8 +30,6 @@ namespace AloneSpace
         public MessageBusDefine.SetObserveArea SetObserveArea { get; } = new MessageBusDefine.SetObserveArea();
 
         // Userによるゲームコマンド（UIなど）
-        public MessageBusDefine.UserCommandSetObservePlayer UserCommandSetObservePlayer { get; } = new MessageBusDefine.UserCommandSetObservePlayer();
-        public MessageBusDefine.UserCommandSetObserveActor UserCommandSetObserveActor { get; } = new MessageBusDefine.UserCommandSetObserveActor();
         public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
         public MessageBusDefine.UserCommandCloseItemDataMenu UserCommandCloseItemDataMenu { get; } = new MessageBusDefine.UserCommandCloseItemDataMenu();
         public MessageBusDefine.UserCommandChangeCameraMode UserCommandSetCameraMode { get; } = new MessageBusDefine.UserCommandChangeCameraMode();

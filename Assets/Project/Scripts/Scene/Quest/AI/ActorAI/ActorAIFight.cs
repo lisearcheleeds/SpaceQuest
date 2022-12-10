@@ -30,7 +30,7 @@ namespace AloneSpace
 
             // 戦闘中の移動先
             // 今はまだゆっくり向いて固定値進むだけ
-            var direction = actorData.ActorAICache.MainTarget.Position - actorData.Position;
+            var direction = questData.StarSystemData.GetOffsetPosition(actorData.ActorAICache.MainTarget, actorData).normalized;
             actorData.Rotation = Quaternion.Lerp(actorData.Rotation, Quaternion.LookRotation(direction), 0.1f);
             actorData.Position = actorData.Position + actorData.Rotation * Vector3.forward;
 
@@ -42,32 +42,7 @@ namespace AloneSpace
                 {
                     if (weaponData.IsReloadable())
                     {
-                        var itemDataList = actorData.InventoryDataList
-                            .SelectMany(x => x.VariableInventoryViewData.CellData)
-                            .OfType<ItemData>()
-                            .Where(x => x.ItemVO.ItemTypes.Any(y => y == ItemType.Ammo));
-                        var useAmmo = new List<ItemVO>();
-            
-                        foreach (var itemData in itemDataList)
-                        {
-                            if (useAmmo.Count >= weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount)
-                            {
-                                break;
-                            }
-                
-                            if (itemData.ItemVO.ItemExclusiveVOs.OfType<ItemExclusiveAmmoVO>().First().AmmoType == weaponData.ActorPartsWeaponParameterVO.AmmoType)
-                            {
-                                var includeCount = Mathf.Min(weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount - useAmmo.Count, itemData.Amount.Value);
-                                useAmmo.AddRange(Enumerable.Range(0, includeCount).Select(_ => itemData.ItemVO));
-                                itemData.Amount = itemData.Amount - includeCount;
-                            }
-                        }
-
-                        if (useAmmo.Any())
-                        {
-                            weaponData.Reload(useAmmo.ToArray());
-                            MessageBus.Instance.UserCommandUpdateInventory.Broadcast(actorData.InventoryDataList.Select(x => x.InstanceId).ToArray());
-                        }
+                        weaponData.Reload();
                     }
 
                     continue;

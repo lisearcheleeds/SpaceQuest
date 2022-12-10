@@ -29,8 +29,6 @@ namespace AloneSpace
             this.questData = questData;
             
             Close();
-            
-            MessageBus.Instance.SubscribeUpdateInteractionObjectList.AddListener(SubscribeUpdateInteractionObjectList);
         }
 
         public void Open()
@@ -42,17 +40,6 @@ namespace AloneSpace
         {
             MessageBus.Instance.UserCommandCloseItemDataMenu.Broadcast();
             gameObject.SetActive(false);
-        }
-        
-        void SubscribeUpdateInteractionObjectList(IInteractData[] interactData)
-        {
-            /*
-            interactionItems = interactData
-                .Where(x => x.InteractionType == InteractionType.Item)
-                .Cast<ItemObject>()
-                .ToArray();
-            */
-            Refresh();
         }
 
         void Refresh()
@@ -68,7 +55,7 @@ namespace AloneSpace
                 .Select(interactItem => new InteractionItemObjectListViewCell.CellData(interactItem.ItemInteractData.ItemData))
                 .ToArray();
 
-            var takeOrderItems = questData.ObservePlayerActors
+            var takeOrderItems = questData.GetObservePlayerActors()
                 .Select(x => x.ActorAICache.InteractOrder)
                 .ToArray();
             

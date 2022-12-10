@@ -7,22 +7,22 @@ namespace AloneSpace
     {
         public Guid InstanceId { get; }
         
-        public PlayerStance PlayerStance { get; }
+        public PlayerStance PlayerStance { get; private set; }
 
         public TacticsType TacticsType { get; private set; }
 
-        public int? ExitAreaIndex { get; }
-        
         public IPosition MoveTarget { get; private set; }
 
         public ActorData MainActorData { get; private set; }
 
-        public PlayerQuestData(int? exitAreaIndex, PlayerStance playerStance)
+        public PlayerQuestData()
         {
             InstanceId = Guid.NewGuid();
-
+        }
+        
+        public void SetPlayerStance(PlayerStance playerStance)
+        {
             PlayerStance = playerStance;
-            ExitAreaIndex = exitAreaIndex;
         }
         
         public void SetTacticsType(TacticsType tacticsType)

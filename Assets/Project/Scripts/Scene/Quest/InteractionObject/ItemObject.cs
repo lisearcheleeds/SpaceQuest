@@ -17,11 +17,9 @@ namespace AloneSpace
         public void Apply(ItemInteractData itemInteractData)
         {
             ItemInteractData = itemInteractData;
-
             var particleSetting = particleSystem.main;
             particleSetting.startColor = Rarity.GetRarityColor();
-            
-            transform.position = itemInteractData.Position + GetPlaceOffsetHeight();
+            transform.position = itemInteractData.Position;
         }
 
         protected override void OnRelease()

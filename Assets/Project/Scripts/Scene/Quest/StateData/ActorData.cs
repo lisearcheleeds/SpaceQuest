@@ -13,7 +13,7 @@ namespace AloneSpace
 
         public ActorState ActorState { get; private set; }
 
-        public int AreaIndex { get; private set; }
+        public int AreaId { get; private set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         
@@ -60,7 +60,7 @@ namespace AloneSpace
         
         public void SetAreaIndex(int areaIndex)
         {
-            AreaIndex = areaIndex;
+            AreaId = areaIndex;
         }
         
         public void SetMoveTarget(IPosition moveTarget)

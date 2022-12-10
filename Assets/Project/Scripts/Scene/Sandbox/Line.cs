@@ -12,7 +12,7 @@ namespace SandBox
         CollisionShapeLine line;
 
         public CollisionShape LineShape => line;
-        public int AreaIndex { get; } = 0;
+        public int AreaId { get; } = 0;
         public Vector3 Position => transform.position;
 
         void Awake()

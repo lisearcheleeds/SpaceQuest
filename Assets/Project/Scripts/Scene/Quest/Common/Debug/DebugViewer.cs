@@ -39,6 +39,7 @@ namespace AloneSpace
             this.questData = questData;
             
             MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
+            UpdatePlayerQuestDataView();
         }
 
         public void Finalize()
@@ -61,7 +62,7 @@ namespace AloneSpace
                     
                     return new PlayerQuestDataView(
                         playerQuestData.InstanceId,
-                        actorDataList.Select(x => new ActorDataView(x.AreaIndex)).ToArray());
+                        actorDataList.Select(x => new ActorDataView(x.AreaId)).ToArray());
                 }).ToArray();
         }
     }

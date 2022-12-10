@@ -54,7 +54,7 @@ namespace AloneSpace
 
         public abstract bool IsReloadable();
         
-        public abstract void Reload(ItemVO[] resources);
+        public abstract void Reload();
 
         public abstract bool IsExecutable(ITargetData targetData);
         

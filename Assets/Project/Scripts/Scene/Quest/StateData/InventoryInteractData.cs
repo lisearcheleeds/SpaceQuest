@@ -11,20 +11,20 @@ namespace AloneSpace
         
         public Guid InstanceId { get; }
 
-        public int AreaIndex { get; }
+        public int AreaId { get; }
         public Vector3 Position { get; set; }
         public string Text => $"Inventory (" + InventoryData.Sum(x => x.VariableInventoryViewData.CellData.Count(y => y != null)) + ")";
         public float InteractTime => 3.0f;
         
         public InventoryData[] InventoryData { get; }
 
-        public InventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position)
+        public InventoryInteractData(InventoryData[] inventoryData, IPosition position)
         {
             InstanceId = Guid.NewGuid();
 
             InventoryData = inventoryData;
-            AreaIndex = areaId;
-            Position = position;
+            AreaId = position.AreaId;
+            Position = position.Position;
         }
         
         public Vector3 GetClosestPoint(IPosition position)

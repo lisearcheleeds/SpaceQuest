@@ -19,7 +19,7 @@ namespace AloneSpace
             }
 
             var areaActorData = questData.ActorData
-                .Where(actorData => actorData.AreaIndex == playerQuestData.MainActorData.AreaIndex)
+                .Where(actorData => actorData.AreaId == playerQuestData.MainActorData.AreaId)
                 .ToArray();
             
             var scavengerPlayer = questData.PlayerQuestData.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);
@@ -70,7 +70,7 @@ namespace AloneSpace
                 return;
             }
 
-            var areaData = questData.MapData.AreaData[playerQuestData.MainActorData.AreaIndex];
+            // var areaData = questData.StarSystemData.AreaData[playerQuestData.MainActorData.AreaId];
         }
     }
 }

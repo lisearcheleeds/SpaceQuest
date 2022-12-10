@@ -1,15 +1,14 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
     public class WeaponEffectUpdater : IUpdater
     {
-        QuestData questData;
+        List<WeaponEffectData> weaponEffectDataList = new List<WeaponEffectData>();
 
-        public void Initialize(QuestData questData)
+        public void Initialize()
         {
-            this.questData = questData;
-            
             MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
         }
@@ -22,14 +21,9 @@ namespace AloneSpace
 
         public void OnLateUpdate()
         {
-            if (questData == null)
-            {
-                return;
-            }
-
             var deltaTime = Time.deltaTime;
 
-            foreach (var weaponEffectData in questData.WeaponEffectData)
+            foreach (var weaponEffectData in weaponEffectDataList)
             {
                 weaponEffectData.OnLateUpdate(deltaTime);
             }

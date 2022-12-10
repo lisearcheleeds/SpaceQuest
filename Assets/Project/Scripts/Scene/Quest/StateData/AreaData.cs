@@ -5,20 +5,23 @@ using UnityEngine;
 
 namespace AloneSpace
 {
+    /// <summary>
+    /// 宙域
+    /// </summary>
     public class AreaData : IPosition
     {
-        public int AreaIndex { get; }
+        public int AreaId => areaPresetVO.AreaId;
         public Vector3 Position { get; } = Vector3.zero;
-        public AreaAssetVO AreaAssetVO { get; }
-        public List<IInteractData> InteractData { get; }
-        public (AreaDirection AreaDirection, int Index)[] AdjacentAreaIndexes { get; }
+        public List<IInteractData> InteractData { get; } = new List<IInteractData>();
 
-        public AreaData(int areaIndex, AreaAssetVO areaAssetVO, (AreaDirection AreaDirection, int Index)[] adjacentAreaIndexes)
+        public IAssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;
+        
+        AreaPresetVO areaPresetVO;
+        
+        public AreaData(AreaPresetVO areaPresetVO)
         {
-            AreaIndex = areaIndex;
-            AreaAssetVO = areaAssetVO;
-            InteractData = new List<IInteractData>();
-            
+            this.areaPresetVO = areaPresetVO;
+
             InteractData.AddRange(
                 Enumerable
                     .Range(0, Random.Range(3, 10))
@@ -26,23 +29,21 @@ namespace AloneSpace
                     {
                         var itemData = new ItemData(new ItemVO(i), 1);
                         var position = new Vector3(Random.Range(-50.0f, 50.0f), 10, Random.Range(-50.0f, 50.0f));
-                        return new ItemInteractData(itemData, areaIndex, position);
+                        return new ItemInteractData(itemData, areaPresetVO.AreaId, position);
                     })
                     .ToList());
-            
-            AdjacentAreaIndexes = adjacentAreaIndexes;
         }
 
         public void AddInteractData(IInteractData interactData)
         {
             InteractData.Add(interactData);
-            MessageBus.Instance.UpdateInteractData.Broadcast(AreaIndex, InteractData.ToArray());
+            MessageBus.Instance.UpdateInteractData.Broadcast(AreaId, InteractData.ToArray());
         }
         
         public void RemoveInteractData(IInteractData interactData)
         {
             InteractData.Remove(interactData);
-            MessageBus.Instance.UpdateInteractData.Broadcast(AreaIndex, InteractData.ToArray());
+            MessageBus.Instance.UpdateInteractData.Broadcast(AreaId, InteractData.ToArray());
         }
     }
 }

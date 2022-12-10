@@ -10,20 +10,20 @@ namespace AloneSpace
 
         public Guid InstanceId { get; }
 
-        public int AreaIndex { get; }
+        public int AreaId { get; }
         public Vector3 Position { get; private set; }
         public string Text => ActorData.InstanceId.ToString();
         public float InteractTime => 3.0f;
         
         public ActorData ActorData { get; }
 
-        public BrokenActorInteractData(ActorData actorData, Vector3 position)
+        public BrokenActorInteractData(ActorData actorData)
         {
             InstanceId = Guid.NewGuid();
 
-            AreaIndex = actorData.AreaIndex;
+            AreaId = actorData.AreaId;
             ActorData = actorData;
-            Position = position;
+            Position = actorData.Position;
         }
         
         public Vector3 GetClosestPoint(IPosition position)
