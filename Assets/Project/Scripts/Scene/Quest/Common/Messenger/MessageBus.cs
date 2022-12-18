@@ -32,12 +32,13 @@ namespace AloneSpace
         // Userによるゲームコマンド（UIなど）
         public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
         public MessageBusDefine.UserCommandCloseItemDataMenu UserCommandCloseItemDataMenu { get; } = new MessageBusDefine.UserCommandCloseItemDataMenu();
-        public MessageBusDefine.UserCommandChangeCameraMode UserCommandSetCameraMode { get; } = new MessageBusDefine.UserCommandChangeCameraMode();
-        public MessageBusDefine.UserCommandSetCameraFocusObject UserCommandSetCameraFocusObject { get; } = new MessageBusDefine.UserCommandSetCameraFocusObject();
         public MessageBusDefine.UserCommandGlobalMapFocusCell UserCommandGlobalMapFocusCell { get; } = new MessageBusDefine.UserCommandGlobalMapFocusCell();
         public MessageBusDefine.UserCommandUpdateInventory UserCommandUpdateInventory { get; } = new MessageBusDefine.UserCommandUpdateInventory();
         public MessageBusDefine.UserCommandRotateCamera UserCommandRotateCamera { get; } = new MessageBusDefine.UserCommandRotateCamera();
         public MessageBusDefine.UserCommandSetCameraAngle UserCommandSetCameraAngle { get; } = new MessageBusDefine.UserCommandSetCameraAngle();
+
+        public MessageBusDefine.UserCommandSetAmbientCameraPosition UserCommandSetAmbientCameraPosition { get; } = new MessageBusDefine.UserCommandSetAmbientCameraPosition();
+        public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
         
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetMoveTarget PlayerCommandSetMoveTarget { get; } = new MessageBusDefine.PlayerCommandSetMoveTarget();

@@ -23,18 +23,17 @@ namespace AloneSpace
         public class NoticeDamage : MessageBusBroadcaster<ICauseDamageData, IDamageableData>{}
         public class NoticeBroken : MessageBusBroadcaster<IDamageableData>{}
         
-        public class SetObservePlayer : MessageBusBroadcaster<Guid>{}
         public class SetObserveArea : MessageBusBroadcaster<int>{}
         
-        public class UserCommandChangeCameraMode : MessageBusBroadcaster<CameraMode>{}
-        public class UserCommandSetCameraFocusObject : MessageBusBroadcaster<Transform>{}
-        public class UserCommandSetObserveActor : MessageBusBroadcaster<Guid>{}
         public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
         public class UserCommandGlobalMapFocusCell : MessageBusBroadcaster<int, bool>{}
         public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
+        
+        public class UserCommandSetAmbientCameraPosition : MessageBusBroadcaster<Vector3>{}
+        public class UserCommandGetWorldToCanvasPoint : MessageBusBroadcaster<CameraController.CameraType, Vector3, RectTransform, Action<Vector3?>>{}
         
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<Guid, IPosition>{}
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}

@@ -25,7 +25,7 @@ namespace AloneSpace
 
         IEnumerator Start()
         {
-            return questManager.Start();
+            return questManager.StartQuest();
         }
 
         void EndQuest()

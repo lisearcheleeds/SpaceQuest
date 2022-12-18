@@ -11,7 +11,8 @@ namespace AloneSpace
     public class AreaData : IPosition
     {
         public int AreaId => areaPresetVO.AreaId;
-        public Vector3 Position { get; } = Vector3.zero;
+        public Vector3 SpaceSize => areaPresetVO.SpaceSize;
+        public Vector3 Position => areaPresetVO.Position;
         public List<IInteractData> InteractData { get; } = new List<IInteractData>();
 
         public IAssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;

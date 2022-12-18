@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AloneSpace;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace AloneSpace
@@ -32,11 +33,13 @@ namespace AloneSpace
 
         public IEnumerator LoadArea()
         {
-            List<IEnumerator> coroutines = new List<IEnumerator>();
+            var coroutines = new List<IEnumerator>();
 
-            if (ambientObject != null)
+            if (ambientObject == null)
             {
-                coroutines.Add(AssetLoader.LoadAsync<Transform>(questData.StarSystemData.AmbientObjectAsset, target => Instantiate(target, ambientObjectParent)));
+                coroutines.Add(AssetLoader.LoadAsync<Transform>(
+                    questData.StarSystemData.AmbientObjectAsset,
+                    target => Instantiate(target, ambientObjectParent)));
             }
             
             // 次のエリアに引き継がないオブジェクトを削除
@@ -53,6 +56,8 @@ namespace AloneSpace
                 target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
             
             yield return new ParallelCoroutine(coroutines);
+            
+            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(questData.ObserveAreaData.Position);
             
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)

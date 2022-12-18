@@ -41,7 +41,7 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(0, "AreaPlacedObjects/Default"),
+                new Row(0, "AreaAmbientObjects/Default"),
             };
         }
     }

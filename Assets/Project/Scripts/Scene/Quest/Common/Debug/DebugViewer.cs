@@ -7,6 +7,7 @@ namespace AloneSpace
     public class DebugViewer : MonoBehaviour
     {
         [SerializeField] PlayerQuestDataView[] playerQuestDataView;
+        [SerializeField] AreaDataView[] areaDataView;
 
         QuestData questData;
         
@@ -20,6 +21,19 @@ namespace AloneSpace
             {
                 this.instanceId = instanceId.ToString();
                 this.actorDataView = actorDataView;
+            }
+        }
+        
+        [Serializable]
+        public class AreaDataView
+        {
+            [SerializeField] string areaId;
+            [SerializeField] Vector3 position;
+
+            public AreaDataView(AreaData areaData)
+            {
+                this.areaId = $"Area {areaData.AreaId}";
+                this.position = areaData.Position;
             }
         }
         
@@ -64,6 +78,11 @@ namespace AloneSpace
                         playerQuestData.InstanceId,
                         actorDataList.Select(x => new ActorDataView(x.AreaId)).ToArray());
                 }).ToArray();
+
+            areaDataView = questData.StarSystemData.AreaData.Select(areadata =>
+            {
+                return new AreaDataView(areadata);
+            }).ToArray();
         }
     }
 }

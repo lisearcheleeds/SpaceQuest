@@ -73,8 +73,6 @@ namespace AloneSpace
             Refresh();
 
             UpdateItemDataMenu();
-            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.FocusObject);
-            MessageBus.Instance.UserCommandSetCameraFocusObject.Broadcast(focusInteractionItem.transform);
         }
         
         void Back()

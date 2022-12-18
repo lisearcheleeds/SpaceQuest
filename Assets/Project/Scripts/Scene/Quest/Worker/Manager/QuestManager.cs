@@ -49,7 +49,7 @@ namespace AloneSpace
             MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
         }
 
-        public IEnumerator Start()
+        public IEnumerator StartQuest()
         {
             return LoadArea();
         }
@@ -109,6 +109,7 @@ namespace AloneSpace
         void SetObserveArea(int areaIndex)
         {
             questData.SetObserveArea(areaIndex);
+            
             StartCoroutine(LoadArea());
         }
 

@@ -1,81 +1,42 @@
 ﻿using System;
 using System.Linq;
-using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] Camera mainCamera;
-        [SerializeField] Transform cameraAnchor;
+        [SerializeField] Camera cameraAmbient;
+        [SerializeField] Camera camera3d;
+        [SerializeField] Transform camera3dAnchor;
 
-        CameraMode cameraMode;
-        Transform focusObject;
-        Actor[] actors;
+        [SerializeField] Camera cameraUi;
 
         QuestData questData;
+
         Vector2 angle;
         Quaternion rotation = Quaternion.identity;
+        
+        public enum CameraType
+        {
+            CameraAmbient,
+            Camera3d,
+        }
 
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
             
-            MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
-            MessageBus.Instance.UserCommandSetCameraFocusObject.AddListener(UserCommandSetCameraFocusObject);
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
+            MessageBus.Instance.UserCommandSetAmbientCameraPosition.AddListener(UserCommandSetAmbientCameraPosition);
+            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.AddListener(UserCommandGetWorldToCanvasPoint);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.RemoveListener(UserCommandSetCameraMode);
-            MessageBus.Instance.UserCommandSetCameraFocusObject.RemoveListener(UserCommandSetCameraFocusObject);
             MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
-        }
-
-        void Update()
-        {
-            switch (cameraMode)
-            {
-                case CameraMode.FocusObject:
-                    FocusObject();
-                    break;
-                default:
-                    FocusObject();
-                    break;
-            }
-        }
-
-        void UserCommandSetCameraMode(CameraMode cameraMode)
-        {
-            this.cameraMode = cameraMode;
-            focusObject = null;
-        }
-
-        void UserCommandSetCameraFocusObject(Transform focusObject)
-        {
-            this.focusObject = focusObject;
-        }
-
-        void UserCommandSetObserveActor(Guid observeActorId)
-        {
-            var actor = actors?.FirstOrDefault(x => x.InstanceId == observeActorId);
-            if (actor != null)
-            {
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.FocusObject);
-                MessageBus.Instance.UserCommandSetCameraFocusObject.Broadcast(actor.transform);
-            }
-        }
-
-        void FocusObject()
-        {
-            if (focusObject == null)
-            {
-                return;
-            }
-
-            mainCamera.transform.position += (focusObject.position - mainCamera.transform.position) * 0.1f;
+            MessageBus.Instance.UserCommandSetAmbientCameraPosition.RemoveListener(UserCommandSetAmbientCameraPosition);
+            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.RemoveListener(UserCommandGetWorldToCanvasPoint);
         }
         
         void UserCommandRotateCamera(Vector2 delta)
@@ -85,8 +46,39 @@ namespace AloneSpace
             
             rotation = Quaternion.AngleAxis(angle.x, Vector3.up) * Quaternion.AngleAxis(angle.y, Vector3.right);
             
-            cameraAnchor.rotation = rotation;
+            cameraAmbient.transform.rotation = rotation;
+            camera3dAnchor.rotation = rotation;
             MessageBus.Instance.UserCommandSetCameraAngle.Broadcast(rotation);
+        }
+
+        void UserCommandSetAmbientCameraPosition(Vector3 position)
+        {
+            cameraAmbient.transform.position = position;
+        }
+
+        void UserCommandGetWorldToCanvasPoint(CameraType cameraType, Vector3 worldPos, RectTransform rectTransform, Action<Vector3?> callback)
+        {
+            var camera = cameraType switch
+            {
+                CameraType.Camera3d => camera3d,
+                CameraType.CameraAmbient => cameraAmbient,
+                _ => null,
+            };
+
+            var screenPoint = camera.WorldToScreenPoint(worldPos);
+            if (screenPoint.z < 0)
+            {
+                callback(null);
+                return;
+            }
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rectTransform,
+                screenPoint,
+                cameraUi,
+                out var localPoint);
+
+            callback(localPoint);
         }
     }
 }

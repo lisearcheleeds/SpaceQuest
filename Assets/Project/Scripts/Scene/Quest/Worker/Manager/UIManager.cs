@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using AloneSpace;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -23,7 +24,6 @@ namespace AloneSpace
         [SerializeField] InventoryView inventoryView;
         
         [Header("3D")]
-        [SerializeField] MapPanel mapPanel;
         [SerializeField] CameraAngleControllerEffect cameraAngleControllerEffect;
 
         QuestData questData;
@@ -32,10 +32,9 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            mapPanel.Initialize(questData);
             cameraAngleControllerEffect.Initialize();
             
-            mapPanelView.Initialize();
+            mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
             interactionItemObjectList.Initialize(questData);
             tacticsView.Initialize(OnClickTactics);
