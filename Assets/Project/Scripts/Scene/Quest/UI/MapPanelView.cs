@@ -6,10 +6,6 @@ namespace AloneSpace
 {
     public class MapPanelView : MonoBehaviour
     {
-        public bool IsOpen => gameObject.activeSelf;
-
-        [SerializeField] Button closeMapButton;
-        
         [SerializeField] AreaDataCell cellTemplate;
         [SerializeField] RectTransform cellParent;
 
@@ -21,27 +17,13 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            Close();
-            closeMapButton.onClick.AddListener(OnClickCloseMap);
-            
+            MessageBus.Instance.UserInputSwitchMap.AddListener(UserInputSwitchMap);
+            MessageBus.Instance.UserInputOpenMap.AddListener(UserInputOpenMap);
+            MessageBus.Instance.UserInputCloseMap.AddListener(UserInputCloseMap);
+
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(SetCameraAngle);
-        }
 
-        public void Open()
-        {
-            gameObject.SetActive(true);
-            UpdateView();
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
-            UpdateView();
-        }
-
-        void OnClickCloseMap()
-        {
-            Close();
+            UserInputCloseMap();
         }
         
         public void UpdateView()
@@ -73,22 +55,50 @@ namespace AloneSpace
         {
             for (var i = 0; i < questData.StarSystemData.AreaData.Length; i++)
             {
+                var index = i;
                 MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Broadcast(
                     CameraController.CameraType.CameraAmbient,
-                    questData.StarSystemData.AreaData[i].Position,
+                    questData.StarSystemData.AreaData[index].Position,
                     cellParent,
-                    screenPos => mapPanelCells[i].UpdatePosition(screenPos));
+                    screenPos => mapPanelCells[index].UpdatePosition(screenPos));
             }
         }
 
         void OnClickCell(AreaData areaData)
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(areaData.AreaId, false);
         }
 
         void SetCameraAngle(Quaternion quaternion)
         {
             UpdatePosition();
+        }
+
+        void UserInputSwitchMap()
+        {
+            if (gameObject.activeSelf)
+            {
+                MessageBus.Instance.UserInputCloseMap.Broadcast();
+            }
+            else
+            {
+                MessageBus.Instance.UserInputOpenMap.Broadcast();
+            }
+        }
+
+        void UserInputOpenMap()
+        {
+            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Map);
+            
+            gameObject.SetActive(true);
+            UpdateView();
+        }
+        
+        void UserInputCloseMap()
+        {
+            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
+            
+            gameObject.SetActive(false);
+            UpdateView();
         }
     }
 }

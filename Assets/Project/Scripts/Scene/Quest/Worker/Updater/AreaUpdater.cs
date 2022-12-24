@@ -44,6 +44,7 @@ namespace AloneSpace
 
         public void OnLateUpdate()
         {
+            cameraController.OnLateUpdate();
             actorObjectUpdater.OnLateUpdate();
             interactObjectUpdater.OnLateUpdate();
         }

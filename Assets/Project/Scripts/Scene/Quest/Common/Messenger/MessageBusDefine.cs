@@ -25,10 +25,14 @@ namespace AloneSpace
         
         public class SetObserveArea : MessageBusBroadcaster<int>{}
         
+        public class UserInputSwitchMap : MessageBusBroadcaster{}
+        public class UserInputOpenMap : MessageBusBroadcaster{}
+        public class UserInputCloseMap : MessageBusBroadcaster{}
+        
         public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
-        public class UserCommandGlobalMapFocusCell : MessageBusBroadcaster<int, bool>{}
         public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
+        public class UserCommandSetCameraMode : MessageBusBroadcaster<CameraController.CameraMode>{}
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         

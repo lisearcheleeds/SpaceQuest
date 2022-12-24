@@ -56,22 +56,12 @@ namespace AloneSpace
 
         public void OnLoadedArea()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObservePlayerQuestData.MainActorData.AreaId, true);
             interactionItemObjectList.Close();
         }
 
         void OnClickMap()
         {
-            MessageBus.Instance.UserCommandGlobalMapFocusCell.Broadcast(questData.ObservePlayerQuestData.MainActorData.AreaId, true);
-            
-            if (!mapPanelView.IsOpen)
-            {
-                mapPanelView.Open();
-            }
-            else
-            {
-                mapPanelView.Close();
-            }
+            MessageBus.Instance.UserInputSwitchMap.Broadcast();
         }
         
         void OnClickInteract()
