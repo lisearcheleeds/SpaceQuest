@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using FancyScrollView;
-using AloneSpace;
 using UnityEngine;
 using UnityEngine.UI;
 

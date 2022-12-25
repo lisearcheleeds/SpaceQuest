@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 
 namespace AloneSpace
@@ -48,36 +47,6 @@ namespace AloneSpace
 
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
-        }
-
-        void OnClickInteractItemButton()
-        {
-            /*
-            var isTakeOrderItem = questData.ObservePlayerActors.Any(x => x.InteractOrder.OfType<ItemInteractData>().Any(y => y.ItemData == focusItemData));
-
-            if (isTakeOrderItem)
-            {
-                MessageBus.Instance.PlayerCommandRemoveInteractItemOrder.Broadcast(questData.ObserveActor, focusInteractionItem);
-            }
-            else
-            {
-                MessageBus.Instance.PlayerCommandAddInteractItemOrder.Broadcast(questData.ObserveActor, focusInteractionItem);
-            }
-            */
-
-            UpdateItemDataMenu();
-            Refresh();
-        }
-
-        void UpdateItemDataMenu()
-        {
-            /*
-            MessageBus.Instance.UserCommandOpenItemDataMenu.Broadcast(
-                focusItemData, 
-                OnClickInteractItemButton,
-                isTakeOrderItem ? "Cancel" : "Take",
-                $"{(focusInteractionItem.transform.position - questData.ObserveActor.Position).magnitude}m");
-            */
         }
         
         void UserInputSwitchInteractList()

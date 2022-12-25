@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using AloneSpace;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace AloneSpace
@@ -12,14 +8,12 @@ namespace AloneSpace
         [Header("Buttons")]
         [SerializeField] Button mapButton;
         [SerializeField] Button interactButton;
-        [SerializeField] Button tacticsButton;
         [SerializeField] Button inventoryButton;
         
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
         [SerializeField] CameraAngleController cameraAngleController;
         [SerializeField] InteractionList interactionList;
-        [SerializeField] TacticsView tacticsView;
         [SerializeField] ItemDataMenu itemDataMenu;
         [SerializeField] InventoryView inventoryView;
         
@@ -37,21 +31,16 @@ namespace AloneSpace
             mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
             interactionList.Initialize(questData);
-            tacticsView.Initialize(OnClickTactics);
             itemDataMenu.Initialize();
             inventoryView.Initialize(questData);
             
             mapButton.onClick.AddListener(OnClickMap);
             interactButton.onClick.AddListener(OnClickInteract);
-            tacticsButton.onClick.AddListener(OnClickTactics);
             inventoryButton.onClick.AddListener(OnClickInventory);
-            
-            MessageBus.Instance.PlayerCommandSetTacticsType.AddListener(PlayerCommandSetTacticsType);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
         }
 
         void OnClickMap()
@@ -64,18 +53,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputSwitchInteractList.Broadcast();
         }
         
-        void OnClickTactics()
-        {
-            if (!tacticsView.IsOpen)
-            {
-                tacticsView.Open();
-            }
-            else
-            {
-                tacticsView.Close();
-            }
-        }
-        
         void OnClickInventory()
         {
             if (!inventoryView.IsOpen)
@@ -86,19 +63,6 @@ namespace AloneSpace
             else
             {
                 inventoryView.Close();   
-            }
-        }
-
-        void OnClickTactics(TacticsType tacticsType)
-        {
-            MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(questData.ObservePlayerQuestData.MainActorData.PlayerInstanceId, tacticsType);
-        }
-
-        void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)
-        {
-            if (questData.ObservePlayerQuestData.MainActorData.PlayerInstanceId == playerInstanceId)
-            {
-                tacticsView.ChangeTactics(tacticsType);
             }
         }
     }
