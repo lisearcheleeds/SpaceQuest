@@ -126,7 +126,6 @@ namespace AloneSpace
         IEnumerator LoadArea()
         {
             yield return areaUpdater.LoadArea();
-            uiManager.OnLoadedArea();
         }
     }
 }

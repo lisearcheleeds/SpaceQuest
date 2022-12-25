@@ -28,6 +28,9 @@ namespace AloneSpace
         public class UserInputSwitchMap : MessageBusBroadcaster{}
         public class UserInputOpenMap : MessageBusBroadcaster{}
         public class UserInputCloseMap : MessageBusBroadcaster{}
+        public class UserInputSwitchInteractList : MessageBusBroadcaster{}
+        public class UserInputOpenInteractList : MessageBusBroadcaster{}
+        public class UserInputCloseInteractList : MessageBusBroadcaster{}
         
         public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}

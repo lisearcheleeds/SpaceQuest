@@ -18,7 +18,7 @@ namespace AloneSpace
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
         [SerializeField] CameraAngleController cameraAngleController;
-        [SerializeField] InteractionItemObjectList interactionItemObjectList;
+        [SerializeField] InteractionList interactionList;
         [SerializeField] TacticsView tacticsView;
         [SerializeField] ItemDataMenu itemDataMenu;
         [SerializeField] InventoryView inventoryView;
@@ -36,7 +36,7 @@ namespace AloneSpace
             
             mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
-            interactionItemObjectList.Initialize(questData);
+            interactionList.Initialize(questData);
             tacticsView.Initialize(OnClickTactics);
             itemDataMenu.Initialize();
             inventoryView.Initialize(questData);
@@ -54,11 +54,6 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
         }
 
-        public void OnLoadedArea()
-        {
-            interactionItemObjectList.Close();
-        }
-
         void OnClickMap()
         {
             MessageBus.Instance.UserInputSwitchMap.Broadcast();
@@ -66,16 +61,7 @@ namespace AloneSpace
         
         void OnClickInteract()
         {
-            if (!interactionItemObjectList.IsOpen)
-            {
-                interactionItemObjectList.Open();
-            }
-            else
-            {
-                interactionItemObjectList.Close();
-            }
-            
-            inventoryView.Close();
+            MessageBus.Instance.UserInputSwitchInteractList.Broadcast();
         }
         
         void OnClickTactics()
@@ -101,8 +87,6 @@ namespace AloneSpace
             {
                 inventoryView.Close();   
             }
-            
-            interactionItemObjectList.Close();
         }
 
         void OnClickTactics(TacticsType tacticsType)

@@ -71,6 +71,8 @@ namespace AloneSpace
             {
                 new Row(1, 1, 0, 7, 2, 14, null, null, null),
                 new Row(1, 2, 0, 7, 2, 14, null, null, null),
+                new Row(1, 3, 0, 7, 2, 14, null, null, null),
+                new Row(1, 4, 0, 7, 2, 14, null, null, null),
             };
         }
     }
