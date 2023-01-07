@@ -13,6 +13,8 @@ namespace AloneSpace
         public int AreaId => areaPresetVO.AreaId;
         public Vector3 SpaceSize => areaPresetVO.SpaceSize;
         public Vector3 Position => areaPresetVO.Position;
+        public AreaInteractData AreaInteractData { get; }
+        
         public List<IInteractData> InteractData { get; } = new List<IInteractData>();
 
         public IAssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;
@@ -22,6 +24,7 @@ namespace AloneSpace
         public AreaData(AreaPresetVO areaPresetVO)
         {
             this.areaPresetVO = areaPresetVO;
+            this.AreaInteractData = new AreaInteractData(this);
 
             InteractData.AddRange(
                 Enumerable

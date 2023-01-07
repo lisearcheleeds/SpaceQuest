@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -31,9 +32,9 @@ namespace AloneSpace
             ObservePlayerQuestData = PlayerQuestData.First(x => x.InstanceId == playerInstanceId);
         }
 
-        public void SetObserveArea(int observeAreaIndex)
+        public void SetObserveArea(int areaId)
         {
-            ObserveAreaData = StarSystemData.AreaData[observeAreaIndex];
+            ObserveAreaData = StarSystemData.AreaData.First(areaData => areaData.AreaId == areaId);
         }
 
         public void AddPlayerQuestData(PlayerQuestData playerQuestData)

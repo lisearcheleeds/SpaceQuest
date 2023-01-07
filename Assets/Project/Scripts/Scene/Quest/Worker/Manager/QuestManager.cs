@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -106,26 +107,31 @@ namespace AloneSpace
             questData.RemoveActorData(actorData);
         }
         
-        void SetObserveArea(int areaIndex)
+        void SetObserveArea(int areaId)
         {
-            questData.SetObserveArea(areaIndex);
+            questData.SetObserveArea(areaId);
             
             StartCoroutine(LoadArea());
         }
 
-        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaIndex, int toAreaIndex)
+        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaId, int toAreaId)
         {
-            actorData.SetAreaIndex(toAreaIndex);
+            actorData.SetAreaId(toAreaId);
 
             if (questData.ObservePlayerQuestData.MainActorData.InstanceId == actorData.InstanceId)
             {
-                MessageBus.Instance.SetObserveArea.Broadcast(toAreaIndex);
+                MessageBus.Instance.SetObserveArea.Broadcast(toAreaId);
             }
         }
 
         IEnumerator LoadArea()
         {
             yield return areaUpdater.LoadArea();
+            
+            var debugString = string.Join(',',
+                questData.PlayerQuestData.GroupBy(x => x.MainActorData.AreaId).OrderBy(x => x.Key)
+                    .Select(x => $"Area{x.Key}({x.Count()})"));
+            Debug.Log($"現在のArea{questData.ObserveAreaData.AreaId} {debugString}");
         }
     }
 }

@@ -24,7 +24,7 @@ namespace AloneSpace
             MessageBus.Instance.ManagerCommandTransferItem.RemoveListener(TransferItem);
         }
 
-        void StoreItem(int areaIndex, InventoryData toInventory, ItemData itemData)
+        void StoreItem(int areaId, InventoryData toInventory, ItemData itemData)
         {
             var insertableId = toInventory.VariableInventoryViewData.GetInsertableId(itemData);
             if (insertableId.HasValue)
@@ -34,7 +34,8 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId });
 
                 // エリアデータからアイテムを削除
-                foreach (var interactData in questData.StarSystemData.AreaData[areaIndex].InteractData.ToArray())
+                var areaData = questData.StarSystemData.AreaData.First(areaData => areaData.AreaId == areaId);
+                foreach (var interactData in areaData.InteractData.ToArray())
                 {
                     if (!(interactData is ItemInteractData interactItemData))
                     {
@@ -43,7 +44,7 @@ namespace AloneSpace
 
                     if (interactItemData.ItemData == itemData)
                     {
-                        questData.StarSystemData.AreaData[areaIndex].RemoveInteractData(interactItemData);
+                        areaData.RemoveInteractData(interactItemData);
                         return;
                     }
                 }

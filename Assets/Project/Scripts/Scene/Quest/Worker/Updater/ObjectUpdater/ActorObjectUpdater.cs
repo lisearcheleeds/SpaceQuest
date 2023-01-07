@@ -41,7 +41,7 @@ namespace AloneSpace
         public IEnumerator RefreshInteractObject()
         {
             var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == questData.ObserveAreaData.AreaId);
-           
+
             // オブジェクトを削除
             foreach (var actor in actors.ToArray())
             {
@@ -100,7 +100,7 @@ namespace AloneSpace
             }
         }
 
-        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaIndex, int toAreaIndex)
+        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaId, int toAreaId)
         {
             coroutineWorker.StartCoroutine(RefreshInteractObject());
         }

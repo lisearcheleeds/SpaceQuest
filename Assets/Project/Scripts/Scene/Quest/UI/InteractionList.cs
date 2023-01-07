@@ -26,16 +26,16 @@ namespace AloneSpace
         {
             var cellData = questData.StarSystemData.AreaData
                 .Select(areaData => new InteractionListViewCell.CellData(
-                    areaData,
-                    selectCellData?.AreaData.AreaId == areaData.AreaId,
+                    areaData.AreaInteractData,
+                    selectCellData?.InteractData.AreaId == areaData.AreaId,
                     GetDistanceText))
                 .ToArray();
             
             interactionListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
-            string GetDistanceText(AreaData areaData)
+            string GetDistanceText(IInteractData positionData)
             {
-                return $"{(questData.ObserveAreaData.Position - areaData.Position).magnitude * 1000.0f}m";
+                return $"{(questData.ObserveAreaData.Position - positionData.Position).magnitude * 1000.0f}m";
             }
         }
 
@@ -47,6 +47,9 @@ namespace AloneSpace
 
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
+            MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(
+                questData.ObservePlayerQuestData.MainActorData,
+                cellData.InteractData);
         }
         
         void UserInputSwitchInteractList()

@@ -56,44 +56,23 @@ namespace AloneSpace
 
         void CreateInteractObject(QuestData questData, IInteractData interactData, Action onCreate = null)
         {
-            switch (interactData)
+            var assetPathVO = interactData switch
             {
-                case ItemInteractData interactItemData:
-                    GameObjectCache.Instance.GetAsset<ItemObject>(
-                        ConstantAssetPath.ItemObjectPathVO,
-                        itemObject =>
-                        {
-                            itemObject.Apply(interactItemData); 
-                            itemObject.IsActive = true;
-                            interactionObjectList.Add(itemObject);
-                            onCreate?.Invoke();
-                        });
-                    break;
-                
-                case BrokenActorInteractData interactBrokenActorData:
-                    GameObjectCache.Instance.GetAsset<BrokenActorObject>(
-                        ConstantAssetPath.BrokenActorObjectPathVO,
-                        brokenActorObject =>
-                        {
-                            brokenActorObject.Apply(interactBrokenActorData); 
-                            brokenActorObject.IsActive = true;
-                            interactionObjectList.Add(brokenActorObject);
-                            onCreate?.Invoke();
-                        });
-                    break;
-                
-                case InventoryInteractData inventoryInteractData:
-                    GameObjectCache.Instance.GetAsset<InventoryObject>(
-                        ConstantAssetPath.InventoryObjectPathVO,
-                        inventoryObject =>
-                        {
-                            inventoryObject.Apply(inventoryInteractData); 
-                            inventoryObject.IsActive = true;
-                            interactionObjectList.Add(inventoryObject);
-                            onCreate?.Invoke();
-                        });
-                    break;
-            } 
+                ItemInteractData _ => ConstantAssetPath.ItemObjectPathVO,
+                BrokenActorInteractData _ => ConstantAssetPath.BrokenActorObjectPathVO,
+                InventoryInteractData _ => ConstantAssetPath.InventoryObjectPathVO,
+                _ => throw new NotImplementedException(),
+            };
+            
+            GameObjectCache.Instance.GetAsset<InteractionObject>(
+                assetPathVO,
+                interactionObject =>
+                {
+                    interactionObject.SetInteractData(interactData); 
+                    interactionObject.IsActive = true;
+                    interactionObjectList.Add(interactionObject);
+                    onCreate?.Invoke();
+                });
         }
     }
 }

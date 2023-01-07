@@ -17,8 +17,6 @@ namespace AloneSpace
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
         
-        public IPosition MoveTarget { get; private set; }
-        
         public ActorSpecData ActorSpecData { get; }
         public InventoryData[] InventoryDataList { get; }
         public List<ICollisionData> CollidedList = new List<ICollisionData>();
@@ -31,7 +29,7 @@ namespace AloneSpace
 
         public float HitPoint { get; private set; }
 
-        public ActorAICache ActorAICache { get; } = new ActorAICache();
+        public ActorAIStateData ActorAIStateData { get; } = new ActorAIStateData();
         public CollisionShape CollisionShape { get; }
         public Vector3 MoveDelta { get; }
 
@@ -41,8 +39,6 @@ namespace AloneSpace
             
             ActorSpecData = actorSpecData;
             PlayerInstanceId = playerInstanceId;
-
-            ActorAICache.Initialize(playerInstanceId, InstanceId);
 
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
@@ -58,14 +54,9 @@ namespace AloneSpace
             ActorState = actorState;
         }
         
-        public void SetAreaIndex(int areaIndex)
+        public void SetAreaId(int areaId)
         {
-            AreaId = areaIndex;
-        }
-        
-        public void SetMoveTarget(IPosition moveTarget)
-        {
-            MoveTarget = moveTarget;
+            AreaId = areaId;
         }
 
         public void OnCollision(ICollisionData collision)
@@ -95,6 +86,21 @@ namespace AloneSpace
             }
             
             CollidedList.Clear();
+        }
+
+        public void SetInteractOrder(IInteractData interactData)
+        {
+            ActorAIStateData.InteractOrder = interactData;
+        }
+
+        public void SetMoveTarget(IPosition moveTarget)
+        {
+            ActorAIStateData.MoveTarget = moveTarget;
+        }
+
+        public void AddThreat(IThreatData threatData)
+        {
+            ActorAIStateData.ThreatList.Add(threatData);
         }
     }
 }

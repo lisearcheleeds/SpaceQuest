@@ -1,30 +1,31 @@
 ﻿using System;
-using System.Linq;
 using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
-    public class InventoryInteractData : IInteractData
+    public class BrokenActorInteractData : IInteractData
     {
         static readonly float InteractionRange = 2.0f;
-        
+
         public Guid InstanceId { get; }
 
         public int AreaId { get; }
-        public Vector3 Position { get; set; }
-        public string Text => $"Inventory (" + InventoryData.Sum(x => x.VariableInventoryViewData.CellData.Count(y => y != null)) + ")";
-        public float InteractTime => 3.0f;
         
-        public InventoryData[] InventoryData { get; }
+        public Vector3 Position { get; private set; }
+        public string Text => ActorData.InstanceId.ToString();
+        public float InteractTime => 3.0f;
+        public InteractRestraintType InteractRestraintType => InteractRestraintType.CantMove;
+        
+        public ActorData ActorData { get; }
 
-        public InventoryInteractData(InventoryData[] inventoryData, IPosition position)
+        public BrokenActorInteractData(ActorData actorData)
         {
             InstanceId = Guid.NewGuid();
 
-            InventoryData = inventoryData;
-            AreaId = position.AreaId;
-            Position = position.Position;
+            AreaId = actorData.AreaId;
+            ActorData = actorData;
+            Position = actorData.Position;
         }
         
         public Vector3 GetClosestPoint(IPosition position)

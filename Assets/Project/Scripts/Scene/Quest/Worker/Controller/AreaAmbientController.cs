@@ -45,7 +45,7 @@ namespace AloneSpace
             // 次のエリアに引き継がないオブジェクトを削除
             foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
-                Destroy(loadedPlacedObject);
+                Destroy(loadedPlacedObject.gameObject);
             }
             
             loadedPlacedObjects.Clear();

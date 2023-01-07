@@ -42,7 +42,7 @@ namespace AloneSpace
         public class UserCommandSetAmbientCameraPosition : MessageBusBroadcaster<Vector3>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusBroadcaster<CameraController.CameraType, Vector3, RectTransform, Action<Vector3?>>{}
         
-        public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<Guid, IPosition>{}
+        public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPosition>{}
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         

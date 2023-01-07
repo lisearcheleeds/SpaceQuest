@@ -4,16 +4,20 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public abstract class InteractionObject : CacheableGameObject, IInteractionObject
+    public class InteractionObject : CacheableGameObject, IInteractionObject
     {
-        public Guid InstanceId => InteractData.InstanceId;
-        
-        public string Text => InteractData.Text;
+        public IInteractData InteractData { get; private set; }
 
-        public abstract InteractionType InteractionType { get; }
+        public void SetInteractData(IInteractData interactData)
+        {
+            InteractData = interactData;
+        }
 
-        public abstract IInteractData InteractData { get; }
-        
+        protected override void OnRelease()
+        {
+            InteractData.SetPosition(transform.position);
+        }
+
         void Update()
         {
             if (transform.hasChanged)

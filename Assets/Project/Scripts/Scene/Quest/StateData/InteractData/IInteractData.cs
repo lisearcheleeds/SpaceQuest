@@ -9,7 +9,9 @@ namespace AloneSpace
         Guid InstanceId { get; }
         string Text { get; }
         float InteractTime { get; }
-        
+
+        InteractRestraintType InteractRestraintType { get; }
+
         Vector3 GetClosestPoint(IPosition position);
         bool IsInteractionRange(IPosition position);
         void SetPosition(Vector3 position);

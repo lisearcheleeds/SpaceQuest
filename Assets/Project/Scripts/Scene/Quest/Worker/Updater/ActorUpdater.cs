@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -22,6 +23,10 @@ namespace AloneSpace
             
             MessageBus.Instance.AddActorData.AddListener(AddActorData);
             MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
+            
+            MessageBus.Instance.PlayerCommandSetInteractOrder.AddListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
         }
 
         public void Finalize()
@@ -32,6 +37,10 @@ namespace AloneSpace
             
             MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
             MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
+            
+            MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
         }
         
         public void OnLateUpdate()
@@ -86,28 +95,45 @@ namespace AloneSpace
                 return;
             }
 
-            var areaIndex = actorData.AreaId;
+            var areaData = questData.StarSystemData.AreaData.First(areaData => areaData.AreaId == actorData.AreaId);
             
             // 一覧から削除
             questData.ActorData.Remove(actorData);
             
             // 残骸を設置
             var interactBrokenActorData = new BrokenActorInteractData(actorData);
-            questData.StarSystemData.AreaData[areaIndex].AddInteractData(interactBrokenActorData);
+            areaData.AddInteractData(interactBrokenActorData);
             
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
-            questData.StarSystemData.AreaData[areaIndex].AddInteractData(new InventoryInteractData(inventoryData, actorData));
+            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData));
         }
         
         void AddActorData(ActorData actorData)
         {
+            // 中継するだけ
             MessageBus.Instance.SendCollision.Broadcast(actorData, true);
         }
 
         void RemoveActorData(ActorData actorData)
         {
+            // 中継するだけ
             MessageBus.Instance.SendCollision.Broadcast(actorData, false);
+        }
+        
+        void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
+        {
+            orderActor.SetInteractOrder(interactData);
+        }
+
+        void PlayerCommandSetMoveTarget(ActorData orderActor, IPosition moveTarget)
+        {
+            orderActor.SetMoveTarget(moveTarget);
+        }
+
+        void NoticeHitThreat(IThreatData threatData, ICollisionData collisionData)
+        {
+            (collisionData as ActorData)?.AddThreat(threatData);
         }
     }
 }

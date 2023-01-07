@@ -24,14 +24,14 @@ namespace AloneSpace
             return (playerQuestDataList, actorDataList);
         }
 
-        static ActorData GetTempAddActorData(PlayerQuestData playerQuestData, int areaIndex, Vector3 position)
+        static ActorData GetTempAddActorData(PlayerQuestData playerQuestData, int areaId, Vector3 position)
         {
             var bp = new ActorBluePrint();
             var specData = new ActorSpecData();
             specData.Setup(bp);
             
             var actorData = new ActorData(specData, playerQuestData.InstanceId);
-            actorData.SetAreaIndex(areaIndex);
+            actorData.SetAreaId(areaId);
             actorData.Position = position;
             return actorData;
         }

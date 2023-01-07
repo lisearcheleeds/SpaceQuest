@@ -11,8 +11,6 @@ namespace AloneSpace
 
         public TacticsType TacticsType { get; private set; }
 
-        public IPosition MoveTarget { get; private set; }
-
         public ActorData MainActorData { get; private set; }
 
         public PlayerQuestData()
@@ -28,11 +26,6 @@ namespace AloneSpace
         public void SetTacticsType(TacticsType tacticsType)
         {
             TacticsType = tacticsType;
-        }
-
-        public void SetMoveTarget(IPosition moveTarget)
-        {
-            MoveTarget = moveTarget;
         }
 
         public void SetMainActorData(ActorData actorData)

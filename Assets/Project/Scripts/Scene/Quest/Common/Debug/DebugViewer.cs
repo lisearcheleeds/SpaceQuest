@@ -61,7 +61,7 @@ namespace AloneSpace
             MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
         }
 
-        void SetObserveArea(int toAreaIndex)
+        void SetObserveArea(int toAreaId)
         {
             UpdatePlayerQuestDataView();
         }

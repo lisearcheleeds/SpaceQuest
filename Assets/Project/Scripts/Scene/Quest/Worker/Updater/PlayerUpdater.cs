@@ -20,13 +20,11 @@ namespace AloneSpace
             this.questData = questData;
 
             MessageBus.Instance.PlayerCommandSetTacticsType.AddListener(PlayerCommandSetTacticsType);
-            MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
-            MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
         }
         
         public void OnLateUpdate()
@@ -65,21 +63,6 @@ namespace AloneSpace
         void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)
         {
             questData.PlayerQuestData.First(x => x.InstanceId == playerInstanceId).SetTacticsType(tacticsType);
-        }
-        
-        void PlayerCommandSetMoveTarget(Guid playerInstanceId, IPosition moveTarget)
-        {
-            questData.PlayerQuestData.First(x => x.InstanceId == playerInstanceId).SetMoveTarget(moveTarget);
-            
-            foreach (var actorData in questData.ActorData)
-            {
-                if (actorData.PlayerInstanceId != playerInstanceId)
-                {
-                    return;
-                }
-
-                actorData.SetMoveTarget(moveTarget);
-            }
         }
     }
 }

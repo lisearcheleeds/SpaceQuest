@@ -4,9 +4,8 @@
     {
         None,
         Check,
-        Idle,
+        Sleep,
         Fight,
         Moving,
-        Interact,
     }
 }

@@ -8,7 +8,7 @@ namespace AloneSpace
         
         public ActorAIState Update(QuestData questData, ActorData actorData, float deltaTime)
         {
-            foreach (var target in actorData.ActorAICache.AroundTargets)
+            foreach (var target in actorData.ActorAIStateData.AroundTargets)
             {
                 if (target.IsAlive && (target as ActorData)?.PlayerInstanceId != actorData.PlayerInstanceId)
                 {
@@ -16,12 +16,12 @@ namespace AloneSpace
                 }
             }
             
-            if (actorData.ActorAICache.MoveTarget != null)
+            if (actorData.ActorAIStateData.MoveTarget != null)
             {
                 return ActorAIState.Moving;
             }
             
-            return ActorAIState.Idle;
+            return ActorAIState.Sleep;
         }
     }
 }

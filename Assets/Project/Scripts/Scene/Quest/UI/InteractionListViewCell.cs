@@ -21,15 +21,15 @@ namespace AloneSpace
         
         public class CellData
         {
-            public AreaData AreaData { get; }
+            public IInteractData InteractData { get; }
             public bool IsSelected { get; }
             public string NameText { get; private set; }
-            public Func<AreaData, string> GetDistanceText { get; private set; }
+            public Func<IInteractData, string> GetDistanceText { get; private set; }
 
-            public CellData(AreaData areaData, bool isSelected, Func<AreaData, string> getDistanceText)
+            public CellData(IInteractData interactData, bool isSelected, Func<IInteractData, string> getDistanceText)
             {
-                AreaData = areaData;
-                NameText = $"Area {areaData.AreaId}";
+                InteractData = interactData;
+                NameText = $"Area {interactData.AreaId}";
                 IsSelected = isSelected;
                 GetDistanceText = getDistanceText;
             }
@@ -52,7 +52,7 @@ namespace AloneSpace
         {
             this.cellData = cellData;
             text.text = cellData.NameText;
-            distanceText.text = cellData.GetDistanceText(cellData.AreaData);
+            distanceText.text = cellData.GetDistanceText(cellData.InteractData);
 
             animator.SetBool(AnimatorKey.IsSelect, cellData.IsSelected);
         }
@@ -62,7 +62,7 @@ namespace AloneSpace
             if (Time.time - lastUpdateTime > 1.0f)
             {
                 lastUpdateTime = Time.time;
-                distanceText.text = cellData.GetDistanceText(cellData.AreaData);
+                distanceText.text = cellData.GetDistanceText(cellData.InteractData);
             }
         }
 
