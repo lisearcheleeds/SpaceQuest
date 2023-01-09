@@ -16,16 +16,13 @@ namespace AloneSpace
         void Awake()
         {
             questData = new QuestData(new StarSystemPresetVO(1));
-            questData.Initialize();
-            questData.SetObservePlayer(questData.PlayerQuestData.First().InstanceId);
-            questData.SetObserveArea(questData.ObservePlayerQuestData.MainActorData.AreaId);
-            
             questManager.Initialize(questData);
+            questData.SetupPlayerQuestData();
         }
 
-        IEnumerator Start()
+        void Start()
         {
-            return questManager.StartQuest();
+            MessageBus.Instance.ManagerCommandSetObservePlayer.Broadcast(questData.PlayerQuestData.First().InstanceId);
         }
 
         void EndQuest()

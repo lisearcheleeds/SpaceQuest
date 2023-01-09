@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SandBox
 {
-    public class Line : MonoBehaviour, IPosition
+    public class Line : MonoBehaviour, IPositionData
     {
         [SerializeField] Transform arrow;
         [SerializeField] Vector3 direction;
@@ -12,7 +12,7 @@ namespace SandBox
         CollisionShapeLine line;
 
         public CollisionShape LineShape => line;
-        public int AreaId { get; } = 0;
+        public int? AreaId { get; } = null;
         public Vector3 Position => transform.position;
 
         void Awake()

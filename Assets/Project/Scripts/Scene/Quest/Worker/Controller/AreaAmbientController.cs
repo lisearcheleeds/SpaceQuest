@@ -31,7 +31,7 @@ namespace AloneSpace
             }
         }
 
-        public IEnumerator LoadArea()
+        public IEnumerator LoadArea(AreaData areaData)
         {
             var coroutines = new List<IEnumerator>();
 
@@ -42,7 +42,6 @@ namespace AloneSpace
                     target => Instantiate(target, ambientObjectParent)));
             }
             
-            // 次のエリアに引き継がないオブジェクトを削除
             foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
                 Destroy(loadedPlacedObject.gameObject);
@@ -50,14 +49,18 @@ namespace AloneSpace
             
             loadedPlacedObjects.Clear();
 
-            // 次のエリアで新規生成する必要があるオブジェクトを生成
-            coroutines.Add(AssetLoader.LoadAsync<Transform>(
-                questData.ObserveAreaData.PlacedObjectAsset,
-                target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
+            var placedObjectAsset = areaData?.PlacedObjectAsset;
+            if (placedObjectAsset != null)
+            {
+                coroutines.Add(AssetLoader.LoadAsync<Transform>(
+                    placedObjectAsset,
+                    target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
+            }
             
             yield return new ParallelCoroutine(coroutines);
             
-            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(questData.ObserveAreaData.Position);
+            // これどこかに移動
+            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(areaData.StarSystemPosition);
             
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)

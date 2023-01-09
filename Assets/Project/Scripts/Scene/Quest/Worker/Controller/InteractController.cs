@@ -14,40 +14,28 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.ManagerCommandStoreItem.AddListener(StoreItem);
+            MessageBus.Instance.ManagerCommandPickItem.AddListener(PickItem);
             MessageBus.Instance.ManagerCommandTransferItem.AddListener(TransferItem);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ManagerCommandStoreItem.RemoveListener(StoreItem);
+            MessageBus.Instance.ManagerCommandPickItem.RemoveListener(PickItem);
             MessageBus.Instance.ManagerCommandTransferItem.RemoveListener(TransferItem);
         }
 
-        void StoreItem(int areaId, InventoryData toInventory, ItemData itemData)
+        void PickItem(InventoryData toInventory, ItemInteractData pickItem)
         {
-            var insertableId = toInventory.VariableInventoryViewData.GetInsertableId(itemData);
+            var insertableId = toInventory.VariableInventoryViewData.GetInsertableId(pickItem.ItemData);
             if (insertableId.HasValue)
             {
                 // アイテムを格納
-                toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, itemData);
+                toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
                 MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId });
 
                 // エリアデータからアイテムを削除
-                var areaData = questData.StarSystemData.AreaData.First(areaData => areaData.AreaId == areaId);
-                foreach (var interactData in areaData.InteractData.ToArray())
-                {
-                    if (!(interactData is ItemInteractData interactItemData))
-                    {
-                        continue;
-                    }
-
-                    if (interactItemData.ItemData == itemData)
-                    {
-                        areaData.RemoveInteractData(interactItemData);
-                        return;
-                    }
-                }
+                var areaData = questData.StarSystemData.AreaData.First(x => x.AreaId == pickItem.AreaId);
+                areaData.RemoveInteractData(pickItem);
             }
             else
             {

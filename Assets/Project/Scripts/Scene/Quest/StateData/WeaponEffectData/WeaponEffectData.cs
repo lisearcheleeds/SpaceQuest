@@ -8,7 +8,7 @@ namespace AloneSpace
     {
         public Guid PlayerInstanceId => WeaponData.PlayerInstanceId;
         
-        public abstract int AreaId { get; protected set; }
+        public abstract int? AreaId { get; protected set; }
         public abstract Vector3 Position { get; protected set; }
         
         public Guid InstanceId { get; }

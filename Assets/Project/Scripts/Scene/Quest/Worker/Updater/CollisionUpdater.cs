@@ -48,15 +48,15 @@ namespace AloneSpace
             }
         }
 
-        void OnReceiveCollision(ICollisionData entryColiision, bool isEntry)
+        void OnReceiveCollision(ICollisionData entryCollision, bool isEntry)
         {
             if (isEntry)
             {
-                collisionList.Add(entryColiision);
+                collisionList.Add(entryCollision);
             }
             else
             {
-                collisionList.Remove(entryColiision);
+                collisionList.Remove(entryCollision);
             }
         }
     }

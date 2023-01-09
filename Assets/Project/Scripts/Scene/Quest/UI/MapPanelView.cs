@@ -10,6 +10,7 @@ namespace AloneSpace
         [SerializeField] RectTransform cellParent;
 
         QuestData questData;
+        AreaData observeAreaData;
 
         List<AreaDataCell> mapPanelCells = new List<AreaDataCell>();
         
@@ -40,15 +41,20 @@ namespace AloneSpace
                 if (i < questData.StarSystemData.AreaData.Length)
                 {
                     var areaData = questData.StarSystemData.AreaData[i];
-                    mapPanelCells[i].Apply(areaData, areaData.AreaId == questData.ObserveAreaData.AreaId, OnClickCell);
+                    mapPanelCells[i].Apply(areaData, areaData.AreaId == observeAreaData?.AreaId, OnClickCell);
                     
                     MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Broadcast(
                         CameraController.CameraType.CameraAmbient,
-                        areaData.Position,
+                        areaData.StarSystemPosition,
                         cellParent,
                         screenPos => mapPanelCells[i].UpdatePosition(screenPos));
                 }
             }
+        }
+
+        public void SetObserveAreaData(AreaData observeAreaData)
+        {
+            this.observeAreaData = observeAreaData;
         }
 
         void UpdatePosition()
@@ -58,7 +64,7 @@ namespace AloneSpace
                 var index = i;
                 MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Broadcast(
                     CameraController.CameraType.CameraAmbient,
-                    questData.StarSystemData.AreaData[index].Position,
+                    questData.StarSystemData.AreaData[index].StarSystemPosition,
                     cellParent,
                     screenPos => mapPanelCells[index].UpdatePosition(screenPos));
             }

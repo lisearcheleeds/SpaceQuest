@@ -7,19 +7,19 @@ namespace AloneSpace
     public abstract class CollisionShape
     {
         /// <summary>位置</summary>
-        public IPosition Position { get; }
+        public IPositionData PositionData { get; }
 
         public abstract bool CheckHit(CollisionShape hitCollision);
         
-        public abstract Vector3 GetOutwardVector(IPosition position);
+        public abstract Vector3 GetOutwardVector(IPositionData positionData);
 
-        protected CollisionShape(IPosition position)
+        protected CollisionShape(IPositionData positionData)
         {
-            Position = position;
+            PositionData = positionData;
         }
 
         // FIXME: すり抜け用のアレ
-        public bool CheckHit(CollisionShape hitCollision, IPosition tempPosition)
+        public bool CheckHit(CollisionShape hitCollision, IPositionData tempPositionData)
         {
             /*
             var tmp = Position;
@@ -39,25 +39,25 @@ namespace AloneSpace
         /// <summary>球体の大きさ</summary>
         public float Range { get; set; }
 
-        public CollisionShapeSphere(IPosition position, float range) : base(position)
+        public CollisionShapeSphere(IPositionData positionData, float range) : base(positionData)
         {
             Range = range;
         }
 
-        public override Vector3 GetOutwardVector(IPosition position)
+        public override Vector3 GetOutwardVector(IPositionData positionData)
         {
-            return (position.Position - Position.Position).normalized;
+            return (positionData.Position - PositionData.Position).normalized;
         }
 
         public override bool CheckHit(CollisionShape hitCollision)
         {
             // 当たり判定の相対ベクトル
-            var vp = Position.Position - hitCollision.Position.Position;
+            var vp = PositionData.Position - hitCollision.PositionData.Position;
 
             switch (hitCollision)
             {
                 case CollisionShapeSphere hitCollisionSphere:
-                    return (hitCollisionSphere.Position.Position - Position.Position).magnitude < (hitCollisionSphere.Range + Range);
+                    return (hitCollisionSphere.PositionData.Position - PositionData.Position).magnitude < (hitCollisionSphere.Range + Range);
 
                 case CollisionShapeLine hitCollisionLine:
                     var lineDot = Vector3.Dot(hitCollisionLine.Directon, vp);
@@ -70,7 +70,7 @@ namespace AloneSpace
 
                     // hitCollisionCone.Directon方向への仕事分
                     var dotLineValue = hitCollisionLine.Directon * Vector3.Dot(hitCollisionLine.Directon, vp);
-                    return (hitCollisionLine.Position.Position + dotLineValue - Position.Position).magnitude < (hitCollisionLine.Thickness + Range);
+                    return (hitCollisionLine.PositionData.Position + dotLineValue - PositionData.Position).magnitude < (hitCollisionLine.Thickness + Range);
 
                 case CollisionShapeCone hitCollisionCone:
                     var coneDot = Vector3.Dot(hitCollisionCone.Directon, vp);
@@ -83,7 +83,7 @@ namespace AloneSpace
 
                     // hitCollisionCone.Directon方向への仕事分
                     var dotConeValue = hitCollisionCone.Directon * Vector3.Dot(hitCollisionCone.Directon, vp);
-                    return (hitCollisionCone.Position.Position + dotConeValue - Position.Position).magnitude < (hitCollisionCone.ThicknessRatio * dotConeValue.magnitude) + Range;
+                    return (hitCollisionCone.PositionData.Position + dotConeValue - PositionData.Position).magnitude < (hitCollisionCone.ThicknessRatio * dotConeValue.magnitude) + Range;
             }
 
             return false;
@@ -98,15 +98,15 @@ namespace AloneSpace
         /// <summary>太さ</summary>
         public float Thickness { get; set; }
 
-        public CollisionShapeLine(IPosition position, Vector3 directon, float thickness) : base(position)
+        public CollisionShapeLine(IPositionData positionData, Vector3 directon, float thickness) : base(positionData)
         {
             Directon = directon;
             Thickness = thickness;
         }
         
-        public override Vector3 GetOutwardVector(IPosition position)
+        public override Vector3 GetOutwardVector(IPositionData positionData)
         {
-            var relativeDirection = (position.Position - Position.Position).normalized;
+            var relativeDirection = (positionData.Position - PositionData.Position).normalized;
             return Vector3.Cross(Vector3.Cross(relativeDirection, Directon), Directon) * -1;
         }
 
@@ -134,15 +134,15 @@ namespace AloneSpace
         /// <summary>コーンの角度（1を指定すると距離1に対して大きさ1で45度ぐらいになる？）</summary>
         public float ThicknessRatio { get; set; }
 
-        public CollisionShapeCone(IPosition position, Vector3 directon, float thicknessRatio) : base(position)
+        public CollisionShapeCone(IPositionData positionData, Vector3 directon, float thicknessRatio) : base(positionData)
         {
             Directon = directon;
             ThicknessRatio = thicknessRatio;
         }
                
-        public override Vector3 GetOutwardVector(IPosition position)
+        public override Vector3 GetOutwardVector(IPositionData positionData)
         {
-            var relativeDirection = (position.Position - Position.Position).normalized;
+            var relativeDirection = (positionData.Position - PositionData.Position).normalized;
             return Vector3.Cross(Vector3.Cross(relativeDirection, Directon), Directon) * -1;
         }
 

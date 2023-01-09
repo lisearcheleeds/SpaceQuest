@@ -32,57 +32,35 @@ namespace AloneSpace
 
             public AreaDataView(AreaData areaData)
             {
-                this.areaId = $"Area {areaData.AreaId}";
-                this.position = areaData.Position;
+                this.areaId = $"Area {areaData?.AreaId}";
+                this.position = areaData?.StarSystemPosition ?? Vector3.zero;
             }
         }
         
         [Serializable]
         public class ActorDataView
         {
-            [SerializeField] int currentArea;
+            [SerializeField] int? currentAreaId;
             
-            public ActorDataView(int currentArea)
+            public ActorDataView(int? currentAreaId)
             {
-                this.currentArea = currentArea;
+                this.currentAreaId = currentAreaId;
             }
         }
         
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
-            MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
-            UpdatePlayerQuestDataView();
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
         }
 
-        void SetObserveArea(int toAreaId)
+        [ContextMenu("BreakPoint")]
+        void BreakPoint()
         {
-            UpdatePlayerQuestDataView();
-        }
-
-        void UpdatePlayerQuestDataView()
-        {
-            // プレイヤー + ザコ敵分表示される
-            playerQuestDataView = questData.PlayerQuestData
-                .Select(playerQuestData =>
-                {
-                    var actorDataList = questData.ActorData.Where(actorData => actorData.PlayerInstanceId == playerQuestData.InstanceId);
-                    
-                    return new PlayerQuestDataView(
-                        playerQuestData.InstanceId,
-                        actorDataList.Select(x => new ActorDataView(x.AreaId)).ToArray());
-                }).ToArray();
-
-            areaDataView = questData.StarSystemData.AreaData.Select(areadata =>
-            {
-                return new AreaDataView(areadata);
-            }).ToArray();
+            Debug.Log("BreakPoint");
         }
     }
 }

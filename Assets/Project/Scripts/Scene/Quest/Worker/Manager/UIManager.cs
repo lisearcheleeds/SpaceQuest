@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace AloneSpace
@@ -43,6 +44,22 @@ namespace AloneSpace
         {
         }
 
+        public void OnLateUpdate()
+        {
+        }
+
+        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            interactionList.SetObservePlayerQuestData(playerQuestData);
+            inventoryView.SetObservePlayerQuestData(playerQuestData);
+        }
+        
+        public void SetObserveAreaData(AreaData areaData)
+        {
+            mapPanelView.SetObserveAreaData(areaData);
+            interactionList.SetObserveAreaData(areaData);
+        }
+
         void OnClickMap()
         {
             MessageBus.Instance.UserInputSwitchMap.Broadcast();
@@ -55,15 +72,7 @@ namespace AloneSpace
         
         void OnClickInventory()
         {
-            if (!inventoryView.IsOpen)
-            {
-                inventoryView.Open();
-                inventoryView.ApplyInventoryData(questData.ObservePlayerQuestData.MainActorData.InventoryDataList, true);
-            }
-            else
-            {
-                inventoryView.Close();   
-            }
+            MessageBus.Instance.UserInputSwitchInventory.Broadcast();
         }
     }
 }

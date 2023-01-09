@@ -6,6 +6,7 @@ namespace AloneSpace
 {
     public class MessageBus : MonoSingleton<MessageBus>
     {
+        // Data
         public MessageBusDefine.AddPlayerQuestData AddPlayerQuestData { get; } = new MessageBusDefine.AddPlayerQuestData();
         public MessageBusDefine.AddActorData AddActorData { get; } = new MessageBusDefine.AddActorData();
         public MessageBusDefine.RemoveActorData RemoveActorData { get; } = new MessageBusDefine.RemoveActorData();
@@ -17,17 +18,20 @@ namespace AloneSpace
         public MessageBusDefine.SendIntuition SendIntuition { get; } = new MessageBusDefine.SendIntuition();
         public MessageBusDefine.SendCollision SendCollision { get; } = new MessageBusDefine.SendCollision();
 
-        // QuestDataの変更通知
-        public MessageBusDefine.UpdateInteractData UpdateInteractData { get; } = new MessageBusDefine.UpdateInteractData();
+        // Util
+        public MessageBusDefine.UtilGetStarSystemPosition UtilGetStarSystemPosition { get; } = new MessageBusDefine.UtilGetStarSystemPosition();
+        public MessageBusDefine.UtilGetOffsetStarSystemPosition UtilGetOffsetStarSystemPosition { get; } = new MessageBusDefine.UtilGetOffsetStarSystemPosition();
+        public MessageBusDefine.UtilGetNearestAreaData UtilGetNearestAreaData { get; } = new MessageBusDefine.UtilGetNearestAreaData();
         
+        // プレイヤー設定
+        public MessageBusDefine.ManagerCommandSetObservePlayer ManagerCommandSetObservePlayer { get; } = new MessageBusDefine.ManagerCommandSetObservePlayer();
+        public MessageBusDefine.ManagerCommandLoadArea ManagerCommandLoadArea { get; } = new MessageBusDefine.ManagerCommandLoadArea();
+
         // イベント通知
         public MessageBusDefine.NoticeHitThreat NoticeHitThreat { get; } = new MessageBusDefine.NoticeHitThreat();
         public MessageBusDefine.NoticeHitCollision NoticeHitCollision { get; } = new MessageBusDefine.NoticeHitCollision();
         public MessageBusDefine.NoticeDamage NoticeDamage { get; } = new MessageBusDefine.NoticeDamage();
         public MessageBusDefine.NoticeBroken NoticeBroken { get; } = new MessageBusDefine.NoticeBroken();
-
-        // 間接的なユーザー操作メッセージ
-        public MessageBusDefine.SetObserveArea SetObserveArea { get; } = new MessageBusDefine.SetObserveArea();
 
         public MessageBusDefine.UserInputSwitchMap UserInputSwitchMap { get; } = new MessageBusDefine.UserInputSwitchMap(); 
         public MessageBusDefine.UserInputOpenMap UserInputOpenMap { get; } = new MessageBusDefine.UserInputOpenMap();
@@ -35,6 +39,9 @@ namespace AloneSpace
         public MessageBusDefine.UserInputSwitchInteractList UserInputSwitchInteractList { get; } = new MessageBusDefine.UserInputSwitchInteractList(); 
         public MessageBusDefine.UserInputOpenInteractList UserInputOpenInteractList { get; } = new MessageBusDefine.UserInputOpenInteractList();
         public MessageBusDefine.UserInputCloseInteractList UserInputCloseInteractList { get; } = new MessageBusDefine.UserInputCloseInteractList();
+        public MessageBusDefine.UserInputSwitchInventory UserInputSwitchInventory { get; } = new MessageBusDefine.UserInputSwitchInventory(); 
+        public MessageBusDefine.UserInputOpenInventory UserInputOpenInventory { get; } = new MessageBusDefine.UserInputOpenInventory();
+        public MessageBusDefine.UserInputCloseInventory UserInputCloseInventory { get; } = new MessageBusDefine.UserInputCloseInventory();
         
         // Userによるゲームコマンド（UIなど）
         public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
@@ -48,19 +55,18 @@ namespace AloneSpace
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
         
         // Playerによるゲームコマンド
+        public MessageBusDefine.PlayerCommandSetAreaId PlayerCommandSetAreaId { get; } = new MessageBusDefine.PlayerCommandSetAreaId();
         public MessageBusDefine.PlayerCommandSetMoveTarget PlayerCommandSetMoveTarget { get; } = new MessageBusDefine.PlayerCommandSetMoveTarget();
         public MessageBusDefine.PlayerCommandSetInteractOrder PlayerCommandSetInteractOrder { get; } = new MessageBusDefine.PlayerCommandSetInteractOrder();
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
         
-        // Managerによるゲームコマンド Actor周り
-        // ActorのArea移動
-        public MessageBusDefine.ManagerCommandTransitionActor ManagerCommandTransitionActor { get; } = new MessageBusDefine.ManagerCommandTransitionActor();
-        
         // ActorのItem収集
-        public MessageBusDefine.ManagerCommandStoreItem ManagerCommandStoreItem { get; } = new MessageBusDefine.ManagerCommandStoreItem();
+        public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();
         public MessageBusDefine.ManagerCommandTransferItem ManagerCommandTransferItem { get; } = new MessageBusDefine.ManagerCommandTransferItem();
         
         // Weapon
         public MessageBusDefine.ExecuteTriggerWeapon ExecuteTriggerWeapon { get; } = new MessageBusDefine.ExecuteTriggerWeapon();
+        
+        public MessageBusDefine.SetDirtyActorObjectList SetDirtyActorObjectList { get; } = new MessageBusDefine.SetDirtyActorObjectList();
     }
 }

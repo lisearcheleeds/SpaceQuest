@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] UIManager uiManager;
-        [SerializeField] AreaUpdater areaUpdater;
-        
+        [SerializeField] PlayerObserver playerObserver;
         [SerializeField] DebugViewer debugViewer;
-        
+
+        MessageController messageController = new MessageController();
         InteractController interactController = new InteractController();
         
         PlayerUpdater playerUpdater = new PlayerUpdater();
@@ -26,10 +22,10 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-
-            uiManager.Initialize(questData);
-            areaUpdater.Initialize(questData);
             
+            playerObserver.Initialize(questData);
+            
+            messageController.Initialize(questData);
             interactController.Initialize(questData);
             
             playerUpdater.Initialize(questData);
@@ -44,22 +40,13 @@ namespace AloneSpace
             MessageBus.Instance.AddPlayerQuestData.AddListener(AddPlayerQuestData);
             MessageBus.Instance.AddActorData.AddListener(AddActorData);
             MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
-            
-            MessageBus.Instance.SetObserveArea.AddListener(SetObserveArea);
-            
-            MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
-        }
-
-        public IEnumerator StartQuest()
-        {
-            return LoadArea();
         }
 
         public void FinishQuest()
         {
-            uiManager.Finalize();
-            areaUpdater.Finalize();
+            playerObserver.Finalize();
             
+            messageController.Finalize();
             interactController.Finalize();
             
             playerUpdater.Finalize();
@@ -74,15 +61,11 @@ namespace AloneSpace
             MessageBus.Instance.AddPlayerQuestData.RemoveListener(AddPlayerQuestData);
             MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
             MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
-            
-            MessageBus.Instance.SetObserveArea.RemoveListener(SetObserveArea);
-            
-            MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
         }
 
         void LateUpdate()
         {
-            areaUpdater.OnLateUpdate();
+            playerObserver.OnLateUpdate();
             
             playerUpdater.OnLateUpdate();
             actorUpdater.OnLateUpdate();
@@ -105,33 +88,6 @@ namespace AloneSpace
         void RemoveActorData(ActorData actorData)
         {
             questData.RemoveActorData(actorData);
-        }
-        
-        void SetObserveArea(int areaId)
-        {
-            questData.SetObserveArea(areaId);
-            
-            StartCoroutine(LoadArea());
-        }
-
-        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaId, int toAreaId)
-        {
-            actorData.SetAreaId(toAreaId);
-
-            if (questData.ObservePlayerQuestData.MainActorData.InstanceId == actorData.InstanceId)
-            {
-                MessageBus.Instance.SetObserveArea.Broadcast(toAreaId);
-            }
-        }
-
-        IEnumerator LoadArea()
-        {
-            yield return areaUpdater.LoadArea();
-            
-            var debugString = string.Join(',',
-                questData.PlayerQuestData.GroupBy(x => x.MainActorData.AreaId).OrderBy(x => x.Key)
-                    .Select(x => $"Area{x.Key}({x.Count()})"));
-            Debug.Log($"現在のArea{questData.ObserveAreaData.AreaId} {debugString}");
         }
     }
 }

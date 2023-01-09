@@ -19,7 +19,7 @@ namespace AloneSpace
             }
 
             var areaActorData = questData.ActorData
-                .Where(actorData => actorData.AreaId == playerQuestData.MainActorData.AreaId)
+                .Where(actorData => playerQuestData.MainActorData.AreaId.HasValue && playerQuestData.MainActorData.AreaId == actorData.AreaId)
                 .ToArray();
             
             var scavengerPlayer = questData.PlayerQuestData.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);

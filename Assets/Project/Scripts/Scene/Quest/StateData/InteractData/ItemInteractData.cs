@@ -10,12 +10,12 @@ namespace AloneSpace
         
         public Guid InstanceId { get; }
 
-        public int AreaId { get; }
+        public int? AreaId { get; }
         
         public Vector3 Position { get; set; }
         public string Text => ItemData.ItemVO.Text;
         public float InteractTime => 3.0f;
-        public InteractRestraintType InteractRestraintType => InteractRestraintType.CantMove;
+        public InteractRestraintType InteractRestraintType => InteractRestraintType.Angle;
         
         public ItemData ItemData { get; }
 
@@ -28,14 +28,14 @@ namespace AloneSpace
             Position = position;
         }
         
-        public Vector3 GetClosestPoint(IPosition position)
+        public Vector3 GetClosestPoint(IPositionData positionData)
         {
             return Position;
         }
 
-        public bool IsInteractionRange(IPosition position)
+        public bool IsInteractionRange(IPositionData positionData)
         {
-            return (position.Position - Position).magnitude < InteractionRange;
+            return (positionData.Position - Position).magnitude < InteractionRange;
         }
 
         public void SetPosition(Vector3 position)

@@ -72,9 +72,8 @@ namespace AloneSpace
             switch (actorData.ActorAIStateData.InteractOrder)
             {
                 case ItemInteractData itemInteractData:
-                    actorData.ActorAIStateData.InteractOrder = null;
                     var insertableInventory = actorData.InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
-                    MessageBus.Instance.ManagerCommandStoreItem.Broadcast(itemInteractData.AreaId, insertableInventory, itemInteractData.ItemData);
+                    MessageBus.Instance.ManagerCommandPickItem.Broadcast(insertableInventory, itemInteractData);
                     break;
                 case BrokenActorInteractData brokenActorInteractData:
                     throw new NotImplementedException();
@@ -82,7 +81,7 @@ namespace AloneSpace
                     // ユーザー操作待ち 相手のインベントリをUIでOpenする
                     throw new NotImplementedException();
                 case AreaInteractData areaInteractData:
-                    MessageBus.Instance.ManagerCommandTransitionActor.Broadcast(actorData, actorData.AreaId, areaInteractData.AreaId);
+                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, areaInteractData);
                     break;
             }
 

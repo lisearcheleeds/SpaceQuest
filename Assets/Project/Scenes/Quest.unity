@@ -221,9 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbc4cf200e744ff9c5f4ec8f50c03db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 763962892}
-  button: {fileID: 14694426}
-  tacticsType: 3
 --- !u!222 &14694429
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -590,6 +587,7 @@ GameObject:
   - component: {fileID: 157454364}
   - component: {fileID: 157454367}
   - component: {fileID: 157454368}
+  - component: {fileID: 157454369}
   m_Layer: 13
   m_Name: InteractionListView
   m_TagString: Untagged
@@ -616,7 +614,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -100, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &157454367
 MonoBehaviour:
@@ -667,6 +665,20 @@ MonoBehaviour:
     Easing: 24
   draggable: 1
   scrollbar: {fileID: 0}
+--- !u!114 &157454369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157454363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
 --- !u!1 &170907585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3390,9 +3402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbc4cf200e744ff9c5f4ec8f50c03db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 828556797}
-  button: {fileID: 988961953}
-  tacticsType: 2
 --- !u!222 &988961956
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3756,12 +3765,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8afd8483faeb43f88fa1720eb88b3371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closeButton: {fileID: 1642339733}
-  tacticsButtons:
-  - {fileID: 1154988616}
-  - {fileID: 1184891877}
-  - {fileID: 988961954}
-  - {fileID: 14694427}
 --- !u!1 &1122236721
 GameObject:
   m_ObjectHideFlags: 0
@@ -4122,9 +4125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbc4cf200e744ff9c5f4ec8f50c03db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 434239914}
-  button: {fileID: 1154988615}
-  tacticsType: 0
 --- !u!222 &1154988618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4230,9 +4230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cbc4cf200e744ff9c5f4ec8f50c03db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 426314123}
-  button: {fileID: 1184891876}
-  tacticsType: 1
 --- !u!222 &1184891879
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6357,6 +6354,7 @@ GameObject:
   - component: {fileID: 2073653833}
   - component: {fileID: 2073653834}
   - component: {fileID: 2073653836}
+  - component: {fileID: 2073653838}
   - component: {fileID: 2073653837}
   m_Layer: 0
   m_Name: EntryPoint
@@ -6407,8 +6405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759260c7da3e98146a32ba5211a5bddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 457452716}
-  areaUpdater: {fileID: 304588655}
+  playerObserver: {fileID: 2073653838}
   debugViewer: {fileID: 2073653837}
 --- !u!114 &2073653837
 MonoBehaviour:
@@ -6424,6 +6421,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerQuestDataView: []
   areaDataView: []
+--- !u!114 &2073653838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2073653832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8a6fb28179478ca16637eea63b40eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManager: {fileID: 457452716}
+  areaUpdater: {fileID: 304588655}
 --- !u!1 &2097643547
 GameObject:
   m_ObjectHideFlags: 0

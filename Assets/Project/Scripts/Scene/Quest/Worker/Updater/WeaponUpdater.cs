@@ -32,7 +32,7 @@ namespace AloneSpace
             foreach (var actorData in questData.ActorData)
             {
                 // FIXME: 他色々成約付けて処理軽くする
-                if (actorData.ActorState != ActorState.Running)
+                if (actorData.ActorState != ActorState.Alive)
                 {
                     continue;
                 }

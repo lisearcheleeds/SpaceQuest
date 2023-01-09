@@ -9,8 +9,6 @@ namespace AloneSpace
 {
     public class InventoryView : MonoBehaviour
     {
-        public bool IsOpen => gameObject.activeSelf;
-        
         [SerializeField] StandardCore inventoryCore;
         [SerializeField] InventoryDataView inventoryDataViewPrefab;
         [SerializeField] Button tabButtonPrefab;
@@ -33,26 +31,28 @@ namespace AloneSpace
         int? leftTabIndex;
 
         QuestData questData;
+
+        PlayerQuestData observePlayerQuestData;
         
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
             
             MessageBus.Instance.UserCommandUpdateInventory.AddListener(UserCommandUpdateInventory);
+            
+            MessageBus.Instance.UserInputSwitchInventory.AddListener(UserInputSwitchInventory);
+            MessageBus.Instance.UserInputOpenInventory.AddListener(UserInputOpenInventory);
+            MessageBus.Instance.UserInputCloseInventory.AddListener(UserInputCloseInventory);
+            
             inventoryCore.Initialize();
-            Close();
+            UserInputCloseInventory();
             
             closeMapButton.onClick.AddListener(OnClickClose);
         }
-
-        public void Open()
+        
+        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
         {
-            gameObject.SetActive(true);
-        }
-
-        public void Close()
-        {
-            gameObject.SetActive(false);
+            this.observePlayerQuestData = playerQuestData;
         }
         
         public void ApplyInventoryData(InventoryData[] data, bool isRight)
@@ -60,37 +60,20 @@ namespace AloneSpace
             if (isRight)
             {
                 rightData.Clear();
-            }
-            else
-            {
-                leftData.Clear();
-            }
-
-            AddInventoryData(data, isRight);
-        }
-
-        public void AddInventoryData(InventoryData[] data, bool isRight)
-        {
-            if (isRight)
-            {
                 rightData.Add(data);
             }
             else
             {
+                leftData.Clear();
                 leftData.Add(data);
             }
 
             UpdateView();
         }
 
-        void UserCommandUpdateInventory(Guid[] inventoryInstanceIds)
-        {
-            UpdateView();
-        }
-
         void UpdateView()
         {
-            if (!IsOpen)
+            if (!gameObject.activeSelf)
             {
                 return;
             }
@@ -161,7 +144,36 @@ namespace AloneSpace
 
         void OnClickClose()
         {
-            Close();
+            MessageBus.Instance.UserInputCloseInventory.Broadcast();
+        }
+
+        void UserCommandUpdateInventory(Guid[] inventoryInstanceIds)
+        {
+            UpdateView();
+        }
+
+        void UserInputSwitchInventory()
+        {
+            if (gameObject.activeSelf)
+            {
+                MessageBus.Instance.UserInputCloseInventory.Broadcast();
+            }
+            else
+            {
+                MessageBus.Instance.UserInputOpenInventory.Broadcast();
+            }
+        }
+
+        void UserInputOpenInventory()
+        {
+            gameObject.SetActive(true);
+            UpdateView();
+        }
+        
+        void UserInputCloseInventory()
+        {
+            gameObject.SetActive(false);
+            UpdateView();
         }
     }
 }

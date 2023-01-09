@@ -2,9 +2,9 @@
 
 namespace AloneSpace
 {
-    public interface IPosition
+    public interface IPositionData
     {
-        int AreaId { get; }
+        int? AreaId { get; }
         Vector3 Position { get; }
     }
 }

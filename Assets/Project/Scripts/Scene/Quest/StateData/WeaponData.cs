@@ -13,11 +13,11 @@ namespace AloneSpace
         
         public IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO { get; private set; }
 
-        public IPosition BasePosition { get; private set; }
+        public IPositionData BasePositionData { get; private set; }
         public Vector3 OffsetPosition { get; private set; }
         public Quaternion OffsetRotation { get; private set; }
 
-        public static WeaponData CreateData(Guid playerInstanceId, Guid actorInstanceId, IPosition basePosition, IActorPartsWeaponParameterVO actorPartsWeaponParameterVO)
+        public static WeaponData CreateData(Guid playerInstanceId, Guid actorInstanceId, IPositionData basePositionData, IActorPartsWeaponParameterVO actorPartsWeaponParameterVO)
         {
             WeaponData weaponData;
             
@@ -35,7 +35,7 @@ namespace AloneSpace
 
             weaponData.PlayerInstanceId = playerInstanceId;
             weaponData.ActorInstanceId = actorInstanceId;
-            weaponData.BasePosition = basePosition;
+            weaponData.BasePositionData = basePositionData;
             weaponData.ActorPartsWeaponParameterVO = actorPartsWeaponParameterVO;
             return weaponData;
         }

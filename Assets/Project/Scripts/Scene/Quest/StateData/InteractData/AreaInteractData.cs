@@ -5,28 +5,31 @@ namespace AloneSpace
 {
     public class AreaInteractData : IInteractData
     {
-        public Guid InstanceId => throw new NotSupportedException();
+        public Guid InstanceId { get; }
+
+        public int? AreaId => AreaData.AreaId;
         
-        public int AreaId => AreaData.AreaId;
-        
-        public Vector3 Position => AreaData.Position;
-        public string Text => AreaData.AreaId.ToString();
+        public Vector3 Position => Vector3.zero;
+        public string Text { get; }
         public float InteractTime => 3.0f;
-        public InteractRestraintType InteractRestraintType => InteractRestraintType.CantOtherAllAndCancel;
+        public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
         
         public AreaData AreaData { get; }
 
-        public AreaInteractData(AreaData areaData)
+        public AreaInteractData(AreaData areaData, AreaData fromAreaData)
         {
+            InstanceId = Guid.NewGuid();
             AreaData = areaData;
+
+            Text = $"Load to Area{areaData.AreaId} from {fromAreaData?.AreaId}";
         }
         
-        public Vector3 GetClosestPoint(IPosition position)
+        public Vector3 GetClosestPoint(IPositionData positionData)
         {
             throw new NotSupportedException();
         }
 
-        public bool IsInteractionRange(IPosition position)
+        public bool IsInteractionRange(IPositionData positionData)
         {
             return true;
         }

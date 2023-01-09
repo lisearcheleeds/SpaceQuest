@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -35,18 +36,20 @@ namespace AloneSpace
             interactObjectUpdater.Finalize();
         }
 
-        public IEnumerator LoadArea()
-        {
-            yield return areaAmbientController.LoadArea();
-            yield return actorObjectUpdater.LoadArea();
-            yield return interactObjectUpdater.LoadArea();
-        }
-
         public void OnLateUpdate()
         {
             cameraController.OnLateUpdate();
+            
             actorObjectUpdater.OnLateUpdate();
             interactObjectUpdater.OnLateUpdate();
+        }
+
+        public IEnumerator LoadArea(AreaData areaData)
+        {
+            yield return areaAmbientController.LoadArea(areaData);
+            
+            yield return actorObjectUpdater.LoadArea(areaData);
+            yield return interactObjectUpdater.LoadArea(areaData);
         }
     }
 }

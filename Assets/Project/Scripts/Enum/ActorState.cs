@@ -2,8 +2,7 @@
 {
     public enum ActorState
     {
-        None,
-        Running,
+        Alive,
         Broken,
     }
 }

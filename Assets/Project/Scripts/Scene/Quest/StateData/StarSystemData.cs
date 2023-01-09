@@ -28,13 +28,46 @@ namespace AloneSpace
                 .Select(areaPresetVO => new AreaData(areaPresetVO))
                 .ToArray();
 
+            for (var i = 0; i < AreaData.Length; i++)
+            {
+                for (var t = 0; t < AreaData.Length; t++)
+                {
+                    if (i == t)
+                    {
+                        continue;
+                    }
+
+                    AreaData[i].AddInteractData(new AreaInteractData(AreaData[t], AreaData[i]));
+                }
+            }
+
             areaScale = SpaceSize.magnitude;
         }
-        
-        public Vector3 GetOffsetPosition(IPosition toPosition, IPosition fromPosition)
+
+        public Vector3 GetStarSystemPosition(IPositionData positionData)
         {
-            var areaOffsetPosition = AreaData.First(x => x.AreaId == toPosition.AreaId).Position - AreaData.First(x => x.AreaId == fromPosition.AreaId).Position;
-            return areaOffsetPosition * areaScale + toPosition.Position - fromPosition.Position;
+            if (!positionData.AreaId.HasValue)
+            {
+                return positionData.Position;
+            }
+
+            return AreaData.First(x => x.AreaId == positionData.AreaId).StarSystemPosition + positionData.Position / areaScale;
+        }
+
+        public Vector3 GetOffsetStarSystemPosition(IPositionData fromPositionData, IPositionData toPositionData)
+        {
+            return GetStarSystemPosition(toPositionData) - GetStarSystemPosition(fromPositionData);
+        }
+        
+        public AreaData GetNearestAreaData(IPositionData positionData)
+        {
+            if (positionData.AreaId.HasValue)
+            {
+                return AreaData.First(x => x.AreaId == positionData.AreaId);
+            }
+
+            // positionData.AreaId.HasValue = falseの時、PositionはStarSystemPositionを指す
+            return AreaData.OrderBy(x => (x.StarSystemPosition - positionData.Position).sqrMagnitude).First();
         }
     }
 }

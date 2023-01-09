@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public interface ITargetData : IPosition
+    public interface ITargetData : IPositionData
     {
         Guid InstanceId { get; }
         bool IsAlive { get; }

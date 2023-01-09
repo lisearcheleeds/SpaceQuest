@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace AloneSpace
 {
@@ -12,29 +9,16 @@ namespace AloneSpace
         public List<PlayerQuestData> PlayerQuestData { get; } = new List<PlayerQuestData>();
         public List<ActorData> ActorData { get; } = new List<ActorData>();
 
-        public PlayerQuestData ObservePlayerQuestData { get; private set; }
-        public AreaData ObserveAreaData { get; private set; }
-
         public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
             StarSystemData = new StarSystemData(starSystemPresetVo);
         }
 
-        public void Initialize()
+        public void SetupPlayerQuestData()
         {
-            var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(10, StarSystemData.AreaData.Length);
+            var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(1, StarSystemData.AreaData);
             PlayerQuestData.AddRange(players);
             ActorData.AddRange(actors);
-        }
-
-        public void SetObservePlayer(Guid playerInstanceId)
-        {
-            ObservePlayerQuestData = PlayerQuestData.First(x => x.InstanceId == playerInstanceId);
-        }
-
-        public void SetObserveArea(int areaId)
-        {
-            ObserveAreaData = StarSystemData.AreaData.First(areaData => areaData.AreaId == areaId);
         }
 
         public void AddPlayerQuestData(PlayerQuestData playerQuestData)
@@ -50,11 +34,6 @@ namespace AloneSpace
         public void RemoveActorData(ActorData actorData)
         {
             ActorData.Remove(actorData);
-        }
-
-        public ActorData[] GetObservePlayerActors()
-        {
-            return ActorData.Where(x => ObservePlayerQuestData.InstanceId == x.PlayerInstanceId).ToArray();
         }
     }
 }

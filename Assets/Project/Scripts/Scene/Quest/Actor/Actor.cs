@@ -41,7 +41,7 @@ namespace AloneSpace
             Destroy(gameObject);
         }
 
-        void Update()
+        public void OnLateUpdate()
         {
             transform.position = ActorData.Position;
             transform.rotation = ActorData.Rotation;

@@ -8,13 +8,13 @@ namespace AloneSpace
     /// <summary>
     /// 宙域
     /// </summary>
-    public class AreaData : IPosition
+    public class AreaData
     {
         public int AreaId => areaPresetVO.AreaId;
         public Vector3 SpaceSize => areaPresetVO.SpaceSize;
-        public Vector3 Position => areaPresetVO.Position;
-        public AreaInteractData AreaInteractData { get; }
-        
+        public Vector3 StarSystemPosition => areaPresetVO.Position;
+
+        public AreaInteractData SpawnPoint { get; }
         public List<IInteractData> InteractData { get; } = new List<IInteractData>();
 
         public IAssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;
@@ -24,7 +24,8 @@ namespace AloneSpace
         public AreaData(AreaPresetVO areaPresetVO)
         {
             this.areaPresetVO = areaPresetVO;
-            this.AreaInteractData = new AreaInteractData(this);
+
+            SpawnPoint = new AreaInteractData(this, null);
 
             InteractData.AddRange(
                 Enumerable
@@ -41,13 +42,11 @@ namespace AloneSpace
         public void AddInteractData(IInteractData interactData)
         {
             InteractData.Add(interactData);
-            MessageBus.Instance.UpdateInteractData.Broadcast(AreaId, InteractData.ToArray());
         }
         
         public void RemoveInteractData(IInteractData interactData)
         {
             InteractData.Remove(interactData);
-            MessageBus.Instance.UpdateInteractData.Broadcast(AreaId, InteractData.ToArray());
         }
     }
 }

@@ -29,7 +29,7 @@ namespace AloneSpace
             public CellData(IInteractData interactData, bool isSelected, Func<IInteractData, string> getDistanceText)
             {
                 InteractData = interactData;
-                NameText = $"Area {interactData.AreaId}";
+                NameText = interactData.Text;
                 IsSelected = isSelected;
                 GetDistanceText = getDistanceText;
             }

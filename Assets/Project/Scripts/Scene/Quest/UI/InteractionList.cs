@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 
 namespace AloneSpace
@@ -8,6 +9,8 @@ namespace AloneSpace
         [SerializeField] InteractionListView interactionListView;
 
         QuestData questData;
+        PlayerQuestData observePlayerQuestData;
+        AreaData observeAreaData;
      
         InteractionListViewCell.CellData selectCellData;
         
@@ -24,19 +27,40 @@ namespace AloneSpace
 
         void Refresh()
         {
-            var cellData = questData.StarSystemData.AreaData
-                .Select(areaData => new InteractionListViewCell.CellData(
-                    areaData.AreaInteractData,
-                    selectCellData?.InteractData.AreaId == areaData.AreaId,
-                    GetDistanceText))
-                .ToArray();
+            var cellData = Array.Empty<InteractionListViewCell.CellData>();
+            if (observeAreaData != null)
+            {
+                cellData = observeAreaData.InteractData
+                    .Select(interactData => new InteractionListViewCell.CellData(
+                        interactData,
+                        interactData.InstanceId == selectCellData?.InteractData.InstanceId,
+                        GetDistanceText))
+                    .ToArray();
+            }
             
             interactionListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
             string GetDistanceText(IInteractData positionData)
             {
-                return $"{(questData.ObserveAreaData.Position - positionData.Position).magnitude * 1000.0f}m";
+                var res = "";
+                MessageBus.Instance.UtilGetOffsetStarSystemPosition.Broadcast(
+                    observePlayerQuestData.MainActorData,
+                    positionData,
+                    offsetStarSystemPosition => res = $"{offsetStarSystemPosition.magnitude * 1000.0f}m");
+                return res;
             }
+        }
+
+        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            this.observePlayerQuestData = playerQuestData;
+            Refresh();
+        }
+        
+        public void SetObserveAreaData(AreaData observeAreaData)
+        {
+            this.observeAreaData = observeAreaData;
+            Refresh();
         }
 
         void OnClickSelectCell(InteractionListViewCell.CellData cellData)
@@ -48,7 +72,7 @@ namespace AloneSpace
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
             MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(
-                questData.ObservePlayerQuestData.MainActorData,
+                observePlayerQuestData.MainActorData,
                 cellData.InteractData);
         }
         

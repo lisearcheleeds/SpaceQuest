@@ -12,8 +12,6 @@ namespace AloneSpace
     {
         public ActorAIState ActorAIState { get; set; }
 
-        public IPosition MoveTarget { get; set; }
-
         public IInteractData InteractOrder { get; set; }
         public float CurrentInteractingTime { get; set; }
 

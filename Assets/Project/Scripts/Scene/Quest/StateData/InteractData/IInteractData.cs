@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public interface IInteractData : IPosition
+    public interface IInteractData : IPositionData
     {
         Guid InstanceId { get; }
         string Text { get; }
@@ -12,8 +12,8 @@ namespace AloneSpace
 
         InteractRestraintType InteractRestraintType { get; }
 
-        Vector3 GetClosestPoint(IPosition position);
-        bool IsInteractionRange(IPosition position);
+        Vector3 GetClosestPoint(IPositionData positionData);
+        bool IsInteractionRange(IPositionData positionData);
         void SetPosition(Vector3 position);
     }
 }

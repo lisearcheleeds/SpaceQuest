@@ -8,15 +8,20 @@ namespace AloneSpace
     public class ActorObjectUpdater : IUpdater
     {
         MonoBehaviour coroutineWorker;
+        Coroutine currentCoroutine;
         
         QuestData questData;
         List<Actor> actors = new List<Actor>();
         Transform variableParent;
 
+        AreaData loadedAreaData;
+
+        bool isDirty;
+
         public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
         {
             MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
-            MessageBus.Instance.ManagerCommandTransitionActor.AddListener(ManagerCommandTransitionActor);
+            MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
 
             this.questData = questData;
             this.variableParent = variableParent;
@@ -26,21 +31,45 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
-            MessageBus.Instance.ManagerCommandTransitionActor.RemoveListener(ManagerCommandTransitionActor);
+            MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
         }
 
         public void OnLateUpdate()
         {
+            foreach (var actor in actors)
+            {
+                actor.OnLateUpdate();
+            }
+            
+            if (!isDirty)
+            {
+                return;
+            }
+
+            isDirty = false;
+            
+            if (currentCoroutine != null)
+            {
+                coroutineWorker.StopCoroutine(currentCoroutine);
+            }
+
+            currentCoroutine = coroutineWorker.StartCoroutine(RefreshInteractObject());
         }
         
-        public IEnumerator LoadArea()
+        public IEnumerator LoadArea(AreaData areaData)
         {
+            this.loadedAreaData = areaData;
             return RefreshInteractObject();
         }
 
-        public IEnumerator RefreshInteractObject()
+        IEnumerator RefreshInteractObject()
         {
-            var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == questData.ObserveAreaData.AreaId);
+            if (loadedAreaData == null)
+            {
+                yield break;
+            }
+
+            var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == loadedAreaData.AreaId);
 
             // オブジェクトを削除
             foreach (var actor in actors.ToArray())
@@ -69,6 +98,8 @@ namespace AloneSpace
             {
                 actor.transform.position += actor.ActorData.Position;
             }
+
+            currentCoroutine = null;
         }
 
         IEnumerator CreatePlayerActors(ActorData actorData)
@@ -78,7 +109,7 @@ namespace AloneSpace
                 variableParent,
                 actor =>
                 {
-                    actorData.SetActorState(ActorState.Running);
+                    actorData.SetActorState(ActorState.Alive);
                     actors.Add(actor);
                 });
         }
@@ -100,9 +131,9 @@ namespace AloneSpace
             }
         }
 
-        void ManagerCommandTransitionActor(ActorData actorData, int fromAreaId, int toAreaId)
+        void SetDirtyActorObjectList()
         {
-            coroutineWorker.StartCoroutine(RefreshInteractObject());
+            isDirty = true;
         }
 
         void DestroyActor(Actor target)

@@ -25,6 +25,7 @@ namespace AloneSpace
             MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
             
             MessageBus.Instance.PlayerCommandSetInteractOrder.AddListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
         }
@@ -39,6 +40,7 @@ namespace AloneSpace
             MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
             
             MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
         }
@@ -52,8 +54,7 @@ namespace AloneSpace
 
             var deltaTime = Time.deltaTime;
 
-            // modifiedになる可能性があるのでコピー ほんとはやめる
-            foreach (var actorData in questData.ActorData.ToArray())
+            foreach (var actorData in questData.ActorData)
             {
                 if (!updateTimeStamps.ContainsKey(actorData.InstanceId))
                 {
@@ -68,6 +69,15 @@ namespace AloneSpace
                     updateTimeStamps[actorData.InstanceId] = Time.time;
                 }
             }
+
+            // ダメージチェック
+            foreach (var actorData in questData.ActorData)
+            {
+                if (actorData.IsBroken)
+                {
+                    MessageBus.Instance.NoticeBroken.Broadcast(actorData);
+                }
+            }
         }
 
         void NoticeHitCollision(ICollisionData collision1, ICollisionData collision2)
@@ -78,14 +88,7 @@ namespace AloneSpace
 
         void NoticeDamage(ICauseDamageData causeDamageData, IDamageableData damageableData)
         {
-            var prevIsBroken = damageableData.IsBroken;
-            
             damageableData.OnDamage(new DamageData(causeDamageData, damageableData));
-
-            if (!prevIsBroken && damageableData.IsBroken)
-            {
-                MessageBus.Instance.NoticeBroken.Broadcast(damageableData);
-            }
         }
         
         void NoticeBroken(IDamageableData damageableData)
@@ -106,7 +109,7 @@ namespace AloneSpace
             
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
-            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData));
+            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId, actorData.Position));
         }
         
         void AddActorData(ActorData actorData)
@@ -126,7 +129,13 @@ namespace AloneSpace
             orderActor.SetInteractOrder(interactData);
         }
 
-        void PlayerCommandSetMoveTarget(ActorData orderActor, IPosition moveTarget)
+        void PlayerCommandSetAreaId(ActorData orderActor, int? areaId)
+        {
+            orderActor.SetAreaId(areaId);
+            MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
+        }
+
+        void PlayerCommandSetMoveTarget(ActorData orderActor, IPositionData moveTarget)
         {
             orderActor.SetMoveTarget(moveTarget);
         }

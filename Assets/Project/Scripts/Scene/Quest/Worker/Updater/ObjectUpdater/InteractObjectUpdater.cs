@@ -12,6 +12,8 @@ namespace AloneSpace
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
         
         QuestData questData;
+
+        AreaData loadedAreaData;
         
         public void Initialize(QuestData questData)
         {
@@ -26,14 +28,16 @@ namespace AloneSpace
         {
         }
         
-        public IEnumerator LoadArea()
+        public IEnumerator LoadArea(AreaData areaData)
         {
+            this.loadedAreaData = areaData;
+            
             return RefreshInteractObject();
         }
 
         public IEnumerator RefreshInteractObject()
         {
-            var interactData = questData.ObserveAreaData.InteractData;
+            var interactData = loadedAreaData.InteractData;
             
             // 不要なオブジェクトを消す
             foreach (var interactionObject in interactionObjectList.ToArray())
@@ -54,16 +58,23 @@ namespace AloneSpace
             yield return new WaitWhile(() => waitCount != waitCounter);
         }
 
-        void CreateInteractObject(QuestData questData, IInteractData interactData, Action onCreate = null)
+        void CreateInteractObject(QuestData questData, IInteractData interactData, Action onComplete)
         {
             var assetPathVO = interactData switch
             {
                 ItemInteractData _ => ConstantAssetPath.ItemObjectPathVO,
                 BrokenActorInteractData _ => ConstantAssetPath.BrokenActorObjectPathVO,
                 InventoryInteractData _ => ConstantAssetPath.InventoryObjectPathVO,
+                AreaInteractData _ => null,
                 _ => throw new NotImplementedException(),
             };
-            
+
+            if (assetPathVO == null)
+            {
+                onComplete();
+                return;
+            }
+
             GameObjectCache.Instance.GetAsset<InteractionObject>(
                 assetPathVO,
                 interactionObject =>
@@ -71,7 +82,7 @@ namespace AloneSpace
                     interactionObject.SetInteractData(interactData); 
                     interactionObject.IsActive = true;
                     interactionObjectList.Add(interactionObject);
-                    onCreate?.Invoke();
+                    onComplete();
                 });
         }
     }
