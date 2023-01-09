@@ -46,6 +46,7 @@ namespace AloneSpace
         public void ReleaseCache(CacheableGameObject usedAsset)
         {
             usedAsset.IsActive = false;
+            usedAsset.transform.SetParent(cacheRoot, false);
         }
 
         protected override void OnInitialize()

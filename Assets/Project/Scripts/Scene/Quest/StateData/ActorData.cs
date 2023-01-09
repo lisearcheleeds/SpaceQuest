@@ -61,13 +61,17 @@ namespace AloneSpace
                 // Warp中はStarSystem座標
                 MessageBus.Instance.UtilGetOffsetStarSystemPosition.Broadcast(this, MoveTarget, offsetStarSystemPosition =>
                 {
-                    Position = Position + offsetStarSystemPosition.normalized;
-
-                    if (offsetStarSystemPosition.magnitude < 1.0f)
+                    var distance = offsetStarSystemPosition.magnitude;
+                    // FIXME: スピード定義したら直す 今は1秒に2進む
+                    if (distance < deltaTime * 2.0f)
                     {
                         Position = MoveTarget.Position;
                         MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, MoveTarget.AreaId.Value);
-                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(this, null);
+                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(this, null); 
+                    }
+                    else
+                    {
+                        Position = Position + offsetStarSystemPosition.normalized * deltaTime * 2.0f;
                     }
                 });
             }

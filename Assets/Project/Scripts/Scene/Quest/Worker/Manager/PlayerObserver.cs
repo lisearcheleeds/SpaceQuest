@@ -47,6 +47,7 @@ namespace AloneSpace
             
             if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Warp)
             {
+                // ワープ中は一番近いエリアを常に見る
                 MessageBus.Instance.UtilGetNearestAreaData.Broadcast(
                     observePlayerQuestData.MainActorData,
                     nearestAreaData =>
@@ -68,15 +69,10 @@ namespace AloneSpace
 
         void ManagerCommandLoadArea(AreaData areaData)
         {
-            StartCoroutine(LoadArea(areaData));
-        }
-
-        IEnumerator LoadArea(AreaData areaData)
-        {
             currentAreaData = areaData;
-            uiManager.SetObserveAreaData(areaData);
             
-            yield return areaUpdater.LoadArea(areaData);
+            uiManager.SetObserveAreaData(areaData);
+            areaUpdater.SetObserveAreaData(areaData);
         }
     }
 }

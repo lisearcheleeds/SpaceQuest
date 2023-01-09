@@ -18,7 +18,7 @@ namespace AloneSpace
             InteractData.SetPosition(transform.position);
         }
 
-        void Update()
+        public void OnLateUpdate()
         {
             if (transform.hasChanged)
             {

@@ -1,14 +1,10 @@
 ﻿using System;
-using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class MessageBusDefine
     {
-        public class AddPlayerQuestData : MessageBusBroadcaster<PlayerQuestData>{}
-        public class AddActorData : MessageBusBroadcaster<ActorData>{}
-        public class RemoveActorData : MessageBusBroadcaster<ActorData>{}
         public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         
@@ -59,5 +55,6 @@ namespace AloneSpace
         public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, ITargetData, float>{}
         
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
+        public class SetDirtyInteractObjectList : MessageBusBroadcaster{}
     }
 }

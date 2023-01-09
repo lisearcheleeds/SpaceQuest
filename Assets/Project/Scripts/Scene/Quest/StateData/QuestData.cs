@@ -20,20 +20,5 @@ namespace AloneSpace
             PlayerQuestData.AddRange(players);
             ActorData.AddRange(actors);
         }
-
-        public void AddPlayerQuestData(PlayerQuestData playerQuestData)
-        {
-            PlayerQuestData.Add(playerQuestData);
-        }
-
-        public void AddActorData(ActorData actorData)
-        {
-            ActorData.Add(actorData);
-        }
-
-        public void RemoveActorData(ActorData actorData)
-        {
-            ActorData.Remove(actorData);
-        }
     }
 }

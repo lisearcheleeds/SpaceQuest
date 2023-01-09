@@ -9,7 +9,8 @@ namespace AloneSpace
 {
     public class PlayerUpdater : IUpdater
     {
-        static readonly float UpdateInterval = 3.0f;
+        // 1秒間に更新を行うレート
+        static readonly float TickRate = 1.0f / 1.0f;
         
         QuestData questData;
 
@@ -34,29 +35,19 @@ namespace AloneSpace
                 return;
             }
 
-            var deltaTime = Time.deltaTime;
-
-            // modifiedになる可能性があるのでコピー
-            foreach (var key in updateTimeStamps.Keys.ToArray())
+            foreach (var playerQuestData in questData.PlayerQuestData)
             {
-                if (!updateTimeStamps.ContainsKey(key))
+                if (!updateTimeStamps.ContainsKey(playerQuestData.InstanceId))
                 {
-                    updateTimeStamps[key] = Time.time - UpdateInterval - 1.0f;
+                    updateTimeStamps[playerQuestData.InstanceId] = Time.time - TickRate - 1.0f;
                 }
 
-                if (updateTimeStamps[key] < Time.time - UpdateInterval)
+                if (updateTimeStamps[playerQuestData.InstanceId] < Time.time - TickRate)
                 {
-                    updateTimeStamps[key] = Time.time;
+                    updateTimeStamps[playerQuestData.InstanceId] = Time.time;
                     
-                    PlayerAI.Update(questData, questData.PlayerQuestData.First(x => x.InstanceId == key));
+                    PlayerAI.Update(questData, playerQuestData);
                 }
-            }
-            
-            // modifiedになる可能性があるのでコピー
-            foreach (var actorData in questData.ActorData.ToArray())
-            {
-                actorData.Update(deltaTime);
-                ActorAI.Update(questData, actorData, deltaTime);
             }
         }
 

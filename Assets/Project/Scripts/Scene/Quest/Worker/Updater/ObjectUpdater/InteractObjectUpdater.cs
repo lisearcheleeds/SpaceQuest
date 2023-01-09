@@ -1,43 +1,70 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class InteractObjectUpdater : IUpdater
     {
+        QuestData questData;
+        
+        MonoBehaviour coroutineWorker;
+        Coroutine currentCoroutine;
+        Transform variableParent;
+        AreaData currentAreaData;
+        bool isDirty;
+        
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
         
-        QuestData questData;
-
-        AreaData loadedAreaData;
-        
-        public void Initialize(QuestData questData)
+        public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
         {
             this.questData = questData;
+            this.variableParent = variableParent;
+            this.coroutineWorker = coroutineWorker;
+            
+            MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
         }
 
         public void Finalize()
         {
+            MessageBus.Instance.SetDirtyInteractObjectList.RemoveListener(SetDirtyInteractObjectList);
         }
 
         public void OnLateUpdate()
         {
+            if (isDirty)
+            {
+                isDirty = false;
+            
+                if (currentCoroutine != null)
+                {
+                    coroutineWorker.StopCoroutine(currentCoroutine);
+                }
+
+                currentCoroutine = coroutineWorker.StartCoroutine(Refresh());
+            }
+            
+            foreach (var interactionObject in interactionObjectList)
+            {
+                interactionObject.OnLateUpdate();
+            }
         }
         
-        public IEnumerator LoadArea(AreaData areaData)
+        public void SetObserveAreaData(AreaData areaData)
         {
-            this.loadedAreaData = areaData;
-            
-            return RefreshInteractObject();
+            this.currentAreaData = areaData;
+            SetDirtyInteractObjectList();
         }
 
-        public IEnumerator RefreshInteractObject()
+        IEnumerator Refresh()
         {
-            var interactData = loadedAreaData.InteractData;
+            if (currentAreaData == null)
+            {
+                yield break;
+            }
+
+            var interactData = currentAreaData.InteractData;
             
             // 不要なオブジェクトを消す
             foreach (var interactionObject in interactionObjectList.ToArray())
@@ -81,9 +108,15 @@ namespace AloneSpace
                 {
                     interactionObject.SetInteractData(interactData); 
                     interactionObject.IsActive = true;
+                    interactionObject.transform.SetParent(variableParent, false);
                     interactionObjectList.Add(interactionObject);
                     onComplete();
                 });
+        }
+
+        void SetDirtyInteractObjectList()
+        {
+            isDirty = true;
         }
     }
 }

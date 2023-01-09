@@ -7,69 +7,64 @@ namespace AloneSpace
 {
     public class ActorObjectUpdater : IUpdater
     {
+        QuestData questData;
+        
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
-        
-        QuestData questData;
-        List<Actor> actors = new List<Actor>();
         Transform variableParent;
-
-        AreaData loadedAreaData;
-
+        AreaData currentAreaData;
         bool isDirty;
+        
+        List<Actor> actors = new List<Actor>();
 
         public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
         {
-            MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
-            MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
-
             this.questData = questData;
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
+            
+            MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
             MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
         }
 
         public void OnLateUpdate()
         {
+            if (isDirty)
+            {
+                isDirty = false;
+            
+                if (currentCoroutine != null)
+                {
+                    coroutineWorker.StopCoroutine(currentCoroutine);
+                }
+
+                currentCoroutine = coroutineWorker.StartCoroutine(Refresh());
+            }
+            
             foreach (var actor in actors)
             {
                 actor.OnLateUpdate();
             }
-            
-            if (!isDirty)
-            {
-                return;
-            }
-
-            isDirty = false;
-            
-            if (currentCoroutine != null)
-            {
-                coroutineWorker.StopCoroutine(currentCoroutine);
-            }
-
-            currentCoroutine = coroutineWorker.StartCoroutine(RefreshInteractObject());
         }
         
-        public IEnumerator LoadArea(AreaData areaData)
+        public void SetObserveAreaData(AreaData areaData)
         {
-            this.loadedAreaData = areaData;
-            return RefreshInteractObject();
+            this.currentAreaData = areaData;
+            SetDirtyActorObjectList();
         }
 
-        IEnumerator RefreshInteractObject()
+        IEnumerator Refresh()
         {
-            if (loadedAreaData == null)
+            if (currentAreaData == null)
             {
                 yield break;
             }
 
-            var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == loadedAreaData.AreaId);
+            var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == currentAreaData.AreaId);
 
             // オブジェクトを削除
             foreach (var actor in actors.ToArray())
@@ -92,13 +87,6 @@ namespace AloneSpace
             }
 
             yield return new ParallelCoroutine(coroutines);
-            
-            // エリアの周辺のオブジェクトの位置調整
-            foreach (var actor in actors)
-            {
-                actor.transform.position += actor.ActorData.Position;
-            }
-
             currentCoroutine = null;
         }
 
@@ -107,39 +95,18 @@ namespace AloneSpace
             yield return Actor.CreateActor(
                 actorData,
                 variableParent,
-                actor =>
-                {
-                    actorData.SetActorState(ActorState.Alive);
-                    actors.Add(actor);
-                });
-        }
-
-        void NoticeBroken(IDamageableData damageableData)
-        {
-            if (!(damageableData is ActorData actorData))
-            {
-                return;
-            }
-
-            foreach (var actor in actors)
-            {
-                if (actor.InstanceId == actorData.InstanceId)
-                {
-                    DestroyActor(actor);
-                    break;
-                }
-            }
-        }
-
-        void SetDirtyActorObjectList()
-        {
-            isDirty = true;
+                actor => actors.Add(actor));
         }
 
         void DestroyActor(Actor target)
         {
             target.DestroyActor();
             actors.Remove(target);
+        }
+
+        void SetDirtyActorObjectList()
+        {
+            isDirty = true;
         }
     }
 }

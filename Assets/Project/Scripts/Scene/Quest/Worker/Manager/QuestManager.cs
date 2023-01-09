@@ -36,10 +36,6 @@ namespace AloneSpace
             weaponEffectUpdater.Initialize();
                 
             debugViewer.Initialize(questData);
-            
-            MessageBus.Instance.AddPlayerQuestData.AddListener(AddPlayerQuestData);
-            MessageBus.Instance.AddActorData.AddListener(AddActorData);
-            MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
         }
 
         public void FinishQuest()
@@ -57,10 +53,6 @@ namespace AloneSpace
             weaponEffectUpdater.Finalize();
             
             debugViewer.Finalize();
-            
-            MessageBus.Instance.AddPlayerQuestData.RemoveListener(AddPlayerQuestData);
-            MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
-            MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
         }
 
         void LateUpdate()
@@ -73,21 +65,6 @@ namespace AloneSpace
             threatUpdater.OnLateUpdate();
             weaponUpdater.OnLateUpdate();
             weaponEffectUpdater.OnLateUpdate();
-        }
-        
-        void AddPlayerQuestData(PlayerQuestData playerQuestData)
-        {
-            questData.AddPlayerQuestData(playerQuestData);
-        }
-        
-        void AddActorData(ActorData actorData)
-        {
-            questData.AddActorData(actorData);
-        }
-
-        void RemoveActorData(ActorData actorData)
-        {
-            questData.RemoveActorData(actorData);
         }
     }
 }

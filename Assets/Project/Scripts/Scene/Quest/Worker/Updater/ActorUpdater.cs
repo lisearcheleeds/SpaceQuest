@@ -7,7 +7,8 @@ namespace AloneSpace
 {
     public class ActorUpdater : IUpdater
     {
-        static readonly float UpdateInterval = 3.0f;
+        // 1秒間に更新を行うレート
+        static readonly float TickRate = 0.1f / 1.0f;
         
         QuestData questData;
 
@@ -21,9 +22,6 @@ namespace AloneSpace
             MessageBus.Instance.NoticeDamage.AddListener(NoticeDamage);
             MessageBus.Instance.NoticeBroken.AddListener(NoticeBroken);
             
-            MessageBus.Instance.AddActorData.AddListener(AddActorData);
-            MessageBus.Instance.RemoveActorData.AddListener(RemoveActorData);
-            
             MessageBus.Instance.PlayerCommandSetInteractOrder.AddListener(PlayerCommandSetInteractOrder);
             MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
@@ -35,9 +33,6 @@ namespace AloneSpace
             MessageBus.Instance.NoticeHitCollision.RemoveListener(NoticeHitCollision);
             MessageBus.Instance.NoticeDamage.RemoveListener(NoticeDamage);
             MessageBus.Instance.NoticeBroken.RemoveListener(NoticeBroken);
-            
-            MessageBus.Instance.AddActorData.RemoveListener(AddActorData);
-            MessageBus.Instance.RemoveActorData.RemoveListener(RemoveActorData);
             
             MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
             MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
@@ -52,21 +47,20 @@ namespace AloneSpace
                 return;
             }
 
-            var deltaTime = Time.deltaTime;
-
             foreach (var actorData in questData.ActorData)
             {
                 if (!updateTimeStamps.ContainsKey(actorData.InstanceId))
                 {
-                    updateTimeStamps[actorData.InstanceId] = Time.time - UpdateInterval - 1.0f;
+                    updateTimeStamps[actorData.InstanceId] = Time.time - TickRate - 1.0f;
                 }
 
-                if (updateTimeStamps[actorData.InstanceId] < Time.time - UpdateInterval)
+                if (updateTimeStamps[actorData.InstanceId] < Time.time - TickRate)
                 {
+                    var deltaTime = Time.time - updateTimeStamps[actorData.InstanceId];
+                    updateTimeStamps[actorData.InstanceId] += deltaTime;
+                    
                     actorData.Update(deltaTime);
                     ActorAI.Update(questData, actorData, deltaTime);
-
-                    updateTimeStamps[actorData.InstanceId] = Time.time;
                 }
             }
 
@@ -110,18 +104,9 @@ namespace AloneSpace
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
             areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId, actorData.Position));
-        }
-        
-        void AddActorData(ActorData actorData)
-        {
-            // 中継するだけ
-            MessageBus.Instance.SendCollision.Broadcast(actorData, true);
-        }
-
-        void RemoveActorData(ActorData actorData)
-        {
-            // 中継するだけ
-            MessageBus.Instance.SendCollision.Broadcast(actorData, false);
+            
+            // 更新
+            MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
         }
         
         void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)

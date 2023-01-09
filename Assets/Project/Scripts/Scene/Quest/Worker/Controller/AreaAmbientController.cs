@@ -16,6 +16,10 @@ namespace AloneSpace
         QuestData questData;
 
         List<Transform> loadedPlacedObjects = new List<Transform>();
+
+        bool isDirty;
+        Coroutine currentCoroutine;
+        AreaData currentAreaData;
         
         public void Initialize(QuestData questData)
         {
@@ -31,7 +35,28 @@ namespace AloneSpace
             }
         }
 
-        public IEnumerator LoadArea(AreaData areaData)
+        public void OnLateUpdate()
+        {
+            if (isDirty)
+            {
+                isDirty = false;
+            
+                if (currentCoroutine != null)
+                {
+                    StopCoroutine(currentCoroutine);
+                }
+
+                currentCoroutine = StartCoroutine(Refresh());
+            }
+        }
+
+        public void SetObserveAreaData(AreaData areaData)
+        {
+            currentAreaData = areaData;
+            isDirty = true;
+        }
+
+        IEnumerator Refresh()
         {
             var coroutines = new List<IEnumerator>();
 
@@ -49,7 +74,7 @@ namespace AloneSpace
             
             loadedPlacedObjects.Clear();
 
-            var placedObjectAsset = areaData?.PlacedObjectAsset;
+            var placedObjectAsset = currentAreaData?.PlacedObjectAsset;
             if (placedObjectAsset != null)
             {
                 coroutines.Add(AssetLoader.LoadAsync<Transform>(
@@ -60,7 +85,7 @@ namespace AloneSpace
             yield return new ParallelCoroutine(coroutines);
             
             // これどこかに移動
-            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(areaData.StarSystemPosition);
+            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(currentAreaData.StarSystemPosition);
             
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)
