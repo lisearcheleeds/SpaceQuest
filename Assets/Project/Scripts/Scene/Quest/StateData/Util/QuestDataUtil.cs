@@ -31,8 +31,8 @@ namespace AloneSpace
             specData.Setup(bp);
             
             var actorData = new ActorData(specData, playerQuestData.InstanceId);
-            MessageBus.Instance.UtilGetStarSystemPosition.Broadcast(areaData.SpawnPoint, starSystemPosition => actorData.Position = starSystemPosition);
-            actorData.SetMoveTarget(areaData.SpawnPoint);
+            MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, areaData.AreaId);
+            actorData.Position = areaData.SpawnPoint.Position;
             return actorData;
         }
     }

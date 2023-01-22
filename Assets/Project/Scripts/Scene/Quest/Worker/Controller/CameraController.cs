@@ -23,7 +23,7 @@ namespace AloneSpace
         Quaternion targetQuaternion = Quaternion.identity;
         Quaternion currentQuaternion = Quaternion.identity;
 
-        Vector3 targetAmbientCameraPosition = Vector3.zero;
+        IPositionData trackingTarget;
         
         public enum CameraMode
         {
@@ -44,7 +44,8 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
 
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
-            MessageBus.Instance.UserCommandSetAmbientCameraPosition.AddListener(UserCommandSetAmbientCameraPosition);
+            
+            MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.AddListener(UserCommandGetWorldToCanvasPoint);
         }
 
@@ -53,12 +54,30 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.RemoveListener(UserCommandSetCameraMode);
             
             MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
-            MessageBus.Instance.UserCommandSetAmbientCameraPosition.RemoveListener(UserCommandSetAmbientCameraPosition);
+            
+            MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.RemoveListener(UserCommandGetWorldToCanvasPoint);
         }
 
         public void OnLateUpdate()
         {
+            var target3dCameraPosition = Vector3.zero;
+            var targetAmbientCameraPosition = Vector3.zero;
+            if (trackingTarget != null)
+            {
+                target3dCameraPosition = trackingTarget.Position;
+                if (trackingTarget.AreaId.HasValue)
+                {
+                    MessageBus.Instance.UtilGetAreaData.Broadcast(
+                        trackingTarget.AreaId.Value,
+                        areaData => targetAmbientCameraPosition = areaData.StarSystemPosition);
+                }
+                else
+                {
+                    targetAmbientCameraPosition = trackingTarget.Position;
+                }
+            }
+         
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);
             
             currentQuaternion = Quaternion.Lerp(GetCameraAngleQuaternion(beforeCameraMode), GetCameraAngleQuaternion(currentCameraMode), cameraModeLerpRatio);
@@ -92,8 +111,8 @@ namespace AloneSpace
             {
                 return cameraMode switch
                 {
-                    CameraMode.Default => currentQuaternion * new Vector3(0, 0, -35f),
-                    CameraMode.Map => cameraAmbient.transform.position * 100.0f,
+                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, -35f),
+                    CameraMode.Map => -targetAmbientCameraPosition * 100.0f,
                 };
             }
         }
@@ -114,9 +133,9 @@ namespace AloneSpace
             targetQuaternion = Quaternion.AngleAxis(targetAngle.x, Vector3.up) * Quaternion.AngleAxis(targetAngle.y, Vector3.right);
         }
 
-        void UserCommandSetAmbientCameraPosition(Vector3 position)
+        void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)
         {
-            targetAmbientCameraPosition = position;
+            trackingTarget = cameraTrackTarget;
         }
 
         void UserCommandGetWorldToCanvasPoint(CameraType cameraType, Vector3 worldPos, RectTransform rectTransform, Action<Vector3?> callback)

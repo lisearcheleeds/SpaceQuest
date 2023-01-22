@@ -45,6 +45,11 @@ namespace AloneSpace
             interactObjectUpdater.OnLateUpdate();
         }
 
+        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            actorObjectUpdater.SetObservePlayerQuestData(playerQuestData);
+        }
+
         public void SetObserveAreaData(AreaData areaData)
         {
             areaAmbientController.SetObserveAreaData(areaData);

@@ -8,7 +8,7 @@ namespace AloneSpace
     public class ActorUpdater : IUpdater
     {
         // 1秒間に更新を行うレート
-        static readonly float TickRate = 0.1f / 1.0f;
+        static readonly float TickRate = 0.0f;//0.1f / 1.0f;
         
         QuestData questData;
 
@@ -103,7 +103,7 @@ namespace AloneSpace
             
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
-            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId, actorData.Position));
+            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId.Value, actorData.Position));
             
             // 更新
             MessageBus.Instance.SetDirtyActorObjectList.Broadcast();

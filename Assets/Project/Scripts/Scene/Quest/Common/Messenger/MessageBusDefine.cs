@@ -12,12 +12,10 @@ namespace AloneSpace
         public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
         public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
         
-        public class UtilGetStarSystemPosition : MessageBusBroadcaster<IPositionData, Action<Vector3>>{}
-        public class UtilGetOffsetStarSystemPosition : MessageBusBroadcaster<IPositionData, IPositionData, Action<Vector3>>{}
-        public class UtilGetNearestAreaData : MessageBusBroadcaster<IPositionData, Action<AreaData>>{}
+        public class UtilGetAreaData : MessageBusBroadcaster<int, Action<AreaData>>{}
         
         public class ManagerCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
-        public class ManagerCommandLoadArea : MessageBusBroadcaster<AreaData>{}
+        public class ManagerCommandLoadArea : MessageBusBroadcaster<int?>{}
         
         public class NoticeHitThreat : MessageBusBroadcaster<IThreatData, ICollisionData>{}
         public class NoticeHitCollision : MessageBusBroadcaster<ICollisionData, ICollisionData>{}
@@ -41,7 +39,7 @@ namespace AloneSpace
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         
-        public class UserCommandSetAmbientCameraPosition : MessageBusBroadcaster<Vector3>{}
+        public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusBroadcaster<CameraController.CameraType, Vector3, RectTransform, Action<Vector3?>>{}
         
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}

@@ -47,32 +47,30 @@ namespace AloneSpace
             
             if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Warp)
             {
-                // ワープ中は一番近いエリアを常に見る
-                MessageBus.Instance.UtilGetNearestAreaData.Broadcast(
-                    observePlayerQuestData.MainActorData,
-                    nearestAreaData =>
-                    {
-                        if (currentAreaData == null || currentAreaData.AreaId != nearestAreaData.AreaId)
-                        {
-                            MessageBus.Instance.ManagerCommandLoadArea.Broadcast(nearestAreaData);
-                        }
-                    });
+                if (observePlayerQuestData.MainActorData.AreaId != currentAreaData?.AreaId)
+                {
+                    MessageBus.Instance.ManagerCommandLoadArea.Broadcast(observePlayerQuestData.MainActorData.AreaId);
+                }
             }
         }
         
         void ManagerCommandSetObservePlayer(Guid playerInstanceId)
         {
-            observePlayerQuestData = questData.PlayerQuestData.FirstOrDefault(x => x.InstanceId == playerInstanceId);
+            observePlayerQuestData = questData.PlayerQuestData.First(x => x.InstanceId == playerInstanceId);
             
             uiManager.SetObservePlayerQuestData(observePlayerQuestData);
+            areaUpdater.SetObservePlayerQuestData(observePlayerQuestData);
+            
+            MessageBus.Instance.ManagerCommandLoadArea.Broadcast(observePlayerQuestData.MainActorData.AreaId);
+            MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(observePlayerQuestData.MainActorData);
         }
 
-        void ManagerCommandLoadArea(AreaData areaData)
+        void ManagerCommandLoadArea(int? areaId)
         {
-            currentAreaData = areaData;
+            currentAreaData = questData.StarSystemData.AreaData.FirstOrDefault(x => x.AreaId == areaId);
             
-            uiManager.SetObserveAreaData(areaData);
-            areaUpdater.SetObserveAreaData(areaData);
+            uiManager.SetObserveAreaData(currentAreaData);
+            areaUpdater.SetObserveAreaData(currentAreaData);
         }
     }
 }

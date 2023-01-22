@@ -12,7 +12,7 @@ namespace AloneSpace
 
         AreaMaster.Row areaMaster;
         
-        public AreaPresetVO(AreaMaster.Row areaMaster)
+        public AreaPresetVO(StarSystemMaster.Row starSystemMaster, AreaMaster.Row areaMaster)
         {
             this.areaMaster = areaMaster;
             PlacedObjectAsset = PlacedObjectAssetMaster.Instance.Get(areaMaster.PlacedObjectAssetId);
@@ -25,9 +25,9 @@ namespace AloneSpace
             else
             {
                 Position = new Vector3(
-                    Random.Range(-SpaceSize.x, SpaceSize.x), 
-                    Random.Range(-SpaceSize.y, SpaceSize.y),
-                    Random.Range(-SpaceSize.z, SpaceSize.z));
+                    Random.Range(-starSystemMaster.SpaceSizeX, starSystemMaster.SpaceSizeX), 
+                    Random.Range(-starSystemMaster.SpaceSizeY, starSystemMaster.SpaceSizeY),
+                    Random.Range(-starSystemMaster.SpaceSizeZ, starSystemMaster.SpaceSizeZ));
             }
         }
     }

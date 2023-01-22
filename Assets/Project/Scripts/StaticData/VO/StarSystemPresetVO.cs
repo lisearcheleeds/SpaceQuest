@@ -21,7 +21,7 @@ namespace AloneSpace
             var areaMasters = AreaMaster.Instance.GetRange(id);
 
             AreaPresetVOs = areaMasters
-                .Select(areaMaster => new AreaPresetVO(areaMaster))
+                .Select(areaMaster => new AreaPresetVO(starSystemMaster, areaMaster))
                 .ToArray();
             AmbientObjectAsset = AmbientObjectAssetMaster.Instance.Get(starSystemMaster.AmbientObjectAssetId);
             

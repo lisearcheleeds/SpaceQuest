@@ -40,14 +40,49 @@ namespace AloneSpace
             
             interactionListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
-            string GetDistanceText(IInteractData positionData)
+            string GetDistanceText(IInteractData targetData)
             {
-                var res = "";
-                MessageBus.Instance.UtilGetOffsetStarSystemPosition.Broadcast(
-                    observePlayerQuestData.MainActorData,
-                    positionData,
-                    offsetStarSystemPosition => res = $"{offsetStarSystemPosition.magnitude * 1000.0f}m");
-                return res;
+                if (observePlayerQuestData.MainActorData.AreaId == targetData.AreaId)
+                {
+                    // 同一エリア内
+                    return $"{(targetData.Position - observePlayerQuestData.MainActorData.Position).magnitude * 1000.0f}m";
+                }
+
+                if (observePlayerQuestData.MainActorData.AreaId.HasValue)
+                {
+                    // 移動中
+                    string res = "";
+                    MessageBus.Instance.UtilGetAreaData.Broadcast(
+                        targetData.AreaId.Value,
+                        targetAreaData =>
+                        {
+                            var offsetPosition = targetAreaData.StarSystemPosition - observePlayerQuestData.MainActorData.Position;
+                            res = $"{offsetPosition.magnitude * 1000.0f}m";                                                        
+                        });
+                    return res;
+                }
+
+                if (observePlayerQuestData.MainActorData.AreaId != targetData.AreaId)
+                {
+                    // 違うエリア内
+                    string res = "";
+                    MessageBus.Instance.UtilGetAreaData.Broadcast(
+                        observePlayerQuestData.MainActorData.AreaId.Value,
+                        observeActorStarSystemPosition =>
+                        {
+                            MessageBus.Instance.UtilGetAreaData.Broadcast(
+                                targetData.AreaId.Value,
+                                targetAreaData =>
+                                {
+                                    var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
+                                    res = $"{offsetPosition.magnitude * 1000.0f}m";
+                                });
+                        });
+                    
+                    return res;
+                }
+
+                throw new ArgumentException();
             }
         }
 

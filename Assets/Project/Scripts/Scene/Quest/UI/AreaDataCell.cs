@@ -23,6 +23,8 @@ namespace AloneSpace
             this.areaData = areaData;
             this.isCurrentArea = isCurrentArea;
             this.onClick = onClick;
+
+            this.isCurrentArea = false;
             
             gameObject.name = $"Area {areaData.AreaId}";
         }

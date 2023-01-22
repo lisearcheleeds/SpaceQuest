@@ -20,7 +20,7 @@ namespace AloneSpace
         
         public InventoryData[] InventoryData { get; }
 
-        public InventoryInteractData(InventoryData[] inventoryData, int? areaId, Vector3 position)
+        public InventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position)
         {
             InstanceId = Guid.NewGuid();
 

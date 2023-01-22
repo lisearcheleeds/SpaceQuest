@@ -12,7 +12,9 @@ namespace AloneSpace
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
         Transform variableParent;
-        AreaData currentAreaData;
+
+        PlayerQuestData observePlayerQuestData;
+        AreaData observeAreaData;
         bool isDirty;
         
         List<Actor> actors = new List<Actor>();
@@ -50,21 +52,23 @@ namespace AloneSpace
                 actor.OnLateUpdate();
             }
         }
+
+        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        {
+            this.observePlayerQuestData = playerQuestData;
+        }
         
         public void SetObserveAreaData(AreaData areaData)
         {
-            this.currentAreaData = areaData;
+            this.observeAreaData = areaData;
             SetDirtyActorObjectList();
         }
 
         IEnumerator Refresh()
         {
-            if (currentAreaData == null)
-            {
-                yield break;
-            }
-
-            var actorDataList = questData.ActorData.Where(actorData => actorData.AreaId == currentAreaData.AreaId);
+            // ObserveのMainActorDataもしくは現在のエリア内のActorを表示
+            var actorDataList = questData.ActorData
+                .Where(actorData => observePlayerQuestData?.MainActorData?.InstanceId == actorData.InstanceId || (actorData.AreaId.HasValue && actorData.AreaId == observeAreaData?.AreaId));
 
             // オブジェクトを削除
             foreach (var actor in actors.ToArray())
@@ -73,6 +77,11 @@ namespace AloneSpace
                 {
                     DestroyActor(actor);
                 }
+            }
+            
+            if (observeAreaData == null)
+            {
+                yield break;
             }
             
             var coroutines = new List<IEnumerator>();

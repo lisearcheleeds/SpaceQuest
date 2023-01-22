@@ -65,7 +65,7 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(1, 0, 7, 2, 14, null, null, null),
+                new Row(1, 0, 400, 50, 400, null, null, null),
             };
         }
     }

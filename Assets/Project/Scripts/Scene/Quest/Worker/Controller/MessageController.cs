@@ -11,31 +11,17 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.UtilGetStarSystemPosition.AddListener(UtilGetStarSystemPosition);
-            MessageBus.Instance.UtilGetOffsetStarSystemPosition.AddListener(UtilGetOffsetStarSystemPosition);
-            MessageBus.Instance.UtilGetNearestAreaData.AddListener(UtilGetNearestAreaData);
+            MessageBus.Instance.UtilGetAreaData.AddListener(UtilGetAreaData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UtilGetStarSystemPosition.RemoveListener(UtilGetStarSystemPosition);
-            MessageBus.Instance.UtilGetOffsetStarSystemPosition.RemoveListener(UtilGetOffsetStarSystemPosition);
-            MessageBus.Instance.UtilGetNearestAreaData.RemoveListener(UtilGetNearestAreaData);
+            MessageBus.Instance.UtilGetAreaData.RemoveListener(UtilGetAreaData);
         }
 
-        void UtilGetStarSystemPosition(IPositionData positionData, Action<Vector3> callback)
+        void UtilGetAreaData(int areaId, Action<AreaData> callback)
         {
-            callback(questData.StarSystemData.GetStarSystemPosition(positionData));
-        }
-
-        void UtilGetOffsetStarSystemPosition(IPositionData from, IPositionData to, Action<Vector3> callback)
-        {
-            callback(questData.StarSystemData.GetOffsetStarSystemPosition(from, to));
-        }
-
-        void UtilGetNearestAreaData(IPositionData positionData, Action<AreaData> callback)
-        {
-            callback(questData.StarSystemData.GetNearestAreaData(positionData));
+            callback(questData.StarSystemData.GetAreaData(areaId));
         }
     }
 }

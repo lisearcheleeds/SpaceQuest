@@ -7,6 +7,5 @@ namespace AloneSpace
     {
         Guid InstanceId { get; }
         bool IsAlive { get; }
-        Vector3 MoveDelta { get; }
     }
 }

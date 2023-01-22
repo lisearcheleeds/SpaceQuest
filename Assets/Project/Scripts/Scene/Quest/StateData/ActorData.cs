@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
@@ -17,6 +16,11 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; }
+        
+        public Vector3 InertiaTensor { get; private set; }
+        public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
+            
+        Vector3 pos;
         
         public IPositionData MoveTarget { get; private set; }
 
@@ -35,8 +39,7 @@ namespace AloneSpace
 
         public ActorAIStateData ActorAIStateData { get; } = new ActorAIStateData();
         public CollisionShape CollisionShape { get; }
-        public Vector3 MoveDelta { get; }
-
+        
         public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
@@ -58,28 +61,75 @@ namespace AloneSpace
             // 移動チェック
             if (ActorMode == ActorMode.Warp)
             {
-                // Warp中はStarSystem座標
-                MessageBus.Instance.UtilGetOffsetStarSystemPosition.Broadcast(this, MoveTarget, offsetStarSystemPosition =>
+                // ワープ開始直後まだAreaに居る時は加速
+                if (AreaId.HasValue && AreaId != MoveTarget.AreaId)
                 {
-                    var distance = offsetStarSystemPosition.magnitude;
-                    // FIXME: スピード定義したら直す 今は1秒に2進む
-                    if (distance < deltaTime * 2.0f)
+                    MessageBus.Instance.UtilGetAreaData.Broadcast(
+                        AreaId.Value,
+                        areaData =>
+                        {
+                            MessageBus.Instance.UtilGetAreaData.Broadcast(
+                                MoveTarget.AreaId.Value,
+                                moveTargetAreaData =>
+                                {
+                                    // Area内の移動
+                                    var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
+                                    InertiaTensor += offset.normalized * deltaTime * 2.0f;
+
+                                    // 範囲外になったらAreaから脱出 一旦1000.0f
+                                    if (Position.sqrMagnitude > 1000.0f * 1000.0f)
+                                    {
+                                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, null);
+                                        Position = areaData.StarSystemPosition;
+                                        InertiaTensor = Vector3.zero;
+                                    }
+                                });
+                        });
+                }
+                else if (!AreaId.HasValue)
+                {
+                    // ワープ中Areaの外に居る時の座標
+                    MessageBus.Instance.UtilGetAreaData.Broadcast(
+                        MoveTarget.AreaId.Value,
+                        moveTargetAreaData =>
+                        {
+                            // Area外の移動
+                            var offset = moveTargetAreaData.StarSystemPosition - Position;
+                            InertiaTensor = offset.normalized * 2.0f;
+
+                            // 目的地に近くなったらAreaに入る
+                            if (offset.sqrMagnitude < InertiaTensor.sqrMagnitude)
+                            {
+                                MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, MoveTarget.AreaId);
+                                Position = MoveTarget.Position + MoveTarget.Position.normalized * 1000.0f;
+                                InertiaTensor = Vector3.zero;
+                            }
+                        });
+                }
+                else if (AreaId.HasValue && AreaId == MoveTarget.AreaId)
+                {
+                    // ワープ終了目的のAreaに居る時は減速
+                    // Area内の移動
+                    var moveTargetOffsetPosition = MoveTarget.Position - Position;
+                    InertiaTensor = moveTargetOffsetPosition * deltaTime * 2.0f;
+
+                    // 目的地に近くなったらWarp終了
+                    if (moveTargetOffsetPosition.sqrMagnitude < InertiaTensor.sqrMagnitude)
                     {
                         Position = MoveTarget.Position;
-                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, MoveTarget.AreaId.Value);
+                        InertiaTensor = Vector3.zero;
                         MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(this, null); 
                     }
-                    else
-                    {
-                        Position = Position + offsetStarSystemPosition.normalized * deltaTime * 2.0f;
-                    }
-                });
+                }
             }
             else
             {
                 // Rotation = Quaternion.Lerp(actorData.Rotation, Quaternion.LookRotation(direction), 0.1f);
             }
 
+            Position += InertiaTensor;
+            Rotation *= InertiaTensorRotation;
+            
             // 衝突チェック
             foreach (var collide in CollidedList)
             {
@@ -133,12 +183,9 @@ namespace AloneSpace
             }
 
             // 今どのエリアにも居ない時、もしくは移動先のエリアが違う時ワープ状態とする
-            if (!AreaId.HasValue || (AreaId.Value != moveTarget.AreaId.Value))
+            if (AreaId != moveTarget.AreaId)
             {
                 ActorMode = ActorMode.Warp;
-                
-                MessageBus.Instance.UtilGetStarSystemPosition.Broadcast(this, starSystemPosition => Position = starSystemPosition);
-                MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, null);
             }
             else
             {

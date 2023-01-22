@@ -1,8 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using AloneSpace;
-using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace AloneSpace
@@ -83,9 +80,6 @@ namespace AloneSpace
             }
             
             yield return new ParallelCoroutine(coroutines);
-            
-            // これどこかに移動
-            MessageBus.Instance.UserCommandSetAmbientCameraPosition.Broadcast(currentAreaData.StarSystemPosition);
             
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)

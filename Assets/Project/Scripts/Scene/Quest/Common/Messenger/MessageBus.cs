@@ -16,9 +16,7 @@ namespace AloneSpace
         public MessageBusDefine.SendCollision SendCollision { get; } = new MessageBusDefine.SendCollision();
 
         // Util
-        public MessageBusDefine.UtilGetStarSystemPosition UtilGetStarSystemPosition { get; } = new MessageBusDefine.UtilGetStarSystemPosition();
-        public MessageBusDefine.UtilGetOffsetStarSystemPosition UtilGetOffsetStarSystemPosition { get; } = new MessageBusDefine.UtilGetOffsetStarSystemPosition();
-        public MessageBusDefine.UtilGetNearestAreaData UtilGetNearestAreaData { get; } = new MessageBusDefine.UtilGetNearestAreaData();
+        public MessageBusDefine.UtilGetAreaData UtilGetAreaData { get; } = new MessageBusDefine.UtilGetAreaData();
         
         // プレイヤー設定
         public MessageBusDefine.ManagerCommandSetObservePlayer ManagerCommandSetObservePlayer { get; } = new MessageBusDefine.ManagerCommandSetObservePlayer();
@@ -48,7 +46,7 @@ namespace AloneSpace
         public MessageBusDefine.UserCommandRotateCamera UserCommandRotateCamera { get; } = new MessageBusDefine.UserCommandRotateCamera();
         public MessageBusDefine.UserCommandSetCameraAngle UserCommandSetCameraAngle { get; } = new MessageBusDefine.UserCommandSetCameraAngle();
 
-        public MessageBusDefine.UserCommandSetAmbientCameraPosition UserCommandSetAmbientCameraPosition { get; } = new MessageBusDefine.UserCommandSetAmbientCameraPosition();
+        public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
         
         // Playerによるゲームコマンド

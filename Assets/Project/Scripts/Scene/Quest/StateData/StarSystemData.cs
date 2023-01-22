@@ -17,7 +17,7 @@ namespace AloneSpace
         public AreaData[] AreaData { get; }
 
         // SpaceSize.magnitudeは適当なスケール
-        float areaScale;
+        public float AreaScale;
         
         StarSystemPresetVO starSystemPresetVO;
 
@@ -41,33 +41,12 @@ namespace AloneSpace
                 }
             }
 
-            areaScale = SpaceSize.magnitude;
-        }
-
-        public Vector3 GetStarSystemPosition(IPositionData positionData)
-        {
-            if (!positionData.AreaId.HasValue)
-            {
-                return positionData.Position;
-            }
-
-            return AreaData.First(x => x.AreaId == positionData.AreaId).StarSystemPosition + positionData.Position / areaScale;
-        }
-
-        public Vector3 GetOffsetStarSystemPosition(IPositionData fromPositionData, IPositionData toPositionData)
-        {
-            return GetStarSystemPosition(toPositionData) - GetStarSystemPosition(fromPositionData);
+            AreaScale = SpaceSize.magnitude;
         }
         
-        public AreaData GetNearestAreaData(IPositionData positionData)
+        public AreaData GetAreaData(int areaId)
         {
-            if (positionData.AreaId.HasValue)
-            {
-                return AreaData.First(x => x.AreaId == positionData.AreaId);
-            }
-
-            // positionData.AreaId.HasValue = falseの時、PositionはStarSystemPositionを指す
-            return AreaData.OrderBy(x => (x.StarSystemPosition - positionData.Position).sqrMagnitude).First();
+            return AreaData.First(x => x.AreaId == areaId);
         }
     }
 }

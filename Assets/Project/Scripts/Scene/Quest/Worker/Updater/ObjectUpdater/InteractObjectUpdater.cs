@@ -59,13 +59,6 @@ namespace AloneSpace
 
         IEnumerator Refresh()
         {
-            if (currentAreaData == null)
-            {
-                yield break;
-            }
-
-            var interactData = currentAreaData.InteractData;
-            
             // 不要なオブジェクトを消す
             foreach (var interactionObject in interactionObjectList.ToArray())
             {
@@ -73,10 +66,15 @@ namespace AloneSpace
                 interactionObjectList.Remove(interactionObject);
             }
             
+            if (currentAreaData == null)
+            {
+                yield break;
+            }
+            
             // 必要なオブジェクトを作る
             var waitCount = 0;
             var waitCounter = 0;
-            foreach (var data in interactData)
+            foreach (var data in currentAreaData.InteractData)
             {
                 waitCount++;
                 CreateInteractObject(questData, data, () => waitCounter++);
