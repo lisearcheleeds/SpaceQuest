@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 
 namespace AloneSpace
@@ -24,6 +25,16 @@ namespace AloneSpace
         Quaternion currentQuaternion = Quaternion.identity;
 
         IPositionData trackingTarget;
+
+        Dictionary<(CameraMode Before, CameraMode After), Func<Vector3, Vector3, float, Vector3>> tweenMap =
+            new()
+            {
+                {(CameraMode.Default, CameraMode.Default), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
+                {(CameraMode.Map, CameraMode.Map), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
+
+                {(CameraMode.Default, CameraMode.Map), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
+                {(CameraMode.Map, CameraMode.Default), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)}
+            };
         
         public enum CameraMode
         {
@@ -86,7 +97,7 @@ namespace AloneSpace
             
             cameraAmbient.transform.position = Vector3.Lerp(GetAmbientCameraPosition(beforeCameraMode), GetAmbientCameraPosition(currentCameraMode), cameraModeLerpRatio);
             camera3d.transform.position = Vector3.Lerp(Get3dCameraPosition(beforeCameraMode), Get3dCameraPosition(currentCameraMode), cameraModeLerpRatio);
-
+            
             MessageBus.Instance.UserCommandSetCameraAngle.Broadcast(currentQuaternion);
             
             Quaternion GetCameraAngleQuaternion(CameraMode cameraMode)
@@ -97,7 +108,7 @@ namespace AloneSpace
                     CameraMode.Map => Quaternion.Lerp(currentQuaternion, Quaternion.AngleAxis(55, Vector3.right), 0.4f),
                 };
             }
-            
+
             Vector3 GetAmbientCameraPosition(CameraMode cameraMode)
             {
                 return cameraMode switch
@@ -112,7 +123,7 @@ namespace AloneSpace
                 return cameraMode switch
                 {
                     CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, -35f),
-                    CameraMode.Map => -targetAmbientCameraPosition * 100.0f,
+                    CameraMode.Map => -targetAmbientCameraPosition * 10.0f,
                 };
             }
         }

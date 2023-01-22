@@ -25,9 +25,9 @@ namespace AloneSpace
             else
             {
                 Position = new Vector3(
-                    Random.Range(-starSystemMaster.SpaceSizeX, starSystemMaster.SpaceSizeX), 
-                    Random.Range(-starSystemMaster.SpaceSizeY, starSystemMaster.SpaceSizeY),
-                    Random.Range(-starSystemMaster.SpaceSizeZ, starSystemMaster.SpaceSizeZ));
+                    Random.Range(-starSystemMaster.SpaceSizeX * 0.5f, starSystemMaster.SpaceSizeX * 0.5f), 
+                    Random.Range(-starSystemMaster.SpaceSizeY * 0.5f, starSystemMaster.SpaceSizeY * 0.5f),
+                    Random.Range(-starSystemMaster.SpaceSizeZ * 0.5f, starSystemMaster.SpaceSizeZ * 0.5f));
             }
         }
     }
