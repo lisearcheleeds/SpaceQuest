@@ -12,6 +12,7 @@ namespace AloneSpace
     {
         public override int? AreaId { get; protected set; }
         public override Vector3 Position { get; protected set; }
+        public override Quaternion Rotation { get; protected set; }
         
         public override bool IsAlive { get; protected set; }
         public override Vector3 MoveDelta { get; protected set; }
@@ -33,6 +34,7 @@ namespace AloneSpace
         {
             AreaId = weaponData.BasePositionData.AreaId;
             Position = weaponData.BasePositionData.Position;
+            Rotation = weaponData.BasePositionData.Rotation;
             
             IsAlive = true;
             IsCollidable = true;

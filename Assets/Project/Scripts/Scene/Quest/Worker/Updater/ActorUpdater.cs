@@ -103,7 +103,7 @@ namespace AloneSpace
             
             // 適当なアイテムを設置
             var inventoryData = ItemDataVOHelper.GetActorDropInventoryData(actorData);
-            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId.Value, actorData.Position));
+            areaData.AddInteractData(new InventoryInteractData(inventoryData, actorData.AreaId.Value, actorData.Position, actorData.Rotation));
             
             // 更新
             MessageBus.Instance.SetDirtyActorObjectList.Broadcast();

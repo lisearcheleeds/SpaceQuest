@@ -14,6 +14,7 @@ namespace SandBox
         public CollisionShape LineShape => line;
         public int? AreaId { get; } = null;
         public Vector3 Position => transform.position;
+        public Quaternion Rotation => transform.rotation;
 
         void Awake()
         {

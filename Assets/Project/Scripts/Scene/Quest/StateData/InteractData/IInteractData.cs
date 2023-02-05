@@ -15,5 +15,6 @@ namespace AloneSpace
         Vector3 GetClosestPoint(IPositionData positionData);
         bool IsInteractionRange(IPositionData positionData);
         void SetPosition(Vector3 position);
+        void SetRotation(Quaternion rotation);
     }
 }

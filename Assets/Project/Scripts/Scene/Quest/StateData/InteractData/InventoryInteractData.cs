@@ -13,20 +13,22 @@ namespace AloneSpace
 
         public int? AreaId { get; }
         
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
+        public Quaternion Rotation { get; private set; }
         public string Text => $"Inventory (" + InventoryData.Sum(x => x.VariableInventoryViewData.CellData.Count(y => y != null)) + ")";
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
         
         public InventoryData[] InventoryData { get; }
 
-        public InventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position)
+        public InventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position, Quaternion rotation)
         {
             InstanceId = Guid.NewGuid();
 
             InventoryData = inventoryData;
             AreaId = areaId;
             Position = position;
+            Rotation = rotation;
         }
         
         public Vector3 GetClosestPoint(IPositionData positionData)
@@ -42,6 +44,11 @@ namespace AloneSpace
         public void SetPosition(Vector3 position)
         {
             Position = position;
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            Rotation = rotation;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace AloneSpace
         
         public abstract int? AreaId { get; protected set; }
         public abstract Vector3 Position { get; protected set; }
+        public abstract Quaternion Rotation { get; protected set; }
         
         public Guid InstanceId { get; }
         public abstract bool IsAlive { get; protected set; }

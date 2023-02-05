@@ -11,6 +11,7 @@ namespace AloneSpace
         public int? AreaId => AreaData.AreaId;
 
         public Vector3 Position { get; }
+        public Quaternion Rotation { get; }
         public string Text { get; }
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
@@ -33,6 +34,8 @@ namespace AloneSpace
                     Random.Range(-areaData.SpaceSize.y, areaData.SpaceSize.y),
                     Random.Range(-areaData.SpaceSize.z, areaData.SpaceSize.z));
             }
+            
+            Rotation = Quaternion.identity;
 
             Text = $"Load to Area{areaData.AreaId} from {fromAreaData?.AreaId}";
         }
@@ -48,6 +51,11 @@ namespace AloneSpace
         }
 
         public void SetPosition(Vector3 position)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void SetRotation(Quaternion rotation)
         {
             throw new NotSupportedException();
         }

@@ -6,5 +6,6 @@ namespace AloneSpace
     {
         int? AreaId { get; }
         Vector3 Position { get; }
+        Quaternion Rotation { get; }
     }
 }

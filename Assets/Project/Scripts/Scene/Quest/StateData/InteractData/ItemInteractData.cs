@@ -12,20 +12,22 @@ namespace AloneSpace
 
         public int? AreaId { get; }
         
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; private set; }
+        public Quaternion Rotation { get; private set; }
         public string Text => ItemData.ItemVO.Text;
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.Angle;
         
         public ItemData ItemData { get; }
 
-        public ItemInteractData(ItemData itemData, int areaId, Vector3 position)
+        public ItemInteractData(ItemData itemData, int areaId, Vector3 position, Quaternion rotation)
         {
             InstanceId = Guid.NewGuid();
 
             ItemData = itemData;
             AreaId = areaId;
             Position = position;
+            Rotation = rotation;
         }
         
         public Vector3 GetClosestPoint(IPositionData positionData)
@@ -41,6 +43,11 @@ namespace AloneSpace
         public void SetPosition(Vector3 position)
         {
             Position = position;
+        }
+
+        public void SetRotation(Quaternion rotation)
+        {
+            Rotation = rotation;
         }
     }
 }
