@@ -11,17 +11,17 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.UtilGetAreaData.AddListener(UtilGetAreaData);
+            MessageBus.Instance.UtilGetAreaData.SetListener(UtilGetAreaData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UtilGetAreaData.RemoveListener(UtilGetAreaData);
+            MessageBus.Instance.UtilGetAreaData.SetListener(null);
         }
 
-        void UtilGetAreaData(int areaId, Action<AreaData> callback)
+        AreaData UtilGetAreaData(int areaId)
         {
-            callback(questData.StarSystemData.GetAreaData(areaId));
+            return questData.StarSystemData.GetAreaData(areaId);
         }
     }
 }

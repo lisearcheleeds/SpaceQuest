@@ -27,8 +27,13 @@ namespace AloneSpace
             UserInputCloseMap();
         }
         
-        public void UpdateView()
+        void UpdateView()
         {
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
+            
             for (var i = 0; i < Mathf.Max(mapPanelCells.Count, questData.StarSystemData.AreaData.Length); i++)
             {
                 if (mapPanelCells.Count < i + 1)
@@ -42,12 +47,11 @@ namespace AloneSpace
                 {
                     var areaData = questData.StarSystemData.AreaData[i];
                     mapPanelCells[i].Apply(areaData, areaData.AreaId == observeAreaData?.AreaId, OnClickCell);
-                    
-                    MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Broadcast(
+
+                    mapPanelCells[i].UpdatePosition(MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(
                         CameraController.CameraType.CameraAmbient,
                         areaData.StarSystemPosition,
-                        cellParent,
-                        screenPos => mapPanelCells[i].UpdatePosition(screenPos));
+                        cellParent));
                 }
             }
         }
@@ -59,14 +63,18 @@ namespace AloneSpace
 
         void UpdatePosition()
         {
+            if (!gameObject.activeSelf)
+            {
+                return;
+            }
+
             for (var i = 0; i < questData.StarSystemData.AreaData.Length; i++)
             {
                 var index = i;
-                MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Broadcast(
+                mapPanelCells[index].UpdatePosition(MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(
                     CameraController.CameraType.CameraAmbient,
                     questData.StarSystemData.AreaData[index].StarSystemPosition,
-                    cellParent,
-                    screenPos => mapPanelCells[index].UpdatePosition(screenPos));
+                    cellParent));
             }
         }
 
@@ -104,7 +112,6 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
             
             gameObject.SetActive(false);
-            UpdateView();
         }
     }
 }

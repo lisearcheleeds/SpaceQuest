@@ -12,7 +12,7 @@ namespace AloneSpace
         public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
         public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
         
-        public class UtilGetAreaData : MessageBusBroadcaster<int, Action<AreaData>>{}
+        public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
         
         public class ManagerCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
         public class ManagerCommandLoadArea : MessageBusBroadcaster<int?>{}
@@ -44,7 +44,7 @@ namespace AloneSpace
         public class UserInputSetActorCombatMode : MessageBusBroadcaster <ActorCombatMode>{}
         
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
-        public class UserCommandGetWorldToCanvasPoint : MessageBusBroadcaster<CameraController.CameraType, Vector3, RectTransform, Action<Vector3?>>{}
+        public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraController.CameraType, Vector3, RectTransform, Vector3?>{}
         
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPositionData>{}

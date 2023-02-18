@@ -51,35 +51,19 @@ namespace AloneSpace
                 if (observePlayerQuestData.MainActorData.AreaId.HasValue)
                 {
                     // 移動中
-                    string res = "";
-                    MessageBus.Instance.UtilGetAreaData.Broadcast(
-                        targetData.AreaId.Value,
-                        targetAreaData =>
-                        {
-                            var offsetPosition = targetAreaData.StarSystemPosition - observePlayerQuestData.MainActorData.Position;
-                            res = $"{offsetPosition.magnitude * 1000.0f}m";                                                        
-                        });
-                    return res;
+                    var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
+                    var offsetPosition = targetAreaData.StarSystemPosition - observePlayerQuestData.MainActorData.Position;
+                    return $"{offsetPosition.magnitude * 1000.0f}m";
                 }
 
                 if (observePlayerQuestData.MainActorData.AreaId != targetData.AreaId)
                 {
                     // 違うエリア内
-                    string res = "";
-                    MessageBus.Instance.UtilGetAreaData.Broadcast(
-                        observePlayerQuestData.MainActorData.AreaId.Value,
-                        observeActorStarSystemPosition =>
-                        {
-                            MessageBus.Instance.UtilGetAreaData.Broadcast(
-                                targetData.AreaId.Value,
-                                targetAreaData =>
-                                {
-                                    var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
-                                    res = $"{offsetPosition.magnitude * 1000.0f}m";
-                                });
-                        });
-                    
-                    return res;
+                    var observeActorStarSystemPosition = MessageBus.Instance.UtilGetAreaData.Unicast(observePlayerQuestData.MainActorData.AreaId.Value);
+                    var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
+
+                    var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
+                    return $"{offsetPosition.magnitude * 1000.0f}m";
                 }
 
                 throw new ArgumentException();

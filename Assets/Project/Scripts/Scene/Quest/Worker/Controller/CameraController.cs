@@ -44,7 +44,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
             
             MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.AddListener(UserCommandGetWorldToCanvasPoint);
+            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
         }
 
         public void Finalize()
@@ -54,7 +54,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
             
             MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.RemoveListener(UserCommandGetWorldToCanvasPoint);
+            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
         }
 
         public void OnLateUpdate()
@@ -67,9 +67,7 @@ namespace AloneSpace
                 target3dCameraPosition = trackingTarget.Position;
                 if (trackingTarget.AreaId.HasValue)
                 {
-                    MessageBus.Instance.UtilGetAreaData.Broadcast(
-                        trackingTarget.AreaId.Value,
-                        areaData => targetAmbientCameraPosition = areaData.StarSystemPosition);
+                    targetAmbientCameraPosition = MessageBus.Instance.UtilGetAreaData.Unicast(trackingTarget.AreaId.Value).StarSystemPosition;
                 }
                 else
                 {
@@ -142,7 +140,7 @@ namespace AloneSpace
             trackingTarget = cameraTrackTarget;
         }
 
-        void UserCommandGetWorldToCanvasPoint(CameraType cameraType, Vector3 worldPos, RectTransform rectTransform, Action<Vector3?> callback)
+        Vector3? UserCommandGetWorldToCanvasPoint(CameraType cameraType, Vector3 worldPos, RectTransform rectTransform)
         {
             var camera = cameraType switch
             {
@@ -154,8 +152,7 @@ namespace AloneSpace
             var screenPoint = camera.WorldToScreenPoint(worldPos);
             if (screenPoint.z < 0)
             {
-                callback(null);
-                return;
+                return null;
             }
 
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -164,7 +161,7 @@ namespace AloneSpace
                 cameraUi,
                 out var localPoint);
 
-            callback(localPoint);
+            return localPoint;
         }
     }
 }

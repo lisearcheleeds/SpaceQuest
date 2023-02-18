@@ -66,57 +66,49 @@ namespace AloneSpace
                 // ワープ開始直後まだAreaに居る時は加速
                 if (AreaId.HasValue && AreaId != MoveTarget.AreaId)
                 {
-                    MessageBus.Instance.UtilGetAreaData.Broadcast(
-                        AreaId.Value,
-                        areaData =>
-                        {
-                            MessageBus.Instance.UtilGetAreaData.Broadcast(
-                                MoveTarget.AreaId.Value,
-                                moveTargetAreaData =>
-                                {
-                                    // Area内の移動
-                                    var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
-                                    InertiaTensor += offset.normalized * deltaTime * 2.0f;
+                    var areaData = MessageBus.Instance.UtilGetAreaData.Unicast(AreaId.Value);
+                    var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(MoveTarget.AreaId.Value);
 
-                                    // 範囲外になったらAreaから脱出 一旦1000.0f
-                                    if (Position.sqrMagnitude > 1000.0f * 1000.0f)
-                                    {
-                                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, null);
-                                        Position = areaData.StarSystemPosition;
-                                        InertiaTensor = Vector3.zero;
-                                    }
-                                });
-                        });
+                    // Area内の移動
+                    var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
+                    InertiaTensor += offset.normalized * deltaTime * 2.0f;
+
+                    // 範囲外になったらAreaから脱出 一旦1000.0f
+                    if (Position.sqrMagnitude > 1000.0f * 1000.0f)
+                    {
+                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, null);
+                        Position = areaData.StarSystemPosition;
+                        InertiaTensor = Vector3.zero;
+                    }
                 }
                 else if (!AreaId.HasValue)
                 {
                     // ワープ中Areaの外に居る時の座標
-                    MessageBus.Instance.UtilGetAreaData.Broadcast(
-                        MoveTarget.AreaId.Value,
-                        moveTargetAreaData =>
-                        {
-                            // Area外の移動
-                            var offset = moveTargetAreaData.StarSystemPosition - Position;
-                            InertiaTensor = offset.normalized * 2.0f;
+                    var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(MoveTarget.AreaId.Value);
+                    
+                    // Area外の移動
+                    var offset = moveTargetAreaData.StarSystemPosition - Position;
+                    InertiaTensor = offset.normalized * deltaTime * 2.0f * 30.0f;
 
-                            // 目的地に近くなったらAreaに入る
-                            if (offset.sqrMagnitude < InertiaTensor.sqrMagnitude)
-                            {
-                                MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, MoveTarget.AreaId);
-                                Position = MoveTarget.Position + MoveTarget.Position.normalized * 1000.0f;
-                                InertiaTensor = Vector3.zero;
-                            }
-                        });
+                    // 目的地に近くなったらAreaに入る
+                    if (offset.sqrMagnitude < InertiaTensor.sqrMagnitude)
+                    {
+                        // FIXME: 移動先ちゃんと考える
+                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(this, MoveTarget.AreaId);
+                        Position = MoveTarget.Position + MoveTarget.Position.normalized * 1000.0f;
+                        InertiaTensor = Vector3.zero;
+                    }
                 }
                 else if (AreaId.HasValue && AreaId == MoveTarget.AreaId)
                 {
+                    // FIXME: 移動の計算式ちゃんと考える
                     // ワープ終了目的のAreaに居る時は減速
                     // Area内の移動
-                    var moveTargetOffsetPosition = MoveTarget.Position - Position;
-                    InertiaTensor = moveTargetOffsetPosition * deltaTime * 2.0f;
+                    var offset = MoveTarget.Position - Position;
+                    InertiaTensor = offset.normalized * deltaTime * 2.0f * 30.0f;
 
                     // 目的地に近くなったらWarp終了
-                    if (moveTargetOffsetPosition.sqrMagnitude < InertiaTensor.sqrMagnitude)
+                    if (offset.sqrMagnitude < InertiaTensor.sqrMagnitude)
                     {
                         Position = MoveTarget.Position;
                         InertiaTensor = Vector3.zero;
@@ -136,8 +128,11 @@ namespace AloneSpace
             Position += InertiaTensor;
             Rotation *= Quaternion.AngleAxis(InertiaTensorRotationAngle, InertiaTensorRotationAxis);
 
-            InertiaTensor *= 0.9f;
-            InertiaTensorRotationAngle *= 0.9f;
+            if (ActorMode != ActorMode.Warp)
+            {
+                InertiaTensor *= 0.9f;
+                InertiaTensorRotationAngle *= 0.9f;
+            }
             
             // 衝突チェック
             foreach (var collide in CollidedList)
