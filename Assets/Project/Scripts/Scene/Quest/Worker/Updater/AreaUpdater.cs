@@ -14,14 +14,10 @@ namespace AloneSpace
         ActorObjectUpdater actorObjectUpdater = new ActorObjectUpdater();
         InteractObjectUpdater interactObjectUpdater = new InteractObjectUpdater();
         
-        QuestData questData;
-        
         public void Initialize(QuestData questData)
         {
-            this.questData = questData;
-
             areaAmbientController.Initialize(questData);
-            cameraController.Initialize(questData);
+            cameraController.Initialize();
             
             actorObjectUpdater.Initialize(questData, variableParent, this);
             interactObjectUpdater.Initialize(questData, variableParent, this);

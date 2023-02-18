@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace AloneSpace
@@ -10,6 +10,7 @@ namespace AloneSpace
         [SerializeField] Button mapButton;
         [SerializeField] Button interactButton;
         [SerializeField] Button inventoryButton;
+        [SerializeField] Button switchActorModeCombatButton;
         
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
@@ -21,12 +22,10 @@ namespace AloneSpace
         [Header("3D")]
         [SerializeField] CameraAngleControllerEffect cameraAngleControllerEffect;
 
-        QuestData questData;
+        PlayerQuestData observePlayerQuestData;
         
         public void Initialize(QuestData questData)
         {
-            this.questData = questData;
-
             cameraAngleControllerEffect.Initialize();
             
             mapPanelView.Initialize(questData);
@@ -38,6 +37,7 @@ namespace AloneSpace
             mapButton.onClick.AddListener(OnClickMap);
             interactButton.onClick.AddListener(OnClickInteract);
             inventoryButton.onClick.AddListener(OnClickInventory);
+            switchActorModeCombatButton.onClick.AddListener(OnClickSwitchActorModeCombatButton);
         }
 
         public void Finalize()
@@ -46,10 +46,41 @@ namespace AloneSpace
 
         public void OnLateUpdate()
         {
+            // WASDとマウス
+            var forceDirection = Vector3.zero;
+            if (Keyboard.current.wKey.isPressed) forceDirection += Vector3.forward;
+            if (Keyboard.current.sKey.isPressed) forceDirection += Vector3.back;
+            if (Keyboard.current.aKey.isPressed) forceDirection += Vector3.left;
+            if (Keyboard.current.dKey.isPressed) forceDirection += Vector3.right;
+            if (Keyboard.current.spaceKey.isPressed) forceDirection += Vector3.up;
+            if (Keyboard.current.leftCtrlKey.isPressed) forceDirection += Vector3.down;
+            MessageBus.Instance.UserInputDirectionAndRotation.Broadcast(forceDirection, Mouse.current.delta.ReadValue());
+
+            // 戦闘モードの切り替え
+            if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
+            {
+                MessageBus.Instance.UserInputSetActorCombatMode.Broadcast(ActorCombatMode.Standard);
+            }
+            else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame)
+            {
+                MessageBus.Instance.UserInputSetActorCombatMode.Broadcast(ActorCombatMode.Fighter);
+            }
+            
+            // マウスカーソルの切り替え
+            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Combat && !Keyboard.current.leftAltKey.isPressed)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+            }
         }
 
         public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
         {
+            observePlayerQuestData = playerQuestData;
+            
             interactionList.SetObservePlayerQuestData(playerQuestData);
             inventoryView.SetObservePlayerQuestData(playerQuestData);
         }
@@ -73,6 +104,12 @@ namespace AloneSpace
         void OnClickInventory()
         {
             MessageBus.Instance.UserInputSwitchInventory.Broadcast();
+        }
+        
+        void OnClickSwitchActorModeCombatButton()
+        {
+            // Switchじゃなくてちゃんと指定したほうがいいかも
+            MessageBus.Instance.UserInputSwitchActorMode.Broadcast();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace AloneSpace
     {
         public StarSystemData StarSystemData { get; }
 
+        // FIXME: Dictionaryにしたい
         public List<PlayerQuestData> PlayerQuestData { get; } = new List<PlayerQuestData>();
         public List<ActorData> ActorData { get; } = new List<ActorData>();
 

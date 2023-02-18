@@ -14,8 +14,6 @@ namespace AloneSpace
 
         [SerializeField] Camera cameraUi;
 
-        QuestData questData;
-
         CameraMode beforeCameraMode = CameraMode.Default;
         CameraMode currentCameraMode = CameraMode.Default;
         float cameraModeSwitchTime;
@@ -25,21 +23,12 @@ namespace AloneSpace
         Quaternion currentQuaternion = Quaternion.identity;
 
         IPositionData trackingTarget;
-
-        Dictionary<(CameraMode Before, CameraMode After), Func<Vector3, Vector3, float, Vector3>> tweenMap =
-            new()
-            {
-                {(CameraMode.Default, CameraMode.Default), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
-                {(CameraMode.Map, CameraMode.Map), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
-
-                {(CameraMode.Default, CameraMode.Map), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)},
-                {(CameraMode.Map, CameraMode.Default), (b, a, f) => DOVirtual.EasedValue(b, a, f, Ease.Linear)}
-            };
         
         public enum CameraMode
         {
             Default,
             Map,
+            Cockpit,
         }
         
         public enum CameraType
@@ -48,10 +37,8 @@ namespace AloneSpace
             Camera3d,
         }
 
-        public void Initialize(QuestData questData)
+        public void Initialize()
         {
-            this.questData = questData;
-            
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
 
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
@@ -74,6 +61,7 @@ namespace AloneSpace
         {
             var target3dCameraPosition = Vector3.zero;
             var targetAmbientCameraPosition = Vector3.zero;
+            var targetRotation = Quaternion.identity;
             if (trackingTarget != null)
             {
                 target3dCameraPosition = trackingTarget.Position;
@@ -87,6 +75,8 @@ namespace AloneSpace
                 {
                     targetAmbientCameraPosition = trackingTarget.Position;
                 }
+
+                targetRotation = trackingTarget.Rotation;
             }
          
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);
@@ -106,6 +96,7 @@ namespace AloneSpace
                 {
                     CameraMode.Default => Quaternion.Lerp(currentQuaternion, targetQuaternion, 0.05f),
                     CameraMode.Map => Quaternion.Lerp(currentQuaternion, Quaternion.AngleAxis(55, Vector3.right), 0.4f),
+                    CameraMode.Cockpit => Quaternion.Lerp(currentQuaternion, targetRotation, 0.4f),
                 };
             }
 
@@ -115,6 +106,7 @@ namespace AloneSpace
                 {
                     CameraMode.Default => Vector3.Lerp(cameraAmbient.transform.position, targetAmbientCameraPosition, 0.05f),
                     CameraMode.Map => Vector3.Lerp(cameraAmbient.transform.position, new Vector3(0, 250, -200), 0.05f),
+                    CameraMode.Cockpit => Vector3.Lerp(cameraAmbient.transform.position, targetAmbientCameraPosition, 0.05f),
                 };
             }
             
@@ -124,6 +116,7 @@ namespace AloneSpace
                 {
                     CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, -35f),
                     CameraMode.Map => -targetAmbientCameraPosition * 10.0f,
+                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, -35f),
                 };
             }
         }

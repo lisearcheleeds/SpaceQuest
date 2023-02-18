@@ -19,5 +19,8 @@ namespace AloneSpace
         public ITargetData[] AroundTargets { get; private set; } = Array.Empty<ITargetData>();
 
         public ITargetData MainTarget { get; set; }
+
+        public Vector3 MoveOrderDirection { get; set; }
+        public Vector3 RotateOrderDirection { get; set; }
     }
 }

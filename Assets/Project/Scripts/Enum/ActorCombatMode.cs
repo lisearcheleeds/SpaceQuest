@@ -1,9 +1,8 @@
 ﻿namespace AloneSpace
 {
-    public enum ActorMode
+    public enum ActorCombatMode
     {
         Standard,
-        Combat,
-        Warp,
+        Fighter,
     }
 }

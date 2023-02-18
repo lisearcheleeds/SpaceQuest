@@ -7,29 +7,31 @@ namespace AloneSpace
 {
     public class ActorData : ITargetData, IDamageableData, ICollisionData
     {
+        // 情報
         public Guid InstanceId { get; }
         public Guid PlayerInstanceId { get; }
-
-        public ActorMode ActorMode { get; private set; }
-        public ActorState ActorState { get; private set; }
-
-        public int? AreaId { get; private set; }
-        public Vector3 Position { get; set; }
-        public Quaternion Rotation { get; set; }
-        
-        public Vector3 InertiaTensor { get; private set; }
-        public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
-            
-        Vector3 pos;
-        
-        public IPositionData MoveTarget { get; private set; }
 
         public ActorSpecData ActorSpecData { get; }
         public InventoryData[] InventoryDataList { get; }
         
-        public List<ICollisionData> CollidedList = new List<ICollisionData>();
-        
         public WeaponData[] WeaponData { get; }
+        
+        // 状態
+        public ActorMode ActorMode { get; private set; }
+        public ActorState ActorState { get; private set; }
+        public ActorCombatMode ActorCombatMode { get; private set; } = ActorCombatMode.Fighter;
+
+        public int? AreaId { get; private set; }
+        public Vector3 Position { get; set; }
+        public Quaternion Rotation { get; set; } = Quaternion.identity;
+        
+        public Vector3 InertiaTensor { get; private set; }
+        public float InertiaTensorRotationAngle { get; private set; }
+        public Vector3 InertiaTensorRotationAxis { get; private set; }
+
+        public IPositionData MoveTarget { get; private set; }
+        
+        public List<ICollisionData> CollidedList = new List<ICollisionData>();
 
         public bool IsAlive => ActorState == ActorState.Alive;
         public bool IsBroken => ActorState == ActorState.Broken;
@@ -124,11 +126,18 @@ namespace AloneSpace
             }
             else
             {
-                // Rotation = Quaternion.Lerp(actorData.Rotation, Quaternion.LookRotation(direction), 0.1f);
+                InertiaTensor += Rotation * ActorAIStateData.MoveOrderDirection * 0.1f;
+                
+                // FIXME: 角度を合成して、Angleも減衰させる
+                InertiaTensorRotationAngle = ActorAIStateData.RotateOrderDirection.magnitude;
+                InertiaTensorRotationAxis = ActorAIStateData.RotateOrderDirection.normalized;
             }
-
+            
             Position += InertiaTensor;
-            Rotation *= InertiaTensorRotation;
+            Rotation *= Quaternion.AngleAxis(InertiaTensorRotationAngle, InertiaTensorRotationAxis);
+
+            InertiaTensor *= 0.9f;
+            InertiaTensorRotationAngle *= 0.9f;
             
             // 衝突チェック
             foreach (var collide in CollidedList)
@@ -177,7 +186,7 @@ namespace AloneSpace
         {
             if (moveTarget == null)
             {
-                ActorMode = ActorMode.General;
+                ActorMode = ActorMode.Standard;
                 MoveTarget = null;
                 return;
             }
@@ -189,7 +198,7 @@ namespace AloneSpace
             }
             else
             {
-                ActorMode = ActorMode.General;
+                ActorMode = ActorMode.Standard;
             }
 
             MoveTarget = moveTarget;
@@ -198,6 +207,26 @@ namespace AloneSpace
         public void AddThreat(IThreatData threatData)
         {
             ActorAIStateData.ThreatList.Add(threatData);
+        }
+
+        public void SetMoveOrder(Vector3 direction)
+        {
+            ActorAIStateData.MoveOrderDirection = direction;
+        }
+
+        public void SetRotateOrder(Vector3 rotateDirection)
+        {
+            ActorAIStateData.RotateOrderDirection = rotateDirection;
+        }
+
+        public void SetActorMode(ActorMode actorMode)
+        {
+            ActorMode = actorMode;
+        }
+
+        public void SetActorCombatMode(ActorCombatMode actorCombatMode)
+        {
+            ActorCombatMode = actorCombatMode;
         }
     }
 }

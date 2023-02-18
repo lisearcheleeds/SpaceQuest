@@ -39,6 +39,10 @@ namespace AloneSpace
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         
+        public class UserInputDirectionAndRotation : MessageBusBroadcaster<Vector3, Vector2> {}
+        public class UserInputSwitchActorMode : MessageBusBroadcaster {}
+        public class UserInputSetActorCombatMode : MessageBusBroadcaster <ActorCombatMode>{}
+        
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusBroadcaster<CameraController.CameraType, Vector3, RectTransform, Action<Vector3?>>{}
         
@@ -46,6 +50,11 @@ namespace AloneSpace
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPositionData>{}
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
+        
+        public class ActorCommandMoveOrder : MessageBusBroadcaster<Guid, Vector3>{}
+        public class ActorCommandRotateOrder : MessageBusBroadcaster<Guid, Vector3>{}
+        public class ActorCommandSetActorMode : MessageBusBroadcaster<Guid, ActorMode>{}
+        public class ActorCommandSetActorCombatMode : MessageBusBroadcaster<Guid, ActorCombatMode>{}
         
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}

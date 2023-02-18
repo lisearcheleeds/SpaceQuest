@@ -26,6 +26,11 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
+            
+            MessageBus.Instance.ActorCommandMoveOrder.AddListener(ActorCommandMoveOrder);
+            MessageBus.Instance.ActorCommandRotateOrder.AddListener(ActorCommandRotateOrder);
+            MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
+            MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
         }
 
         public void Finalize()
@@ -38,6 +43,11 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
+            
+            MessageBus.Instance.ActorCommandMoveOrder.RemoveListener(ActorCommandMoveOrder);
+            MessageBus.Instance.ActorCommandRotateOrder.RemoveListener(ActorCommandRotateOrder);
+            MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
+            MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
         }
         
         public void OnLateUpdate()
@@ -128,6 +138,26 @@ namespace AloneSpace
         void NoticeHitThreat(IThreatData threatData, ICollisionData collisionData)
         {
             (collisionData as ActorData)?.AddThreat(threatData);
+        }
+
+        void ActorCommandMoveOrder(Guid actorId, Vector3 direction)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetMoveOrder(direction);
+        }
+
+        void ActorCommandRotateOrder(Guid actorId, Vector3 rotateDirection)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetRotateOrder(rotateDirection);
+        }
+
+        void ActorCommandSetActorMode(Guid actorId, ActorMode actorMode)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetActorMode(actorMode);
+        }
+
+        void ActorCommandSetActorCombatMode(Guid actorId, ActorCombatMode actorCombatMode)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetActorCombatMode(actorCombatMode);
         }
     }
 }
