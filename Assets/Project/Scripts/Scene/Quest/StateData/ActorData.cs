@@ -118,11 +118,16 @@ namespace AloneSpace
             }
             else
             {
-                InertiaTensor += Rotation * ActorAIStateData.MoveOrderDirection * 0.1f;
-                
-                // FIXME: 角度を合成して、Angleも減衰させる
-                InertiaTensorRotationAngle = ActorAIStateData.RotateOrderDirection.magnitude;
-                InertiaTensorRotationAxis = ActorAIStateData.RotateOrderDirection.normalized;
+                InertiaTensor += Rotation * new Vector3(
+                    ActorAIStateData.LeftBoosterPowerRatio + -ActorAIStateData.RightBoosterPowerRatio,
+                    ActorAIStateData.BottomBoosterPowerRatio + -ActorAIStateData.TopBoosterPowerRatio,
+                    ActorAIStateData.BackBoosterPowerRatio + -ActorAIStateData.FrontBoosterPowerRatio) * 0.02f;
+
+                var rotateOrder = new Vector3(ActorAIStateData.PitchBoosterPowerRatio, ActorAIStateData.YawBoosterPowerRatio, ActorAIStateData.RollBoosterPowerRatio);
+                var rotateOrderDirection = rotateOrder.normalized;
+                var ratio = Vector3.Dot(InertiaTensorRotationAxis, rotateOrderDirection);
+                InertiaTensorRotationAngle += rotateOrderDirection.magnitude * ratio * 0.01f;
+                InertiaTensorRotationAxis = (InertiaTensorRotationAxis + rotateOrderDirection).normalized;
             }
             
             Position += InertiaTensor;
@@ -130,7 +135,8 @@ namespace AloneSpace
 
             if (ActorMode != ActorMode.Warp)
             {
-                InertiaTensor *= 0.9f;
+                InertiaTensor *= 0.99f;
+
                 InertiaTensorRotationAngle *= 0.9f;
             }
             
@@ -181,7 +187,7 @@ namespace AloneSpace
         {
             if (moveTarget == null)
             {
-                ActorMode = ActorMode.Standard;
+                ActorMode = ActorMode.ThirdPersonViewpoint;
                 MoveTarget = null;
                 return;
             }
@@ -193,7 +199,7 @@ namespace AloneSpace
             }
             else
             {
-                ActorMode = ActorMode.Standard;
+                ActorMode = ActorMode.ThirdPersonViewpoint;
             }
 
             MoveTarget = moveTarget;
@@ -203,15 +209,50 @@ namespace AloneSpace
         {
             ActorAIStateData.ThreatList.Add(threatData);
         }
-
-        public void SetMoveOrder(Vector3 direction)
+        
+        public void SetFrontBoosterPowerRatio(float power)
         {
-            ActorAIStateData.MoveOrderDirection = direction;
+            ActorAIStateData.FrontBoosterPowerRatio = power;
         }
-
-        public void SetRotateOrder(Vector3 rotateDirection)
+        
+        public void SetBackBoosterPowerRatio(float power)
         {
-            ActorAIStateData.RotateOrderDirection = rotateDirection;
+            ActorAIStateData.BackBoosterPowerRatio = power;
+        }
+        
+        public void SetRightBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.RightBoosterPowerRatio = power;
+        }
+        
+        public void SetLeftBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.LeftBoosterPowerRatio = power;
+        }
+        
+        public void SetTopBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.TopBoosterPowerRatio = power;
+        }
+        
+        public void SetBottomBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.BottomBoosterPowerRatio = power;
+        }
+        
+        public void SetPitchBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.PitchBoosterPowerRatio = power;
+        }
+        
+        public void SetRollBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.RollBoosterPowerRatio = power;
+        }
+        
+        public void SetYawBoosterPowerRatio(float power)
+        {
+            ActorAIStateData.YawBoosterPowerRatio = power;
         }
 
         public void SetActorMode(ActorMode actorMode)

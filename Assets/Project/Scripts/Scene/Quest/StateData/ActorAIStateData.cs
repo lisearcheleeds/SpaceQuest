@@ -20,7 +20,15 @@ namespace AloneSpace
 
         public ITargetData MainTarget { get; set; }
 
-        public Vector3 MoveOrderDirection { get; set; }
-        public Vector3 RotateOrderDirection { get; set; }
+        public float FrontBoosterPowerRatio { get; set; }
+        public float BackBoosterPowerRatio { get; set; }
+        public float RightBoosterPowerRatio { get; set; }
+        public float LeftBoosterPowerRatio { get; set; }
+        public float TopBoosterPowerRatio { get; set; }
+        public float BottomBoosterPowerRatio { get; set; }
+        
+        public float PitchBoosterPowerRatio { get; set; }
+        public float RollBoosterPowerRatio { get; set; }
+        public float YawBoosterPowerRatio { get; set; }
     }
 }

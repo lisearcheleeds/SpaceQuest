@@ -27,8 +27,15 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
             
-            MessageBus.Instance.ActorCommandMoveOrder.AddListener(ActorCommandMoveOrder);
-            MessageBus.Instance.ActorCommandRotateOrder.AddListener(ActorCommandRotateOrder);
+            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.AddListener(ActorCommandFrontBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.AddListener(ActorCommandRightBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.AddListener(ActorCommandLeftBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.AddListener(ActorCommandTopBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.AddListener(ActorCommandBottomBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.AddListener(ActorCommandPitchBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.AddListener(ActorCommandRollBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.AddListener(ActorCommandYawBoosterPowerRatio);
             MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
         }
@@ -44,8 +51,15 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
             
-            MessageBus.Instance.ActorCommandMoveOrder.RemoveListener(ActorCommandMoveOrder);
-            MessageBus.Instance.ActorCommandRotateOrder.RemoveListener(ActorCommandRotateOrder);
+            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.RemoveListener(ActorCommandFrontBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.RemoveListener(ActorCommandBackBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.RemoveListener(ActorCommandRightBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.RemoveListener(ActorCommandLeftBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.RemoveListener(ActorCommandTopBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.RemoveListener(ActorCommandBottomBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.RemoveListener(ActorCommandPitchBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.RemoveListener(ActorCommandRollBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
             MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
         }
@@ -139,15 +153,50 @@ namespace AloneSpace
         {
             (collisionData as ActorData)?.AddThreat(threatData);
         }
-
-        void ActorCommandMoveOrder(Guid actorId, Vector3 direction)
+        
+        void ActorCommandFrontBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetMoveOrder(direction);
+            questData.ActorData.First(x => x.InstanceId == actorId).SetFrontBoosterPowerRatio(power);
         }
-
-        void ActorCommandRotateOrder(Guid actorId, Vector3 rotateDirection)
+        
+        void ActorCommandBackBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetRotateOrder(rotateDirection);
+            questData.ActorData.First(x => x.InstanceId == actorId).SetBackBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandRightBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetRightBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandLeftBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetLeftBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandTopBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetTopBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandBottomBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetBottomBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandPitchBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetPitchBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandRollBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetRollBoosterPowerRatio(power);
+        }
+        
+        void ActorCommandYawBoosterPowerRatio(Guid actorId, float power)
+        {
+            questData.ActorData.First(x => x.InstanceId == actorId).SetYawBoosterPowerRatio(power);
         }
 
         void ActorCommandSetActorMode(Guid actorId, ActorMode actorMode)

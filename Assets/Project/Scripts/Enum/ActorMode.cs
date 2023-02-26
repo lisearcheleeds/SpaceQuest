@@ -2,8 +2,8 @@
 {
     public enum ActorMode
     {
-        Standard,
-        Combat,
+        ThirdPersonViewpoint,
+        Cockpit,
         Warp,
     }
 }

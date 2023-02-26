@@ -27,7 +27,15 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.AddListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.AddListener(ManagerCommandLoadArea);
-            MessageBus.Instance.UserInputDirectionAndRotation.AddListener(UserInputDirectionAndRotation);
+            MessageBus.Instance.UserInputFrontBoosterPowerRatio.AddListener(UserInputFrontBoosterPowerRatio);
+            MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
+            MessageBus.Instance.UserInputRightBoosterPowerRatio.AddListener(UserInputRightBoosterPowerRatio);
+            MessageBus.Instance.UserInputLeftBoosterPowerRatio.AddListener(UserInputLeftBoosterPowerRatio);
+            MessageBus.Instance.UserInputTopBoosterPowerRatio.AddListener(UserInputTopBoosterPowerRatio);
+            MessageBus.Instance.UserInputBottomBoosterPowerRatio.AddListener(UserInputBottomBoosterPowerRatio);
+            MessageBus.Instance.UserInputPitchBoosterPowerRatio.AddListener(UserInputPitchBoosterPowerRatio);
+            MessageBus.Instance.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
+            MessageBus.Instance.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
             MessageBus.Instance.UserInputSwitchActorMode.AddListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.AddListener(UserInputSetActorCombatMode);
         }
@@ -39,7 +47,15 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.RemoveListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.RemoveListener(ManagerCommandLoadArea);
-            MessageBus.Instance.UserInputDirectionAndRotation.RemoveListener(UserInputDirectionAndRotation);
+            MessageBus.Instance.UserInputFrontBoosterPowerRatio.RemoveListener(UserInputFrontBoosterPowerRatio);
+            MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
+            MessageBus.Instance.UserInputRightBoosterPowerRatio.RemoveListener(UserInputRightBoosterPowerRatio);
+            MessageBus.Instance.UserInputLeftBoosterPowerRatio.RemoveListener(UserInputLeftBoosterPowerRatio);
+            MessageBus.Instance.UserInputTopBoosterPowerRatio.RemoveListener(UserInputTopBoosterPowerRatio);
+            MessageBus.Instance.UserInputBottomBoosterPowerRatio.RemoveListener(UserInputBottomBoosterPowerRatio);
+            MessageBus.Instance.UserInputPitchBoosterPowerRatio.RemoveListener(UserInputPitchBoosterPowerRatio);
+            MessageBus.Instance.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
+            MessageBus.Instance.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
             MessageBus.Instance.UserInputSwitchActorMode.RemoveListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
         }
@@ -64,11 +80,11 @@ namespace AloneSpace
 
             if (prevObserveActorMode != observePlayerQuestData.MainActorData.ActorMode)
             {
-                if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Combat)
+                if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Cockpit);
                 }
-                else if(observePlayerQuestData.MainActorData.ActorMode != ActorMode.Combat)
+                else if(observePlayerQuestData.MainActorData.ActorMode != ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
                 }
@@ -95,48 +111,61 @@ namespace AloneSpace
             uiManager.SetObserveAreaData(currentAreaData);
             areaUpdater.SetObserveAreaData(currentAreaData);
         }
-
-        void UserInputDirectionAndRotation(Vector3 inputDirection, Vector2 inputRotation)
+        
+        void UserInputFrontBoosterPowerRatio(float power)
         {
-            // 戦闘
-            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Combat)
-            {
-                if (observePlayerQuestData.MainActorData.ActorCombatMode == ActorCombatMode.Fighter)
-                {
-                    // 戦闘機っぽい動き メインブースターが付いてる体
-                    // マウス上下でピッチ
-                    // マウス左右でロール
-                    // ADでヨー
-                    // WSで加減速
-                    MessageBus.Instance.ActorCommandMoveOrder.Broadcast(observePlayerQuestData.MainActorData.InstanceId, new Vector3(0, inputDirection.y, inputDirection.z));
-                    
-                    // 位置情報を軸に変換
-                    var rotation = new Vector3(inputRotation.y, inputDirection.x, -inputRotation.x);
-                    MessageBus.Instance.ActorCommandRotateOrder.Broadcast(observePlayerQuestData.MainActorData.InstanceId, rotation);
-                }
-                else
-                {
-                    // 戦闘ヘリっぽい動き メインブースターが付いてない体
-                    // マウスでFPS操作
-                    // WASDで平行移動
-                    MessageBus.Instance.ActorCommandMoveOrder.Broadcast(observePlayerQuestData.MainActorData.InstanceId, inputDirection);
-                    
-                    // 位置情報を軸に変換
-                    var rotation = new Vector3(inputRotation.y, inputRotation.x, 0);
-                    MessageBus.Instance.ActorCommandRotateOrder.Broadcast(observePlayerQuestData.MainActorData.InstanceId, rotation);
-                }
-            }
+            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputBackBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputRightBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputLeftBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputTopBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputBottomBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputPitchBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputRollBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+        
+        void UserInputYawBoosterPowerRatio(float power)
+        {
+            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
         }
 
         void UserInputSwitchActorMode()
         {
-            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Standard)
+            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.ThirdPersonViewpoint)
             {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(observePlayerQuestData.MainActorData.InstanceId, ActorMode.Combat);
+                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(observePlayerQuestData.MainActorData.InstanceId, ActorMode.Cockpit);
             }
-            else if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Combat)
+            else if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
             {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(observePlayerQuestData.MainActorData.InstanceId, ActorMode.Standard);
+                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(observePlayerQuestData.MainActorData.InstanceId, ActorMode.ThirdPersonViewpoint);
             }
         }
 

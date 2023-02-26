@@ -2,7 +2,7 @@
 {
     public enum ActorCombatMode
     {
-        Standard,
+        Slip,
         Fighter,
     }
 }

@@ -39,7 +39,16 @@ namespace AloneSpace
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         
-        public class UserInputDirectionAndRotation : MessageBusBroadcaster<Vector3, Vector2> {}
+        public class UserInputFrontBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputBackBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputRightBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputLeftBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputTopBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputBottomBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputPitchBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputRollBoosterPower : MessageBusBroadcaster<float>{}
+        public class UserInputYawBoosterPower : MessageBusBroadcaster<float>{}
+        
         public class UserInputSwitchActorMode : MessageBusBroadcaster {}
         public class UserInputSetActorCombatMode : MessageBusBroadcaster <ActorCombatMode>{}
         
@@ -51,8 +60,16 @@ namespace AloneSpace
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         
-        public class ActorCommandMoveOrder : MessageBusBroadcaster<Guid, Vector3>{}
-        public class ActorCommandRotateOrder : MessageBusBroadcaster<Guid, Vector3>{}
+        public class ActorCommandFrontBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandBackBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandRightBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandLeftBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandTopBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandBottomBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandPitchBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandRollBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandYawBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        
         public class ActorCommandSetActorMode : MessageBusBroadcaster<Guid, ActorMode>{}
         public class ActorCommandSetActorCombatMode : MessageBusBroadcaster<Guid, ActorCombatMode>{}
         
