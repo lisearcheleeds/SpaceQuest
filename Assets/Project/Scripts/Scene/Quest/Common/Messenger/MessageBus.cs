@@ -39,7 +39,7 @@ namespace AloneSpace
         public MessageBusDefine.UserInputOpenInventory UserInputOpenInventory { get; } = new MessageBusDefine.UserInputOpenInventory();
         public MessageBusDefine.UserInputCloseInventory UserInputCloseInventory { get; } = new MessageBusDefine.UserInputCloseInventory();
         
-        public MessageBusDefine.UserInputFrontBoosterPower UserInputFrontBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
+        public MessageBusDefine.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
         public MessageBusDefine.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBackBoosterPower();
         public MessageBusDefine.UserInputRightBoosterPower UserInputRightBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRightBoosterPower();
         public MessageBusDefine.UserInputLeftBoosterPower UserInputLeftBoosterPowerRatio { get; } = new MessageBusDefine.UserInputLeftBoosterPower();
@@ -69,7 +69,7 @@ namespace AloneSpace
         public MessageBusDefine.PlayerCommandSetInteractOrder PlayerCommandSetInteractOrder { get; } = new MessageBusDefine.PlayerCommandSetInteractOrder();
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
         
-        public MessageBusDefine.ActorCommandFrontBoosterPower ActorCommandFrontBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandFrontBoosterPower();
+        public MessageBusDefine.ActorCommandForwardBoosterPower ActorCommandForwardBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandForwardBoosterPower();
         public MessageBusDefine.ActorCommandBackBoosterPower ActorCommandBackBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandBackBoosterPower();
         public MessageBusDefine.ActorCommandRightBoosterPower ActorCommandRightBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandRightBoosterPower();
         public MessageBusDefine.ActorCommandLeftBoosterPower ActorCommandLeftBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandLeftBoosterPower();

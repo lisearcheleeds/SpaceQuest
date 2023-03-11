@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public class ActorPartsExclusiveSensorParameterMaster
+    public class ActorPartsExtraSensorParameterMaster
     {
         public class Row
         {
@@ -32,15 +32,15 @@ namespace AloneSpace
         }
 
         Row[] rows;
-        static ActorPartsExclusiveSensorParameterMaster instance;
+        static ActorPartsExtraSensorParameterMaster instance;
 
-        public static ActorPartsExclusiveSensorParameterMaster Instance
+        public static ActorPartsExtraSensorParameterMaster Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new ActorPartsExclusiveSensorParameterMaster();
+                    instance = new ActorPartsExtraSensorParameterMaster();
                 }
 
                 return instance;
@@ -52,7 +52,7 @@ namespace AloneSpace
             return rows.First(x => x.Id == id);
         }
 
-        ActorPartsExclusiveSensorParameterMaster()
+        ActorPartsExtraSensorParameterMaster()
         {
             rows = new[]
             {

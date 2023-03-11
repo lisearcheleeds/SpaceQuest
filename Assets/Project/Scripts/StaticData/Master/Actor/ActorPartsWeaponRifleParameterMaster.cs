@@ -9,9 +9,6 @@ namespace AloneSpace
             // ID
             public int Id { get; }
 
-            // 射出する弾の種類
-            public AmmoType AmmoType { get; }
-
             // 射出物アセット
             public int ProjectileAssetId { get; }
 
@@ -38,7 +35,6 @@ namespace AloneSpace
 
             public Row(
                 int id,
-                AmmoType ammoType,
                 int projectileAssetId,
                 int weaponResourceMaxCount,
                 float reloadTime,
@@ -49,7 +45,6 @@ namespace AloneSpace
                 float sightingMaxRange)
             {
                 Id = id;
-                AmmoType = ammoType;
                 ProjectileAssetId = projectileAssetId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
@@ -86,8 +81,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, AmmoType.Rifle, 1, 12, 3.0f, 0.1f, 1.0f, 1.0f, 1.0f, 500),
-                new Row(2, AmmoType.Rifle, 1, 12, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500),
+                new Row(1, 1, 12, 3.0f, 0.1f, 1.0f, 1.0f, 1.0f, 500),
+                new Row(2, 1, 12, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500),
             };
         }
     }

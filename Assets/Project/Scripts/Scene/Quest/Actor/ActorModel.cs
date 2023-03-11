@@ -26,7 +26,7 @@ namespace AloneSpace
             results.Add(root);
             
             // ツリー状のID特殊な読み込み
-            foreach (var actorPartsVO in actorSpecData.ActorPartsVOs)
+            foreach (var actorPartsVO in actorSpecData.ActorPartsVOHierarchy.Values.SelectMany(x => x))
             {
                 coroutines.Add(LoadParts(actorPartsVO, results, actorSpecData.ActorBluePrint));
             }

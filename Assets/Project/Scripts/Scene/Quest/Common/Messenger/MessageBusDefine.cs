@@ -60,7 +60,7 @@ namespace AloneSpace
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         
-        public class ActorCommandFrontBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ActorCommandForwardBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandBackBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandRightBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandLeftBoosterPower : MessageBusBroadcaster<Guid, float>{}

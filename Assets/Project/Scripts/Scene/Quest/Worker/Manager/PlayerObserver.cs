@@ -27,7 +27,7 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.AddListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.AddListener(ManagerCommandLoadArea);
-            MessageBus.Instance.UserInputFrontBoosterPowerRatio.AddListener(UserInputFrontBoosterPowerRatio);
+            MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.AddListener(UserInputRightBoosterPowerRatio);
             MessageBus.Instance.UserInputLeftBoosterPowerRatio.AddListener(UserInputLeftBoosterPowerRatio);
@@ -47,7 +47,7 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.RemoveListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.RemoveListener(ManagerCommandLoadArea);
-            MessageBus.Instance.UserInputFrontBoosterPowerRatio.RemoveListener(UserInputFrontBoosterPowerRatio);
+            MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.RemoveListener(UserInputRightBoosterPowerRatio);
             MessageBus.Instance.UserInputLeftBoosterPowerRatio.RemoveListener(UserInputLeftBoosterPowerRatio);
@@ -112,9 +112,9 @@ namespace AloneSpace
             areaUpdater.SetObserveAreaData(currentAreaData);
         }
         
-        void UserInputFrontBoosterPowerRatio(float power)
+        void UserInputForwardBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
         }
         
         void UserInputBackBoosterPowerRatio(float power)

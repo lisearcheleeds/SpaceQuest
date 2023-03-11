@@ -20,7 +20,7 @@ namespace AloneSpace
 
         public ITargetData MainTarget { get; set; }
 
-        public float FrontBoosterPowerRatio { get; set; }
+        public float ForwardBoosterPowerRatio { get; set; }
         public float BackBoosterPowerRatio { get; set; }
         public float RightBoosterPowerRatio { get; set; }
         public float LeftBoosterPowerRatio { get; set; }

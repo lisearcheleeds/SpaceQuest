@@ -6,28 +6,35 @@ namespace AloneSpace
     {
         public class Row
         {
-            // ID
             public int Id { get; }
-
-            // 基本パラメータID
             public int ParameterId { get; }
-
-            // モデルパス
             public string Path { get; }
+            public int ChildSlot { get; }
+            
+            public int? InventoryParameterId { get; }
+            public int? SensorParameterId { get; }
+            public int? BoosterParameterId { get; }
+            public int? WeaponParameterId { get; }
 
-            // 拡張パラメータID
-            public int[] ExclusiveParameterIds { get; }
-        
-            // 武器パラメータID
-            public int[] WeaponParameterIds { get; }
 
-            public Row(int id, int parameterId, string path, int[] exclusiveParameterIds, int[] weaponParameterIds)
+            public Row(
+                int id,
+                int parameterId,
+                string path,
+                int childSlot,
+                int? inventoryParameterId,
+                int? sensorParameterId,
+                int? boosterParameterId,
+                int? weaponParameterId)
             {
                 Id = id;
                 ParameterId = parameterId;
                 Path = path;
-                ExclusiveParameterIds = exclusiveParameterIds;
-                WeaponParameterIds = weaponParameterIds;
+                ChildSlot = childSlot;
+                InventoryParameterId = inventoryParameterId;
+                SensorParameterId = sensorParameterId;
+                BoosterParameterId = boosterParameterId;
+                WeaponParameterId = weaponParameterId;
             }
         }
 
@@ -69,17 +76,17 @@ namespace AloneSpace
 
             rows = new[]
             {
-                new Row(1, 1, "RobotModel/Parts/core", null, null),
-                new Row(2, 2, "RobotModel/Parts/head", new[] {3}, null),
-                new Row(3, 3, "RobotModel/Parts/leftArm", null, null),
-                new Row(4, 4, "RobotModel/Parts/rightArm", null, null),
-                new Row(5, 5, "RobotModel/Parts/leg", new[] {4}, null),
-                new Row(6, 6, "RobotModel/Parts/booster", null, null),
-                new Row(7, 7, "RobotModel/Parts/tank", new[] {1}, null),
-                new Row(8, 8, "RobotModel/Parts/weaponLeft", null, new[] {1}),
-                new Row(9, 9, "RobotModel/Parts/weaponRight", null, new[] {3}),
+                new Row(1, 1, "RobotModel/Parts/core", 0, null, null, null, null),
+                new Row(2, 2, "RobotModel/Parts/head", 0, null, null, null, null),
+                new Row(3, 3, "RobotModel/Parts/leftArm", 0, null, null, null, null),
+                new Row(4, 4, "RobotModel/Parts/rightArm", 0, null, null, null, null),
+                new Row(5, 5, "RobotModel/Parts/leg", 0, null, null, 1, null),
+                new Row(6, 6, "RobotModel/Parts/booster", 0, null, null, null, null),
+                new Row(7, 7, "RobotModel/Parts/tank", 0, 1, null, null, null),
+                new Row(8, 8, "RobotModel/Parts/weaponLeft", 0, null, null, null, 1),
+                new Row(9, 9, "RobotModel/Parts/weaponRight", 0, null, null, null, 1),
                 
-                new Row(1001, 1001, "RobotModel/Standalone/Enemy1", null, null),
+                new Row(1001, 1001, "RobotModel/Standalone/Enemy1", 0, null, null, null, null),
             };
         }
     }

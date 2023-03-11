@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public class ActorPartsExclusiveInventoryParameterMaster
+    public class ActorPartsExtraInventoryParameterMaster
     {
         public class Row
         {
@@ -27,15 +27,15 @@ namespace AloneSpace
         }
 
         Row[] rows;
-        static ActorPartsExclusiveInventoryParameterMaster instance;
+        static ActorPartsExtraInventoryParameterMaster instance;
 
-        public static ActorPartsExclusiveInventoryParameterMaster Instance
+        public static ActorPartsExtraInventoryParameterMaster Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new ActorPartsExclusiveInventoryParameterMaster();
+                    instance = new ActorPartsExtraInventoryParameterMaster();
                 }
 
                 return instance;
@@ -47,7 +47,7 @@ namespace AloneSpace
             return rows.First(x => x.Id == id);
         }
 
-        ActorPartsExclusiveInventoryParameterMaster()
+        ActorPartsExtraInventoryParameterMaster()
         {
             rows = new[]
             {

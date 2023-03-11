@@ -26,8 +26,7 @@ namespace AloneSpace
         public Quaternion Rotation { get; set; } = Quaternion.identity;
         
         public Vector3 InertiaTensor { get; private set; }
-        public float InertiaTensorRotationAngle { get; private set; }
-        public Vector3 InertiaTensorRotationAxis { get; private set; }
+        public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
 
         public IPositionData MoveTarget { get; private set; }
         
@@ -119,25 +118,22 @@ namespace AloneSpace
             else
             {
                 InertiaTensor += Rotation * new Vector3(
-                    ActorAIStateData.LeftBoosterPowerRatio + -ActorAIStateData.RightBoosterPowerRatio,
-                    ActorAIStateData.BottomBoosterPowerRatio + -ActorAIStateData.TopBoosterPowerRatio,
-                    ActorAIStateData.BackBoosterPowerRatio + -ActorAIStateData.FrontBoosterPowerRatio) * 0.02f;
-
-                var rotateOrder = new Vector3(ActorAIStateData.PitchBoosterPowerRatio, ActorAIStateData.YawBoosterPowerRatio, ActorAIStateData.RollBoosterPowerRatio);
-                var rotateOrderDirection = rotateOrder.normalized;
-                var ratio = Vector3.Dot(InertiaTensorRotationAxis, rotateOrderDirection);
-                InertiaTensorRotationAngle += rotateOrderDirection.magnitude * ratio * 0.01f;
-                InertiaTensorRotationAxis = (InertiaTensorRotationAxis + rotateOrderDirection).normalized;
+                    ActorAIStateData.RightBoosterPowerRatio * ActorSpecData.HorizonBoosterPower + -ActorAIStateData.LeftBoosterPowerRatio * ActorSpecData.HorizonBoosterPower,
+                    ActorAIStateData.TopBoosterPowerRatio * ActorSpecData.VerticalBoosterPower + -ActorAIStateData.BottomBoosterPowerRatio * ActorSpecData.VerticalBoosterPower,
+                    ActorAIStateData.ForwardBoosterPowerRatio * ActorSpecData.ForwardBoosterPower + -ActorAIStateData.BackBoosterPowerRatio * ActorSpecData.BackBoosterPower);
+                
+                InertiaTensorRotation = Quaternion.Euler(
+                    ActorAIStateData.PitchBoosterPowerRatio * ActorSpecData.PitchBoosterPower,
+                    ActorAIStateData.YawBoosterPowerRatio * ActorSpecData.YawBoosterPower,
+                    ActorAIStateData.RollBoosterPowerRatio * ActorSpecData.RollBoosterPower);
             }
             
             Position += InertiaTensor;
-            Rotation *= Quaternion.AngleAxis(InertiaTensorRotationAngle, InertiaTensorRotationAxis);
+            Rotation *= InertiaTensorRotation;
 
             if (ActorMode != ActorMode.Warp)
             {
                 InertiaTensor *= 0.99f;
-
-                InertiaTensorRotationAngle *= 0.9f;
             }
             
             // 衝突チェック
@@ -210,9 +206,9 @@ namespace AloneSpace
             ActorAIStateData.ThreatList.Add(threatData);
         }
         
-        public void SetFrontBoosterPowerRatio(float power)
+        public void SetForwardBoosterPowerRatio(float power)
         {
-            ActorAIStateData.FrontBoosterPowerRatio = power;
+            ActorAIStateData.ForwardBoosterPowerRatio = power;
         }
         
         public void SetBackBoosterPowerRatio(float power)

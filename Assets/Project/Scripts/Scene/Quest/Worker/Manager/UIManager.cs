@@ -49,16 +49,16 @@ namespace AloneSpace
             // WASDとマウス
             if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
             {
-                MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
-                MessageBus.Instance.UserInputFrontBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
-                MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(Keyboard.current.aKey.isPressed ? 1.0f : 0.0f);
-                MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(Keyboard.current.dKey.isPressed ? 1.0f : 0.0f);
-                MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(Keyboard.current.leftCtrlKey.isPressed ? 1.0f : 0.0f);
-                MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(Keyboard.current.spaceKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(Keyboard.current.dKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(Keyboard.current.aKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(Keyboard.current.spaceKey.isPressed ? 1.0f : 0.0f);
+                MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(Keyboard.current.leftCtrlKey.isPressed ? 1.0f : 0.0f);
 
                 var mouseDelta = Mouse.current.delta.ReadValue();
-                MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(mouseDelta.x);
-                MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(mouseDelta.y);
+                MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(mouseDelta.x * 0.02f, -1.0f, 1.0f));
+                MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Mathf.Clamp(mouseDelta.y * 0.02f, -1.0f, 1.0f));
 
                 var roll = (Keyboard.current.qKey.isPressed ? 1.0f : 0.0f) + (Keyboard.current.eKey.isPressed ? -1.0f : 0.0f);
                 MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);

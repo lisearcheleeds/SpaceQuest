@@ -10,25 +10,27 @@ namespace AloneSpace
     {
         public ActorBluePrint ActorBluePrint { get; private set; }
 
-        public ActorPartsVO[] ActorPartsVOs { get; private set; }
-        public Dictionary<ActorPartsParameterVO, IActorPartsParameterVO[]> ActorPartsParameterVOs { get; private set; }
+        public Dictionary<int, ActorPartsVO[]> ActorPartsVOHierarchy { get; private set; }
 
         public float Endurance { get; private set; }
         public float KineticResistant { get; private set; }
         public float HeatResistant { get; private set; }
         public float BlastResistant { get; private set; }
 
-        public float DirectionMovingModify { get; private set; }
-        public float MovingSpeed { get; private set; }
-        public float QuickMovingSpeed { get; private set; }
-        public float RotateSpeed { get; private set; }
-        public float QuickRotateSpeed { get; private set; }
+        public float ForwardBoosterPower { get; private set; }
+        public float BackBoosterPower { get; private set; }
+        public float HorizonBoosterPower { get; private set; }
+        public float VerticalBoosterPower { get; private set; }
+        
+        public float PitchBoosterPower { get; private set; }
+        public float RollBoosterPower { get; private set; }
+        public float YawBoosterPower { get; private set; }
         
         public float VisionSensorDistance { get; private set; }
         public float SoundSensorDistance { get; private set; }
         public float RadarSensorPerformance { get; private set; }
 
-        public ActorPartsExclusiveInventoryParameterVO[] ActorPartsExclusiveInventoryParameterVOs { get; private set; }
+        public ActorPartsExtraInventoryParameterVO[] ActorPartsExclusiveInventoryParameterVOs { get; private set; }
 
         public IActorPartsWeaponParameterVO[] ActorPartsWeaponParameterVOs { get; private set; }
 
@@ -36,80 +38,36 @@ namespace AloneSpace
         {
             ActorBluePrint = actorBluePrint;
 
-            ActorPartsVOs = actorBluePrint.PartsHierarchy
-                .SelectMany(kv => kv.Value.Select(x => new ActorPartsVO(ActorPartsMaster.Instance.Get(x))).ToArray())
-                .ToArray();
-            
-            ActorPartsParameterVOs = ActorPartsVOs
-                .ToDictionary(
-                    actorPartsVO => new ActorPartsParameterVO(ActorPartsParameterMaster.Instance.Get(actorPartsVO.ParameterId)),
-                    actorPartsVO =>
-                    {
-                        var values = new List<IActorPartsParameterVO>();
-
-                        if (actorPartsVO.ExclusiveParameterIds != null)
-                        {
-                            values.AddRange(actorPartsVO.ExclusiveParameterIds.Select(exclusiveParameterId =>
-                            {
-                                var master = ActorPartsExclusiveParameterMaster.Instance.Get(exclusiveParameterId);
-                                switch (master.ActorPartsExclusiveType)
-                                {
-                                    case ActorPartsExclusiveType.Inventory:
-                                        return (IActorPartsParameterVO)new ActorPartsExclusiveInventoryParameterVO(master.ActorPartsExclusiveId);
-                                    case ActorPartsExclusiveType.Sensor:
-                                        return new ActorPartsExclusiveSensorParameterVO(master.ActorPartsExclusiveId);
-                                    case ActorPartsExclusiveType.Moving:
-                                        return new ActorPartsExclusiveMovingParameterVO(master.ActorPartsExclusiveId);
-                                    default:
-                                        throw new NotImplementedException();
-                                }
-                            }));
-                        }
-
-                        if (actorPartsVO.WeaponParameterIds != null)
-                        {
-                            values.AddRange(actorPartsVO.WeaponParameterIds?.Select(weaponParameterIds =>
-                            {
-                                var master = ActorPartsWeaponParameterMaster.Instance.Get(weaponParameterIds);
-                                switch (master.WeaponType)
-                                {
-                                    case WeaponType.Rifle:
-                                        return (IActorPartsParameterVO)new ActorPartsWeaponRifleParameterVO(master.ActorPartsWeaponId);
-                                    case WeaponType.MissileLauncher:
-                                        return new ActorPartsWeaponMissileLauncherParameterVO(master.ActorPartsWeaponId);
-                                    default:
-                                        throw new NotImplementedException();
-                                }
-                            }).ToArray());
-                        }
-
-                        return values.ToArray();
-                    });
-            
+            ActorPartsVOHierarchy = actorBluePrint.PartsHierarchy
+                .ToDictionary(kv => kv.Key,
+                    kv => kv.Value.Select(x => new ActorPartsVO(ActorPartsMaster.Instance.Get(x))).ToArray());
             Refresh();
         }
 
         void Refresh()
         {
-            Endurance = ActorPartsParameterVOs.Keys.Sum(x => x.Endurance);
-            KineticResistant = ActorPartsParameterVOs.Keys.Sum(x => x.KineticResistant);
-            HeatResistant = ActorPartsParameterVOs.Keys.Sum(x => x.HeatResistant);
-            BlastResistant = ActorPartsParameterVOs.Keys.Sum(x => x.BlastResistant);
+            Endurance = ActorPartsVOHierarchy.Values.Sum(x => x.Sum(y => y.ActorPartsParameterVO.Endurance));
+            KineticResistant = ActorPartsVOHierarchy.Values.Sum(x => x.Sum(y => y.ActorPartsParameterVO.KineticResistant));
+            HeatResistant = ActorPartsVOHierarchy.Values.Sum(x => x.Sum(y => y.ActorPartsParameterVO.HeatResistant));
+            BlastResistant = ActorPartsVOHierarchy.Values.Sum(x => x.Sum(y => y.ActorPartsParameterVO.BlastResistant));
 
-            var externalParameterVOs = ActorPartsParameterVOs.Values.SelectMany(x => x);
-            DirectionMovingModify = 0.1f;
-            MovingSpeed = externalParameterVOs.OfType<ActorPartsExclusiveMovingParameterVO>().Sum(x => x.MovingSpeed);
-            QuickMovingSpeed = externalParameterVOs.OfType<ActorPartsExclusiveMovingParameterVO>().DefaultIfEmpty().Sum(x => x?.QuickMovingSpeed ?? 0);
-            RotateSpeed = externalParameterVOs.OfType<ActorPartsExclusiveMovingParameterVO>().DefaultIfEmpty().Sum(x => x?.RotateSpeed ?? 0);
-            QuickRotateSpeed = externalParameterVOs.OfType<ActorPartsExclusiveMovingParameterVO>().DefaultIfEmpty().Sum(x => x?.QuickRotateSpeed ?? 0);
+            var externalMovingParameterVOs = ActorPartsVOHierarchy.Values.SelectMany(x => x.Select(y => y.ActorPartsExtraBoosterParameterVO)).Where(x => x != null).ToArray();
+            ForwardBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.MainDirectionRatio);
+            BackBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
+            HorizonBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
+            VerticalBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
+            PitchBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
+            RollBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
+            YawBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
 
-            VisionSensorDistance = externalParameterVOs.OfType<ActorPartsExclusiveSensorParameterVO>().DefaultIfEmpty().Max(x => x?.VisionSensorDistance ?? 0);
-            SoundSensorDistance = externalParameterVOs.OfType<ActorPartsExclusiveSensorParameterVO>().DefaultIfEmpty().Max(x => x?.SoundSensorDistance ?? 0);
-            RadarSensorPerformance = externalParameterVOs.OfType<ActorPartsExclusiveSensorParameterVO>().DefaultIfEmpty().Max(x => x?.RadarSensorPerformance ?? 0);
+            var externalSensorParameterVOs = ActorPartsVOHierarchy.Values.SelectMany(x => x.Select(y => y.ActorPartsExtraSensorParameterVO)).Where(x => x != null).ToArray();
+            VisionSensorDistance = externalSensorParameterVOs.Length != 0 ? externalSensorParameterVOs.Max(x => x.VisionSensorDistance ?? 0) : 0;
+            SoundSensorDistance = externalSensorParameterVOs.Length != 0 ? externalSensorParameterVOs.Max(x => x.SoundSensorDistance ?? 0) : 0;
+            RadarSensorPerformance = externalSensorParameterVOs.Length != 0 ? externalSensorParameterVOs.Max(x => x.RadarSensorPerformance ?? 0) : 0;
             
-            ActorPartsExclusiveInventoryParameterVOs = externalParameterVOs.OfType<ActorPartsExclusiveInventoryParameterVO>().ToArray();
+            ActorPartsExclusiveInventoryParameterVOs = ActorPartsVOHierarchy.SelectMany(kv => kv.Value.Select(x => x.ActorPartsExtraInventoryParameterVO)).Where(x => x != null).ToArray();
             
-            ActorPartsWeaponParameterVOs = externalParameterVOs.OfType<IActorPartsWeaponParameterVO>().ToArray();
+            ActorPartsWeaponParameterVOs = ActorPartsVOHierarchy.SelectMany(kv => kv.Value.Select(x => x.ActorPartsWeaponParameterVO)).Where(x => x != null).ToArray();
         }
     }
 }

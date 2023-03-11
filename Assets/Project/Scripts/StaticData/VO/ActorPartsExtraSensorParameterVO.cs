@@ -1,10 +1,8 @@
 ﻿namespace AloneSpace
 {
-    public class ActorPartsExclusiveSensorParameterVO : IActorPartsExclusiveParameterVO
+    public class ActorPartsExtraSensorParameterVO
     {
         public int Id => row.Id;
-
-        public ActorPartsExclusiveType ActorPartsExclusiveType => ActorPartsExclusiveType.Sensor;
 
         // 視認距離
         public float? VisionSensorDistance => row.VisionSensorDistance;
@@ -15,11 +13,11 @@
         // レーダー
         public float? RadarSensorPerformance => row.RadarSensorPerformance;
 
-        ActorPartsExclusiveSensorParameterMaster.Row row;
+        ActorPartsExtraSensorParameterMaster.Row row;
         
-        public ActorPartsExclusiveSensorParameterVO(int id)
+        public ActorPartsExtraSensorParameterVO(int id)
         {
-            row = ActorPartsExclusiveSensorParameterMaster.Instance.Get(id);
+            row = ActorPartsExtraSensorParameterMaster.Instance.Get(id);
         }
     }
 }

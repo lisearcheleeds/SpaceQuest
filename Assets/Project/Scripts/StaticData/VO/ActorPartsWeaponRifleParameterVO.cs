@@ -10,9 +10,6 @@ namespace AloneSpace
         // 武器タイプ
         public WeaponType WeaponType => WeaponType.Rifle;
 
-        // 射出する弾の種類
-        public AmmoType AmmoType => row.AmmoType;
-
         // 射出物アセット
         public ICacheableGameObjectPath ProjectilePath => projectilePath;
             

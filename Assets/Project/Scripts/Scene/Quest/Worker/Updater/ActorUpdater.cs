@@ -27,7 +27,7 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.AddListener(NoticeHitThreat);
             
-            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.AddListener(ActorCommandFrontBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.AddListener(ActorCommandForwardBoosterPowerRatio);
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
             MessageBus.Instance.ActorCommandRightBoosterPowerRatio.AddListener(ActorCommandRightBoosterPowerRatio);
             MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.AddListener(ActorCommandLeftBoosterPowerRatio);
@@ -51,7 +51,7 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
             MessageBus.Instance.NoticeHitThreat.RemoveListener(NoticeHitThreat);
             
-            MessageBus.Instance.ActorCommandFrontBoosterPowerRatio.RemoveListener(ActorCommandFrontBoosterPowerRatio);
+            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.RemoveListener(ActorCommandForwardBoosterPowerRatio);
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.RemoveListener(ActorCommandBackBoosterPowerRatio);
             MessageBus.Instance.ActorCommandRightBoosterPowerRatio.RemoveListener(ActorCommandRightBoosterPowerRatio);
             MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.RemoveListener(ActorCommandLeftBoosterPowerRatio);
@@ -154,9 +154,9 @@ namespace AloneSpace
             (collisionData as ActorData)?.AddThreat(threatData);
         }
         
-        void ActorCommandFrontBoosterPowerRatio(Guid actorId, float power)
+        void ActorCommandForwardBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetFrontBoosterPowerRatio(power);
+            questData.ActorData.First(x => x.InstanceId == actorId).SetForwardBoosterPowerRatio(power);
         }
         
         void ActorCommandBackBoosterPowerRatio(Guid actorId, float power)
