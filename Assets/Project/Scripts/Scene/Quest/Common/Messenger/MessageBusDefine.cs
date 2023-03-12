@@ -49,6 +49,9 @@ namespace AloneSpace
         public class UserInputRollBoosterPower : MessageBusBroadcaster<float>{}
         public class UserInputYawBoosterPower : MessageBusBroadcaster<float>{}
         
+        public class UserInputRotateLookAtDirection : MessageBusBroadcaster<Vector2>{}
+        public class UserInputRotateToLookAtDirection : MessageBusBroadcaster<bool>{}
+        
         public class UserInputSwitchActorMode : MessageBusBroadcaster {}
         public class UserInputSetActorCombatMode : MessageBusBroadcaster <ActorCombatMode>{}
         
@@ -69,6 +72,9 @@ namespace AloneSpace
         public class ActorCommandPitchBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandRollBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandYawBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        
+        public class ActorCommandLookAt : MessageBusBroadcaster<Guid, Vector3>{}
+        public class ActorCommandRotateToLookAt : MessageBusBroadcaster<Guid, bool>{}
         
         public class ActorCommandSetActorMode : MessageBusBroadcaster<Guid, ActorMode>{}
         public class ActorCommandSetActorCombatMode : MessageBusBroadcaster<Guid, ActorCombatMode>{}

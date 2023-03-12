@@ -27,6 +27,7 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.AddListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.AddListener(ManagerCommandLoadArea);
+            
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.AddListener(UserInputRightBoosterPowerRatio);
@@ -36,6 +37,10 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.AddListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
+            
+            MessageBus.Instance.UserInputRotateLookAtDirection.AddListener(UserInputLookAtDirectionRotate);
+            MessageBus.Instance.UserInputRotateToLookAtDirection.AddListener(UserInputRotateToLookAtDirection);
+            
             MessageBus.Instance.UserInputSwitchActorMode.AddListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.AddListener(UserInputSetActorCombatMode);
         }
@@ -47,6 +52,7 @@ namespace AloneSpace
             
             MessageBus.Instance.ManagerCommandSetObservePlayer.RemoveListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.RemoveListener(ManagerCommandLoadArea);
+            
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.RemoveListener(UserInputRightBoosterPowerRatio);
@@ -56,6 +62,10 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.RemoveListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
+            
+            MessageBus.Instance.UserInputRotateLookAtDirection.RemoveListener(UserInputLookAtDirectionRotate);
+            MessageBus.Instance.UserInputRotateToLookAtDirection.RemoveListener(UserInputRotateToLookAtDirection);
+            
             MessageBus.Instance.UserInputSwitchActorMode.RemoveListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
         }
@@ -155,6 +165,27 @@ namespace AloneSpace
         void UserInputYawBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(observePlayerQuestData.MainActorData.InstanceId, power);
+        }
+
+        void UserInputLookAtDirectionRotate(Vector2 mouseInputDelta)
+        {
+            // 右クリック前：カメラは自由
+            // 右クリック中：カメラは自由、機体の回転が追従
+            // 右クリック後：機体の回転にカメラ空間がリセット
+            var localLookAtAngle = Quaternion.AngleAxis(-mouseInputDelta.y, Vector3.right)
+                                   * Quaternion.AngleAxis(mouseInputDelta.x, Vector3.up)
+                                   * observePlayerQuestData.MainActorData.LookAt;
+            
+            localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseInputDelta.y * -1.0f, -90.0f, 90.0f);
+            localLookAtAngle.y = localLookAtAngle.y + mouseInputDelta.x;
+            localLookAtAngle.z = 0;
+            
+            MessageBus.Instance.ActorCommandLookAt.Broadcast(observePlayerQuestData.MainActorData.InstanceId, localLookAtAngle);
+        }
+
+        void UserInputRotateToLookAtDirection(bool isRotateToLookAtDirection)
+        {
+            MessageBus.Instance.ActorCommandRotateToLookAt.Broadcast(observePlayerQuestData.MainActorData.InstanceId, isRotateToLookAtDirection);
         }
 
         void UserInputSwitchActorMode()

@@ -56,12 +56,21 @@ namespace AloneSpace
                 MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(Keyboard.current.spaceKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(Keyboard.current.leftCtrlKey.isPressed ? 1.0f : 0.0f);
 
-                var mouseDelta = Mouse.current.delta.ReadValue();
-                MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(mouseDelta.x * 0.02f, -1.0f, 1.0f));
-                MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Mathf.Clamp(mouseDelta.y * 0.02f, -1.0f, 1.0f));
-
                 var roll = (Keyboard.current.qKey.isPressed ? 1.0f : 0.0f) + (Keyboard.current.eKey.isPressed ? -1.0f : 0.0f);
                 MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);
+
+                var mouseDelta = Mouse.current.delta.ReadValue();
+                MessageBus.Instance.UserInputRotateLookAtDirection.Broadcast(mouseDelta);
+
+                if (Mouse.current.rightButton.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserInputRotateToLookAtDirection.Broadcast(true);
+                }
+                
+                if (Mouse.current.rightButton.wasReleasedThisFrame)
+                {
+                    MessageBus.Instance.UserInputRotateToLookAtDirection.Broadcast(false);
+                }
             }
 
             // 戦闘モードの切り替え

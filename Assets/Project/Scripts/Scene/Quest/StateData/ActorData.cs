@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace AloneSpace
 {
@@ -12,8 +13,8 @@ namespace AloneSpace
         public Guid PlayerInstanceId { get; }
 
         public ActorSpecData ActorSpecData { get; }
-        public InventoryData[] InventoryDataList { get; }
         
+        public InventoryData[] InventoryDataList { get; }
         public WeaponData[] WeaponData { get; }
         
         // 状態
@@ -24,6 +25,8 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; } = Quaternion.identity;
+        public Vector3 LookAt { get; set; } = Vector3.forward;
+        public Quaternion LookAtSpace { get; set; } = Quaternion.identity;
         
         public Vector3 InertiaTensor { get; private set; }
         public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
@@ -121,11 +124,27 @@ namespace AloneSpace
                     ActorAIStateData.RightBoosterPowerRatio * ActorSpecData.HorizonBoosterPower + -ActorAIStateData.LeftBoosterPowerRatio * ActorSpecData.HorizonBoosterPower,
                     ActorAIStateData.TopBoosterPowerRatio * ActorSpecData.VerticalBoosterPower + -ActorAIStateData.BottomBoosterPowerRatio * ActorSpecData.VerticalBoosterPower,
                     ActorAIStateData.ForwardBoosterPowerRatio * ActorSpecData.ForwardBoosterPower + -ActorAIStateData.BackBoosterPowerRatio * ActorSpecData.BackBoosterPower);
-                
-                InertiaTensorRotation = Quaternion.Euler(
-                    ActorAIStateData.PitchBoosterPowerRatio * ActorSpecData.PitchBoosterPower,
-                    ActorAIStateData.YawBoosterPowerRatio * ActorSpecData.YawBoosterPower,
-                    ActorAIStateData.RollBoosterPowerRatio * ActorSpecData.RollBoosterPower);
+
+                if (ActorAIStateData.IsRotateLookAt)
+                {
+                    var lookAtDirection = LookAtSpace * Quaternion.Euler(LookAt) * Vector3.forward;
+                    var lookAtRotation = Vector3.zero;
+                    lookAtRotation.x = Vector3.Dot(lookAtDirection, Rotation * Vector3.up) < 0 ? 1.0f : -1.0f;
+                    lookAtRotation.y = Vector3.Dot(lookAtDirection, Rotation * Vector3.left) < 0 ? 1.0f : -1.0f;
+                    lookAtRotation.z = Vector3.Dot(LookAtSpace * Vector3.up, Rotation * Vector3.right) < 0 ? 1.0f : -1.0f;
+                    
+                    InertiaTensorRotation = Quaternion.Euler(
+                        lookAtRotation.x * ActorSpecData.PitchBoosterPower,
+                        lookAtRotation.y * ActorSpecData.YawBoosterPower,
+                        lookAtRotation.z * ActorSpecData.RollBoosterPower);
+                }
+                else
+                {
+                    InertiaTensorRotation = Quaternion.Euler(
+                        ActorAIStateData.PitchBoosterPowerRatio * ActorSpecData.PitchBoosterPower,
+                        ActorAIStateData.YawBoosterPowerRatio * ActorSpecData.YawBoosterPower,
+                        ActorAIStateData.RollBoosterPowerRatio * ActorSpecData.RollBoosterPower);
+                }
             }
             
             Position += InertiaTensor;
@@ -249,6 +268,21 @@ namespace AloneSpace
         public void SetYawBoosterPowerRatio(float power)
         {
             ActorAIStateData.YawBoosterPowerRatio = power;
+        }
+
+        public void SetLookAt(Vector3 lookAt)
+        {
+            LookAt = lookAt;
+        }
+        
+        public void SetRotateToLookAt(bool isRotateLookAt)
+        {
+            ActorAIStateData.IsRotateLookAt = isRotateLookAt;
+            
+            if (!isRotateLookAt)
+            {
+                LookAtSpace = Rotation;
+            }
         }
 
         public void SetActorMode(ActorMode actorMode)

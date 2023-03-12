@@ -16,6 +16,7 @@ namespace AloneSpace
         public ITargetData TargetData => ActorData;
 
         [SerializeField] ActorModel actorModel;
+        [SerializeField] Transform lookAtSpace;
 
         /// <summary>
         /// ActorStatusからActorを作成
@@ -45,6 +46,7 @@ namespace AloneSpace
         {
             transform.position = ActorData.Position;
             transform.rotation = ActorData.Rotation;
+            lookAtSpace.rotation = ActorData.LookAtSpace;
         }
     }
 }

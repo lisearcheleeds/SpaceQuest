@@ -49,6 +49,9 @@ namespace AloneSpace
         public MessageBusDefine.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRollBoosterPower();
         public MessageBusDefine.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefine.UserInputYawBoosterPower();
         
+        public MessageBusDefine.UserInputRotateLookAtDirection UserInputRotateLookAtDirection { get; } = new MessageBusDefine.UserInputRotateLookAtDirection();
+        public MessageBusDefine.UserInputRotateToLookAtDirection UserInputRotateToLookAtDirection { get; } = new MessageBusDefine.UserInputRotateToLookAtDirection();
+        
         public MessageBusDefine.UserInputSwitchActorMode UserInputSwitchActorMode { get; } = new MessageBusDefine.UserInputSwitchActorMode();
         public MessageBusDefine.UserInputSetActorCombatMode UserInputSetActorCombatMode { get; } = new MessageBusDefine.UserInputSetActorCombatMode();
         
@@ -78,6 +81,9 @@ namespace AloneSpace
         public MessageBusDefine.ActorCommandPitchBoosterPower ActorCommandPitchBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandPitchBoosterPower();
         public MessageBusDefine.ActorCommandRollBoosterPower ActorCommandRollBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandRollBoosterPower();
         public MessageBusDefine.ActorCommandYawBoosterPower ActorCommandYawBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandYawBoosterPower();
+        
+        public MessageBusDefine.ActorCommandLookAt ActorCommandLookAt { get; } = new MessageBusDefine.ActorCommandLookAt();
+        public MessageBusDefine.ActorCommandRotateToLookAt ActorCommandRotateToLookAt { get; } = new MessageBusDefine.ActorCommandRotateToLookAt();
         
         public MessageBusDefine.ActorCommandSetActorMode ActorCommandSetActorMode { get; } = new MessageBusDefine.ActorCommandSetActorMode();
         public MessageBusDefine.ActorCommandSetActorCombatMode ActorCommandSetActorCombatMode { get; } = new MessageBusDefine.ActorCommandSetActorCombatMode();
