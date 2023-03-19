@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using AloneSpace;
-using UnityEngine;
 
 namespace AloneSpace
 {
@@ -17,10 +14,9 @@ namespace AloneSpace
         public float HeatResistant { get; private set; }
         public float BlastResistant { get; private set; }
 
-        public float ForwardBoosterPower { get; private set; }
-        public float BackBoosterPower { get; private set; }
-        public float HorizonBoosterPower { get; private set; }
-        public float VerticalBoosterPower { get; private set; }
+        public float MainBoosterPower { get; private set; }
+        public float SubBoosterPower { get; private set; }
+        public float MaxSpeed { get; private set; }
         
         public float PitchBoosterPower { get; private set; }
         public float RollBoosterPower { get; private set; }
@@ -52,13 +48,12 @@ namespace AloneSpace
             BlastResistant = ActorPartsVOHierarchy.Values.Sum(x => x.Sum(y => y.ActorPartsParameterVO.BlastResistant));
 
             var externalMovingParameterVOs = ActorPartsVOHierarchy.Values.SelectMany(x => x.Select(y => y.ActorPartsExtraBoosterParameterVO)).Where(x => x != null).ToArray();
-            ForwardBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.MainDirectionRatio);
-            BackBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
-            HorizonBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
-            VerticalBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubDirectionRatio);
-            PitchBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
-            RollBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
-            YawBoosterPower = externalMovingParameterVOs.Sum(x => x.BoosterPower * x.SubRotateRatio);
+            MainBoosterPower = externalMovingParameterVOs.Sum(x => x.MainBoosterPower);
+            SubBoosterPower = externalMovingParameterVOs.Sum(x => x.SubBoosterPower);
+            MaxSpeed = externalMovingParameterVOs.Max(x => x.MaxSpeed);
+            PitchBoosterPower = externalMovingParameterVOs.Sum(x => x.RotatePower);
+            RollBoosterPower = externalMovingParameterVOs.Sum(x => x.RotatePower);
+            YawBoosterPower = externalMovingParameterVOs.Sum(x => x.RotatePower);
 
             var externalSensorParameterVOs = ActorPartsVOHierarchy.Values.SelectMany(x => x.Select(y => y.ActorPartsExtraSensorParameterVO)).Where(x => x != null).ToArray();
             VisionSensorDistance = externalSensorParameterVOs.Length != 0 ? externalSensorParameterVOs.Max(x => x.VisionSensorDistance ?? 0) : 0;

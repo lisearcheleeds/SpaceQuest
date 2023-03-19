@@ -16,6 +16,7 @@ namespace AloneSpace
         public MessageBusDefine.SendCollision SendCollision { get; } = new MessageBusDefine.SendCollision();
 
         // Util
+        public MessageBusDefine.UtilGetPlayerQuestData UtilGetPlayerQuestData { get; } = new MessageBusDefine.UtilGetPlayerQuestData();
         public MessageBusDefine.UtilGetAreaData UtilGetAreaData { get; } = new MessageBusDefine.UtilGetAreaData();
         
         // プレイヤー設定
@@ -49,8 +50,7 @@ namespace AloneSpace
         public MessageBusDefine.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRollBoosterPower();
         public MessageBusDefine.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefine.UserInputYawBoosterPower();
         
-        public MessageBusDefine.UserInputRotateLookAtDirection UserInputRotateLookAtDirection { get; } = new MessageBusDefine.UserInputRotateLookAtDirection();
-        public MessageBusDefine.UserInputRotateToLookAtDirection UserInputRotateToLookAtDirection { get; } = new MessageBusDefine.UserInputRotateToLookAtDirection();
+        public MessageBusDefine.UserInputLookAt UserInputLookAt { get; } = new MessageBusDefine.UserInputLookAt();
         
         public MessageBusDefine.UserInputSwitchActorMode UserInputSwitchActorMode { get; } = new MessageBusDefine.UserInputSwitchActorMode();
         public MessageBusDefine.UserInputSetActorCombatMode UserInputSetActorCombatMode { get; } = new MessageBusDefine.UserInputSetActorCombatMode();
@@ -65,6 +65,9 @@ namespace AloneSpace
 
         public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
+        
+        public MessageBusDefine.UserCommandLookAt UserCommandLookAt { get; } = new MessageBusDefine.UserCommandLookAt();
+        public MessageBusDefine.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefine.UserCommandSetLookAtSpace();
         
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetAreaId PlayerCommandSetAreaId { get; } = new MessageBusDefine.PlayerCommandSetAreaId();
@@ -83,7 +86,6 @@ namespace AloneSpace
         public MessageBusDefine.ActorCommandYawBoosterPower ActorCommandYawBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandYawBoosterPower();
         
         public MessageBusDefine.ActorCommandLookAt ActorCommandLookAt { get; } = new MessageBusDefine.ActorCommandLookAt();
-        public MessageBusDefine.ActorCommandRotateToLookAt ActorCommandRotateToLookAt { get; } = new MessageBusDefine.ActorCommandRotateToLookAt();
         
         public MessageBusDefine.ActorCommandSetActorMode ActorCommandSetActorMode { get; } = new MessageBusDefine.ActorCommandSetActorMode();
         public MessageBusDefine.ActorCommandSetActorCombatMode ActorCommandSetActorCombatMode { get; } = new MessageBusDefine.ActorCommandSetActorCombatMode();

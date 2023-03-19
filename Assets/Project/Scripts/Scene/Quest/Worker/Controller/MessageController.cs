@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -11,12 +12,18 @@ namespace AloneSpace
         {
             this.questData = questData;
             
+            MessageBus.Instance.UtilGetPlayerQuestData.SetListener(UtilGetPlayerQuestData);
             MessageBus.Instance.UtilGetAreaData.SetListener(UtilGetAreaData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UtilGetAreaData.SetListener(null);
+            MessageBus.Instance.UtilGetAreaData.Clear();
+        }
+        
+        PlayerQuestData UtilGetPlayerQuestData(Guid instanceId)
+        {
+            return questData.PlayerQuestData.FirstOrDefault(playerQuestData => playerQuestData.InstanceId == instanceId);
         }
 
         AreaData UtilGetAreaData(int areaId)

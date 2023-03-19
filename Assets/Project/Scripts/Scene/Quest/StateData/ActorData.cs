@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace AloneSpace
 {
@@ -25,9 +24,8 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; } = Quaternion.identity;
-        public Vector3 LookAt { get; set; } = Vector3.forward;
-        public Quaternion LookAtSpace { get; set; } = Quaternion.identity;
-        
+        public Vector3 LookAt { get; set; }
+
         public Vector3 InertiaTensor { get; private set; }
         public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
 
@@ -121,39 +119,24 @@ namespace AloneSpace
             else
             {
                 InertiaTensor += Rotation * new Vector3(
-                    ActorAIStateData.RightBoosterPowerRatio * ActorSpecData.HorizonBoosterPower + -ActorAIStateData.LeftBoosterPowerRatio * ActorSpecData.HorizonBoosterPower,
-                    ActorAIStateData.TopBoosterPowerRatio * ActorSpecData.VerticalBoosterPower + -ActorAIStateData.BottomBoosterPowerRatio * ActorSpecData.VerticalBoosterPower,
-                    ActorAIStateData.ForwardBoosterPowerRatio * ActorSpecData.ForwardBoosterPower + -ActorAIStateData.BackBoosterPowerRatio * ActorSpecData.BackBoosterPower);
+                    (ActorAIStateData.RightBoosterPowerRatio - ActorAIStateData.LeftBoosterPowerRatio) * ActorSpecData.SubBoosterPower,
+                    (ActorAIStateData.TopBoosterPowerRatio - ActorAIStateData.BottomBoosterPowerRatio) * ActorSpecData.SubBoosterPower,
+                    ActorAIStateData.ForwardBoosterPowerRatio * ActorSpecData.MainBoosterPower + -ActorAIStateData.BackBoosterPowerRatio * ActorSpecData.SubBoosterPower);
 
-                if (ActorAIStateData.IsRotateLookAt)
+                if ((ActorSpecData.MaxSpeed * ActorSpecData.MaxSpeed) < InertiaTensor.sqrMagnitude)
                 {
-                    var lookAtDirection = LookAtSpace * Quaternion.Euler(LookAt) * Vector3.forward;
-                    var lookAtRotation = Vector3.zero;
-                    lookAtRotation.x = Vector3.Dot(lookAtDirection, Rotation * Vector3.up) < 0 ? 1.0f : -1.0f;
-                    lookAtRotation.y = Vector3.Dot(lookAtDirection, Rotation * Vector3.left) < 0 ? 1.0f : -1.0f;
-                    lookAtRotation.z = Vector3.Dot(LookAtSpace * Vector3.up, Rotation * Vector3.right) < 0 ? 1.0f : -1.0f;
-                    
-                    InertiaTensorRotation = Quaternion.Euler(
-                        lookAtRotation.x * ActorSpecData.PitchBoosterPower,
-                        lookAtRotation.y * ActorSpecData.YawBoosterPower,
-                        lookAtRotation.z * ActorSpecData.RollBoosterPower);
+                    // 最大速度制限
+                    InertiaTensor *= ActorSpecData.MaxSpeed / InertiaTensor.sqrMagnitude;
                 }
-                else
-                {
-                    InertiaTensorRotation = Quaternion.Euler(
-                        ActorAIStateData.PitchBoosterPowerRatio * ActorSpecData.PitchBoosterPower,
-                        ActorAIStateData.YawBoosterPowerRatio * ActorSpecData.YawBoosterPower,
-                        ActorAIStateData.RollBoosterPowerRatio * ActorSpecData.RollBoosterPower);
-                }
+
+                InertiaTensorRotation = Quaternion.Euler(
+                    ActorAIStateData.PitchBoosterPowerRatio * ActorSpecData.PitchBoosterPower,
+                    ActorAIStateData.YawBoosterPowerRatio * ActorSpecData.YawBoosterPower,
+                    ActorAIStateData.RollBoosterPowerRatio * ActorSpecData.RollBoosterPower);
             }
             
             Position += InertiaTensor;
             Rotation *= InertiaTensorRotation;
-
-            if (ActorMode != ActorMode.Warp)
-            {
-                InertiaTensor *= 0.99f;
-            }
             
             // 衝突チェック
             foreach (var collide in CollidedList)
@@ -273,16 +256,6 @@ namespace AloneSpace
         public void SetLookAt(Vector3 lookAt)
         {
             LookAt = lookAt;
-        }
-        
-        public void SetRotateToLookAt(bool isRotateLookAt)
-        {
-            ActorAIStateData.IsRotateLookAt = isRotateLookAt;
-            
-            if (!isRotateLookAt)
-            {
-                LookAtSpace = Rotation;
-            }
         }
 
         public void SetActorMode(ActorMode actorMode)

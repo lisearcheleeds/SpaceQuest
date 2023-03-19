@@ -8,27 +8,24 @@ namespace AloneSpace
         {
             // ID
             public int Id { get; }
-            
-            public float BoosterPower { get; }
-            public float MainDirectionRatio { get; }
-            public float SubDirectionRatio { get; }
-            public float MainRotateRatio { get; }
-            public float SubRotateRatio { get; }
+         
+            public float MainBoosterPower { get; }
+            public float SubBoosterPower { get; }
+            public float MaxSpeed { get; }
+            public float RotatePower { get; }
 
             public Row(
                 int id,
-                float boosterPower,
-                float mainDirectionRatio,
-                float subDirectionRatio,
-                float mainRotateRatio,
-                float subRotateRatio)
+                float mainBoosterPower,
+                float subBoosterPower,
+                float maxSpeed,
+                float rotatePower)
             {
                 Id = id;
-                BoosterPower = boosterPower;
-                MainDirectionRatio = mainDirectionRatio;
-                SubDirectionRatio = subDirectionRatio;
-                MainRotateRatio = mainRotateRatio;
-                SubRotateRatio = subRotateRatio;
+                MainBoosterPower = mainBoosterPower;
+                SubBoosterPower = subBoosterPower;
+                MaxSpeed = maxSpeed;
+                RotatePower = rotatePower;
             }
         }
 
@@ -59,11 +56,10 @@ namespace AloneSpace
             {
                 new Row(
                     id: 1,
-                    boosterPower: 0.005f,
-                    mainDirectionRatio: 1.0f,
-                    subDirectionRatio: 1.0f,
-                    mainRotateRatio: 200.0f,
-                    subRotateRatio: 200.0f)
+                    mainBoosterPower: 0.005f,
+                    subBoosterPower: 0.005f,
+                    maxSpeed: 1.0f,
+                    rotatePower: 1.0f)
             };
         }
     }

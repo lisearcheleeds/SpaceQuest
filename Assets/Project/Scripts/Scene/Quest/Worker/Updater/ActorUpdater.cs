@@ -38,7 +38,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.AddListener(ActorCommandYawBoosterPowerRatio);
             
             MessageBus.Instance.ActorCommandLookAt.AddListener(ActorCommandLookAt);
-            MessageBus.Instance.ActorCommandRotateToLookAt.AddListener(ActorCommandRotateToLookAt);
             
             MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
@@ -66,7 +65,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
             
             MessageBus.Instance.ActorCommandLookAt.RemoveListener(ActorCommandLookAt);
-            MessageBus.Instance.ActorCommandRotateToLookAt.RemoveListener(ActorCommandRotateToLookAt);
             
             MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
@@ -210,11 +208,6 @@ namespace AloneSpace
         void ActorCommandLookAt(Guid actorId, Vector3 lookAt)
         {
             questData.ActorData.First(x => x.InstanceId == actorId).SetLookAt(lookAt);
-        }
-        
-        void ActorCommandRotateToLookAt(Guid actorId, bool isRotateToLookAt)
-        {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetRotateToLookAt(isRotateToLookAt);
         }
         
         void ActorCommandSetActorMode(Guid actorId, ActorMode actorMode)

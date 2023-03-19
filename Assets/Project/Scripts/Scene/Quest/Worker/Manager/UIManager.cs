@@ -22,7 +22,7 @@ namespace AloneSpace
         [Header("3D")]
         [SerializeField] CameraAngleControllerEffect cameraAngleControllerEffect;
 
-        PlayerQuestData observePlayerQuestData;
+        UserData userData;
         
         public void Initialize(QuestData questData)
         {
@@ -47,7 +47,7 @@ namespace AloneSpace
         public void OnLateUpdate()
         {
             // WASDとマウス
-            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
+            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
             {
                 MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
@@ -55,21 +55,45 @@ namespace AloneSpace
                 MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(Keyboard.current.aKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(Keyboard.current.spaceKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(Keyboard.current.leftCtrlKey.isPressed ? 1.0f : 0.0f);
-
-                var roll = (Keyboard.current.qKey.isPressed ? 1.0f : 0.0f) + (Keyboard.current.eKey.isPressed ? -1.0f : 0.0f);
-                MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);
-
-                var mouseDelta = Mouse.current.delta.ReadValue();
-                MessageBus.Instance.UserInputRotateLookAtDirection.Broadcast(mouseDelta);
-
-                if (Mouse.current.rightButton.wasPressedThisFrame)
-                {
-                    MessageBus.Instance.UserInputRotateToLookAtDirection.Broadcast(true);
-                }
                 
+                // 右クリック前：カメラは自由
+                // 右クリック中：カメラは自由、機体の回転が追従
+                // 右クリック後：機体の回転にカメラ空間がリセット
+                var mouseDelta = Mouse.current.delta.ReadValue();
+                var localLookAtAngle = Quaternion.AngleAxis(-mouseDelta.y, Vector3.right)
+                                       * Quaternion.AngleAxis(mouseDelta.x, Vector3.up)
+                                       * userData.LookAt;
+            
+                localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
+                localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
+                localLookAtAngle.z = 0;
+            
+                // ActorとUserDataそれぞれに同じ値を設定
+                MessageBus.Instance.ActorCommandLookAt.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, localLookAtAngle);
+                MessageBus.Instance.UserCommandLookAt.Broadcast(localLookAtAngle);
+
                 if (Mouse.current.rightButton.wasReleasedThisFrame)
                 {
-                    MessageBus.Instance.UserInputRotateToLookAtDirection.Broadcast(false);
+                    // 角度基準リセット
+                    MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerQuestData.MainActorData.Rotation);
+                    MessageBus.Instance.UserCommandLookAt.Broadcast(Vector3.zero);;
+                }
+
+                if (Mouse.current.rightButton.isPressed)
+                {
+                    // 追従
+                    var lookAtDirection = userData.LookAtSpace * Quaternion.Euler(userData.LookAt) * Vector3.forward;
+                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.PlayerQuestData.MainActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);
+                }
+                else
+                {
+                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(0);
+                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
+                    
+                    var roll = (Keyboard.current.qKey.isPressed ? 1.0f : 0.0f) + (Keyboard.current.eKey.isPressed ? -1.0f : 0.0f);
+                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);
                 }
             }
 
@@ -84,7 +108,7 @@ namespace AloneSpace
             }
             
             // マウスカーソルの切り替え
-            if (observePlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
+            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
@@ -94,12 +118,12 @@ namespace AloneSpace
             }
         }
 
-        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        public void SetObservePlayerQuestData(UserData userData)
         {
-            observePlayerQuestData = playerQuestData;
+            this.userData = userData;
             
-            interactionList.SetObservePlayerQuestData(playerQuestData);
-            inventoryView.SetObservePlayerQuestData(playerQuestData);
+            interactionList.SetObservePlayerQuestData(userData.PlayerQuestData);
+            inventoryView.SetObservePlayerQuestData(userData.PlayerQuestData);
         }
         
         public void SetObserveAreaData(AreaData areaData)

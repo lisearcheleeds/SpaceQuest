@@ -6,11 +6,10 @@ namespace AloneSpace
     {
         public int Id => row.Id;
 
-        public float BoosterPower => row.BoosterPower;
-        public float MainDirectionRatio => row.MainDirectionRatio;
-        public float SubDirectionRatio => row.SubDirectionRatio;
-        public float MainRotateRatio => row.MainRotateRatio;
-        public float SubRotateRatio => row.SubRotateRatio;
+        public float MainBoosterPower => row.MainBoosterPower;
+        public float SubBoosterPower => row.SubBoosterPower;
+        public float MaxSpeed => row.MaxSpeed;
+        public float RotatePower => row.RotatePower;
 
         ActorPartsExtraBoosterParameterMaster.Row row;
         

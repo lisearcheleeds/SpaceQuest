@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using DG.Tweening;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AloneSpace
 {
@@ -57,7 +54,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
         }
 
-        public void OnLateUpdate()
+        public void OnLateUpdate(UserData userData)
         {
             var target3dCameraPosition = Vector3.zero;
             var targetAmbientCameraPosition = Vector3.zero;
@@ -74,14 +71,7 @@ namespace AloneSpace
                     targetAmbientCameraPosition = trackingTarget.Position;
                 }
 
-                if (trackingTarget is ActorData actorData)
-                {
-                    targetRotation = actorData.LookAtSpace * Quaternion.AngleAxis(actorData.LookAt.y, Vector3.up) * Quaternion.AngleAxis(actorData.LookAt.x, Vector3.right);
-                }
-                else
-                {
-                    targetRotation = trackingTarget.Rotation;
-                }
+                targetRotation = userData.LookAtSpace * Quaternion.AngleAxis(userData.LookAt.y, Vector3.up) * Quaternion.AngleAxis(userData.LookAt.x, Vector3.right);
             }
          
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);

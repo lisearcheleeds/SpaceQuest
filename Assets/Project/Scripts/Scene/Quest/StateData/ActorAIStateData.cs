@@ -30,7 +30,5 @@ namespace AloneSpace
         public float PitchBoosterPowerRatio { get; set; }
         public float RollBoosterPowerRatio { get; set; }
         public float YawBoosterPowerRatio { get; set; }
-
-        public bool IsRotateLookAt { get; set; }
     }
 }

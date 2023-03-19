@@ -12,6 +12,7 @@ namespace AloneSpace
         public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
         public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
         
+        public class UtilGetPlayerQuestData : MessageBusUnicaster<Guid, PlayerQuestData>{}
         public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
         
         public class ManagerCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
@@ -49,7 +50,7 @@ namespace AloneSpace
         public class UserInputRollBoosterPower : MessageBusBroadcaster<float>{}
         public class UserInputYawBoosterPower : MessageBusBroadcaster<float>{}
         
-        public class UserInputRotateLookAtDirection : MessageBusBroadcaster<Vector2>{}
+        public class UserInputLookAt : MessageBusBroadcaster<Vector3>{}
         public class UserInputRotateToLookAtDirection : MessageBusBroadcaster<bool>{}
         
         public class UserInputSwitchActorMode : MessageBusBroadcaster {}
@@ -57,6 +58,9 @@ namespace AloneSpace
         
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraController.CameraType, Vector3, RectTransform, Vector3?>{}
+        
+        public class UserCommandLookAt : MessageBusBroadcaster<Vector3>{}
+        public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}
         
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPositionData>{}

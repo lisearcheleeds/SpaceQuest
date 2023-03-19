@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] PlayerObserver playerObserver;
+        [FormerlySerializedAs("userObserver")] [SerializeField] UserUpdater userUpdater;
         [SerializeField] DebugViewer debugViewer;
 
         MessageController messageController = new MessageController();
@@ -23,7 +24,7 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            playerObserver.Initialize(questData);
+            userUpdater.Initialize(questData);
             
             messageController.Initialize(questData);
             interactController.Initialize(questData);
@@ -40,7 +41,7 @@ namespace AloneSpace
 
         public void FinishQuest()
         {
-            playerObserver.Finalize();
+            userUpdater.Finalize();
             
             messageController.Finalize();
             interactController.Finalize();
@@ -57,7 +58,7 @@ namespace AloneSpace
 
         void LateUpdate()
         {
-            playerObserver.OnLateUpdate();
+            userUpdater.OnLateUpdate();
             
             playerUpdater.OnLateUpdate();
             actorUpdater.OnLateUpdate();
