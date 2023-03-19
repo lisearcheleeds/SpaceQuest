@@ -29,7 +29,7 @@ namespace AloneSpace
 
             var deltaTime = Time.deltaTime;
 
-            foreach (var actorData in questData.ActorData)
+            foreach (var actorData in questData.ActorData.Values)
             {
                 // FIXME: 他色々成約付けて処理軽くする
                 if (actorData.ActorState != ActorState.Alive)

@@ -37,7 +37,7 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandRollBoosterPowerRatio.AddListener(ActorCommandRollBoosterPowerRatio);
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.AddListener(ActorCommandYawBoosterPowerRatio);
             
-            MessageBus.Instance.ActorCommandLookAt.AddListener(ActorCommandLookAt);
+            MessageBus.Instance.ActorCommandSetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
             
             MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
@@ -64,7 +64,7 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandRollBoosterPowerRatio.RemoveListener(ActorCommandRollBoosterPowerRatio);
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
             
-            MessageBus.Instance.ActorCommandLookAt.RemoveListener(ActorCommandLookAt);
+            MessageBus.Instance.ActorCommandSetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
             
             MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
@@ -77,7 +77,7 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var actorData in questData.ActorData)
+            foreach (var actorData in questData.ActorData.Values)
             {
                 if (!updateTimeStamps.ContainsKey(actorData.InstanceId))
                 {
@@ -95,7 +95,7 @@ namespace AloneSpace
             }
 
             // ダメージチェック
-            foreach (var actorData in questData.ActorData)
+            foreach (var actorData in questData.ActorData.Values)
             {
                 if (actorData.IsBroken)
                 {
@@ -125,7 +125,7 @@ namespace AloneSpace
             var areaData = questData.StarSystemData.AreaData.First(areaData => areaData.AreaId == actorData.AreaId);
             
             // 一覧から削除
-            questData.ActorData.Remove(actorData);
+            questData.ActorData.Remove(actorData.InstanceId);
             
             // 残骸を設置
             var interactBrokenActorData = new BrokenActorInteractData(actorData);
@@ -162,62 +162,62 @@ namespace AloneSpace
         
         void ActorCommandForwardBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetForwardBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetForwardBoosterPowerRatio(power);
         }
         
         void ActorCommandBackBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetBackBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetBackBoosterPowerRatio(power);
         }
         
         void ActorCommandRightBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetRightBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetRightBoosterPowerRatio(power);
         }
         
         void ActorCommandLeftBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetLeftBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetLeftBoosterPowerRatio(power);
         }
         
         void ActorCommandTopBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetTopBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetTopBoosterPowerRatio(power);
         }
         
         void ActorCommandBottomBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetBottomBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetBottomBoosterPowerRatio(power);
         }
         
         void ActorCommandPitchBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetPitchBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetPitchBoosterPowerRatio(power);
         }
         
         void ActorCommandRollBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetRollBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetRollBoosterPowerRatio(power);
         }
         
         void ActorCommandYawBoosterPowerRatio(Guid actorId, float power)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetYawBoosterPowerRatio(power);
+            questData.ActorData[actorId].SetYawBoosterPowerRatio(power);
         }
 
-        void ActorCommandLookAt(Guid actorId, Vector3 lookAt)
+        void ActorCommandSetLookAtDirection(Guid actorId, Vector3 lookAt)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetLookAt(lookAt);
+            questData.ActorData[actorId].SetLookAtDirection(lookAt);
         }
         
         void ActorCommandSetActorMode(Guid actorId, ActorMode actorMode)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetActorMode(actorMode);
+            questData.ActorData[actorId].SetActorMode(actorMode);
         }
 
         void ActorCommandSetActorCombatMode(Guid actorId, ActorCombatMode actorCombatMode)
         {
-            questData.ActorData.First(x => x.InstanceId == actorId).SetActorCombatMode(actorCombatMode);
+            questData.ActorData[actorId].SetActorCombatMode(actorCombatMode);
         }
     }
 }

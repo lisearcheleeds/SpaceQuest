@@ -1,20 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AloneSpace
 {
     /// <summary>
     /// QuestData
     /// Initializeのみで渡される
-    /// フィールドとして保持することは禁止（Messageでやりとりすること
     /// </summary>
     public class QuestData
     {
         public StarSystemData StarSystemData { get; }
 
-        // FIXME: Dictionaryにしたい
         public UserData UserData { get; }
-        public List<PlayerQuestData> PlayerQuestData { get; } = new List<PlayerQuestData>();
-        public List<ActorData> ActorData { get; } = new List<ActorData>();
+        public Dictionary<Guid, PlayerQuestData> PlayerQuestData { get; private set; }
+        public Dictionary<Guid, ActorData> ActorData { get; private set; }
 
         public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
@@ -25,8 +25,9 @@ namespace AloneSpace
         public void SetupPlayerQuestData()
         {
             var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(1, StarSystemData.AreaData);
-            PlayerQuestData.AddRange(players);
-            ActorData.AddRange(actors);
+
+            PlayerQuestData = players.ToDictionary(kv => kv.InstanceId, kv => kv);
+            ActorData = actors.ToDictionary(kv => kv.InstanceId, kv => kv);
         }
     }
 }

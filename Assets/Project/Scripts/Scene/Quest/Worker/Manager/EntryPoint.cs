@@ -22,7 +22,7 @@ namespace AloneSpace
 
         void Start()
         {
-            MessageBus.Instance.ManagerCommandSetObservePlayer.Broadcast(questData.PlayerQuestData.First().InstanceId);
+            MessageBus.Instance.ManagerCommandSetObservePlayer.Broadcast(questData.PlayerQuestData.Keys.First());
         }
 
         void EndQuest()

@@ -18,11 +18,11 @@ namespace AloneSpace
                 return;
             }
 
-            var areaActorData = questData.ActorData
+            var areaActorData = questData.ActorData.Values
                 .Where(actorData => playerQuestData.MainActorData.AreaId == actorData.AreaId)
                 .ToArray();
             
-            var scavengerPlayer = questData.PlayerQuestData.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);
+            var scavengerPlayer = questData.PlayerQuestData.Values.FirstOrDefault(x => x.PlayerStance == PlayerStance.Scavenger);
             var isExistScavenger = areaActorData.Any(x => x.PlayerInstanceId == scavengerPlayer?.InstanceId);
             var isExistOtherPlayer = areaActorData.Any(x => x.PlayerInstanceId != scavengerPlayer?.InstanceId && x.PlayerInstanceId != playerQuestData.InstanceId);
             

@@ -71,7 +71,7 @@ namespace AloneSpace
                     targetAmbientCameraPosition = trackingTarget.Position;
                 }
 
-                targetRotation = userData.LookAtSpace * Quaternion.AngleAxis(userData.LookAt.y, Vector3.up) * Quaternion.AngleAxis(userData.LookAt.x, Vector3.right);
+                targetRotation = userData.LookAtSpace * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up) * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
             }
          
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);

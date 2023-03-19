@@ -24,7 +24,7 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; set; }
         public Quaternion Rotation { get; set; } = Quaternion.identity;
-        public Vector3 LookAt { get; set; }
+        public Vector3 LookAtDirection { get; set; }
 
         public Vector3 InertiaTensor { get; private set; }
         public Quaternion InertiaTensorRotation { get; private set; } = Quaternion.identity;
@@ -253,9 +253,9 @@ namespace AloneSpace
             ActorAIStateData.YawBoosterPowerRatio = power;
         }
 
-        public void SetLookAt(Vector3 lookAt)
+        public void SetLookAtDirection(Vector3 lookAt)
         {
-            LookAt = lookAt;
+            LookAtDirection = lookAt;
         }
 
         public void SetActorMode(ActorMode actorMode)

@@ -27,7 +27,7 @@ namespace AloneSpace
             MessageBus.Instance.ManagerCommandSetObservePlayer.AddListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.AddListener(ManagerCommandLoadArea);
             
-            MessageBus.Instance.UserCommandLookAt.AddListener(UserCommandLookAt);
+            MessageBus.Instance.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
             
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
@@ -39,8 +39,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.AddListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
-            
-            MessageBus.Instance.UserInputLookAt.AddListener(UserInputLookAt);
             
             MessageBus.Instance.UserInputSwitchActorMode.AddListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.AddListener(UserInputSetActorCombatMode);
@@ -56,7 +54,7 @@ namespace AloneSpace
             MessageBus.Instance.ManagerCommandSetObservePlayer.RemoveListener(ManagerCommandSetObservePlayer);
             MessageBus.Instance.ManagerCommandLoadArea.RemoveListener(ManagerCommandLoadArea);
             
-            MessageBus.Instance.UserCommandLookAt.RemoveListener(UserCommandLookAt);
+            MessageBus.Instance.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
             
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
@@ -68,8 +66,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.RemoveListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
-            
-            MessageBus.Instance.UserInputLookAt.RemoveListener(UserInputLookAt);
             
             MessageBus.Instance.UserInputSwitchActorMode.RemoveListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
@@ -130,9 +126,9 @@ namespace AloneSpace
             areaAmbientController.SetObserveAreaData(userData.CurrentAreaData);
         }
 
-        void UserCommandLookAt(Vector3 lookAt)
+        void UserCommandLookAtAngle(Vector3 lookAt)
         {
-            userData.SetLookAt(lookAt);
+            userData.SetLookAtAngle(lookAt);
         }
         
         void UserCommandSetLookAtSpace(Quaternion quaternion)
@@ -183,11 +179,6 @@ namespace AloneSpace
         void UserInputYawBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
-        }
-
-        void UserInputLookAt(Vector3 lookAt)
-        {
-            MessageBus.Instance.ActorCommandLookAt.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, lookAt);
         }
 
         void UserInputSwitchActorMode()

@@ -62,27 +62,31 @@ namespace AloneSpace
                 var mouseDelta = Mouse.current.delta.ReadValue();
                 var localLookAtAngle = Quaternion.AngleAxis(-mouseDelta.y, Vector3.right)
                                        * Quaternion.AngleAxis(mouseDelta.x, Vector3.up)
-                                       * userData.LookAt;
+                                       * userData.LookAtAngle;
             
                 localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
                 localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
                 localLookAtAngle.z = 0;
             
                 // ActorとUserDataそれぞれに同じ値を設定
-                MessageBus.Instance.ActorCommandLookAt.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, localLookAtAngle);
-                MessageBus.Instance.UserCommandLookAt.Broadcast(localLookAtAngle);
-
                 if (Mouse.current.rightButton.wasReleasedThisFrame)
                 {
                     // 角度基準リセット
                     MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerQuestData.MainActorData.Rotation);
-                    MessageBus.Instance.UserCommandLookAt.Broadcast(Vector3.zero);;
+                    MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(Vector3.zero);;
                 }
+                else
+                {
+                    MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
+                }
+                
+                MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, 
+                    userData.PlayerQuestData.MainActorData.Rotation * Quaternion.Euler(localLookAtAngle) * Vector3.forward);
 
                 if (Mouse.current.rightButton.isPressed)
                 {
                     // 追従
-                    var lookAtDirection = userData.LookAtSpace * Quaternion.Euler(userData.LookAt) * Vector3.forward;
+                    var lookAtDirection = userData.LookAtSpace * Quaternion.Euler(userData.LookAtAngle) * Vector3.forward;
                     MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
                     MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
                     MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.PlayerQuestData.MainActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);

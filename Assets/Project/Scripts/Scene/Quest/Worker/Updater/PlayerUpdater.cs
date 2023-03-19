@@ -35,7 +35,7 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var playerQuestData in questData.PlayerQuestData)
+            foreach (var playerQuestData in questData.PlayerQuestData.Values)
             {
                 if (!updateTimeStamps.ContainsKey(playerQuestData.InstanceId))
                 {
@@ -53,7 +53,7 @@ namespace AloneSpace
 
         void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)
         {
-            questData.PlayerQuestData.First(x => x.InstanceId == playerInstanceId).SetTacticsType(tacticsType);
+            questData.PlayerQuestData[playerInstanceId].SetTacticsType(tacticsType);
         }
     }
 }

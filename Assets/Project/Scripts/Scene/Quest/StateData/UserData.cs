@@ -7,7 +7,7 @@ namespace AloneSpace
         public PlayerQuestData PlayerQuestData { get; private set; }
         public AreaData CurrentAreaData { get; private set; }
 
-        public Vector3 LookAt { get; private set; } = Vector3.forward;
+        public Vector3 LookAtAngle { get; private set; } = Vector3.forward;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;
 
         public void SetPlayerQuestData(PlayerQuestData playerQuestData)
@@ -20,9 +20,9 @@ namespace AloneSpace
             CurrentAreaData = currentAreaData;
         }
 
-        public void SetLookAt(Vector3 lookAt)
+        public void SetLookAtAngle(Vector3 lookAtAngle)
         {
-            LookAt = lookAt;
+            LookAtAngle = lookAtAngle;
         }
 
         public void SetLookAtSpace(Quaternion lookAtSpace)

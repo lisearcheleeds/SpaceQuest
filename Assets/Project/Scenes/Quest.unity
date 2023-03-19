@@ -1404,8 +1404,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf489306620aad744866c8d95e0d58ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  areaAmbientController: {fileID: 1738599116}
-  cameraController: {fileID: 1604013356}
   variableParent: {fileID: 2002388783}
 --- !u!1 &397195130
 GameObject:
@@ -6283,8 +6281,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 10
+  far clip plane: 10000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -6655,7 +6653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759260c7da3e98146a32ba5211a5bddc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObserver: {fileID: 2073653838}
+  userUpdater: {fileID: 2073653838}
   debugViewer: {fileID: 2073653837}
 --- !u!114 &2073653837
 MonoBehaviour:
@@ -6685,6 +6683,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 457452716}
   areaUpdater: {fileID: 304588655}
+  areaAmbientController: {fileID: 1738599116}
+  cameraController: {fileID: 1604013356}
 --- !u!1 &2097643547
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,7 +23,7 @@ namespace AloneSpace
         
         PlayerQuestData UtilGetPlayerQuestData(Guid instanceId)
         {
-            return questData.PlayerQuestData.FirstOrDefault(playerQuestData => playerQuestData.InstanceId == instanceId);
+            return questData.PlayerQuestData[instanceId];
         }
 
         AreaData UtilGetAreaData(int areaId)

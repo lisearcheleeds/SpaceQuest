@@ -59,7 +59,7 @@ namespace AloneSpace
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraController.CameraType, Vector3, RectTransform, Vector3?>{}
         
-        public class UserCommandLookAt : MessageBusBroadcaster<Vector3>{}
+        public class UserCommandSetLookAtAngle : MessageBusBroadcaster<Vector3>{}
         public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}
         
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}
@@ -77,8 +77,7 @@ namespace AloneSpace
         public class ActorCommandRollBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandYawBoosterPower : MessageBusBroadcaster<Guid, float>{}
         
-        public class ActorCommandLookAt : MessageBusBroadcaster<Guid, Vector3>{}
-        public class ActorCommandRotateToLookAt : MessageBusBroadcaster<Guid, bool>{}
+        public class ActorCommandSetLookAtDirection : MessageBusBroadcaster<Guid, Vector3>{}
         
         public class ActorCommandSetActorMode : MessageBusBroadcaster<Guid, ActorMode>{}
         public class ActorCommandSetActorCombatMode : MessageBusBroadcaster<Guid, ActorCombatMode>{}
