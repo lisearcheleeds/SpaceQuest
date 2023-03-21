@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class ActorObjectUpdater : IUpdater
+    public class ActorObjectUpdater
     {
         QuestData questData;
         

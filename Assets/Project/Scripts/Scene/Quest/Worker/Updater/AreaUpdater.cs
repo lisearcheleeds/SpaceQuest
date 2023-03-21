@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class AreaUpdater : MonoBehaviour, IUpdater
+    public class AreaUpdater : MonoBehaviour
     {
         [SerializeField] Transform variableParent;
 

@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public class ThreatUpdater : IUpdater
+    public class ThreatUpdater
     {
         List<IThreatData> threatList = new List<IThreatData>();
         List<ICollisionData> intuitionCollisionList = new List<ICollisionData>();

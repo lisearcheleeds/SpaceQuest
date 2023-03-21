@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class WeaponUpdater : IUpdater
+    public class WeaponUpdater
     {
         QuestData questData;
 
@@ -20,18 +20,15 @@ namespace AloneSpace
             MessageBus.Instance.ExecuteTriggerWeapon.RemoveListener(ExecuteTriggerWeapon);
         }
 
-        public void OnLateUpdate()
+        public void OnLateUpdate(float deltaTime)
         {
             if (questData == null)
             {
                 return;
             }
 
-            var deltaTime = Time.deltaTime;
-
             foreach (var actorData in questData.ActorData.Values)
             {
-                // FIXME: 他色々成約付けて処理軽くする
                 if (actorData.ActorState != ActorState.Alive)
                 {
                     continue;

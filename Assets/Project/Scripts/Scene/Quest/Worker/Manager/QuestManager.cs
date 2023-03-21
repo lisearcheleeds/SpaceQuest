@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
-        [FormerlySerializedAs("userObserver")] [SerializeField] UserUpdater userUpdater;
+        [SerializeField] UserUpdater userUpdater;
         [SerializeField] DebugViewer debugViewer;
 
         MessageController messageController = new MessageController();
@@ -55,17 +54,29 @@ namespace AloneSpace
             
             debugViewer.Finalize();
         }
+        
+        void FixedUpdate()
+        {
+            var fixedDeltaTime = Time.fixedDeltaTime;
+
+            // 定期処理
+            playerUpdater.OnThinkUpdate();
+            actorUpdater.OnThinkUpdate();
+        }
 
         void LateUpdate()
         {
+            var deltaTime = Time.deltaTime;
+            
+            // 毎フレーム処理
             userUpdater.OnLateUpdate();
             
-            playerUpdater.OnLateUpdate();
-            actorUpdater.OnLateUpdate();
+            actorUpdater.OnLateUpdate(deltaTime);
+            
             collisionUpdater.OnLateUpdate();
             threatUpdater.OnLateUpdate();
-            weaponUpdater.OnLateUpdate();
-            weaponEffectUpdater.OnLateUpdate();
+            weaponUpdater.OnLateUpdate(deltaTime);
+            weaponEffectUpdater.OnLateUpdate(deltaTime);
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class ActorUpdater : IUpdater
+    public class ActorUpdater
     {
         // 1秒間に更新を行うレート
         static readonly float TickRate = 0.0f;//0.1f / 1.0f;
@@ -69,8 +69,8 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
         }
-        
-        public void OnLateUpdate()
+
+        public void OnThinkUpdate()
         {
             if (questData == null)
             {
@@ -89,14 +89,18 @@ namespace AloneSpace
                     var deltaTime = Time.time - updateTimeStamps[actorData.InstanceId];
                     updateTimeStamps[actorData.InstanceId] += deltaTime;
                     
-                    actorData.Update(deltaTime);
                     ActorAI.Update(questData, actorData, deltaTime);
                 }
             }
+        }
 
+        public void OnLateUpdate(float deltaTime)
+        {
             // ダメージチェック
             foreach (var actorData in questData.ActorData.Values)
             {
+                actorData.Update(deltaTime);
+                
                 if (actorData.IsBroken)
                 {
                     MessageBus.Instance.NoticeBroken.Broadcast(actorData);

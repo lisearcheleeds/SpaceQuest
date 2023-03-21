@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
-    public class PlayerUpdater : IUpdater
+    public class PlayerUpdater
     {
         // 1秒間に更新を行うレート
         static readonly float TickRate = 1.0f / 1.0f;
@@ -28,7 +28,7 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
         }
         
-        public void OnLateUpdate()
+        public void OnThinkUpdate()
         {
             if (questData == null)
             {

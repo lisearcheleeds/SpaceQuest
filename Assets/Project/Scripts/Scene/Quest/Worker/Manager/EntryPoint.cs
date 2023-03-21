@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using AloneSpace;
+﻿using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

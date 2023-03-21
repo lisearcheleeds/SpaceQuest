@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class CollisionUpdater : IUpdater
+    public class CollisionUpdater
     {
         List<ICollisionData> collisionList = new List<ICollisionData>();
 

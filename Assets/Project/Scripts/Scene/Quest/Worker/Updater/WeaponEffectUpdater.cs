@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class WeaponEffectUpdater : IUpdater
+    public class WeaponEffectUpdater
     {
         List<WeaponEffectData> weaponEffectDataList = new List<WeaponEffectData>();
 
@@ -19,10 +19,8 @@ namespace AloneSpace
             MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
         }
 
-        public void OnLateUpdate()
+        public void OnLateUpdate(float deltaTime)
         {
-            var deltaTime = Time.deltaTime;
-
             foreach (var weaponEffectData in weaponEffectDataList)
             {
                 weaponEffectData.OnLateUpdate(deltaTime);
