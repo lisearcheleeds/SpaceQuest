@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections;
-using AloneSpace;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace AloneSpace
 {
     public class Actor : MonoBehaviour
     {
-        public Guid InstanceId => ActorData.InstanceId;
-        public Guid PlayerInstanceId => ActorData.PlayerInstanceId;
-
         public ActorData ActorData { get; private set; }
-        public ITargetData TargetData => ActorData;
 
         [SerializeField] ActorModel actorModel;
 

@@ -7,76 +7,73 @@ namespace AloneSpace
         [SerializeField] UserUpdater userUpdater;
         [SerializeField] DebugViewer debugViewer;
 
-        MessageController messageController = new MessageController();
-        InteractController interactController = new InteractController();
+        UtilMessageSolver utilMessageSolver = new UtilMessageSolver();
+        InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
+        PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
+        ActorMessageResolver actorMessageResolver = new ActorMessageResolver();
+        WeaponMessageResolver weaponMessageResolver = new WeaponMessageResolver();
+
+        ThinkModuleUpdater thinkModuleUpdater = new ThinkModuleUpdater();
+        OrderModuleUpdater orderModuleUpdater = new OrderModuleUpdater();
+        MovingModuleUpdater movingModuleUpdater = new MovingModuleUpdater();
+        CollisionEffectSenderModuleUpdater collisionEffectSenderModuleUpdater = new CollisionEffectSenderModuleUpdater();
+        CollisionEffectReceiverModuleUpdater collisionEffectReceiverModuleUpdater = new CollisionEffectReceiverModuleUpdater();
         
-        PlayerUpdater playerUpdater = new PlayerUpdater();
-        ActorUpdater actorUpdater = new ActorUpdater();
-        CollisionUpdater collisionUpdater = new CollisionUpdater();
-        ThreatUpdater threatUpdater = new ThreatUpdater();
-        WeaponUpdater weaponUpdater = new WeaponUpdater();
-        WeaponEffectUpdater weaponEffectUpdater = new WeaponEffectUpdater();
-        
-        QuestData questData;
+        CollisionChecker collisionChecker = new CollisionChecker();
         
         public void Initialize(QuestData questData)
         {
-            this.questData = questData;
-            
             userUpdater.Initialize(questData);
-            
-            messageController.Initialize(questData);
-            interactController.Initialize(questData);
-            
-            playerUpdater.Initialize(questData);
-            actorUpdater.Initialize(questData);
-            collisionUpdater.Initialize();
-            threatUpdater.Initialize();
-            weaponUpdater.Initialize(questData);
-            weaponEffectUpdater.Initialize();
-                
             debugViewer.Initialize(questData);
+            
+            utilMessageSolver.Initialize(questData);
+            interactMessageResolver.Initialize(questData);
+            playerMessageResolver.Initialize(questData);
+            actorMessageResolver.Initialize(questData);
+            weaponMessageResolver.Initialize(questData);
+            
+            thinkModuleUpdater.Initialize(questData);
+            orderModuleUpdater.Initialize(questData);
+            movingModuleUpdater.Initialize(questData);
+            collisionEffectSenderModuleUpdater.Initialize(questData);
+            collisionEffectReceiverModuleUpdater.Initialize(questData);
+            
+            collisionChecker.Initialize();
         }
 
         public void FinishQuest()
         {
             userUpdater.Finalize();
-            
-            messageController.Finalize();
-            interactController.Finalize();
-            
-            playerUpdater.Finalize();
-            actorUpdater.Finalize();
-            collisionUpdater.Finalize();
-            threatUpdater.Finalize();
-            weaponUpdater.Finalize();
-            weaponEffectUpdater.Finalize();
-            
             debugViewer.Finalize();
-        }
-        
-        void FixedUpdate()
-        {
-            var fixedDeltaTime = Time.fixedDeltaTime;
-
-            // 定期処理
-            playerUpdater.OnThinkUpdate();
-            actorUpdater.OnThinkUpdate();
+            
+            utilMessageSolver.Finalize();
+            interactMessageResolver.Finalize();
+            playerMessageResolver.Finalize();
+            actorMessageResolver.Finalize();
+            weaponMessageResolver.Finalize();
+            
+            thinkModuleUpdater.Finalize();
+            orderModuleUpdater.Finalize();
+            movingModuleUpdater.Finalize();
+            collisionEffectSenderModuleUpdater.Finalize();
+            collisionEffectReceiverModuleUpdater.Finalize();
+            
+            collisionChecker.Finalize();
         }
 
         void LateUpdate()
         {
             var deltaTime = Time.deltaTime;
             
-            // 毎フレーム処理
             userUpdater.OnLateUpdate();
+
+            thinkModuleUpdater.UpdateModule(deltaTime);
+            orderModuleUpdater.UpdateModule(deltaTime);
+            movingModuleUpdater.UpdateModule(deltaTime);
+            collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
+            collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
             
-            actorUpdater.OnLateUpdate(deltaTime);
-            
-            collisionUpdater.OnLateUpdate();
-            threatUpdater.OnLateUpdate();
-            weaponUpdater.OnLateUpdate(deltaTime);
-            weaponEffectUpdater.OnLateUpdate(deltaTime);
+            collisionChecker.OnLateUpdate();
         }
     }
 }

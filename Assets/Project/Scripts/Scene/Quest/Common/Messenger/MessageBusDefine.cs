@@ -8,20 +8,16 @@ namespace AloneSpace
         public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         
-        public class SendThreat : MessageBusBroadcaster<IThreatData, bool>{}
-        public class SendIntuition : MessageBusBroadcaster<ICollisionData, bool>{}
-        public class SendCollision : MessageBusBroadcaster<ICollisionData, bool>{}
+        public class SendCollision : MessageBusBroadcaster<ICollisionDataHolder, bool>{}
         
         public class UtilGetPlayerQuestData : MessageBusUnicaster<Guid, PlayerQuestData>{}
         public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
+        public class UtilGetAreaActorData : MessageBusUnicaster<int, ActorData[]>{}
         
         public class ManagerCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
         public class ManagerCommandLoadArea : MessageBusBroadcaster<int?>{}
         
-        public class NoticeHitThreat : MessageBusBroadcaster<IThreatData, ICollisionData>{}
-        public class NoticeHitCollision : MessageBusBroadcaster<ICollisionData, ICollisionData>{}
-        public class NoticeDamage : MessageBusBroadcaster<ICauseDamageData, IDamageableData>{}
-        public class NoticeBroken : MessageBusBroadcaster<IDamageableData>{}
+        public class NoticeCollisionEffectData : MessageBusBroadcaster<CollisionEffectData>{}
         
         public class UserInputSwitchMap : MessageBusBroadcaster{}
         public class UserInputOpenMap : MessageBusBroadcaster{}
@@ -85,7 +81,7 @@ namespace AloneSpace
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 
-        public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, ITargetData, float>{}
+        public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, IPositionData, float>{}
         
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
         public class SetDirtyInteractObjectList : MessageBusBroadcaster{}

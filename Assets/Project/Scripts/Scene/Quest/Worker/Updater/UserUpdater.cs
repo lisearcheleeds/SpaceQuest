@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AloneSpace
 {
     public class UserUpdater : MonoBehaviour
     {
         [SerializeField] UIManager uiManager;
-        [SerializeField] AreaUpdater areaUpdater;
+        [SerializeField] GameObjectUpdater gameObjectUpdater;
         [SerializeField] AreaAmbientController areaAmbientController;
         [SerializeField] CameraController cameraController;
 
@@ -20,7 +21,8 @@ namespace AloneSpace
             userData = questData.UserData;
             
             uiManager.Initialize(questData);
-            areaUpdater.Initialize(questData);
+            gameObjectUpdater.Initialize(questData);
+            
             areaAmbientController.Initialize(questData);
             cameraController.Initialize();
             
@@ -47,7 +49,7 @@ namespace AloneSpace
         public void Finalize()
         {
             uiManager.Finalize();
-            areaUpdater.Finalize();
+            gameObjectUpdater.Finalize();
             areaAmbientController.Finalize();
             cameraController.Finalize();
             
@@ -79,7 +81,7 @@ namespace AloneSpace
             }
 
             uiManager.OnLateUpdate();
-            areaUpdater.OnLateUpdate();
+            gameObjectUpdater.OnLateUpdate();
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate(userData);
 
@@ -111,7 +113,7 @@ namespace AloneSpace
             userData.SetPlayerQuestData(MessageBus.Instance.UtilGetPlayerQuestData.Unicast(playerInstanceId));
             
             uiManager.SetObservePlayerQuestData(userData);
-            areaUpdater.SetObservePlayerQuestData(userData.PlayerQuestData);
+            gameObjectUpdater.SetObservePlayerQuestData(userData.PlayerQuestData);
             
             MessageBus.Instance.ManagerCommandLoadArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
             MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(userData.PlayerQuestData.MainActorData);
@@ -122,7 +124,7 @@ namespace AloneSpace
             userData.SetCurrentAreaData(areaId.HasValue ? MessageBus.Instance.UtilGetAreaData.Unicast(areaId.Value) : null);
             
             uiManager.SetObserveAreaData(userData.CurrentAreaData);
-            areaUpdater.SetObserveAreaData(userData.CurrentAreaData);
+            gameObjectUpdater.SetObserveAreaData(userData.CurrentAreaData);
             areaAmbientController.SetObserveAreaData(userData.CurrentAreaData);
         }
 
