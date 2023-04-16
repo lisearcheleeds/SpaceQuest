@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public class ActorPartsWeaponRifleParameterVO : IActorPartsWeaponParameterVO
+    public class ActorPartsWeaponBulletMakerParameterVO : IActorPartsWeaponParameterVO
     {
         // ID
         public int Id => row.Id;
@@ -37,7 +37,7 @@ namespace AloneSpace
         ActorPartsWeaponRifleParameterMaster.Row row;
         ProjectilePathMaster.Row projectilePath;
         
-        public ActorPartsWeaponRifleParameterVO(int id)
+        public ActorPartsWeaponBulletMakerParameterVO(int id)
         {
             row = ActorPartsWeaponRifleParameterMaster.Instance.Get(id);
             projectilePath = ProjectilePathMaster.Instance.Get(row.ProjectileAssetId);

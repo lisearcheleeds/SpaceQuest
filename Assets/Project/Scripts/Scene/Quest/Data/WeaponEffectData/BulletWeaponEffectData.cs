@@ -18,13 +18,14 @@ namespace AloneSpace
         /// 武器の使用
         /// </summary>
         /// <param name="weaponData">武器データ</param>
+        /// <param name="fromPositionData">発射位置</param>
+        /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        /// <param name="condition">使用時の状態(1.0最高 ~ 0.0最低) Bulletではdirectionに影響</param>
-        public BulletWeaponEffectData(WeaponData weaponData, IPositionData targetData, float condition) : base(weaponData)
+        public BulletWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData) : base(weaponData)
         {
-            AreaId = weaponData.PositionData.AreaId;
-            Position = weaponData.PositionData.Position;
-            Rotation = weaponData.PositionData.Rotation;
+            AreaId = fromPositionData.AreaId;
+            Position = fromPositionData.Position;
+            Rotation = rotation;
 
             CollisionEffectSenderModule = new CollisionEffectSenderModule();
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
@@ -32,7 +33,7 @@ namespace AloneSpace
             speed = 200.0f;
             lifeTime = 4;
 
-            direction = weaponData.OffsetRotation * Vector3.forward;
+            direction = rotation * Vector3.forward;
             currentLifeTime = 0;
         }
 

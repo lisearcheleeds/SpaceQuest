@@ -81,7 +81,7 @@ namespace AloneSpace
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 
-        public class ExecuteTriggerWeapon : MessageBusBroadcaster<WeaponData, IPositionData, float>{}
+        public class ExecuteWeapon : MessageBusBroadcaster<WeaponData, IPositionData, Quaternion, IPositionData>{}
         
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
         public class SetDirtyInteractObjectList : MessageBusBroadcaster{}

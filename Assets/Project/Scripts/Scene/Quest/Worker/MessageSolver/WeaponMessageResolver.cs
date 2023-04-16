@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -10,29 +11,30 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.ExecuteTriggerWeapon.AddListener(ExecuteTriggerWeapon);
+            MessageBus.Instance.ExecuteWeapon.AddListener(ExecuteTriggerWeapon);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ExecuteTriggerWeapon.RemoveListener(ExecuteTriggerWeapon);
+            MessageBus.Instance.ExecuteWeapon.RemoveListener(ExecuteTriggerWeapon);
         }
 
         /// <summary>
         /// 武器の使用
         /// </summary>
         /// <param name="weaponData">武器データ</param>
+        /// <param name="fromPositionData">発射位置</param>
+        /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        /// <param name="condition">使用時の状態(1.0最高 ~ 0.0最低)</param>
-        void ExecuteTriggerWeapon(WeaponData weaponData, IPositionData targetData, float condition)
+        void ExecuteTriggerWeapon(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
         {
             switch (weaponData.ActorPartsWeaponParameterVO)
             {
-                case ActorPartsWeaponRifleParameterVO rifleParameterVO:
-                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new BulletWeaponEffectData(weaponData, targetData, condition));
+                case ActorPartsWeaponBulletMakerParameterVO:
+                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new BulletWeaponEffectData(weaponData, fromPositionData, rotation, targetData));
                     return;
-                case ActorPartsWeaponMissileLauncherParameterVO missileLauncherParameterVO:
-                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new MissileWeaponEffectData(weaponData, targetData, condition));
+                case ActorPartsWeaponMissileMakerParameterVO:
+                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new MissileWeaponEffectData(weaponData, fromPositionData, rotation, targetData));
                     return;
             }
 

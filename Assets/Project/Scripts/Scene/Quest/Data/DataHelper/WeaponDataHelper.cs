@@ -8,9 +8,9 @@ namespace AloneSpace
         {
             switch (actorPartsWeaponParameterVO)
             {
-                case ActorPartsWeaponRifleParameterVO rifleVO:
+                case ActorPartsWeaponBulletMakerParameterVO rifleVO:
                     return new BulletMakerWeaponData(rifleVO);
-                case ActorPartsWeaponMissileLauncherParameterVO missileVO:
+                case ActorPartsWeaponMissileMakerParameterVO missileVO:
                     return new MissileMakerWeaponData(missileVO);
                 default:
                     throw new NotImplementedException();

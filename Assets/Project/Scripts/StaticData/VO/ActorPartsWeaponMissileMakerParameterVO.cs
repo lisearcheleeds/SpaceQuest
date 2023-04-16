@@ -1,8 +1,6 @@
-﻿using AloneSpace;
-
-namespace AloneSpace
+﻿namespace AloneSpace
 {
-    public class ActorPartsWeaponMissileLauncherParameterVO : IActorPartsWeaponParameterVO
+    public class ActorPartsWeaponMissileMakerParameterVO : IActorPartsWeaponParameterVO
     {
         // ID
         public int Id => row.Id;
@@ -31,7 +29,7 @@ namespace AloneSpace
         public float LaunchSpeed => row.LaunchSpeed;
             
         // 連続射出時間
-        public float LaunchIntervalTime => row.LaunchIntervalTime;
+        public float FireRate => row.FireRate;
         
         // 照準最大距離（弾の性能に寄って下がる）
         public float SightingMaxRange => row.SightingMaxRange; 
@@ -39,7 +37,7 @@ namespace AloneSpace
         ActorPartsWeaponMissileLauncherParameterMaster.Row row;
         ProjectilePathMaster.Row projectilePath;
         
-        public ActorPartsWeaponMissileLauncherParameterVO(int id)
+        public ActorPartsWeaponMissileMakerParameterVO(int id)
         {
             row = ActorPartsWeaponMissileLauncherParameterMaster.Instance.Get(id);
             projectilePath = ProjectilePathMaster.Instance.Get(row.ProjectileAssetId);

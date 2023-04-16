@@ -11,30 +11,29 @@ namespace AloneSpace
         public abstract WeaponStateData WeaponStateData { get; }
         
         public ActorData WeaponHolder { get; private set; }
-        public IPositionData PositionData { get; private set; }
-        public Quaternion OffsetRotation { get; private set; }
+        public IPositionData BasePositionData { get; private set; }
 
-        public Vector3 LookAtDirection { get; private set; }
-
-        public void SetHolderActor(ActorData weaponHolder, IPositionData positionData)
+        public void SetHolderActor(ActorData weaponHolder, IPositionData basePositionData)
         {
             WeaponHolder = weaponHolder;
-            PositionData = positionData;
-        }
-
-        public void SetOffsetRotation(Quaternion offsetRotation)
-        {
-            OffsetRotation = offsetRotation;
+            BasePositionData = basePositionData;
         }
 
         public void SetLookAtDirection(Vector3 lookAtDirection)
         {
-            LookAtDirection = lookAtDirection;
+            WeaponStateData.LookAtDirection = lookAtDirection;
+        }
+        
+        public void SetTargetData(IPositionData targetData)
+        {
+            WeaponStateData.TargetData = targetData;
+        }
+        
+        public void SetExecute(bool isExecute)
+        {
+            WeaponStateData.IsExecute = isExecute;
         }
 
-        public abstract bool IsReloadable();
         public abstract void Reload();
-        public abstract bool IsExecutable(IPositionData targetData);
-        public abstract void Execute(IPositionData targetData);
     }
 }

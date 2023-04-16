@@ -28,8 +28,8 @@
                 var master = ActorPartsWeaponParameterMaster.Instance.Get(row.WeaponParameterId.Value);
                 ActorPartsWeaponParameterVO = master.WeaponType switch
                 {
-                    WeaponType.Rifle => new ActorPartsWeaponRifleParameterVO(master.ActorPartsWeaponId),
-                    WeaponType.MissileLauncher => new ActorPartsWeaponMissileLauncherParameterVO(master.ActorPartsWeaponId),
+                    WeaponType.Rifle => new ActorPartsWeaponBulletMakerParameterVO(master.ActorPartsWeaponId),
+                    WeaponType.MissileLauncher => new ActorPartsWeaponMissileMakerParameterVO(master.ActorPartsWeaponId),
                     _ => null,
                 };
             }

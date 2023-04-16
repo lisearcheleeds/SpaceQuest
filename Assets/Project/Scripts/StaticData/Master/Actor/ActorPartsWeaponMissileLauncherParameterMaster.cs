@@ -30,7 +30,7 @@ namespace AloneSpace
             public float LaunchSpeed { get; }
             
             // 連続射出時間
-            public float LaunchIntervalTime { get; }
+            public float FireRate { get; }
             
             // 照準最大距離（弾の性能に寄って下がる）
             public float SightingMaxRange { get; }
@@ -43,7 +43,7 @@ namespace AloneSpace
                 float? launchAngleX,
                 float? launchAngleY,
                 float launchSpeed,
-                float launchIntervalTime,
+                float fireRate,
                 float sightingMaxRange)
             {
                 Id = id;
@@ -53,7 +53,7 @@ namespace AloneSpace
                 LaunchAngleX = launchAngleX;
                 LaunchAngleY = launchAngleY;
                 LaunchSpeed = launchSpeed;
-                LaunchIntervalTime = launchIntervalTime;
+                FireRate = fireRate;
                 SightingMaxRange = sightingMaxRange;
             }
         }

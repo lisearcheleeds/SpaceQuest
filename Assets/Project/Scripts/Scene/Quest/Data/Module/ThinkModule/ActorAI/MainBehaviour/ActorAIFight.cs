@@ -37,20 +37,19 @@ namespace AloneSpace
             // 武器
             foreach (var weaponData in actorData.ActorStateData.WeaponData)
             {
-                var availability = weaponData.GetAvailability();
-                if (availability == 0.0f)
+                weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
+                weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
+                
+                if (weaponData.WeaponStateData.IsExecutable)
                 {
-                    if (weaponData.IsReloadable())
+                    weaponData.SetExecute(true);
+                }
+                else
+                {
+                    if (weaponData.WeaponStateData.IsReloadable)
                     {
                         weaponData.Reload();
                     }
-
-                    continue;
-                }
-
-                if (weaponData.IsExecutable(actorData.ActorStateData.MainTarget))
-                {
-                    weaponData.Execute(actorData.ActorStateData.MainTarget);
                 }
             }
             
