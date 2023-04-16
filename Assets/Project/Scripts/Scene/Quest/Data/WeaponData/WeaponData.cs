@@ -6,12 +6,15 @@ namespace AloneSpace
     public abstract class WeaponData : IOrderModuleHolder
     {
         public abstract Guid InstanceId { get; }
-        public abstract IOrderModule OrderModule { get; }
+        public abstract IOrderModule OrderModule { get; protected set; }
         public abstract IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
         
         public ActorData WeaponHolder { get; private set; }
         public IPositionData BasePositionData { get; private set; }
+
+        public abstract void ActivateModules();
+        public abstract void DeactivateModules();
 
         public void SetHolderActor(ActorData weaponHolder, IPositionData basePositionData)
         {

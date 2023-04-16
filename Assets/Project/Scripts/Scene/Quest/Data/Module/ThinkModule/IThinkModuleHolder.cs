@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public interface IThinkModuleHolder
+    public interface IThinkModuleHolder : IModuleHolder
     { 
         IThinkModule ThinkModule { get; }
     }

@@ -6682,7 +6682,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiManager: {fileID: 457452716}
-  areaUpdater: {fileID: 304588655}
+  gameObjectUpdater: {fileID: 304588655}
   areaAmbientController: {fileID: 1738599116}
   cameraController: {fileID: 1604013356}
 --- !u!1 &2097643547

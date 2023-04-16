@@ -9,8 +9,8 @@ namespace AloneSpace
         public Guid InstanceId { get; }
         
         // Module
-        public MovingModule MovingModule { get; }
-        public abstract CollisionEffectSenderModule CollisionEffectSenderModule { get; }
+        public MovingModule MovingModule { get; private set; }
+        public abstract CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
         public abstract CollisionData CollisionData { get; }
 
         // IPlayer
@@ -31,6 +31,18 @@ namespace AloneSpace
             InstanceId = Guid.NewGuid();
             MovingModule = new MovingModule(this, OnBeginModuleUpdate);
             WeaponData = weaponData;
+        }
+
+        public virtual void ActivateModules()
+        {
+            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
+            MovingModule.ActivateModule();
+        }
+
+        public virtual void DeactivateModules()
+        {
+            MovingModule.DeactivateModule();
+            MovingModule = null;
         }
 
         public void SetAreaId(int? areaId)

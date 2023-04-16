@@ -8,7 +8,19 @@ namespace AloneSpace
         public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         
-        public class SendCollision : MessageBusBroadcaster<ICollisionDataHolder, bool>{}
+        public class RegisterCollision : MessageBusBroadcaster<ICollisionDataHolder>{}
+        public class UnRegisterCollision : MessageBusBroadcaster<ICollisionDataHolder>{}
+        
+        public class RegisterMovingModule : MessageBusBroadcaster<MovingModule>{}
+        public class UnRegisterMovingModule : MessageBusBroadcaster<MovingModule>{}
+        public class RegisterOrderModule : MessageBusBroadcaster<IOrderModule>{}
+        public class UnRegisterOrderModule : MessageBusBroadcaster<IOrderModule>{}
+        public class RegisterThinkModule : MessageBusBroadcaster<IThinkModule>{}
+        public class UnRegisterThinkModule : MessageBusBroadcaster<IThinkModule>{}
+        public class RegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEffectReceiverModule>{}
+        public class UnRegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEffectReceiverModule>{}
+        public class RegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEffectSenderModule>{}
+        public class UnRegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEffectSenderModule>{}
         
         public class UtilGetPlayerQuestData : MessageBusUnicaster<Guid, PlayerQuestData>{}
         public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}

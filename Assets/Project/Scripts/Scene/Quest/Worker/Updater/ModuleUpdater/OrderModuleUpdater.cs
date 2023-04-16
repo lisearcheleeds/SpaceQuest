@@ -11,10 +11,15 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
+            
+            MessageBus.Instance.RegisterOrderModule.AddListener(RegisterOrderModule);
+            MessageBus.Instance.UnRegisterOrderModule.AddListener(UnRegisterOrderModule);
         }
 
         public void Finalize()
         {
+            MessageBus.Instance.RegisterOrderModule.RemoveListener(RegisterOrderModule);
+            MessageBus.Instance.UnRegisterOrderModule.RemoveListener(UnRegisterOrderModule);
         }
         
         public void UpdateModule(float deltaTime)
@@ -28,6 +33,16 @@ namespace AloneSpace
             {
                 module.OnUpdateModule(deltaTime);
             }
+        }
+
+        void RegisterOrderModule(IOrderModule orderModule)
+        {
+            moduleList.Add(orderModule);
+        }
+        
+        void UnRegisterOrderModule(IOrderModule orderModule)
+        {
+            moduleList.Remove(orderModule);
         }
     }
 }

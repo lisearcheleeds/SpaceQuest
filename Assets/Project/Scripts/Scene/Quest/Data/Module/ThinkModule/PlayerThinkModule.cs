@@ -15,6 +15,16 @@ namespace AloneSpace
             this.playerQuestData = playerQuestData;
         }
 
+        public void ActivateModule()
+        {
+            MessageBus.Instance.RegisterThinkModule.Broadcast(this);
+        }
+
+        public void DeactivateModule()
+        {
+            MessageBus.Instance.UnRegisterThinkModule.Broadcast(this);
+        }
+
         public void OnUpdateModule(float deltaTime)
         {
             if (playerQuestData.PlayerStance == PlayerStance.Scavenger)

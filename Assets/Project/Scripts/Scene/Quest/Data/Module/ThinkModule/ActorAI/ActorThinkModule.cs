@@ -24,6 +24,16 @@ namespace AloneSpace
             this.actorData = actorData;
         }
 
+        public void ActivateModule()
+        {
+            MessageBus.Instance.RegisterThinkModule.Broadcast(this);
+        }
+
+        public void DeactivateModule()
+        {
+            MessageBus.Instance.UnRegisterThinkModule.Broadcast(this);
+        }
+
         public void OnUpdateModule(float deltaTime)
         {
             var actorAIStateData = actorData.ActorStateData;

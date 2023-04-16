@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public interface ICollisionDataHolder
+    public interface ICollisionDataHolder : IModuleHolder
     {
         CollisionData CollisionData { get; }
 

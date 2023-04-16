@@ -19,6 +19,16 @@ namespace AloneSpace
             this.onBeginModuleUpdate = onBeginModuleUpdate;
         }
 
+        public void ActivateModule()
+        {
+            MessageBus.Instance.RegisterMovingModule.Broadcast(this);
+        }
+
+        public void DeactivateModule()
+        {
+            MessageBus.Instance.UnRegisterMovingModule.Broadcast(this);
+        }
+
         public void OnUpdateModule(float deltaTime)
         {
             onBeginModuleUpdate?.Invoke(deltaTime);

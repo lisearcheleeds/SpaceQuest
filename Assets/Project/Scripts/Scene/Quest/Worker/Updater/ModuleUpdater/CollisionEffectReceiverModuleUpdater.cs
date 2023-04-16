@@ -11,10 +11,15 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
+            
+            MessageBus.Instance.RegisterCollisionEffectReceiverModule.AddListener(RegisterCollisionEffectReceiverModule);
+            MessageBus.Instance.UnRegisterCollisionEffectReceiverModule.AddListener(UnRegisterCollisionEffectReceiverModule);
         }
 
         public void Finalize()
         {
+            MessageBus.Instance.RegisterCollisionEffectReceiverModule.RemoveListener(RegisterCollisionEffectReceiverModule);
+            MessageBus.Instance.UnRegisterCollisionEffectReceiverModule.RemoveListener(UnRegisterCollisionEffectReceiverModule);
         }
         
         public void UpdateModule(float deltaTime)
@@ -28,6 +33,16 @@ namespace AloneSpace
             {
                 module.OnUpdateModule(deltaTime);
             }
+        }
+
+        void RegisterCollisionEffectReceiverModule(CollisionEffectReceiverModule CollisionEffectReceiverModule)
+        {
+            moduleList.Add(CollisionEffectReceiverModule);
+        }
+        
+        void UnRegisterCollisionEffectReceiverModule(CollisionEffectReceiverModule CollisionEffectReceiverModule)
+        {
+            moduleList.Remove(CollisionEffectReceiverModule);
         }
     }
 }

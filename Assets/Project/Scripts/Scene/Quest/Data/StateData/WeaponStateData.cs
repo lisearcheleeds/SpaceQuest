@@ -5,9 +5,9 @@ namespace AloneSpace
     public abstract class WeaponStateData
     {
         public IPositionData TargetData { get; set; }
-        public Quaternion OffsetRotation { get; set; }
+        public Quaternion OffsetRotation { get; set; } = Quaternion.identity;
 
-        public Vector3 LookAtDirection { get; set; }
+        public Vector3 LookAtDirection { get; set; } = Vector3.forward;
 
         public bool IsReloadable { get; set; }
         public bool IsExecutable { get; set; }

@@ -6,7 +6,7 @@ namespace AloneSpace
     public class PlayerQuestData : IThinkModuleHolder
     {
         public Guid InstanceId { get; }
-        public IThinkModule ThinkModule { get; }
+        public IThinkModule ThinkModule { get; private set; }
         
         public PlayerStance PlayerStance { get; private set; }
 
@@ -17,7 +17,20 @@ namespace AloneSpace
         public PlayerQuestData()
         {
             InstanceId = Guid.NewGuid();
+                
+            ActivateModules();
+        }
+
+        public void ActivateModules()
+        {
             ThinkModule = new PlayerThinkModule(this);
+            ThinkModule.ActivateModule();
+        }
+
+        public void DeactivateModules()
+        {
+            ThinkModule.DeactivateModule();
+            ThinkModule = null;
         }
         
         public void SetPlayerStance(PlayerStance playerStance)

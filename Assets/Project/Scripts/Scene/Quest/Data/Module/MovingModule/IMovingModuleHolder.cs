@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public interface IMovingModuleHolder
+    public interface IMovingModuleHolder : IModuleHolder
     {
         MovingModule MovingModule { get; }
     }

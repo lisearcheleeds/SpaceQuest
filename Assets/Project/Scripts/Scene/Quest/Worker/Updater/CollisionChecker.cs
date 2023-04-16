@@ -9,12 +9,14 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.SendCollision.AddListener(OnReceiveCollision);
+            MessageBus.Instance.RegisterCollision.AddListener(RegisterCollision);
+            MessageBus.Instance.UnRegisterCollision.AddListener(UnRegisterCollision);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SendCollision.RemoveListener(OnReceiveCollision);
+            MessageBus.Instance.RegisterCollision.RemoveListener(RegisterCollision);
+            MessageBus.Instance.UnRegisterCollision.RemoveListener(UnRegisterCollision);
         }
 
         public void OnLateUpdate()
@@ -52,16 +54,14 @@ namespace AloneSpace
             }
         }
 
-        void OnReceiveCollision(ICollisionDataHolder entryCollision, bool isEntry)
+        void RegisterCollision(ICollisionDataHolder entryCollision)
         {
-            if (isEntry)
-            {
-                collisionList.Add(entryCollision);
-            }
-            else
-            {
-                collisionList.Remove(entryCollision);
-            }
+            collisionList.Add(entryCollision);
+        }
+        
+        void UnRegisterCollision(ICollisionDataHolder entryCollision)
+        {
+            collisionList.Remove(entryCollision);
         }
     }
 }

@@ -9,17 +9,16 @@ namespace AloneSpace
         public Guid InstanceId { get; }
         
         // Module
-        public IThinkModule ThinkModule { get; }
-        public IOrderModule OrderModule { get; }
-        public MovingModule MovingModule { get; }
-        public CollisionEffectReceiverModule CollisionEffectReceiverModule { get; }
+        public IThinkModule ThinkModule { get; private set; }
+        public IOrderModule OrderModule { get; private set; }
+        public MovingModule MovingModule { get; private set; }
+        public CollisionEffectReceiverModule CollisionEffectReceiverModule { get; private set; }
         
         // ModuleData
         public CollisionData CollisionData { get; }
 
         // IPlayer
         public Guid PlayerInstanceId { get; }
-        // int TeamId { get; }
         
         // IPositionData
         public int? AreaId { get; private set; }
@@ -39,15 +38,11 @@ namespace AloneSpace
         public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
-            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
-            ThinkModule = new ActorThinkModule(this);
-            OrderModule = new ActorOrderModule(this);
-            CollisionEffectReceiverModule = new CollisionEffectReceiverModule();
-            CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 3.0f));
-
-            PlayerInstanceId = playerInstanceId;
             
+            PlayerInstanceId = playerInstanceId;
             ActorSpecData = actorSpecData;
+            
+            CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 3.0f));
 
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
@@ -58,6 +53,34 @@ namespace AloneSpace
                 weaponData.SetHolderActor(this, this);
                 return weaponData;
             }).ToArray();
+
+            ActivateModules();
+        }
+
+        public void ActivateModules()
+        {
+            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
+            ThinkModule = new ActorThinkModule(this);
+            OrderModule = new ActorOrderModule(this);
+            CollisionEffectReceiverModule = new CollisionEffectReceiverModule();
+            
+            MovingModule.ActivateModule();
+            ThinkModule.ActivateModule();
+            OrderModule.ActivateModule();
+            CollisionEffectReceiverModule.ActivateModule();
+        }
+
+        public void DeactivateModules()
+        {
+            MovingModule.DeactivateModule();
+            ThinkModule.DeactivateModule();
+            OrderModule.DeactivateModule();
+            CollisionEffectReceiverModule.DeactivateModule();
+            
+             MovingModule = null;
+             ThinkModule = null;
+             OrderModule = null;
+             CollisionEffectReceiverModule = null;
         }
 
         public void SetActorState(ActorState actorState)

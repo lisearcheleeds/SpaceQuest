@@ -7,7 +7,19 @@
         public MessageBusDefine.RemoveWeaponEffectData RemoveWeaponEffectData { get; } = new MessageBusDefine.RemoveWeaponEffectData();
         
         // 登録系メッセージ
-        public MessageBusDefine.SendCollision SendCollision { get; } = new MessageBusDefine.SendCollision();
+        public MessageBusDefine.RegisterCollision RegisterCollision { get; } = new MessageBusDefine.RegisterCollision();
+        public MessageBusDefine.UnRegisterCollision UnRegisterCollision { get; } = new MessageBusDefine.UnRegisterCollision();
+        
+        public MessageBusDefine.RegisterMovingModule RegisterMovingModule { get; } = new MessageBusDefine.RegisterMovingModule();
+        public MessageBusDefine.UnRegisterMovingModule UnRegisterMovingModule { get; } = new MessageBusDefine.UnRegisterMovingModule();
+        public MessageBusDefine.RegisterOrderModule RegisterOrderModule { get; } = new MessageBusDefine.RegisterOrderModule();
+        public MessageBusDefine.UnRegisterOrderModule UnRegisterOrderModule { get; } = new MessageBusDefine.UnRegisterOrderModule();
+        public MessageBusDefine.RegisterThinkModule RegisterThinkModule { get; } = new MessageBusDefine.RegisterThinkModule();
+        public MessageBusDefine.UnRegisterThinkModule UnRegisterThinkModule { get; } = new MessageBusDefine.UnRegisterThinkModule();
+        public MessageBusDefine.RegisterCollisionEffectReceiverModuleModule RegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.RegisterCollisionEffectReceiverModuleModule();
+        public MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule UnRegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule();
+        public MessageBusDefine.RegisterCollisionEffectSenderModuleModule RegisterCollisionEffectSenderModule { get; } = new MessageBusDefine.RegisterCollisionEffectSenderModuleModule();
+        public MessageBusDefine.UnRegisterCollisionEffectSenderModuleModule UnRegisterCollisionEffectSenderModule { get; } = new MessageBusDefine.UnRegisterCollisionEffectSenderModuleModule();
 
         // Util
         public MessageBusDefine.UtilGetPlayerQuestData UtilGetPlayerQuestData { get; } = new MessageBusDefine.UtilGetPlayerQuestData();

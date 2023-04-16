@@ -11,7 +11,7 @@ namespace AloneSpace
         Vector3 direction;
         float speed;
         
-        public override CollisionEffectSenderModule CollisionEffectSenderModule { get; }
+        public override CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
         public override CollisionData CollisionData { get; }
         
         /// <summary>
@@ -35,6 +35,24 @@ namespace AloneSpace
 
             direction = rotation * Vector3.forward;
             currentLifeTime = 0;
+                
+            ActivateModules();
+        }
+        
+        public override void ActivateModules()
+        {
+            base.ActivateModules();
+            
+            CollisionEffectSenderModule = new CollisionEffectSenderModule();
+            CollisionEffectSenderModule.ActivateModule();
+        }
+
+        public virtual void DeactivateModules()
+        {
+            base.ActivateModules();
+            
+            CollisionEffectSenderModule.DeactivateModule();
+            CollisionEffectSenderModule = null;
         }
 
         protected override void OnBeginModuleUpdate(float deltaTime)

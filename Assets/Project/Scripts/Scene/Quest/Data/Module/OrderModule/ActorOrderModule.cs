@@ -11,6 +11,16 @@ namespace AloneSpace
             this.actorData = actorData;
         }
 
+        public void ActivateModule()
+        {
+            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+        }
+
+        public void DeactivateModule()
+        {
+            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+        }
+
         public void OnUpdateModule(float deltaTime)
         {
             // 移動チェック
