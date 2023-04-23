@@ -8,6 +8,9 @@ namespace AloneSpace
 
         List<IOrderModule> moduleList = new List<IOrderModule>();
         
+        List<IOrderModule> registerModuleList = new List<IOrderModule>();
+        List<IOrderModule> unRegisterModuleList = new List<IOrderModule>();
+        
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
@@ -29,20 +32,34 @@ namespace AloneSpace
                 return;
             }
 
+            foreach (var removeModule in unRegisterModuleList)
+            {
+                moduleList.Remove(removeModule);
+            }
+            
+            unRegisterModuleList.Clear();
+
             foreach (var module in moduleList)
             {
                 module.OnUpdateModule(deltaTime);
             }
+            
+            foreach (var registerModule in registerModuleList)
+            {
+                moduleList.Add(registerModule);
+            }
+            
+            registerModuleList.Clear();
         }
 
         void RegisterOrderModule(IOrderModule orderModule)
         {
-            moduleList.Add(orderModule);
+            registerModuleList.Add(orderModule);
         }
         
         void UnRegisterOrderModule(IOrderModule orderModule)
         {
-            moduleList.Remove(orderModule);
+            unRegisterModuleList.Add(orderModule);
         }
     }
 }

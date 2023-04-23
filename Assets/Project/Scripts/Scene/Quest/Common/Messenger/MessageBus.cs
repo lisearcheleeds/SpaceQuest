@@ -2,10 +2,6 @@
 {
     public class MessageBus : MonoSingleton<MessageBus>
     {
-        // Data
-        public MessageBusDefine.AddWeaponEffectData AddWeaponEffectData { get; } = new MessageBusDefine.AddWeaponEffectData();
-        public MessageBusDefine.RemoveWeaponEffectData RemoveWeaponEffectData { get; } = new MessageBusDefine.RemoveWeaponEffectData();
-        
         // 登録系メッセージ
         public MessageBusDefine.RegisterCollision RegisterCollision { get; } = new MessageBusDefine.RegisterCollision();
         public MessageBusDefine.UnRegisterCollision UnRegisterCollision { get; } = new MessageBusDefine.UnRegisterCollision();
@@ -44,6 +40,9 @@
         public MessageBusDefine.UserInputOpenInventory UserInputOpenInventory { get; } = new MessageBusDefine.UserInputOpenInventory();
         public MessageBusDefine.UserInputCloseInventory UserInputCloseInventory { get; } = new MessageBusDefine.UserInputCloseInventory();
         
+        public MessageBusDefine.UserInputExecuteWeapon UserInputSetExecuteWeapon { get; } = new MessageBusDefine.UserInputExecuteWeapon();
+        public MessageBusDefine.UserInputReloadWeapon UserInputReloadWeapon { get; } = new MessageBusDefine.UserInputReloadWeapon();
+        
         public MessageBusDefine.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
         public MessageBusDefine.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBackBoosterPower();
         public MessageBusDefine.UserInputRightBoosterPower UserInputRightBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRightBoosterPower();
@@ -76,7 +75,10 @@
         public MessageBusDefine.PlayerCommandSetMoveTarget PlayerCommandSetMoveTarget { get; } = new MessageBusDefine.PlayerCommandSetMoveTarget();
         public MessageBusDefine.PlayerCommandSetInteractOrder PlayerCommandSetInteractOrder { get; } = new MessageBusDefine.PlayerCommandSetInteractOrder();
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
-        
+
+        public MessageBusDefine.ActorCommandSetWeaponExecute ActorCommandSetWeaponExecute { get; } = new MessageBusDefine.ActorCommandSetWeaponExecute();
+        public MessageBusDefine.ActorCommandReloadWeapon ActorCommandReloadWeapon { get; } = new MessageBusDefine.ActorCommandReloadWeapon();
+
         public MessageBusDefine.ActorCommandForwardBoosterPower ActorCommandForwardBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandForwardBoosterPower();
         public MessageBusDefine.ActorCommandBackBoosterPower ActorCommandBackBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandBackBoosterPower();
         public MessageBusDefine.ActorCommandRightBoosterPower ActorCommandRightBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandRightBoosterPower();
@@ -97,9 +99,14 @@
         public MessageBusDefine.ManagerCommandTransferItem ManagerCommandTransferItem { get; } = new MessageBusDefine.ManagerCommandTransferItem();
         
         // Weapon
-        public MessageBusDefine.ExecuteWeapon ExecuteWeapon { get; } = new MessageBusDefine.ExecuteWeapon();
+        public MessageBusDefine.CreateWeaponEffectData CreateWeaponEffectData { get; } = new MessageBusDefine.CreateWeaponEffectData();
+        public MessageBusDefine.ReleaseWeaponEffectData ReleaseWeaponEffectData { get; } = new MessageBusDefine.ReleaseWeaponEffectData();
+        public MessageBusDefine.AddWeaponEffectData AddWeaponEffectData { get; } = new MessageBusDefine.AddWeaponEffectData();
+        public MessageBusDefine.RemoveWeaponEffectData RemoveWeaponEffectData { get; } = new MessageBusDefine.RemoveWeaponEffectData();
         
+        // GameObject
         public MessageBusDefine.SetDirtyActorObjectList SetDirtyActorObjectList { get; } = new MessageBusDefine.SetDirtyActorObjectList();
         public MessageBusDefine.SetDirtyInteractObjectList SetDirtyInteractObjectList { get; } = new MessageBusDefine.SetDirtyInteractObjectList();
+        public MessageBusDefine.SetDirtyWeaponEffectObjectList SetDirtyWeaponEffectObjectList { get; } = new MessageBusDefine.SetDirtyWeaponEffectObjectList();
     }
 }

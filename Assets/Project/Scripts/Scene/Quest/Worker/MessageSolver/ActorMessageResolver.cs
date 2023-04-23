@@ -17,6 +17,9 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
             
+            MessageBus.Instance.ActorCommandSetWeaponExecute.AddListener(ActorCommandSetWeaponExecute);
+            MessageBus.Instance.ActorCommandReloadWeapon.AddListener(ActorCommandReloadWeapon);
+            
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.AddListener(ActorCommandForwardBoosterPowerRatio);
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
             MessageBus.Instance.ActorCommandRightBoosterPowerRatio.AddListener(ActorCommandRightBoosterPowerRatio);
@@ -69,6 +72,16 @@ namespace AloneSpace
         void PlayerCommandSetMoveTarget(ActorData orderActor, IPositionData moveTarget)
         {
             orderActor.SetMoveTarget(moveTarget);
+        }
+        
+        void ActorCommandSetWeaponExecute(Guid actorId, bool isExecute)
+        {
+            questData.ActorData[actorId].SetWeaponExecute(isExecute);
+        }
+        
+        void ActorCommandReloadWeapon(Guid actorId)
+        {
+            questData.ActorData[actorId].ReloadWeapon();
         }
         
         void ActorCommandForwardBoosterPowerRatio(Guid actorId, float power)

@@ -10,7 +10,7 @@ namespace AloneSpace
             public int Id { get; }
 
             // 射出物アセット
-            public int ProjectileAssetId { get; }
+            public int WeaponEffectAssetId { get; }
         
             // 一度に使用するリソース
             public int WeaponResourceMaxCount { get; }
@@ -37,7 +37,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
-                int projectileAssetId,
+                int weaponEffectAssetId,
                 int weaponResourceMaxCount,
                 float reloadTime,
                 float? launchAngleX,
@@ -47,7 +47,7 @@ namespace AloneSpace
                 float sightingMaxRange)
             {
                 Id = id;
-                ProjectileAssetId = projectileAssetId;
+                WeaponEffectAssetId = weaponEffectAssetId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
                 LaunchAngleX = launchAngleX;

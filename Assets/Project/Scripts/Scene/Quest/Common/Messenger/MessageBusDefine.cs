@@ -48,6 +48,9 @@ namespace AloneSpace
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
         
+        public class UserInputExecuteWeapon : MessageBusBroadcaster<bool>{}
+        public class UserInputReloadWeapon : MessageBusBroadcaster{}
+        
         public class UserInputFrontBoosterPower : MessageBusBroadcaster<float>{}
         public class UserInputBackBoosterPower : MessageBusBroadcaster<float>{}
         public class UserInputRightBoosterPower : MessageBusBroadcaster<float>{}
@@ -75,6 +78,9 @@ namespace AloneSpace
         public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
         
+        public class ActorCommandSetWeaponExecute : MessageBusBroadcaster<Guid, bool>{}
+        public class ActorCommandReloadWeapon : MessageBusBroadcaster<Guid>{}
+        
         public class ActorCommandForwardBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandBackBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandRightBoosterPower : MessageBusBroadcaster<Guid, float>{}
@@ -93,9 +99,11 @@ namespace AloneSpace
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 
-        public class ExecuteWeapon : MessageBusBroadcaster<WeaponData, IPositionData, Quaternion, IPositionData>{}
+        public class CreateWeaponEffectData : MessageBusBroadcaster<WeaponData, IPositionData, Quaternion, IPositionData>{}
+        public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
         public class SetDirtyInteractObjectList : MessageBusBroadcaster{}
+        public class SetDirtyWeaponEffectObjectList : MessageBusBroadcaster{}
     }
 }

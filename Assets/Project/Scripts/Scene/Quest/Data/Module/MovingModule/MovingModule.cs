@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace AloneSpace
 {
+    /// <summary>
+    /// 毎フレーム呼び出される移動処理
+    /// </summary>
     public class MovingModule : IModule
     {
         IPositionData positionData;

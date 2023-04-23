@@ -23,6 +23,12 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
+            foreach (var weaponData in actorData.ActorStateData.WeaponData)
+            {
+                weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
+                weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
+            }
+            
             // 移動チェック
             if (actorData.ActorMode == ActorMode.Warp)
             {

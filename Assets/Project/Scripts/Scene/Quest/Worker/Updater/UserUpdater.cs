@@ -32,6 +32,9 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
             
+            MessageBus.Instance.UserInputSetExecuteWeapon.AddListener(UserInputSetExecuteWeapon);
+            MessageBus.Instance.UserInputReloadWeapon.AddListener(UserInputReloadWeapon);
+            
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.AddListener(UserInputRightBoosterPowerRatio);
@@ -58,6 +61,9 @@ namespace AloneSpace
             
             MessageBus.Instance.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
+            
+            MessageBus.Instance.UserInputSetExecuteWeapon.RemoveListener(UserInputSetExecuteWeapon);
+            MessageBus.Instance.UserInputReloadWeapon.RemoveListener(UserInputReloadWeapon);
             
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
@@ -137,7 +143,17 @@ namespace AloneSpace
         {
             userData.SetLookAtSpace(quaternion);
         }
-        
+
+        void UserInputSetExecuteWeapon(bool isExecute)
+        {
+            MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, isExecute);
+        }
+
+        void UserInputReloadWeapon()
+        {
+            MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId);
+        }
+
         void UserInputForwardBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);

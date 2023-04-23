@@ -12,7 +12,12 @@ namespace AloneSpace
         QuestData questData;
 
         Dictionary<Guid, float> updateTimeStamps = new Dictionary<Guid, float>();
+        
         List<IThinkModule> moduleList = new List<IThinkModule>();
+        
+        List<IThinkModule> registerModuleList = new List<IThinkModule>();
+        List<IThinkModule> unRegisterModuleList = new List<IThinkModule>();
+
         
         public void Initialize(QuestData questData)
         {
@@ -35,13 +40,16 @@ namespace AloneSpace
                 return;
             }
 
+            foreach (var removeModule in unRegisterModuleList)
+            {
+                moduleList.Remove(removeModule);
+                updateTimeStamps.Remove(removeModule.InstanceId);
+            }
+            
+            unRegisterModuleList.Clear();
+
             foreach (var module in moduleList)
             {
-                if (!updateTimeStamps.ContainsKey(module.InstanceId))
-                {
-                    updateTimeStamps[module.InstanceId] = Time.time - TickRate - 1.0f;
-                }
-
                 if (updateTimeStamps[module.InstanceId] < Time.time - TickRate)
                 {
                     updateTimeStamps[module.InstanceId] = Time.time;
@@ -49,16 +57,24 @@ namespace AloneSpace
                     module.OnUpdateModule(deltaTime);
                 }
             }
+
+            foreach (var registerModule in registerModuleList)
+            {
+                moduleList.Add(registerModule);
+                updateTimeStamps[registerModule.InstanceId] = Time.time - TickRate - 1.0f;
+            }
+            
+            registerModuleList.Clear();
         }
 
         void RegisterThinkModule(IThinkModule thinkModule)
         {
-            moduleList.Add(thinkModule);
+            registerModuleList.Add(thinkModule);
         }
         
         void UnRegisterThinkModule(IThinkModule thinkModule)
         {
-            moduleList.Remove(thinkModule);
+            unRegisterModuleList.Add(thinkModule);
         }
     }
 }

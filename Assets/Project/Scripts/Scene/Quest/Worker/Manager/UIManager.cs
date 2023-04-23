@@ -73,15 +73,16 @@ namespace AloneSpace
                 {
                     // 角度基準リセット
                     MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerQuestData.MainActorData.Rotation);
-                    MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(Vector3.zero);;
+                    MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(Vector3.zero);
                 }
                 else
                 {
                     MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
                 }
                 
-                MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, 
-                    userData.PlayerQuestData.MainActorData.Rotation * Quaternion.Euler(localLookAtAngle) * Vector3.forward);
+                MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(
+                    userData.PlayerQuestData.MainActorData.InstanceId, 
+                    userData.LookAtSpace * Quaternion.Euler(localLookAtAngle) * Vector3.forward);
 
                 if (Mouse.current.rightButton.isPressed)
                 {
@@ -98,6 +99,20 @@ namespace AloneSpace
                     
                     var roll = (Keyboard.current.qKey.isPressed ? 1.0f : 0.0f) + (Keyboard.current.eKey.isPressed ? -1.0f : 0.0f);
                     MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);
+                }
+
+                if (Keyboard.current.rKey.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserInputReloadWeapon.Broadcast();
+                }
+
+                if (Mouse.current.leftButton.isPressed && !Keyboard.current.leftAltKey.isPressed)
+                {
+                    MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(true);
+                }
+                else
+                {
+                    MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
                 }
             }
 

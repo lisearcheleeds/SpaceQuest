@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -7,6 +8,9 @@ namespace AloneSpace
         QuestData questData;
 
         List<MovingModule> moduleList = new List<MovingModule>();
+        
+        List<MovingModule> registerModuleList = new List<MovingModule>();
+        List<MovingModule> unRegisterModuleList = new List<MovingModule>();
         
         public void Initialize(QuestData questData)
         {
@@ -29,20 +33,34 @@ namespace AloneSpace
                 return;
             }
 
+            foreach (var removeModule in unRegisterModuleList)
+            {
+                moduleList.Remove(removeModule);
+            }
+            
+            unRegisterModuleList.Clear();
+
             foreach (var module in moduleList)
             {
                 module.OnUpdateModule(deltaTime);
             }
+
+            foreach (var registerModule in registerModuleList)
+            {
+                moduleList.Add(registerModule);
+            }
+            
+            registerModuleList.Clear();
         }
 
         void RegisterMovingModule(MovingModule movingModule)
         {
-            moduleList.Add(movingModule);
+            registerModuleList.Add(movingModule);
         }
         
         void UnRegisterMovingModule(MovingModule movingModule)
         {
-            moduleList.Remove(movingModule);
+            unRegisterModuleList.Add(movingModule);
         }
     }
 }

@@ -35,12 +35,12 @@
         public float SightingMaxRange => row.SightingMaxRange; 
 
         ActorPartsWeaponMissileLauncherParameterMaster.Row row;
-        ProjectilePathMaster.Row projectilePath;
+        WeaponEffectObjectPathMaster.Row projectilePath;
         
         public ActorPartsWeaponMissileMakerParameterVO(int id)
         {
             row = ActorPartsWeaponMissileLauncherParameterMaster.Instance.Get(id);
-            projectilePath = ProjectilePathMaster.Instance.Get(row.ProjectileAssetId);
+            projectilePath = WeaponEffectObjectPathMaster.Instance.Get(row.WeaponEffectAssetId);
         }
     }
 }

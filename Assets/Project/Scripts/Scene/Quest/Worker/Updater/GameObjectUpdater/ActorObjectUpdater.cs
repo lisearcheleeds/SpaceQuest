@@ -67,6 +67,7 @@ namespace AloneSpace
         IEnumerator Refresh()
         {
             // ObserveのMainActorDataもしくは現在のエリア内のActorを表示
+            // ワープ中のActorを表示するため 
             var actorDataList = questData.ActorData.Values
                 .Where(actorData => observePlayerQuestData?.MainActorData?.InstanceId == actorData.InstanceId || (actorData.AreaId.HasValue && actorData.AreaId == observeAreaData?.AreaId));
 

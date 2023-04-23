@@ -15,11 +15,13 @@ namespace AloneSpace
         public UserData UserData { get; }
         public Dictionary<Guid, PlayerQuestData> PlayerQuestData { get; private set; }
         public Dictionary<Guid, ActorData> ActorData { get; private set; }
+        public Dictionary<Guid, WeaponEffectData> WeaponEffectData { get; private set; }
 
         public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
             StarSystemData = new StarSystemData(starSystemPresetVo);
             UserData = new UserData();
+            WeaponEffectData = new Dictionary<Guid, WeaponEffectData>();
         }
 
         public void SetupPlayerQuestData()

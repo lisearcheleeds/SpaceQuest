@@ -66,16 +66,17 @@ namespace AloneSpace
             {
                 targetDirection = (weaponData.BasePositionData.Position - weaponData.WeaponStateData.TargetData.Position).normalized;
             }
-
+            
+            // TODO: なんかもっと軽い方法ないか考える
             weaponData.WeaponStateData.OffsetRotation = Quaternion.RotateTowards(
-                weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation,
-                Quaternion.LookRotation(targetDirection),
-                deltaTime);
+                weaponData.WeaponStateData.OffsetRotation,
+                Quaternion.Inverse(weaponData.WeaponHolder.Rotation) * Quaternion.LookRotation(targetDirection),
+                deltaTime * 150.0f);
         }
 
         void Execute()
         {
-            if (weaponData.WeaponStateData.IsExecutable)
+            if (!weaponData.WeaponStateData.IsExecutable)
             {
                 return;
             }
@@ -84,18 +85,18 @@ namespace AloneSpace
             {
                 return;
             }
-
+            
             if (weaponData.WeaponStateData.IsExecute)
             {
                 var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
                 
-                MessageBus.Instance.ExecuteWeapon.Broadcast(
+                MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     weaponData, 
                     weaponData.BasePositionData, 
                     rotation,
                     weaponData.WeaponStateData.TargetData);
                 
-                weaponData.WeaponStateData.ResourceIndex++;
+                // weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
             }
         }

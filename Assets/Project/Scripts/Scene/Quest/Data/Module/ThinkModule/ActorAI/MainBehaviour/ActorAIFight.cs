@@ -37,9 +37,6 @@ namespace AloneSpace
             // 武器
             foreach (var weaponData in actorData.ActorStateData.WeaponData)
             {
-                weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
-                weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
-                
                 if (weaponData.WeaponStateData.IsExecutable)
                 {
                     weaponData.SetExecute(true);

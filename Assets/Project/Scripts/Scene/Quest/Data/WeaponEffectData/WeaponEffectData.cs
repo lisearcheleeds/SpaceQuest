@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEffectSenderModuleHolder
+    public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }
         
         // Module
         public MovingModule MovingModule { get; private set; }
+        public abstract IOrderModule OrderModule { get; protected set; }
         public abstract CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
         public abstract CollisionData CollisionData { get; }
 
@@ -22,15 +23,16 @@ namespace AloneSpace
         public Quaternion Rotation { get; protected set; }
         
         // 情報
-        public bool IsAlive { get; protected set; }
+        public bool IsAlive { get; set; }
         public WeaponData WeaponData { get; }
         public IPositionData TargetData { get; protected set; }
 
         protected WeaponEffectData(WeaponData weaponData)
         {
             InstanceId = Guid.NewGuid();
-            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
             WeaponData = weaponData;
+                
+            ActivateModules();
         }
 
         public virtual void ActivateModules()

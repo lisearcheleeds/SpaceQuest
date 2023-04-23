@@ -29,8 +29,8 @@ namespace AloneSpace
         public float PitchBoosterPowerRatio { get; set; }
         public float RollBoosterPowerRatio { get; set; }
         public float YawBoosterPowerRatio { get; set; }
-        
-        public Vector3 LookAtDirection { get; set; }
+
+        public Vector3 LookAtDirection { get; set; } = Vector3.forward;
         public IPositionData MoveTarget { get; set; }
         
         public WeaponData[] WeaponData { get; set; }

@@ -152,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8609934641126849937}
-  - component: {fileID: 1127472381248468393}
+  - component: {fileID: 697503513392224926}
   m_Layer: 14
   m_Name: vulcan
   m_TagString: Untagged
@@ -176,7 +176,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1127472381248468393
+--- !u!114 &697503513392224926
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,6 +185,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7579408451453206500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b3197fd6946c442bd4b36573c18544, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ee75520cf314ab6b069eac7910f4f2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

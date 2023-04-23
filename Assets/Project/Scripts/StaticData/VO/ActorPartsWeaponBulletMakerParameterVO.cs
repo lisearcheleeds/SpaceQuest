@@ -35,12 +35,12 @@ namespace AloneSpace
         public float SightingMaxRange => row.SightingMaxRange; 
 
         ActorPartsWeaponRifleParameterMaster.Row row;
-        ProjectilePathMaster.Row projectilePath;
+        WeaponEffectObjectPathMaster.Row projectilePath;
         
         public ActorPartsWeaponBulletMakerParameterVO(int id)
         {
             row = ActorPartsWeaponRifleParameterMaster.Instance.Get(id);
-            projectilePath = ProjectilePathMaster.Instance.Get(row.ProjectileAssetId);
+            projectilePath = WeaponEffectObjectPathMaster.Instance.Get(row.WeaponEffectAssetId);
         }
     }
 }

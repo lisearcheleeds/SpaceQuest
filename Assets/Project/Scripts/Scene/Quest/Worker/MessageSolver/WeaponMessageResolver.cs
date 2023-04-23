@@ -11,12 +11,14 @@ namespace AloneSpace
         {
             this.questData = questData;
             
-            MessageBus.Instance.ExecuteWeapon.AddListener(ExecuteTriggerWeapon);
+            MessageBus.Instance.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
+            MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ExecuteWeapon.RemoveListener(ExecuteTriggerWeapon);
+            MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
+            MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
         }
 
         /// <summary>
@@ -26,19 +28,25 @@ namespace AloneSpace
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        void ExecuteTriggerWeapon(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
+        void CreateWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
         {
-            switch (weaponData.ActorPartsWeaponParameterVO)
+            WeaponEffectData weaponEffectData = weaponData.ActorPartsWeaponParameterVO switch
             {
-                case ActorPartsWeaponBulletMakerParameterVO:
-                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new BulletWeaponEffectData(weaponData, fromPositionData, rotation, targetData));
-                    return;
-                case ActorPartsWeaponMissileMakerParameterVO:
-                    MessageBus.Instance.AddWeaponEffectData.Broadcast(new MissileWeaponEffectData(weaponData, fromPositionData, rotation, targetData));
-                    return;
-            }
+                ActorPartsWeaponBulletMakerParameterVO _ => new BulletWeaponEffectData(weaponData, fromPositionData, rotation, targetData),
+                ActorPartsWeaponMissileMakerParameterVO _ => new MissileWeaponEffectData(weaponData, fromPositionData, rotation, targetData),
+                _ => throw new NotImplementedException(),
+            };
 
-            throw new NotImplementedException();
+            questData.WeaponEffectData.Add(weaponEffectData.InstanceId, weaponEffectData);
+            
+            MessageBus.Instance.AddWeaponEffectData.Broadcast(weaponEffectData);
+        }
+        
+        void ReleaseWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.WeaponEffectData.Remove(weaponEffectData.InstanceId);
+            
+            MessageBus.Instance.RemoveWeaponEffectData.Broadcast(weaponEffectData);
         }
     }
 }

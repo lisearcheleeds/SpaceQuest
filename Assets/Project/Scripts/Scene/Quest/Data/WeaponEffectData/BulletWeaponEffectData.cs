@@ -5,14 +5,12 @@ namespace AloneSpace
 {
     public class BulletWeaponEffectData : WeaponEffectData
     {
-        float lifeTime;
-        float currentLifeTime;
-        
-        Vector3 direction;
-        float speed;
-        
+        public override IOrderModule OrderModule { get; protected set; }
         public override CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
         public override CollisionData CollisionData { get; }
+        
+        public float LifeTime { get; set; }
+        public float CurrentLifeTime { get; set; }
         
         /// <summary>
         /// 武器の使用
@@ -27,60 +25,36 @@ namespace AloneSpace
             Position = fromPositionData.Position;
             Rotation = rotation;
 
-            CollisionEffectSenderModule = new CollisionEffectSenderModule();
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
-            
-            speed = 200.0f;
-            lifeTime = 4;
 
-            direction = rotation * Vector3.forward;
-            currentLifeTime = 0;
-                
-            ActivateModules();
+            MovingModule.InertiaTensor = rotation * Vector3.forward * 2.0f;
+            
+            LifeTime = 4;
+            CurrentLifeTime = 0;
         }
         
         public override void ActivateModules()
         {
             base.ActivateModules();
             
+            OrderModule = new BulletWeaponEffectOrderModule(this);
+            OrderModule.ActivateModule();
             CollisionEffectSenderModule = new CollisionEffectSenderModule();
             CollisionEffectSenderModule.ActivateModule();
         }
 
-        public virtual void DeactivateModules()
+        public override void DeactivateModules()
         {
-            base.ActivateModules();
+            base.DeactivateModules();
             
+            OrderModule.DeactivateModule();
+            OrderModule = null;
             CollisionEffectSenderModule.DeactivateModule();
             CollisionEffectSenderModule = null;
         }
 
         protected override void OnBeginModuleUpdate(float deltaTime)
         {
-            if (!IsAlive)
-            {
-                MessageBus.Instance.RemoveWeaponEffectData.Broadcast(this);
-                return;
-            }
-            
-            currentLifeTime += deltaTime;
-            if (currentLifeTime > lifeTime)
-            {
-                IsAlive = false;
-            }
-
-            if (!IsAlive)
-            {
-                return;
-            }
-
-            if (CollisionData.IsCollided)
-            {
-                IsAlive = false;
-                return;
-            }
-
-            Position += direction * speed * deltaTime;
         }
     }
 }

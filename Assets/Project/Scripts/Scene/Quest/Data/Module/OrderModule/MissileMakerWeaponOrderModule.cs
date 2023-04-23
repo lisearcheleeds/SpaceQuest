@@ -75,7 +75,7 @@ namespace AloneSpace
 
         void Execute()
         {
-            if (weaponData.WeaponStateData.IsExecutable)
+            if (!weaponData.WeaponStateData.IsExecutable)
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace AloneSpace
             {
                 var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
                 
-                MessageBus.Instance.ExecuteWeapon.Broadcast(
+                MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     weaponData, 
                     weaponData.BasePositionData, 
                     rotation,

@@ -10,7 +10,7 @@ namespace AloneSpace
             public int Id { get; }
 
             // 射出物アセット
-            public int ProjectileAssetId { get; }
+            public int WeaponEffectAssetId { get; }
 
             // マガジンサイズ
             public int WeaponResourceMaxCount { get; }
@@ -35,7 +35,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
-                int projectileAssetId,
+                int weaponEffectAssetId,
                 int weaponResourceMaxCount,
                 float reloadTime,
                 float fireRate,
@@ -45,7 +45,7 @@ namespace AloneSpace
                 float sightingMaxRange)
             {
                 Id = id;
-                ProjectileAssetId = projectileAssetId;
+                WeaponEffectAssetId = weaponEffectAssetId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
                 FireRate = fireRate;

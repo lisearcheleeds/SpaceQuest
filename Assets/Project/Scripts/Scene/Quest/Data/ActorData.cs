@@ -129,7 +129,26 @@ namespace AloneSpace
 
             ActorStateData.MoveTarget = moveTarget;
         }
-        
+
+        public void SetWeaponExecute(bool isExecute)
+        {
+            foreach (var weaponData in ActorStateData.WeaponData)
+            {
+                weaponData.SetExecute(isExecute);
+            }
+        }
+
+        public void ReloadWeapon()
+        {
+            foreach (var weaponData in ActorStateData.WeaponData)
+            {
+                if (weaponData.WeaponStateData.IsReloadable)
+                {
+                    weaponData.Reload();
+                }
+            }
+        }
+
         public void SetForwardBoosterPowerRatio(float power)
         {
             ActorStateData.ForwardBoosterPowerRatio = power;

@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using AloneSpace;
 
 namespace AloneSpace
 {
-    public class ProjectilePathMaster
+    public class WeaponEffectObjectPathMaster
     {
         public class Row : ICacheableGameObjectPath
         {
@@ -17,16 +16,16 @@ namespace AloneSpace
             }
         }
         
-        static ProjectilePathMaster instance;
+        static WeaponEffectObjectPathMaster instance;
         Row[] record;
 
-        public static ProjectilePathMaster Instance
+        public static WeaponEffectObjectPathMaster Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new ProjectilePathMaster();
+                    instance = new WeaponEffectObjectPathMaster();
                 }
 
                 return instance;
@@ -38,12 +37,12 @@ namespace AloneSpace
             return record.First(x => x.Id == id);
         }
 
-        ProjectilePathMaster()
+        WeaponEffectObjectPathMaster()
         {
             record = new[]
             {
-                new Row(1, "Projectile/vulcan"),
-                new Row(2, "Projectile/missile"),
+                new Row(1, "WeaponEffect/Projectile/vulcan"),
+                new Row(2, "WeaponEffect/Projectile/missile"),
             };
         }
     }

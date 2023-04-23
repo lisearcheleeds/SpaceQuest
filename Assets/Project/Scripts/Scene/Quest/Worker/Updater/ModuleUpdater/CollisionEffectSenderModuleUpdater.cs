@@ -8,6 +8,9 @@ namespace AloneSpace
 
         List<CollisionEffectSenderModule> moduleList = new List<CollisionEffectSenderModule>();
         
+        List<CollisionEffectSenderModule> registerModuleList = new List<CollisionEffectSenderModule>();
+        List<CollisionEffectSenderModule> unRegisterModuleList = new List<CollisionEffectSenderModule>();
+        
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
@@ -29,20 +32,34 @@ namespace AloneSpace
                 return;
             }
 
+            foreach (var removeModule in unRegisterModuleList)
+            {
+                moduleList.Remove(removeModule);
+            }
+            
+            unRegisterModuleList.Clear();
+
             foreach (var module in moduleList)
             {
                 module.OnUpdateModule(deltaTime);
             }
+
+            foreach (var registerModule in registerModuleList)
+            {
+                moduleList.Add(registerModule);
+            }
+            
+            registerModuleList.Clear();
         }
 
         void RegisterCollisionEffectSenderModule(CollisionEffectSenderModule CollisionEffectSenderModule)
         {
-            moduleList.Add(CollisionEffectSenderModule);
+            registerModuleList.Add(CollisionEffectSenderModule);
         }
         
         void UnRegisterCollisionEffectSenderModule(CollisionEffectSenderModule CollisionEffectSenderModule)
         {
-            moduleList.Remove(CollisionEffectSenderModule);
+            unRegisterModuleList.Add(CollisionEffectSenderModule);
         }
     }
 }
