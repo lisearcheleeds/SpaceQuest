@@ -41,8 +41,8 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(1, "WeaponEffect/Projectile/vulcan"),
-                new Row(2, "WeaponEffect/Projectile/missile"),
+                new Row(1, "WeaponEffect/Projectile/Bullet/Bullet"),
+                new Row(2, "WeaponEffect/Projectile/Missile/Missile"),
             };
         }
     }
