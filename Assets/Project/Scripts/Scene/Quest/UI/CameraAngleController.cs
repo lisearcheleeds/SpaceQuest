@@ -9,6 +9,10 @@ namespace AloneSpace
         {
         }
 
+        public void Finalize()
+        {
+        }
+
         public void OnDrag(PointerEventData eventData)
         {
             MessageBus.Instance.UserCommandRotateCamera.Broadcast(eventData.delta);

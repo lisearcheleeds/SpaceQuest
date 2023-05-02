@@ -44,18 +44,31 @@ namespace AloneSpace
             MessageBus.Instance.UserInputOpenInventory.AddListener(UserInputOpenInventory);
             MessageBus.Instance.UserInputCloseInventory.AddListener(UserInputCloseInventory);
             
+            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            
             inventoryCore.Initialize();
             UserInputCloseInventory();
             
             closeMapButton.onClick.AddListener(OnClickClose);
         }
+
+        public void Finalize()
+        {
+            MessageBus.Instance.UserCommandUpdateInventory.RemoveListener(UserCommandUpdateInventory);
+            
+            MessageBus.Instance.UserInputSwitchInventory.RemoveListener(UserInputSwitchInventory);
+            MessageBus.Instance.UserInputOpenInventory.RemoveListener(UserInputOpenInventory);
+            MessageBus.Instance.UserInputCloseInventory.RemoveListener(UserInputCloseInventory);
+            
+            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+        }
         
-        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerQuestData playerQuestData)
         {
             this.observePlayerQuestData = playerQuestData;
         }
         
-        public void ApplyInventoryData(InventoryData[] data, bool isRight)
+        void ApplyInventoryData(InventoryData[] data, bool isRight)
         {
             if (isRight)
             {

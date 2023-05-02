@@ -36,10 +36,15 @@ namespace AloneSpace
 
         void CheckReload(float deltaTime)
         {
-            if (0 < weaponData.WeaponStateData.ReloadTime)
+            if (0 < weaponData.WeaponStateData.ReloadRemainTime)
             {
                 // リロード中
-                weaponData.WeaponStateData.ReloadTime = Math.Max(0, weaponData.WeaponStateData.ReloadTime - deltaTime);
+                weaponData.WeaponStateData.ReloadRemainTime = Math.Max(0, weaponData.WeaponStateData.ReloadRemainTime - deltaTime);
+                
+                if (weaponData.WeaponStateData.ReloadRemainTime == 0)
+                {
+                    weaponData.WeaponStateData.ResourceIndex = 0;
+                }
             }
         }
 
@@ -104,18 +109,13 @@ namespace AloneSpace
         {
             // リロード可能か
             weaponData.WeaponStateData.IsReloadable = 
-                weaponData.WeaponStateData.ReloadTime == 0
+                weaponData.WeaponStateData.ReloadRemainTime == 0
                 && weaponData.WeaponStateData.ResourceIndex != 0;
             
             // 実行可能か
             weaponData.WeaponStateData.IsExecutable = 
-                weaponData.WeaponStateData.ReloadTime == 0
+                weaponData.WeaponStateData.ReloadRemainTime == 0
                 && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
-            
-            if (weaponData.WeaponStateData.IsExecutable)
-            {
-                weaponData.SetExecute(false);
-            }
         }
     }
 }

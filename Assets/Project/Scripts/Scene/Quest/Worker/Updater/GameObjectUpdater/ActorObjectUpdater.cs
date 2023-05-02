@@ -26,11 +26,17 @@ namespace AloneSpace
             this.coroutineWorker = coroutineWorker;
             
             MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
+            
+            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
+            
+            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
 
         public void OnLateUpdate()
@@ -53,12 +59,12 @@ namespace AloneSpace
             }
         }
 
-        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerQuestData playerQuestData)
         {
             this.observePlayerQuestData = playerQuestData;
         }
         
-        public void SetObserveAreaData(AreaData areaData)
+        void SetUserArea(AreaData areaData)
         {
             this.observeAreaData = areaData;
             SetDirtyActorObjectList();

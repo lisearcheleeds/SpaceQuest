@@ -23,14 +23,14 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            foreach (var weaponData in actorData.ActorStateData.WeaponData)
+            foreach (var weaponData in actorData.WeaponData.Values)
             {
                 weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
                 weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
             }
             
             // 移動チェック
-            if (actorData.ActorMode == ActorMode.Warp)
+            if (actorData.ActorStateData.ActorMode == ActorMode.Warp)
             {
                 // ワープ開始直後まだAreaに居る時は加速
                 if (actorData.AreaId.HasValue && actorData.AreaId != actorData.ActorStateData.MoveTarget.AreaId)

@@ -25,6 +25,7 @@ namespace AloneSpace
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
 
         public void Finalize()
@@ -32,6 +33,7 @@ namespace AloneSpace
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.RemoveListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
 
         public void OnLateUpdate()
@@ -48,7 +50,7 @@ namespace AloneSpace
             }
         }
         
-        public void SetObserveAreaData(AreaData areaData)
+        void SetUserArea(AreaData areaData)
         {
             this.observeAreaData = areaData;
             SetDirtyWeaponEffectObjectList();

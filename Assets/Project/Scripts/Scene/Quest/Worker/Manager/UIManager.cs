@@ -12,6 +12,9 @@ namespace AloneSpace
         [SerializeField] Button inventoryButton;
         [SerializeField] Button switchActorModeCombatButton;
         
+        [Header("Instruments")]
+        [SerializeField] WeaponDataListView weaponDataListView;
+        
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
         [SerializeField] CameraAngleController cameraAngleController;
@@ -24,9 +27,13 @@ namespace AloneSpace
 
         UserData userData;
         
-        public void Initialize(QuestData questData)
+        public void Initialize(QuestData questData, UserData userData)
         {
+            this.userData = userData;
+            
             cameraAngleControllerEffect.Initialize();
+            
+            weaponDataListView.Initialize();
             
             mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
@@ -42,12 +49,21 @@ namespace AloneSpace
 
         public void Finalize()
         {
+            cameraAngleControllerEffect.Finalize();
+            
+            weaponDataListView.Finalize();
+            
+            mapPanelView.Finalize();
+            cameraAngleController.Finalize();
+            interactionList.Finalize();
+            itemDataMenu.Finalize();
+            inventoryView.Finalize();
         }
 
         public void OnLateUpdate()
         {
             // WASDとマウス
-            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
+            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
             {
                 MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
@@ -114,6 +130,21 @@ namespace AloneSpace
                 {
                     MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
                 }
+
+                if (Keyboard.current.digit1Key.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.Broadcast(0);
+                }
+                
+                if (Keyboard.current.digit2Key.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.Broadcast(1);
+                }
+                
+                if (Keyboard.current.digit3Key.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.Broadcast(2);
+                }
             }
 
             // 戦闘モードの切り替え
@@ -127,7 +158,7 @@ namespace AloneSpace
             }
             
             // マウスカーソルの切り替え
-            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
+            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
@@ -135,20 +166,6 @@ namespace AloneSpace
             {
                 Cursor.lockState = CursorLockMode.None;
             }
-        }
-
-        public void SetObservePlayerQuestData(UserData userData)
-        {
-            this.userData = userData;
-            
-            interactionList.SetObservePlayerQuestData(userData.PlayerQuestData);
-            inventoryView.SetObservePlayerQuestData(userData.PlayerQuestData);
-        }
-        
-        public void SetObserveAreaData(AreaData areaData)
-        {
-            mapPanelView.SetObserveAreaData(areaData);
-            interactionList.SetObserveAreaData(areaData);
         }
 
         void OnClickMap()

@@ -24,11 +24,13 @@ namespace AloneSpace
             this.coroutineWorker = coroutineWorker;
             
             MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyInteractObjectList.RemoveListener(SetDirtyInteractObjectList);
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
 
         public void OnLateUpdate()
@@ -51,7 +53,7 @@ namespace AloneSpace
             }
         }
         
-        public void SetObserveAreaData(AreaData areaData)
+        void SetUserArea(AreaData areaData)
         {
             this.currentAreaData = areaData;
             SetDirtyInteractObjectList();

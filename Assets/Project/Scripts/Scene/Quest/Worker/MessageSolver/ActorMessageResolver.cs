@@ -19,6 +19,7 @@ namespace AloneSpace
             
             MessageBus.Instance.ActorCommandSetWeaponExecute.AddListener(ActorCommandSetWeaponExecute);
             MessageBus.Instance.ActorCommandReloadWeapon.AddListener(ActorCommandReloadWeapon);
+            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.AddListener(ActorCommandSetCurrentWeaponGroupIndex);
             
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.AddListener(ActorCommandForwardBoosterPowerRatio);
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
@@ -34,6 +35,9 @@ namespace AloneSpace
             
             MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
+            
+            MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
         }
 
         public void Finalize()
@@ -41,6 +45,10 @@ namespace AloneSpace
             MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
             MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
+            
+            MessageBus.Instance.ActorCommandSetWeaponExecute.RemoveListener(ActorCommandSetWeaponExecute);
+            MessageBus.Instance.ActorCommandReloadWeapon.RemoveListener(ActorCommandReloadWeapon);
+            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.RemoveListener(ActorCommandSetCurrentWeaponGroupIndex);
             
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.RemoveListener(ActorCommandForwardBoosterPowerRatio);
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.RemoveListener(ActorCommandBackBoosterPowerRatio);
@@ -56,6 +64,9 @@ namespace AloneSpace
             
             MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
             MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
+            
+            MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
         }
         
         void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
@@ -142,6 +153,21 @@ namespace AloneSpace
         void ActorCommandSetActorCombatMode(Guid actorId, ActorCombatMode actorCombatMode)
         {
             questData.ActorData[actorId].SetActorCombatMode(actorCombatMode);
+        }
+        
+        void ActorCommandSetCurrentWeaponGroupIndex(Guid actorId, int index)
+        {
+            questData.ActorData[actorId].SetCurrentWeaponGroupIndex(index);
+        }
+
+        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
+        }
+
+        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
     }
 }

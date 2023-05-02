@@ -23,8 +23,21 @@ namespace AloneSpace
             MessageBus.Instance.UserInputCloseMap.AddListener(UserInputCloseMap);
 
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(SetCameraAngle);
+            
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
 
             UserInputCloseMap();
+        }
+
+        public void Finalize()
+        {
+            MessageBus.Instance.UserInputSwitchMap.RemoveListener(UserInputSwitchMap);
+            MessageBus.Instance.UserInputOpenMap.RemoveListener(UserInputOpenMap);
+            MessageBus.Instance.UserInputCloseMap.RemoveListener(UserInputCloseMap);
+
+            MessageBus.Instance.UserCommandSetCameraAngle.RemoveListener(SetCameraAngle);
+            
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
         
         void UpdateView()
@@ -56,7 +69,7 @@ namespace AloneSpace
             }
         }
 
-        public void SetObserveAreaData(AreaData observeAreaData)
+        void SetUserArea(AreaData observeAreaData)
         {
             this.observeAreaData = observeAreaData;
         }

@@ -13,5 +13,8 @@
 
         // 武器リソース最大値（マガジン最大値）
         int WeaponResourceMaxCount { get; }
+        
+        // リロード時間
+        float ReloadTime { get; }
     }
 }

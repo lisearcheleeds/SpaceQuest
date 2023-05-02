@@ -3,9 +3,15 @@ using UnityEngine;
 
 namespace AloneSpace
 {
+    /// <summary>
+    /// Actorが装備しているWeaponData
+    /// （ItemとしてのWeaponDataは存在せずActorに装備する時に生成する）
+    /// </summary>
     public abstract class WeaponData : IOrderModuleHolder
     {
         public abstract Guid InstanceId { get; }
+        
+        // Module
         public abstract IOrderModule OrderModule { get; protected set; }
         public abstract IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
@@ -35,6 +41,16 @@ namespace AloneSpace
         public void SetExecute(bool isExecute)
         {
             WeaponStateData.IsExecute = isExecute;
+        }
+        
+        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            WeaponStateData.WeaponEffectDataList.Add(weaponEffectData);
+        }
+
+        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            WeaponStateData.WeaponEffectDataList.Remove(weaponEffectData);
         }
 
         public abstract void Reload();

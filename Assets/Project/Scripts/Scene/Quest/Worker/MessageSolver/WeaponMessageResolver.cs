@@ -18,7 +18,7 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
-            MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
+            MessageBus.Instance.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
         }
 
         /// <summary>

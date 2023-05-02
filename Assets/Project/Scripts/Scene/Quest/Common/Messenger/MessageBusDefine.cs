@@ -26,8 +26,10 @@ namespace AloneSpace
         public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
         public class UtilGetAreaActorData : MessageBusUnicaster<int, ActorData[]>{}
         
-        public class ManagerCommandSetObservePlayer : MessageBusBroadcaster<Guid>{}
-        public class ManagerCommandLoadArea : MessageBusBroadcaster<int?>{}
+        public class SetOrderUserPlayer : MessageBusBroadcaster<Guid>{}
+        public class SetUserPlayer : MessageBusBroadcaster<PlayerQuestData>{}
+        public class SetOrderUserArea : MessageBusBroadcaster<int?>{}
+        public class SetUserArea : MessageBusBroadcaster<AreaData>{}
         
         public class NoticeCollisionEffectData : MessageBusBroadcaster<CollisionEffectData>{}
         
@@ -50,6 +52,7 @@ namespace AloneSpace
         
         public class UserInputExecuteWeapon : MessageBusBroadcaster<bool>{}
         public class UserInputReloadWeapon : MessageBusBroadcaster{}
+        public class UserInputSetCurrentWeaponGroupIndex : MessageBusBroadcaster<int>{}
         
         public class UserInputFrontBoosterPower : MessageBusBroadcaster<float>{}
         public class UserInputBackBoosterPower : MessageBusBroadcaster<float>{}
@@ -80,6 +83,7 @@ namespace AloneSpace
         
         public class ActorCommandSetWeaponExecute : MessageBusBroadcaster<Guid, bool>{}
         public class ActorCommandReloadWeapon : MessageBusBroadcaster<Guid>{}
+        public class ActorCommandSetCurrentWeaponGroupIndex : MessageBusBroadcaster<Guid, int>{}
         
         public class ActorCommandForwardBoosterPower : MessageBusBroadcaster<Guid, float>{}
         public class ActorCommandBackBoosterPower : MessageBusBroadcaster<Guid, float>{}

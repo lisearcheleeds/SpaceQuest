@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
 {
+    /// <summary>
+    /// ActorData
+    /// </summary>
     public class ActorData : IPlayer, IPositionData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEffectReceiverModuleHolder
     {
         public Guid InstanceId { get; }
@@ -26,15 +30,14 @@ namespace AloneSpace
         public Quaternion Rotation { get; private set; } = Quaternion.identity;
         
         // 状態
-        public ActorMode ActorMode { get; private set; }
-        public ActorState ActorState { get; private set; }
-        public ActorCombatMode ActorCombatMode { get; private set; } = ActorCombatMode.Fighter;
-
+        public ActorStateData ActorStateData { get; }
+        
+        // 関連データ
         public ActorSpecData ActorSpecData { get; }
         public InventoryData[] InventoryDataList { get; }
-        
-        public ActorStateData ActorStateData { get; } = new ActorStateData();
-        
+        public List<Guid>[] WeaponDataGroup { get; private set; }
+        public Dictionary<Guid, WeaponData> WeaponData { get; private set; }
+
         public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
@@ -46,14 +49,19 @@ namespace AloneSpace
 
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
+
+            ActorStateData = new ActorStateData();
             
-            ActorStateData.WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x =>
+            WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
+            
+            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x =>
             {
                 var weaponData = WeaponDataHelper.GetWeaponData(x);
                 weaponData.SetHolderActor(this, this);
+                WeaponDataGroup[0].Add(weaponData.InstanceId);
                 return weaponData;
-            }).ToArray();
-
+            }).ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
+            
             ActivateModules();
         }
 
@@ -83,11 +91,6 @@ namespace AloneSpace
              CollisionEffectReceiverModule = null;
         }
 
-        public void SetActorState(ActorState actorState)
-        {
-            ActorState = actorState;
-        }
-
         public void SetInteractOrder(IInteractData interactData)
         {
             ActorStateData.InteractOrder = interactData;
@@ -112,7 +115,7 @@ namespace AloneSpace
         {
             if (moveTarget == null)
             {
-                ActorMode = ActorMode.ThirdPersonViewpoint;
+                ActorStateData.ActorMode = ActorMode.ThirdPersonViewpoint;
                 ActorStateData.MoveTarget = null;
                 return;
             }
@@ -120,11 +123,11 @@ namespace AloneSpace
             // 今どのエリアにも居ない時、もしくは移動先のエリアが違う時ワープ状態とする
             if (AreaId != moveTarget.AreaId)
             {
-                ActorMode = ActorMode.Warp;
+                ActorStateData.ActorMode = ActorMode.Warp;
             }
             else
             {
-                ActorMode = ActorMode.ThirdPersonViewpoint;
+                ActorStateData.ActorMode = ActorMode.ThirdPersonViewpoint;
             }
 
             ActorStateData.MoveTarget = moveTarget;
@@ -132,15 +135,19 @@ namespace AloneSpace
 
         public void SetWeaponExecute(bool isExecute)
         {
-            foreach (var weaponData in ActorStateData.WeaponData)
+            foreach (var key in WeaponData.Keys)
             {
-                weaponData.SetExecute(isExecute);
+                // 現在のWeaponDataGroupのWeaponDataだけではなく全てのWeaponDataに対して更新をかける
+                var isCurrentWeaponDataGroup = WeaponDataGroup[ActorStateData.CurrentWeaponGroupIndex]
+                    .Any(weaponDataInstanceId => weaponDataInstanceId == key);
+                
+                WeaponData[key].SetExecute(isExecute && isCurrentWeaponDataGroup);
             }
         }
 
         public void ReloadWeapon()
         {
-            foreach (var weaponData in ActorStateData.WeaponData)
+            foreach (var weaponData in WeaponData.Values)
             {
                 if (weaponData.WeaponStateData.IsReloadable)
                 {
@@ -201,14 +208,29 @@ namespace AloneSpace
 
         public void SetActorMode(ActorMode actorMode)
         {
-            ActorMode = actorMode;
+            ActorStateData.ActorMode = actorMode;
         }
 
         public void SetActorCombatMode(ActorCombatMode actorCombatMode)
         {
-            ActorCombatMode = actorCombatMode;
+            ActorStateData.ActorCombatMode = actorCombatMode;
         }
-        
+
+        public void SetCurrentWeaponGroupIndex(int weaponGroupIndex)
+        {
+            ActorStateData.CurrentWeaponGroupIndex = weaponGroupIndex;
+        }
+
+        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            WeaponData[weaponEffectData.WeaponData.InstanceId].AddWeaponEffectData(weaponEffectData);
+        }
+
+        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            WeaponData[weaponEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEffectData);
+        }
+
         void OnBeginModuleUpdate(float deltaTime)
         {
         }

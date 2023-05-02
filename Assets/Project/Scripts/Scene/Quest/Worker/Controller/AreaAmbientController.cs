@@ -21,10 +21,14 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
+            
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
 
         public void Finalize()
         {
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
+            
             if (ambientObject != null)
             {
                 Destroy(ambientObject.gameObject);
@@ -47,7 +51,7 @@ namespace AloneSpace
             }
         }
 
-        public void SetObserveAreaData(AreaData areaData)
+        void SetUserArea(AreaData areaData)
         {
             currentAreaData = areaData;
             isDirty = true;

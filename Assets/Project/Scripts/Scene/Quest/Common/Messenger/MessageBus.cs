@@ -1,5 +1,13 @@
 ﻿namespace AloneSpace
 {
+    /// <summary>
+    /// 命名規則
+    /// UpdateOrder~ Idを指定した設定の更新
+    /// Register~ 登録
+    /// UnRegister~ 登録解除
+    /// UtilGet~ 問い合わせ
+    /// UserInput~ ユーザー入力(ボタン/キーボード/マウス)
+    /// </summary>
     public class MessageBus : MonoSingleton<MessageBus>
     {
         // 登録系メッセージ
@@ -23,8 +31,10 @@
         public MessageBusDefine.UtilGetAreaActorData UtilGetAreaActorData { get; } = new MessageBusDefine.UtilGetAreaActorData();
         
         // プレイヤー設定
-        public MessageBusDefine.ManagerCommandSetObservePlayer ManagerCommandSetObservePlayer { get; } = new MessageBusDefine.ManagerCommandSetObservePlayer();
-        public MessageBusDefine.ManagerCommandLoadArea ManagerCommandLoadArea { get; } = new MessageBusDefine.ManagerCommandLoadArea();
+        public MessageBusDefine.SetOrderUserPlayer SetOrderUserPlayer { get; } = new MessageBusDefine.SetOrderUserPlayer();
+        public MessageBusDefine.SetUserPlayer SetUserPlayer { get; } = new MessageBusDefine.SetUserPlayer();
+        public MessageBusDefine.SetOrderUserArea SetOrderUserArea { get; } = new MessageBusDefine.SetOrderUserArea();
+        public MessageBusDefine.SetUserArea SetUserArea { get; } = new MessageBusDefine.SetUserArea();
 
         // イベント通知
         public MessageBusDefine.NoticeCollisionEffectData NoticeCollisionEffectData { get; } = new MessageBusDefine.NoticeCollisionEffectData();
@@ -42,6 +52,7 @@
         
         public MessageBusDefine.UserInputExecuteWeapon UserInputSetExecuteWeapon { get; } = new MessageBusDefine.UserInputExecuteWeapon();
         public MessageBusDefine.UserInputReloadWeapon UserInputReloadWeapon { get; } = new MessageBusDefine.UserInputReloadWeapon();
+        public MessageBusDefine.UserInputSetCurrentWeaponGroupIndex UserInputSetCurrentWeaponGroupIndex { get; } = new MessageBusDefine.UserInputSetCurrentWeaponGroupIndex();
         
         public MessageBusDefine.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
         public MessageBusDefine.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBackBoosterPower();
@@ -76,8 +87,10 @@
         public MessageBusDefine.PlayerCommandSetInteractOrder PlayerCommandSetInteractOrder { get; } = new MessageBusDefine.PlayerCommandSetInteractOrder();
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
 
+        // Actorによるゲームコマンド
         public MessageBusDefine.ActorCommandSetWeaponExecute ActorCommandSetWeaponExecute { get; } = new MessageBusDefine.ActorCommandSetWeaponExecute();
         public MessageBusDefine.ActorCommandReloadWeapon ActorCommandReloadWeapon { get; } = new MessageBusDefine.ActorCommandReloadWeapon();
+        public MessageBusDefine.ActorCommandSetCurrentWeaponGroupIndex ActorCommandSetCurrentWeaponGroupIndex { get; } = new MessageBusDefine.ActorCommandSetCurrentWeaponGroupIndex();
 
         public MessageBusDefine.ActorCommandForwardBoosterPower ActorCommandForwardBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandForwardBoosterPower();
         public MessageBusDefine.ActorCommandBackBoosterPower ActorCommandBackBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandBackBoosterPower();

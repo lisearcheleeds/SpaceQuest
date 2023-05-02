@@ -22,7 +22,20 @@ namespace AloneSpace
             MessageBus.Instance.UserInputOpenInteractList.AddListener(UserInputOpenInteractList);
             MessageBus.Instance.UserInputCloseInteractList.AddListener(UserInputCloseInteractList);
             
+            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+            
             UserInputCloseInteractList();
+        }
+
+        public void Finalize()
+        {
+            MessageBus.Instance.UserInputSwitchInteractList.RemoveListener(UserInputSwitchInteractList);
+            MessageBus.Instance.UserInputOpenInteractList.RemoveListener(UserInputOpenInteractList);
+            MessageBus.Instance.UserInputCloseInteractList.RemoveListener(UserInputCloseInteractList);
+            
+            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
 
         void Refresh()
@@ -70,13 +83,13 @@ namespace AloneSpace
             }
         }
 
-        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerQuestData playerQuestData)
         {
             this.observePlayerQuestData = playerQuestData;
             Refresh();
         }
         
-        public void SetObserveAreaData(AreaData observeAreaData)
+        void SetUserArea(AreaData observeAreaData)
         {
             this.observeAreaData = observeAreaData;
             Refresh();

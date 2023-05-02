@@ -35,7 +35,7 @@ namespace AloneSpace
             */
 
             // 武器
-            foreach (var weaponData in actorData.ActorStateData.WeaponData)
+            foreach (var weaponData in actorData.WeaponData.Values)
             {
                 if (weaponData.WeaponStateData.IsExecutable)
                 {

@@ -20,20 +20,21 @@ namespace AloneSpace
         {
             userData = questData.UserData;
             
-            uiManager.Initialize(questData);
+            uiManager.Initialize(questData, userData);
             gameObjectUpdater.Initialize(questData);
             
             areaAmbientController.Initialize(questData);
             cameraController.Initialize();
             
-            MessageBus.Instance.ManagerCommandSetObservePlayer.AddListener(ManagerCommandSetObservePlayer);
-            MessageBus.Instance.ManagerCommandLoadArea.AddListener(ManagerCommandLoadArea);
+            MessageBus.Instance.SetOrderUserPlayer.AddListener(SetOrderUserPlayer);
+            MessageBus.Instance.SetOrderUserArea.AddListener(SetOrderUserArea);
             
             MessageBus.Instance.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
             
             MessageBus.Instance.UserInputSetExecuteWeapon.AddListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInputReloadWeapon.AddListener(UserInputReloadWeapon);
+            MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.AddListener(UserInputSetCurrentWeaponGroupIndex);
             
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
@@ -53,17 +54,19 @@ namespace AloneSpace
         {
             uiManager.Finalize();
             gameObjectUpdater.Finalize();
+            
             areaAmbientController.Finalize();
             cameraController.Finalize();
             
-            MessageBus.Instance.ManagerCommandSetObservePlayer.RemoveListener(ManagerCommandSetObservePlayer);
-            MessageBus.Instance.ManagerCommandLoadArea.RemoveListener(ManagerCommandLoadArea);
+            MessageBus.Instance.SetOrderUserPlayer.RemoveListener(SetOrderUserPlayer);
+            MessageBus.Instance.SetOrderUserArea.RemoveListener(SetOrderUserArea);
             
             MessageBus.Instance.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
             
             MessageBus.Instance.UserInputSetExecuteWeapon.RemoveListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInputReloadWeapon.RemoveListener(UserInputReloadWeapon);
+            MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
             
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
@@ -91,47 +94,42 @@ namespace AloneSpace
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate(userData);
 
-            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Warp)
+            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Warp)
             {
                 if (userData.PlayerQuestData.MainActorData.AreaId != userData.CurrentAreaData?.AreaId)
                 {
-                    MessageBus.Instance.ManagerCommandLoadArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
+                    MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
                 }
             }
 
-            if (prevObserveActorMode != userData.PlayerQuestData.MainActorData.ActorMode)
+            if (prevObserveActorMode != userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode)
             {
-                if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
+                if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Cockpit);
                 }
-                else if(userData.PlayerQuestData.MainActorData.ActorMode != ActorMode.Cockpit)
+                else if(userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode != ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
                 }
             }
 
-            prevObserveActorMode = userData.PlayerQuestData.MainActorData.ActorMode;
+            prevObserveActorMode = userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode;
         }
         
-        void ManagerCommandSetObservePlayer(Guid playerInstanceId)
+        void SetOrderUserPlayer(Guid playerInstanceId)
         {
             userData.SetPlayerQuestData(MessageBus.Instance.UtilGetPlayerQuestData.Unicast(playerInstanceId));
+            MessageBus.Instance.SetUserPlayer.Broadcast(userData.PlayerQuestData);
             
-            uiManager.SetObservePlayerQuestData(userData);
-            gameObjectUpdater.SetObservePlayerQuestData(userData.PlayerQuestData);
-            
-            MessageBus.Instance.ManagerCommandLoadArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
+            MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
             MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(userData.PlayerQuestData.MainActorData);
         }
 
-        void ManagerCommandLoadArea(int? areaId)
+        void SetOrderUserArea(int? areaId)
         {
             userData.SetCurrentAreaData(areaId.HasValue ? MessageBus.Instance.UtilGetAreaData.Unicast(areaId.Value) : null);
-            
-            uiManager.SetObserveAreaData(userData.CurrentAreaData);
-            gameObjectUpdater.SetObserveAreaData(userData.CurrentAreaData);
-            areaAmbientController.SetObserveAreaData(userData.CurrentAreaData);
+            MessageBus.Instance.SetUserArea.Broadcast(userData.CurrentAreaData);
         }
 
         void UserCommandLookAtAngle(Vector3 lookAt)
@@ -152,6 +150,11 @@ namespace AloneSpace
         void UserInputReloadWeapon()
         {
             MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId);
+        }
+
+        void UserInputSetCurrentWeaponGroupIndex(int index)
+        {
+            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, index);
         }
 
         void UserInputForwardBoosterPowerRatio(float power)
@@ -201,11 +204,11 @@ namespace AloneSpace
 
         void UserInputSwitchActorMode()
         {
-            if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.ThirdPersonViewpoint)
+            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.ThirdPersonViewpoint)
             {
                 MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, ActorMode.Cockpit);
             }
-            else if (userData.PlayerQuestData.MainActorData.ActorMode == ActorMode.Cockpit)
+            else if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
             {
                 MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, ActorMode.ThirdPersonViewpoint);
             }

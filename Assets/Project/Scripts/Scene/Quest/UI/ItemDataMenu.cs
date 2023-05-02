@@ -23,6 +23,12 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandCloseItemDataMenu.AddListener(Close);
         }
 
+        public void Finalize()
+        {
+            MessageBus.Instance.UserCommandOpenItemDataMenu.RemoveListener(Open);
+            MessageBus.Instance.UserCommandCloseItemDataMenu.RemoveListener(Close);
+        }
+
         void Open(ItemData itemData, Action onClick, string buttonText, string optionText)
         {
             this.itemData = itemData;

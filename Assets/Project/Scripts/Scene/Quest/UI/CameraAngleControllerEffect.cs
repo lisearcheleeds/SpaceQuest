@@ -11,6 +11,10 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(UserCommandSetCameraAngle);
         }
 
+        public void Finalize()
+        {
+        }
+
         void UserCommandSetCameraAngle(Quaternion quaternion)
         {
             cameraAnchor.rotation = quaternion;

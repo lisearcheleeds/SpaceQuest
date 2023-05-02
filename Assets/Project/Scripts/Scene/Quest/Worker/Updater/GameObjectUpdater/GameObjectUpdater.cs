@@ -32,17 +32,5 @@ namespace AloneSpace
             weaponEffectObjectUpdater.OnLateUpdate();
             interactObjectUpdater.OnLateUpdate();
         }
-
-        public void SetObservePlayerQuestData(PlayerQuestData playerQuestData)
-        {
-            actorObjectUpdater.SetObservePlayerQuestData(playerQuestData);
-        }
-
-        public void SetObserveAreaData(AreaData areaData)
-        {
-            actorObjectUpdater.SetObserveAreaData(areaData);
-            weaponEffectObjectUpdater.SetObserveAreaData(areaData);
-            interactObjectUpdater.SetObserveAreaData(areaData);
-        }
     }
 }
