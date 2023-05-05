@@ -13,7 +13,8 @@ namespace AloneSpace
                 {
                     var actorData = GetTempAddActorData(
                         playerQuestData,
-                        areaData[Random.Range(0, areaData.Length)],
+                        // areaData[Random.Range(0, areaData.Length)],
+                        areaData[0],
                         new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f)));
                     
                     playerQuestData.SetMainActorData(actorData);

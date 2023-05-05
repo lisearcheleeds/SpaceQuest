@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -22,6 +23,7 @@ namespace AloneSpace
         public ActorThinkModule(ActorData actorData)
         {
             this.actorData = actorData;
+            actorData.ActorStateData.ActorAIState = ActorAIState.Check;
         }
 
         public void ActivateModule()
@@ -37,6 +39,12 @@ namespace AloneSpace
         public void OnUpdateModule(float deltaTime)
         {
             var actorAIStateData = actorData.ActorStateData;
+            
+            if (actorAIStateData.IsUserControl)
+            {
+                // skip
+                return;
+            }
 
             if (!CheckStateData(actorAIStateData))
             {
@@ -45,8 +53,12 @@ namespace AloneSpace
             }
 
             UpdateInteract(actorData, deltaTime);
-            
-            actorAIStateData.ActorAIState = AIList[actorAIStateData.ActorAIState]?.Update(actorData, deltaTime) ?? ActorAIState.None;
+
+            var nextState = AIList[actorAIStateData.ActorAIState]?.Update(actorData, deltaTime);
+            if (nextState != null)
+            {
+                actorAIStateData.ActorAIState = nextState.Value;
+            }
             
             ClearUsedCache(actorAIStateData);
         }

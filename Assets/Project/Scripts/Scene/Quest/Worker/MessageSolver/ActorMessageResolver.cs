@@ -38,6 +38,8 @@ namespace AloneSpace
             
             MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
+            
+            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
         }
 
         public void Finalize()
@@ -67,6 +69,8 @@ namespace AloneSpace
             
             MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
+            
+            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
         }
         
         void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
@@ -168,6 +172,14 @@ namespace AloneSpace
         void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
+        }
+
+        void SetUserPlayer(PlayerQuestData userPlayer)
+        {
+            foreach (var actorData in questData.ActorData.Values)
+            {
+                actorData.ActorStateData.IsUserControl = actorData.InstanceId == userPlayer.MainActorData.InstanceId;
+            }
         }
     }
 }

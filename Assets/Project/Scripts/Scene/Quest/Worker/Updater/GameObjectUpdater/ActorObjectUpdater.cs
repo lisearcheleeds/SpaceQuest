@@ -62,6 +62,7 @@ namespace AloneSpace
         void SetUserPlayer(PlayerQuestData playerQuestData)
         {
             this.observePlayerQuestData = playerQuestData;
+            SetDirtyActorObjectList();
         }
         
         void SetUserArea(AreaData areaData)

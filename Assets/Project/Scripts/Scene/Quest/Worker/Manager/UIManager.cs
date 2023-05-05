@@ -14,6 +14,8 @@ namespace AloneSpace
         
         [Header("Instruments")]
         [SerializeField] WeaponDataListView weaponDataListView;
+        [SerializeField] TargetView targetView;
+        // [SerializeField] CockpitView cockpitView;
         
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
@@ -34,6 +36,7 @@ namespace AloneSpace
             cameraAngleControllerEffect.Initialize();
             
             weaponDataListView.Initialize();
+            targetView.Initialize();
             
             mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
@@ -52,6 +55,7 @@ namespace AloneSpace
             cameraAngleControllerEffect.Finalize();
             
             weaponDataListView.Finalize();
+            targetView.Finalize();
             
             mapPanelView.Finalize();
             cameraAngleController.Finalize();
@@ -62,6 +66,9 @@ namespace AloneSpace
 
         public void OnLateUpdate()
         {
+            weaponDataListView.OnLateUpdate();
+            targetView.OnLateUpdate();
+            
             // WASDとマウス
             if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
             {

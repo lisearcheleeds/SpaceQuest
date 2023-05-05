@@ -1963,6 +1963,7 @@ MonoBehaviour:
   inventoryButton: {fileID: 1137634455}
   switchActorModeCombatButton: {fileID: 1808518159}
   weaponDataListView: {fileID: 708586474}
+  targetView: {fileID: 1933585113}
   mapPanelView: {fileID: 115865315}
   cameraAngleController: {fileID: 1509784661014334076}
   interactionList: {fileID: 170907589}
@@ -7016,6 +7017,58 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1933585111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1933585112}
+  - component: {fileID: 1933585113}
+  m_Layer: 13
+  m_Name: TargetView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1933585112
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933585111}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2003866554}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1933585113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933585111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2069f34fbd644e159765d4340509a0f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actorMarkerPrefab: {fileID: 5799091432567369277, guid: 8e27871f5a797db4ba094811d9ba9b45,
+    type: 3}
+  actorMarkerParent: {fileID: 1933585112}
 --- !u!1 &1942191569
 GameObject:
   m_ObjectHideFlags: 0
@@ -7473,6 +7526,7 @@ RectTransform:
   - {fileID: 1137634454}
   - {fileID: 1808518158}
   - {fileID: 708586473}
+  - {fileID: 1933585112}
   - {fileID: 1509784661014334069}
   - {fileID: 397195131}
   m_Father: {fileID: 561232610}
