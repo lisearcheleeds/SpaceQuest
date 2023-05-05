@@ -38,7 +38,7 @@ namespace AloneSpace
             resourceMax.text = $"/{weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount}";
         }
 
-        void Update()
+        public void OnLateUpdate()
         {
             if (weaponData == null)
             {

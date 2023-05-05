@@ -15,7 +15,7 @@ namespace AloneSpace
                         playerQuestData,
                         // areaData[Random.Range(0, areaData.Length)],
                         areaData[0],
-                        new Vector3(Random.Range(-10.0f, 10.0f), 0.0f, Random.Range(-10.0f, 10.0f)));
+                        new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f)));
                     
                     playerQuestData.SetMainActorData(actorData);
                     
@@ -33,7 +33,7 @@ namespace AloneSpace
             
             var actorData = new ActorData(specData, playerQuestData.InstanceId);
             MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, areaData.AreaId);
-            actorData.SetPosition(areaData.SpawnPoint.Position);
+            actorData.SetPosition(areaData.SpawnPoint.Position + position);
             return actorData;
         }
     }

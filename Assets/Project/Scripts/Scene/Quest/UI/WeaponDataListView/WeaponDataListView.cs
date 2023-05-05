@@ -53,6 +53,11 @@ namespace AloneSpace
                 isDirty = false;
                 RefreshWeaponDataView();
             }
+
+            foreach (var weaponDataView in weaponDataViewList)
+            {
+                weaponDataView.OnLateUpdate();
+            }
         }
 
         void SetUserPlayer(PlayerQuestData playerQuestData)

@@ -100,6 +100,9 @@ namespace AloneSpace
         public class ActorCommandSetActorMode : MessageBusBroadcaster<Guid, ActorMode>{}
         public class ActorCommandSetActorCombatMode : MessageBusBroadcaster<Guid, ActorCombatMode>{}
         
+        public class ActorCommandSetMainTarget : MessageBusBroadcaster<Guid, IPositionData>{}
+        public class ActorCommandSetAroundTargets : MessageBusBroadcaster<Guid, IPositionData[]>{}
+        
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 

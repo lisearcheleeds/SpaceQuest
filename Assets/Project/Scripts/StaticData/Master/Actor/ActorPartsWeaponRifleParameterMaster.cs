@@ -81,8 +81,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, 1, 12, 3.0f, 0.1f, 1.0f, 1.0f, 1.0f, 500),
-                new Row(2, 1, 12, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500),
+                new Row(1, 1, 60, 3.0f, 0.05f, 1.0f, 1.0f, 1.0f, 500),
+                new Row(2, 1, 60, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500),
             };
         }
     }

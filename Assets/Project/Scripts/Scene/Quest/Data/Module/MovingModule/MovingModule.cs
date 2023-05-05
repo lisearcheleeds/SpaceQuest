@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace AloneSpace
 {
@@ -11,10 +12,11 @@ namespace AloneSpace
         IPositionData positionData;
         Action<float> onBeginModuleUpdate;
         
-        public Vector3 InertiaTensor { get; set; }
-        public Quaternion InertiaTensorRotation { get; set; } = Quaternion.identity;
+        public Vector3 InertiaTensor { get; private set; }
+        public Vector3 InertiaRotationAxis { get; private set; }
+        public float InertiaRotationAngle { get; private set; }
 
-        public Vector3 MoveDelta;
+        public Vector3 MoveDelta { get; private set; }
 
         public MovingModule(IPositionData positionData, Action<float> onBeginModuleUpdate)
         {
@@ -32,12 +34,31 @@ namespace AloneSpace
             MessageBus.Instance.UnRegisterMovingModule.Broadcast(this);
         }
 
+        public void SetInertiaTensor(Vector3 inertiaTensor)
+        {
+            InertiaTensor = inertiaTensor;
+        }
+        
+        public void SetInertiaRotation(float inertiaRotationAngle, Vector3 axis)
+        {
+            InertiaRotationAngle = inertiaRotationAngle;
+            InertiaRotationAxis = axis;
+        }
+        
+        public void SetInertiaRotation(Quaternion inertiaRotation)
+        {
+            inertiaRotation.ToAngleAxis(out var angle, out var axis);
+            SetInertiaRotation(angle, axis);
+        }
+
         public void OnUpdateModule(float deltaTime)
         {
             onBeginModuleUpdate?.Invoke(deltaTime);
             
-            positionData.SetPosition(positionData.Position + InertiaTensor);
-            positionData.SetRotation(positionData.Rotation * InertiaTensorRotation);
+            MoveDelta = InertiaTensor * deltaTime;
+
+            positionData.SetPosition(positionData.Position + MoveDelta);
+            positionData.SetRotation(positionData.Rotation * Quaternion.AngleAxis(InertiaRotationAngle * deltaTime, InertiaRotationAxis));
         }
     }
 }

@@ -1,25 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class TargetView : MonoBehaviour
     {
-        [SerializeField] ActorMarker actorMarkerPrefab;
+        [SerializeField] TargetMarker targetMarkerPrefab;
         [SerializeField] RectTransform actorMarkerParent;
         
-        List<ActorMarker> actorMarkerList = new List<ActorMarker>();
+        List<TargetMarker> targetMarkerList = new List<TargetMarker>();
         bool isDirty;
         ActorData actorData;
+
+        IPositionData[] prevAroundTargets;
 
         public void Initialize()
         {
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
+            MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
         }
         
         public void Finalize()
         {
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
+            MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
         }
         
         public void OnLateUpdate()
@@ -29,8 +36,8 @@ namespace AloneSpace
                 isDirty = false;
                 RefreshWeaponDataView();
             }
-
-            foreach (var actorMarker in actorMarkerList)
+            
+            foreach (var actorMarker in targetMarkerList)
             {
                 actorMarker.OnLateUpdate();
             }
@@ -42,6 +49,22 @@ namespace AloneSpace
             isDirty = true;
         }
 
+        void ActorCommandSetMainTarget(Guid instanceId, IPositionData target)
+        {
+            if (actorData.InstanceId == instanceId)
+            {
+                isDirty = true;
+            }
+        }
+
+        void ActorCommandSetAroundTargets(Guid instanceId, IPositionData[] targets)
+        {
+            if (actorData.InstanceId == instanceId)
+            {
+                isDirty = true;
+            }
+        }
+
         void RefreshWeaponDataView()
         {
             if (actorData?.AreaId == null)
@@ -49,23 +72,23 @@ namespace AloneSpace
                 return;
             }
 
-            var actorDataList = MessageBus.Instance.UtilGetAreaActorData.Unicast(actorData.AreaId.Value);
-            var loopMax = Mathf.Max(actorMarkerList.Count, actorDataList.Length);
+            var aroundTargets = actorData.ActorStateData.AroundTargets;
+            var loopMax = Mathf.Max(targetMarkerList.Count, aroundTargets.Length);
             for (var i = 0; i < loopMax; i++)
             {
-                if (actorMarkerList.Count <= i)
+                if (targetMarkerList.Count <= i)
                 {
-                    actorMarkerList.Add(Instantiate(actorMarkerPrefab, actorMarkerParent));
-                    actorMarkerList[i].Initialize(GetScreenPositionFromWorldPosition);
+                    targetMarkerList.Add(Instantiate(targetMarkerPrefab, actorMarkerParent));
+                    targetMarkerList[i].Initialize(GetScreenPositionFromWorldPosition);
                 }
 
-                if (i < actorDataList.Length && actorDataList[i].InstanceId != actorData.InstanceId)
+                if (i < aroundTargets.Length && aroundTargets[i].InstanceId != actorData.InstanceId)
                 {
-                    actorMarkerList[i].SetActorData(actorDataList[i]);
+                    targetMarkerList[i].SetTargetData(actorData, aroundTargets[i]);
                 }
                 else
                 {
-                    actorMarkerList[i].SetActorData(null);
+                    targetMarkerList[i].SetTargetData(actorData, null);
                 }
             }
         }

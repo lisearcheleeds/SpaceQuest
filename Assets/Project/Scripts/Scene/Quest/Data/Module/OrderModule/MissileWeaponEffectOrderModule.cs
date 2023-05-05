@@ -35,7 +35,7 @@ namespace AloneSpace
 
             var targetDiffPosition = missileWeaponEffectData.TargetData.Position - missileWeaponEffectData.Position;
             missileWeaponEffectData.Direction = Vector3.RotateTowards(missileWeaponEffectData.Direction, targetDiffPosition, GetRotateRatio(missileWeaponEffectData.CurrentLifeTime), 0);
-            missileWeaponEffectData.MovingModule.InertiaTensor = missileWeaponEffectData.Direction * 25.0f;
+            missileWeaponEffectData.MovingModule.SetInertiaTensor(missileWeaponEffectData.Direction * 25.0f);
         }
 
         float GetRotateRatio(float time)

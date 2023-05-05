@@ -14,7 +14,7 @@ namespace AloneSpace
                 }
             }
             
-            // if (actorData.ActorStateData.MoveTarget != null)
+            if (actorData.ActorStateData.MoveTarget != null)
             {
                 return ActorAIState.Moving;
             }

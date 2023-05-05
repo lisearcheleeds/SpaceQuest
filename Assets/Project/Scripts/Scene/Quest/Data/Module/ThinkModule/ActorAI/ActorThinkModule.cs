@@ -65,11 +65,6 @@ namespace AloneSpace
         
         static bool CheckStateData(ActorStateData actorStateData)
         {
-            if (actorStateData.MainTarget != null)
-            {
-                actorStateData.MainTarget = null;
-            }
-
             return true;
         }
 

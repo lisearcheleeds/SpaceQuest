@@ -69,7 +69,7 @@ namespace AloneSpace
             var targetDirection = weaponData.WeaponStateData.LookAtDirection;
             if (weaponData.WeaponStateData.TargetData != null)
             {
-                targetDirection = (weaponData.BasePositionData.Position - weaponData.WeaponStateData.TargetData.Position).normalized;
+                targetDirection = (weaponData.WeaponStateData.TargetData.Position - weaponData.BasePositionData.Position).normalized;
             }
             
             // TODO: なんかもっと軽い方法ないか考える

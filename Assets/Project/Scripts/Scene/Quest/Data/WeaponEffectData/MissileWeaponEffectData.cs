@@ -30,7 +30,7 @@ namespace AloneSpace
             
             TargetData = targetData;
             Direction = rotation * Vector3.forward;
-            MovingModule.InertiaTensor = Direction * 0.25f;
+            MovingModule.SetInertiaTensor(Direction * 25f);
             
             LifeTime = 8.0f;
             CurrentLifeTime = 0;

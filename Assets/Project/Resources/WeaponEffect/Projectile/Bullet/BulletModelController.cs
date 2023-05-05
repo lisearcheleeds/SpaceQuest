@@ -1,23 +1,20 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public class BulletModelController : MonoBehaviour
     {
-        [SerializeField] MeshFilter meshFilter;
+#if UNITY_EDITOR
         [SerializeField] float height;
         [SerializeField] float radius;
-
-        void Awake()
-        {
-            UpdateMesh();
-        }
-
-        [ContextMenu("UpdateMesh")]
-        void UpdateMesh()
+        [SerializeField] string path;
+        
+        [ContextMenu("MakeMesh")]
+        void MakeMesh()
         {
             var mesh = new Mesh();
-            mesh.name = "GenerateMesh";
+            mesh.name = "Bullet";
             mesh.vertices = new Vector3[]
             {
                 new (radius * -2, -height, 0),  // 0
@@ -64,7 +61,9 @@ namespace AloneSpace
                 6, 7, 5,
             };
 
-            meshFilter.sharedMesh = mesh;
+            AssetDatabase.CreateAsset(mesh, path);
+            AssetDatabase.SaveAssets();
         }
+#endif
     }
 }

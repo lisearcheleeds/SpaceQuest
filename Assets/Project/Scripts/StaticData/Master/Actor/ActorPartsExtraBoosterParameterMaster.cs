@@ -56,10 +56,10 @@ namespace AloneSpace
             {
                 new Row(
                     id: 1,
-                    mainBoosterPower: 0.005f,
-                    subBoosterPower: 0.005f,
-                    maxSpeed: 1.0f,
-                    rotatePower: 1.0f)
+                    mainBoosterPower: 0.05f,
+                    subBoosterPower: 0.05f,
+                    maxSpeed: 10.0f,
+                    rotatePower: 60.0f)
             };
         }
     }

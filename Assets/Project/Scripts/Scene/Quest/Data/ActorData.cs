@@ -231,13 +231,23 @@ namespace AloneSpace
             WeaponData[weaponEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
 
-        void OnBeginModuleUpdate(float deltaTime)
-        {
-        }
-
         public void AddHit(ICollisionDataHolder otherCollisionDataHolder)
         {
             CollisionEffectReceiverModule.AddHit(otherCollisionDataHolder);
+        }
+        
+        public void SetMainTarget(IPositionData target)
+        {
+            ActorStateData.MainTarget = target;
+        }
+        
+        public void SetAroundTargets(IPositionData[] targets)
+        {
+            ActorStateData.AroundTargets = targets;
+        }
+
+        void OnBeginModuleUpdate(float deltaTime)
+        {
         }
     }
 }

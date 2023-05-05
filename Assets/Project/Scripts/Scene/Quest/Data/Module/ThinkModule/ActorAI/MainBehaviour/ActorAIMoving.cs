@@ -9,8 +9,8 @@ namespace AloneSpace
         public ActorAIState Update(ActorData actorData, float deltaTime)
         {
             if (actorData.ActorStateData.MoveTarget == null)
-            {   
-                // return ActorAIState.Check;
+            {
+                return ActorAIState.Check;
             }
             
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.5f);

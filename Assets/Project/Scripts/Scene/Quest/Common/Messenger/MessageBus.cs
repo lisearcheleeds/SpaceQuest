@@ -107,6 +107,9 @@
         public MessageBusDefine.ActorCommandSetActorMode ActorCommandSetActorMode { get; } = new MessageBusDefine.ActorCommandSetActorMode();
         public MessageBusDefine.ActorCommandSetActorCombatMode ActorCommandSetActorCombatMode { get; } = new MessageBusDefine.ActorCommandSetActorCombatMode();
         
+        public MessageBusDefine.ActorCommandSetMainTarget ActorCommandSetMainTarget { get; } = new MessageBusDefine.ActorCommandSetMainTarget();
+        public MessageBusDefine.ActorCommandSetAroundTargets ActorCommandSetAroundTargets { get; } = new MessageBusDefine.ActorCommandSetAroundTargets();
+        
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();
         public MessageBusDefine.ManagerCommandTransferItem ManagerCommandTransferItem { get; } = new MessageBusDefine.ManagerCommandTransferItem();

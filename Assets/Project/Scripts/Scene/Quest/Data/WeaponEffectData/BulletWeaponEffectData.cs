@@ -27,7 +27,7 @@ namespace AloneSpace
 
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
 
-            MovingModule.InertiaTensor = rotation * Vector3.forward * 2.0f;
+            MovingModule.SetInertiaTensor(rotation * (Vector3.forward + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 0.01f).normalized * 200.0f);
             
             LifeTime = 4;
             CurrentLifeTime = 0;

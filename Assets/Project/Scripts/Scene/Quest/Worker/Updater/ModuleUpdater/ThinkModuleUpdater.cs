@@ -50,11 +50,10 @@ namespace AloneSpace
 
             foreach (var module in moduleList)
             {
-                if (updateTimeStamps[module.InstanceId] < Time.time - TickRate)
+                if (updateTimeStamps[module.InstanceId] + TickRate < Time.time)
                 {
-                    updateTimeStamps[module.InstanceId] = Time.time;
-                    
-                    module.OnUpdateModule(deltaTime);
+                    module.OnUpdateModule(Time.time - updateTimeStamps[module.InstanceId]);
+                    updateTimeStamps[module.InstanceId] += TickRate;
                 }
             }
 
