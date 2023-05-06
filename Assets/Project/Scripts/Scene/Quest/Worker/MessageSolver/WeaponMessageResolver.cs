@@ -32,8 +32,8 @@ namespace AloneSpace
         {
             WeaponEffectData weaponEffectData = weaponData.ActorPartsWeaponParameterVO switch
             {
-                ActorPartsWeaponBulletMakerParameterVO _ => new BulletWeaponEffectData(weaponData, fromPositionData, rotation, targetData),
-                ActorPartsWeaponMissileMakerParameterVO _ => new MissileWeaponEffectData(weaponData, fromPositionData, rotation, targetData),
+                ActorPartsWeaponBulletMakerParameterVO parameterVO => new BulletWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                ActorPartsWeaponMissileMakerParameterVO parameterVO => new MissileWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
                 _ => throw new NotImplementedException(),
             };
 

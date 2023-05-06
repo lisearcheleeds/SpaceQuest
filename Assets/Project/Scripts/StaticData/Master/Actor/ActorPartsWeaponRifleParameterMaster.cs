@@ -33,6 +33,9 @@ namespace AloneSpace
             // 照準最大距離（弾の性能に寄って下がる）
             public float SightingMaxRange { get; }
 
+            // 速度
+            public float Speed { get; }
+
             public Row(
                 int id,
                 int weaponEffectAssetId,
@@ -42,7 +45,8 @@ namespace AloneSpace
                 float accuracy,
                 float horizontalRecoilResist,
                 float verticalRecoilResist,
-                float sightingMaxRange)
+                float sightingMaxRange,
+                float speed)
             {
                 Id = id;
                 WeaponEffectAssetId = weaponEffectAssetId;
@@ -53,6 +57,7 @@ namespace AloneSpace
                 HorizontalRecoilResist = horizontalRecoilResist;
                 VerticalRecoilResist = verticalRecoilResist;
                 SightingMaxRange = sightingMaxRange;
+                Speed = speed;
             }
         }
 
@@ -81,8 +86,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, 1, 60, 3.0f, 0.05f, 1.0f, 1.0f, 1.0f, 500),
-                new Row(2, 1, 60, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500),
+                new Row(1, 1, 60, 3.0f, 0.05f, 1.0f, 1.0f, 1.0f, 500, 200.0f),
+                new Row(2, 1, 60, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500, 200.0f),
             };
         }
     }

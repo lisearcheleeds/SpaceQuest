@@ -17,10 +17,11 @@ namespace AloneSpace
         /// 武器の使用
         /// </summary>
         /// <param name="weaponData">武器データ</param>
+        /// <param name="parameterVO">武器Paramデータ</param>
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public MissileWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData) : base(weaponData)
+        public MissileWeaponEffectData(WeaponData weaponData, ActorPartsWeaponMissileMakerParameterVO parameterVO, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData) : base(weaponData)
         {
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;

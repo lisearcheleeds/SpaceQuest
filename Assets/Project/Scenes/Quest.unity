@@ -7066,7 +7066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2069f34fbd644e159765d4340509a0f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorMarkerPrefab: {fileID: 5799091432567369277, guid: 8e27871f5a797db4ba094811d9ba9b45,
+  targetMarkerPrefab: {fileID: 5799091432567369277, guid: 8e27871f5a797db4ba094811d9ba9b45,
     type: 3}
   actorMarkerParent: {fileID: 1933585112}
 --- !u!1 &1942191569

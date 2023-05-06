@@ -69,7 +69,23 @@ namespace AloneSpace
             var targetDirection = weaponData.WeaponStateData.LookAtDirection;
             if (weaponData.WeaponStateData.TargetData != null)
             {
-                targetDirection = (weaponData.WeaponStateData.TargetData.Position - weaponData.BasePositionData.Position).normalized;
+                var targetPosition = weaponData.WeaponStateData.TargetData.Position;
+                var targetRelativePosition = targetPosition - weaponData.BasePositionData.Position; 
+                targetDirection = targetRelativePosition.normalized;
+                
+                // ターゲットが移動する場合は移動先に回転
+                if (weaponData.WeaponStateData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
+                {
+                    var targetMoveDelta = targetMovingModuleHolder.MovingModule.MoveDelta;
+                    var relativeVelocity = targetMoveDelta - (targetDirection * weaponData.ParameterVO.Speed * deltaTime);
+                    if (relativeVelocity != Vector3.zero)
+                    {
+                        var targetDistance = targetRelativePosition.magnitude;
+                        var collisionTime = targetDistance / relativeVelocity.magnitude;
+                        var targetTimedRelativePosition = (targetPosition + targetMoveDelta * collisionTime) - weaponData.BasePositionData.Position; 
+                        targetDirection = targetTimedRelativePosition.normalized;
+                    }
+                }
             }
             
             // TODO: なんかもっと軽い方法ないか考える

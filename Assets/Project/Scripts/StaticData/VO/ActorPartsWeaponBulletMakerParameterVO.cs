@@ -34,6 +34,9 @@ namespace AloneSpace
         // 照準最大距離（弾の性能に寄って下がる）
         public float SightingMaxRange => row.SightingMaxRange; 
 
+        // 速度
+        public float Speed => row.Speed; 
+
         ActorPartsWeaponRifleParameterMaster.Row row;
         WeaponEffectObjectPathMaster.Row projectilePath;
         

@@ -16,10 +16,11 @@ namespace AloneSpace
         /// 武器の使用
         /// </summary>
         /// <param name="weaponData">武器データ</param>
+        /// <param name="parameterVO">武器Paramデータ</param>
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public BulletWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData) : base(weaponData)
+        public BulletWeaponEffectData(WeaponData weaponData, ActorPartsWeaponBulletMakerParameterVO parameterVO, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData) : base(weaponData)
         {
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;
@@ -27,7 +28,10 @@ namespace AloneSpace
 
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
 
-            MovingModule.SetInertiaTensor(rotation * (Vector3.forward + new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * 0.01f).normalized * 200.0f);
+            MovingModule.SetInertiaTensor(rotation * (Vector3.forward + new Vector3(
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f),
+                Random.Range(-1.0f, 1.0f)) * 0.01f).normalized * parameterVO.Speed);
             
             LifeTime = 4;
             CurrentLifeTime = 0;
