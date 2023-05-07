@@ -9,19 +9,19 @@ namespace AloneSpace
     public class WeaponEffectObjectUpdater
     {
         QuestData questData;
-        
+
         Transform variableParent;
-        
+
         AreaData observeAreaData;
         bool isDirty;
-        
+
         List<WeaponEffect> weaponEffectList = new List<WeaponEffect>();
 
         public void Initialize(QuestData questData, Transform variableParent)
         {
             this.questData = questData;
             this.variableParent = variableParent;
-            
+
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
@@ -43,13 +43,13 @@ namespace AloneSpace
                 isDirty = false;
                 Refresh();
             }
-            
+
             foreach (var weaponEffect in weaponEffectList)
             {
                 weaponEffect.OnLateUpdate();
             }
         }
-        
+
         void SetUserArea(AreaData areaData)
         {
             this.observeAreaData = areaData;
@@ -61,19 +61,19 @@ namespace AloneSpace
         /// </summary>
         void Refresh()
         {
-            // オブジェクトを削除
             foreach (var weaponEffect in weaponEffectList.ToArray())
             {
-                if (!questData.WeaponEffectData.ContainsKey(weaponEffect.WeaponEffectData.InstanceId))
+                // 違うエリアだったり、questData.WeaponEffectDataに存在しないweaponEffectであれば削除
+                if (!questData.WeaponEffectData.ContainsKey(weaponEffect.WeaponEffectData.InstanceId) || weaponEffect.WeaponEffectData.AreaId != observeAreaData?.AreaId)
                 {
                     ReleaseWeaponEffect(weaponEffect);
                 }
             }
-            
-            // オブジェクトを生成
+
             foreach (var weaponEffectData in questData.WeaponEffectData.Values)
             {
-                if (weaponEffectData.AreaId == observeAreaData?.AreaId)
+                // 同じエリアでweaponEffectListに存在しないweaponEffectDataであれば生成
+                if (weaponEffectData.AreaId == observeAreaData?.AreaId && weaponEffectList.All(weaponEffect => weaponEffect.WeaponEffectData.InstanceId != weaponEffectData.InstanceId))
                 {
                     CreateWeaponEffect(weaponEffectData);
                 }

@@ -28,10 +28,10 @@ namespace AloneSpace
             CheckFireRate(deltaTime);
 
             AdjustRotate(deltaTime);
+            UpdateState();
 
             Execute();
 
-            UpdateState();
         }
 
         void CheckReload(float deltaTime)
@@ -96,6 +96,19 @@ namespace AloneSpace
                 deltaTime * 150.0f);
         }
 
+        void UpdateState()
+        {
+            // リロード可能か
+            weaponData.WeaponStateData.IsReloadable =
+                weaponData.WeaponStateData.ReloadRemainTime == 0
+                && weaponData.WeaponStateData.ResourceIndex != 0;
+
+            // 実行可能か
+            weaponData.WeaponStateData.IsExecutable =
+                weaponData.WeaponStateData.ReloadRemainTime == 0
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
+        }
+
         void Execute()
         {
             if (!weaponData.WeaponStateData.IsExecutable)
@@ -121,19 +134,6 @@ namespace AloneSpace
                 weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
             }
-        }
-
-        void UpdateState()
-        {
-            // リロード可能か
-            weaponData.WeaponStateData.IsReloadable =
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex != 0;
-
-            // 実行可能か
-            weaponData.WeaponStateData.IsExecutable =
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
         }
     }
 }

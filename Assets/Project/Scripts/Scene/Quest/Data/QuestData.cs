@@ -26,7 +26,7 @@ namespace AloneSpace
 
         public void SetupPlayerQuestData()
         {
-            var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(2, StarSystemData.AreaData);
+            var (players, actors) = QuestDataUtil.GetRandomPlayerDataList(5, StarSystemData.AreaData);
 
             PlayerQuestData = players.ToDictionary(kv => kv.InstanceId, kv => kv);
             ActorData = actors.ToDictionary(kv => kv.InstanceId, kv => kv);

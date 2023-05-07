@@ -6,7 +6,7 @@ namespace AloneSpace
     public class MissileMakerWeaponOrderModule : IOrderModule
     {
         MissileMakerWeaponData weaponData;
-        
+
         public MissileMakerWeaponOrderModule(MissileMakerWeaponData weaponData)
         {
             this.weaponData = weaponData;
@@ -21,17 +21,17 @@ namespace AloneSpace
         {
             MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
         }
-        
+
         public void OnUpdateModule(float deltaTime)
         {
             CheckReload(deltaTime);
             CheckFireRate(deltaTime);
-            
+
             AdjustRotate(deltaTime);
-            
-            Execute();
-            
             UpdateState();
+
+            Execute();
+
         }
 
         void CheckReload(float deltaTime)
@@ -40,7 +40,7 @@ namespace AloneSpace
             {
                 // リロード中
                 weaponData.WeaponStateData.ReloadRemainTime = Math.Max(0, weaponData.WeaponStateData.ReloadRemainTime - deltaTime);
-                
+
                 if (weaponData.WeaponStateData.ReloadRemainTime == 0)
                 {
                     weaponData.WeaponStateData.ResourceIndex = 0;
@@ -69,6 +69,20 @@ namespace AloneSpace
             // なし
         }
 
+        void UpdateState()
+        {
+            // リロード可能か
+            weaponData.WeaponStateData.IsReloadable =
+                weaponData.WeaponStateData.ReloadRemainTime == 0
+                && weaponData.WeaponStateData.ResourceIndex != 0;
+
+            // 実行可能か
+            weaponData.WeaponStateData.IsExecutable =
+                weaponData.WeaponStateData.TargetData != null
+                && weaponData.WeaponStateData.ReloadRemainTime == 0
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
+        }
+
         void Execute()
         {
             if (!weaponData.WeaponStateData.IsExecutable)
@@ -84,29 +98,16 @@ namespace AloneSpace
             if (weaponData.WeaponStateData.IsExecute)
             {
                 var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
-                
+
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
-                    weaponData, 
-                    weaponData.BasePositionData, 
+                    weaponData,
+                    weaponData.BasePositionData,
                     rotation,
                     weaponData.WeaponStateData.TargetData);
-                
+
                 weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
             }
-        }
-
-        void UpdateState()
-        {
-            // リロード可能か
-            weaponData.WeaponStateData.IsReloadable = 
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex != 0;
-            
-            // 実行可能か
-            weaponData.WeaponStateData.IsExecutable = 
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
         }
     }
 }

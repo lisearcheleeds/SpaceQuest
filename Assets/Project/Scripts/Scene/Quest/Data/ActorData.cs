@@ -11,27 +11,27 @@ namespace AloneSpace
     public class ActorData : IPlayer, IPositionData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEffectReceiverModuleHolder
     {
         public Guid InstanceId { get; }
-        
+
         // Module
         public IThinkModule ThinkModule { get; private set; }
         public IOrderModule OrderModule { get; private set; }
         public MovingModule MovingModule { get; private set; }
         public CollisionEffectReceiverModule CollisionEffectReceiverModule { get; private set; }
-        
+
         // ModuleData
         public CollisionData CollisionData { get; }
 
         // IPlayer
         public Guid PlayerInstanceId { get; }
-        
+
         // IPositionData
         public int? AreaId { get; private set; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; } = Quaternion.identity;
-        
+
         // 状態
         public ActorStateData ActorStateData { get; }
-        
+
         // 関連データ
         public ActorSpecData ActorSpecData { get; }
         public InventoryData[] InventoryDataList { get; }
@@ -41,19 +41,19 @@ namespace AloneSpace
         public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
-            
+
             PlayerInstanceId = playerInstanceId;
             ActorSpecData = actorSpecData;
-            
+
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 3.0f));
 
             InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
                 .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
 
             ActorStateData = new ActorStateData();
-            
+
             WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
-            
+
             WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x =>
             {
                 var weaponData = WeaponDataHelper.GetWeaponData(x);
@@ -61,7 +61,7 @@ namespace AloneSpace
                 WeaponDataGroup[0].Add(weaponData.InstanceId);
                 return weaponData;
             }).ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
-            
+
             ActivateModules();
         }
 
@@ -71,7 +71,7 @@ namespace AloneSpace
             ThinkModule = new ActorThinkModule(this);
             OrderModule = new ActorOrderModule(this);
             CollisionEffectReceiverModule = new CollisionEffectReceiverModule();
-            
+
             MovingModule.ActivateModule();
             ThinkModule.ActivateModule();
             OrderModule.ActivateModule();
@@ -84,7 +84,7 @@ namespace AloneSpace
             ThinkModule.DeactivateModule();
             OrderModule.DeactivateModule();
             CollisionEffectReceiverModule.DeactivateModule();
-            
+
              MovingModule = null;
              ThinkModule = null;
              OrderModule = null;
@@ -140,7 +140,7 @@ namespace AloneSpace
                 // 現在のWeaponDataGroupのWeaponDataだけではなく全てのWeaponDataに対して更新をかける
                 var isCurrentWeaponDataGroup = WeaponDataGroup[ActorStateData.CurrentWeaponGroupIndex]
                     .Any(weaponDataInstanceId => weaponDataInstanceId == key);
-                
+
                 WeaponData[key].SetExecute(isExecute && isCurrentWeaponDataGroup);
             }
         }
@@ -160,42 +160,42 @@ namespace AloneSpace
         {
             ActorStateData.ForwardBoosterPowerRatio = power;
         }
-        
+
         public void SetBackBoosterPowerRatio(float power)
         {
             ActorStateData.BackBoosterPowerRatio = power;
         }
-        
+
         public void SetRightBoosterPowerRatio(float power)
         {
             ActorStateData.RightBoosterPowerRatio = power;
         }
-        
+
         public void SetLeftBoosterPowerRatio(float power)
         {
             ActorStateData.LeftBoosterPowerRatio = power;
         }
-        
+
         public void SetTopBoosterPowerRatio(float power)
         {
             ActorStateData.TopBoosterPowerRatio = power;
         }
-        
+
         public void SetBottomBoosterPowerRatio(float power)
         {
             ActorStateData.BottomBoosterPowerRatio = power;
         }
-        
+
         public void SetPitchBoosterPowerRatio(float power)
         {
             ActorStateData.PitchBoosterPowerRatio = power;
         }
-        
+
         public void SetRollBoosterPowerRatio(float power)
         {
             ActorStateData.RollBoosterPowerRatio = power;
         }
-        
+
         public void SetYawBoosterPowerRatio(float power)
         {
             ActorStateData.YawBoosterPowerRatio = power;
@@ -235,12 +235,12 @@ namespace AloneSpace
         {
             CollisionEffectReceiverModule.AddHit(otherCollisionDataHolder);
         }
-        
+
         public void SetMainTarget(IPositionData target)
         {
             ActorStateData.MainTarget = target;
         }
-        
+
         public void SetAroundTargets(IPositionData[] targets)
         {
             ActorStateData.AroundTargets = targets;

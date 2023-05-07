@@ -25,6 +25,15 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
+            UpdateTarget();
+            UpdateWeapon();
+            UpdateWarp(deltaTime);
+            UpdateMove(deltaTime);
+            UpdateInteract(deltaTime);
+        }
+
+        void UpdateTarget()
+        {
             if (actorData.AreaId.HasValue)
             {
                 // なんか1秒に数回までとかにする
@@ -44,92 +53,154 @@ namespace AloneSpace
                     MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, nextMainTarget);
                 }
             }
+        }
 
+        void UpdateWeapon()
+        {
             foreach (var weaponData in actorData.WeaponData.Values)
             {
                 weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
                 weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
             }
+        }
 
-            // 移動チェック
+        void UpdateWarp(float deltaTime)
+        {
+            if (actorData.ActorStateData.ActorMode != ActorMode.Warp)
+            {
+                return;
+            }
+
+            // ワープ開始直後まだAreaに居る時は加速
+            if (actorData.AreaId.HasValue && actorData.AreaId != actorData.ActorStateData.MoveTarget.AreaId)
+            {
+                var areaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.AreaId.Value);
+                var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+
+                // Area内の移動
+                var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
+                actorData.MovingModule.SetMovementVelocity(actorData.MovingModule.MovementVelocity + offset.normalized * deltaTime * 2.0f);
+
+                // 範囲外になったらAreaから脱出 一旦1000.0f
+                if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
+                {
+                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, null);
+                    actorData.SetPosition(areaData.StarSystemPosition);
+                    actorData.MovingModule.SetMovementVelocity(Vector3.zero);
+                }
+
+                return;
+            }
+
+            if (!actorData.AreaId.HasValue)
+            {
+                // ワープ中Areaの外に居る時の座標
+                var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+
+                // Area外の移動
+                var offset = moveTargetAreaData.StarSystemPosition - actorData.Position;
+                actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+
+                // 目的地に近くなったらAreaに入る
+                if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
+                {
+                    // FIXME: 移動先ちゃんと考える
+                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, actorData.ActorStateData.MoveTarget.AreaId);
+                    actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
+                    actorData.MovingModule.SetMovementVelocity(Vector3.zero);
+                }
+
+                return;
+            }
+
+            if (actorData.AreaId.HasValue && actorData.AreaId == actorData.ActorStateData.MoveTarget.AreaId)
+            {
+                // FIXME: 移動の計算式ちゃんと考える
+                // ワープ終了目的のAreaに居る時は減速
+                // Area内の移動
+                var offset = actorData.ActorStateData.MoveTarget.Position - actorData.Position;
+                actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+
+                // 目的地に近くなったらWarp終了
+                if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
+                {
+                    actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
+                    actorData.MovingModule.SetMovementVelocity(Vector3.zero);
+                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, null);
+                }
+            }
+        }
+
+        void UpdateMove(float deltaTime)
+        {
             if (actorData.ActorStateData.ActorMode == ActorMode.Warp)
             {
-                // ワープ開始直後まだAreaに居る時は加速
-                if (actorData.AreaId.HasValue && actorData.AreaId != actorData.ActorStateData.MoveTarget.AreaId)
-                {
-                    var areaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.AreaId.Value);
-                    var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+                return;
+            }
 
-                    // Area内の移動
-                    var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
-                    actorData.MovingModule.SetMovementVelocity(actorData.MovingModule.MovementVelocity + offset.normalized * deltaTime * 2.0f);
+            // ベースにする場合は1秒単位に戻す
+            var prevMovementVelocity = actorData.MovingModule.MovementVelocity / deltaTime;
+            var nextMovementVelocity = prevMovementVelocity + actorData.Rotation
+                * new Vector3(
+                    (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
+                    (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
+                    actorData.ActorStateData.ForwardBoosterPowerRatio * actorData.ActorSpecData.MainBoosterPower + -actorData.ActorStateData.BackBoosterPowerRatio * actorData.ActorSpecData.SubBoosterPower);
 
-                    // 範囲外になったらAreaから脱出 一旦1000.0f
-                    if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
-                    {
-                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, null);
-                        actorData.SetPosition(areaData.StarSystemPosition);
-                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                    }
-                }
-                else if (!actorData.AreaId.HasValue)
-                {
-                    // ワープ中Areaの外に居る時の座標
-                    var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+            // 最大速度制限
+            if ((actorData.ActorSpecData.MaxSpeed * actorData.ActorSpecData.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
+            {
+                nextMovementVelocity *= actorData.ActorSpecData.MaxSpeed / prevMovementVelocity.magnitude;
+            }
 
-                    // Area外の移動
-                    var offset = moveTargetAreaData.StarSystemPosition - actorData.Position;
-                    actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+            actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
+            actorData.MovingModule.SetQuaternionVelocityRHS(
+                Quaternion.Euler(new Vector3(
+                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecData.PitchBoosterPower,
+                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecData.YawBoosterPower,
+                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecData.RollBoosterPower) * deltaTime));
+        }
 
-                    // 目的地に近くなったらAreaに入る
-                    if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
-                    {
-                        // FIXME: 移動先ちゃんと考える
-                        MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, actorData.ActorStateData.MoveTarget.AreaId);
-                        actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
-                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                    }
-                }
-                else if (actorData.AreaId.HasValue && actorData.AreaId == actorData.ActorStateData.MoveTarget.AreaId)
-                {
-                    // FIXME: 移動の計算式ちゃんと考える
-                    // ワープ終了目的のAreaに居る時は減速
-                    // Area内の移動
-                    var offset = actorData.ActorStateData.MoveTarget.Position - actorData.Position;
-                    actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+        void UpdateInteract(float deltaTime)
+        {
+            if (actorData.ActorStateData.InteractOrder == null)
+            {
+                actorData.ActorStateData.CurrentInteractingTime = 0;
+                return;
+            }
 
-                    // 目的地に近くなったらWarp終了
-                    if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
-                    {
-                        actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
-                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, null);
-                    }
-                }
+            if (actorData.ActorStateData.InteractOrder.IsInteractionRange(actorData))
+            {
+                actorData.ActorStateData.CurrentInteractingTime += deltaTime;
             }
             else
             {
-                // ベースにする場合は1秒単位に戻す
-                var prevMovementVelocity = actorData.MovingModule.MovementVelocity / deltaTime;
-                var nextMovementVelocity = prevMovementVelocity + actorData.Rotation
-                                 * new Vector3(
-                                     (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
-                                     (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
-                                     actorData.ActorStateData.ForwardBoosterPowerRatio * actorData.ActorSpecData.MainBoosterPower + -actorData.ActorStateData.BackBoosterPowerRatio * actorData.ActorSpecData.SubBoosterPower);
-
-                // 最大速度制限
-                if ((actorData.ActorSpecData.MaxSpeed * actorData.ActorSpecData.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
-                {
-                    nextMovementVelocity *= actorData.ActorSpecData.MaxSpeed / prevMovementVelocity.magnitude;
-                }
-
-                actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
-                actorData.MovingModule.SetQuaternionVelocityRHS(
-                    Quaternion.Euler(new Vector3(
-                        actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecData.PitchBoosterPower,
-                        actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecData.YawBoosterPower,
-                        actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecData.RollBoosterPower) * deltaTime));
+                actorData.ActorStateData.CurrentInteractingTime = 0;
+                return;
             }
+
+            if (actorData.ActorStateData.CurrentInteractingTime < actorData.ActorStateData.InteractOrder.InteractTime)
+            {
+                return;
+            }
+
+            // インタラクト終了
+            switch (actorData.ActorStateData.InteractOrder)
+            {
+                case ItemInteractData itemInteractData:
+                    var insertableInventory = actorData.InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
+                    MessageBus.Instance.ManagerCommandPickItem.Broadcast(insertableInventory, itemInteractData);
+                    break;
+                case BrokenActorInteractData brokenActorInteractData:
+                    throw new NotImplementedException();
+                case InventoryInteractData inventoryInteractData:
+                    // ユーザー操作待ち 相手のインベントリをUIでOpenする
+                    throw new NotImplementedException();
+                case AreaInteractData areaInteractData:
+                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, areaInteractData);
+                    break;
+            }
+
+            actorData.ActorStateData.InteractOrder = null;
         }
     }
 }
