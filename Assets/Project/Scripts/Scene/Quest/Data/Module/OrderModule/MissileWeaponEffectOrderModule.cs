@@ -5,11 +5,12 @@ namespace AloneSpace
 {
     public class MissileWeaponEffectOrderModule : IOrderModule
     {
-        MissileWeaponEffectData missileWeaponEffectData;
-        
+        MissileWeaponEffectData effectData;
+        bool isFirstUpdate;
+
         public MissileWeaponEffectOrderModule(MissileWeaponEffectData missileWeaponEffectData)
         {
-            this.missileWeaponEffectData = missileWeaponEffectData;
+            this.effectData = missileWeaponEffectData;
         }
 
         public void ActivateModule()
@@ -24,28 +25,48 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            missileWeaponEffectData.CurrentLifeTime += deltaTime;
-            if (missileWeaponEffectData.CurrentLifeTime > missileWeaponEffectData.LifeTime || missileWeaponEffectData.CollisionData.IsCollided)
+            if (isFirstUpdate)
             {
-                missileWeaponEffectData.IsAlive = false;
-                missileWeaponEffectData.DeactivateModules();
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(missileWeaponEffectData);
+                isFirstUpdate = false;
+
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.ParameterVO.LaunchSpeed * deltaTime);
+            }
+
+            effectData.CurrentLifeTime += deltaTime;
+            if (effectData.CurrentLifeTime > effectData.LifeTime || effectData.CollisionData.IsCollided)
+            {
+                effectData.IsAlive = false;
+                effectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
-            var targetDiffPosition = missileWeaponEffectData.TargetData.Position - missileWeaponEffectData.Position;
-            missileWeaponEffectData.Direction = Vector3.RotateTowards(missileWeaponEffectData.Direction, targetDiffPosition, GetRotateRatio(missileWeaponEffectData.CurrentLifeTime), 0);
-            missileWeaponEffectData.MovingModule.SetInertiaTensor(missileWeaponEffectData.Direction * 25.0f);
-        }
-
-        float GetRotateRatio(float time)
-        {
-            return time switch
+            var targetDirection = (effectData.TargetData.Position - effectData.Position).normalized;
+            var currentDirection = effectData.Rotation * Vector3.forward;
+            if (effectData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
             {
-                _ when time < 1.0f => 0.0f,
-                _ when time < 2.0f => 0.0f,
-                _ => 0.002f,
-            };
+                // ターゲットが移動する場合は移動先に回転
+                var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
+                    targetMovingModuleHolder.MovingModule.MovementVelocity,
+                    effectData.TargetData.Position,
+                    effectData.Rotation * Vector3.forward * effectData.ParameterVO.Speed * deltaTime,
+                    effectData.Position);
+
+                if (catchUpToDirection.HasValue)
+                {
+                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.ParameterVO.Speed * deltaTime);
+                    effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+                }
+                else
+                {
+                    // 何もしない
+                }
+            }
+            else
+            {
+                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.ParameterVO.Speed * deltaTime);
+                effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+            }
         }
     }
 }

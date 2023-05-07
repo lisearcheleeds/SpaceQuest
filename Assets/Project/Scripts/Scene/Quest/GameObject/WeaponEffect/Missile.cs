@@ -5,11 +5,11 @@
         MissileWeaponEffectData missileData;
 
         public override WeaponEffectData WeaponEffectData => missileData;
-        
+
         public override void SetWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             missileData = (MissileWeaponEffectData) weaponEffectData;
-            
+
             transform.position = missileData.Position;
             transform.rotation = missileData.Rotation;
         }

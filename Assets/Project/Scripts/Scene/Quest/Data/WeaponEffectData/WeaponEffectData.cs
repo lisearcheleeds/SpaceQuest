@@ -37,7 +37,7 @@ namespace AloneSpace
 
         public virtual void ActivateModules()
         {
-            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
+            MovingModule = new MovingModule(this);
             MovingModule.ActivateModule();
         }
 
@@ -66,7 +66,5 @@ namespace AloneSpace
         {
             CollisionEffectSenderModule.AddHit(otherCollisionDataHolder);
         }
-
-        protected abstract void OnBeginModuleUpdate(float deltaTime);
     }
 }

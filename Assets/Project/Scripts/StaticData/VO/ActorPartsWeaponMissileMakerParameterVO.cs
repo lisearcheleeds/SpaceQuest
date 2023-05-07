@@ -28,10 +28,13 @@
         // 射出初速
         public float LaunchSpeed => row.LaunchSpeed;
             
+        // 速度
+        public float Speed => row.Speed;
+            
         // 連続射出時間
         public float FireRate => row.FireRate;
         
-        // 照準最大距離（弾の性能に寄って下がる）
+        // 照準最大距離
         public float SightingMaxRange => row.SightingMaxRange; 
 
         ActorPartsWeaponMissileLauncherParameterMaster.Row row;

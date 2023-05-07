@@ -67,7 +67,7 @@ namespace AloneSpace
 
         public void ActivateModules()
         {
-            MovingModule = new MovingModule(this, OnBeginModuleUpdate);
+            MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);
             OrderModule = new ActorOrderModule(this);
             CollisionEffectReceiverModule = new CollisionEffectReceiverModule();
@@ -244,10 +244,6 @@ namespace AloneSpace
         public void SetAroundTargets(IPositionData[] targets)
         {
             ActorStateData.AroundTargets = targets;
-        }
-
-        void OnBeginModuleUpdate(float deltaTime)
-        {
         }
     }
 }

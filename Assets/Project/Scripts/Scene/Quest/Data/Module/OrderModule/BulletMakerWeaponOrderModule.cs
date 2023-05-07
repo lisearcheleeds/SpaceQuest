@@ -6,7 +6,7 @@ namespace AloneSpace
     public class BulletMakerWeaponOrderModule : IOrderModule
     {
         BulletMakerWeaponData weaponData;
-        
+
         public BulletMakerWeaponOrderModule(BulletMakerWeaponData weaponData)
         {
             this.weaponData = weaponData;
@@ -26,11 +26,11 @@ namespace AloneSpace
         {
             CheckReload(deltaTime);
             CheckFireRate(deltaTime);
-            
+
             AdjustRotate(deltaTime);
-            
+
             Execute();
-            
+
             UpdateState();
         }
 
@@ -70,24 +70,25 @@ namespace AloneSpace
             if (weaponData.WeaponStateData.TargetData != null)
             {
                 var targetPosition = weaponData.WeaponStateData.TargetData.Position;
-                var targetRelativePosition = targetPosition - weaponData.BasePositionData.Position; 
+                var targetRelativePosition = targetPosition - weaponData.BasePositionData.Position;
                 targetDirection = targetRelativePosition.normalized;
-                
+
                 // ターゲットが移動する場合は移動先に回転
                 if (weaponData.WeaponStateData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
                 {
-                    var targetMoveDelta = targetMovingModuleHolder.MovingModule.MoveDelta;
-                    var relativeVelocity = targetMoveDelta - (targetDirection * weaponData.ParameterVO.Speed * deltaTime);
-                    if (relativeVelocity != Vector3.zero)
+                    var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
+                        targetMovingModuleHolder.MovingModule.MovementVelocity,
+                        targetPosition,
+                        targetDirection * weaponData.ParameterVO.Speed * deltaTime,
+                        weaponData.BasePositionData.Position);
+
+                    if (catchUpToDirection.HasValue)
                     {
-                        var targetDistance = targetRelativePosition.magnitude;
-                        var collisionTime = targetDistance / relativeVelocity.magnitude;
-                        var targetTimedRelativePosition = (targetPosition + targetMoveDelta * collisionTime) - weaponData.BasePositionData.Position; 
-                        targetDirection = targetTimedRelativePosition.normalized;
+                        targetDirection = catchUpToDirection.Value;
                     }
                 }
             }
-            
+
             // TODO: なんかもっと軽い方法ないか考える
             weaponData.WeaponStateData.OffsetRotation = Quaternion.RotateTowards(
                 weaponData.WeaponStateData.OffsetRotation,
@@ -106,17 +107,17 @@ namespace AloneSpace
             {
                 return;
             }
-            
+
             if (weaponData.WeaponStateData.IsExecute)
             {
                 var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
-                
+
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
-                    weaponData, 
-                    weaponData.BasePositionData, 
+                    weaponData,
+                    weaponData.BasePositionData,
                     rotation,
                     weaponData.WeaponStateData.TargetData);
-                
+
                 weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
             }
@@ -125,12 +126,12 @@ namespace AloneSpace
         void UpdateState()
         {
             // リロード可能か
-            weaponData.WeaponStateData.IsReloadable = 
+            weaponData.WeaponStateData.IsReloadable =
                 weaponData.WeaponStateData.ReloadRemainTime == 0
                 && weaponData.WeaponStateData.ResourceIndex != 0;
-            
+
             // 実行可能か
-            weaponData.WeaponStateData.IsExecutable = 
+            weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.ReloadRemainTime == 0
                 && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
         }

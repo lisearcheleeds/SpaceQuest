@@ -22,17 +22,8 @@ namespace AloneSpace
         // 連射速度(f/s)
         public float FireRate => row.FireRate; 
             
-        // 精度(0.0 ~ 1.0f)
+        // 精度 1.0f以上
         public float Accuracy => row.Accuracy; 
-
-        // 横反動抑制値(0.0 ~ 1.0f)
-        public float HorizontalRecoilResist => row.HorizontalRecoilResist; 
-            
-        // 縦反動抑制値(0.0 ~ 1.0f)
-        public float VerticalRecoilResist => row.VerticalRecoilResist; 
-
-        // 照準最大距離（弾の性能に寄って下がる）
-        public float SightingMaxRange => row.SightingMaxRange; 
 
         // 速度
         public float Speed => row.Speed; 

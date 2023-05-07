@@ -66,16 +66,7 @@ namespace AloneSpace
 
         void AdjustRotate(float deltaTime)
         {
-            var targetDirection = weaponData.WeaponStateData.LookAtDirection;
-            if (weaponData.WeaponStateData.TargetData != null)
-            {
-                targetDirection = (weaponData.BasePositionData.Position - weaponData.WeaponStateData.TargetData.Position).normalized;
-            }
-
-            weaponData.WeaponStateData.OffsetRotation = Quaternion.RotateTowards(
-                weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation,
-                Quaternion.LookRotation(targetDirection),
-                deltaTime);
+            // なし
         }
 
         void Execute()

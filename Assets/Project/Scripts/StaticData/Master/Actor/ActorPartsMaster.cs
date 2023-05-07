@@ -84,7 +84,7 @@ namespace AloneSpace
                 new Row(6, 6, "RobotModel/Parts/booster", 0, null, null, null, null),
                 new Row(7, 7, "RobotModel/Parts/tank", 0, 1, null, null, null),
                 new Row(8, 8, "RobotModel/Parts/weaponLeft", 0, null, null, null, 1),
-                new Row(9, 9, "RobotModel/Parts/weaponRight", 0, null, null, null, 1),
+                new Row(9, 9, "RobotModel/Parts/weaponRight", 0, null, null, null, 3),
                 
                 new Row(1001, 1001, "RobotModel/Standalone/Enemy1", 0, null, null, null, null),
             };

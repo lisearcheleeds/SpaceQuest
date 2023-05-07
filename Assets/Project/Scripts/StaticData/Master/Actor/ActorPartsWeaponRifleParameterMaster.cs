@@ -24,15 +24,6 @@ namespace AloneSpace
             // 精度(0.0 ~ 1.0f)
             public float Accuracy { get; }
 
-            // 横反動抑制値(0.0 ~ 1.0f)
-            public float HorizontalRecoilResist { get; }
-            
-            // 縦反動抑制値(0.0 ~ 1.0f)
-            public float VerticalRecoilResist { get; }
-
-            // 照準最大距離（弾の性能に寄って下がる）
-            public float SightingMaxRange { get; }
-
             // 速度
             public float Speed { get; }
 
@@ -43,9 +34,6 @@ namespace AloneSpace
                 float reloadTime,
                 float fireRate,
                 float accuracy,
-                float horizontalRecoilResist,
-                float verticalRecoilResist,
-                float sightingMaxRange,
                 float speed)
             {
                 Id = id;
@@ -54,9 +42,6 @@ namespace AloneSpace
                 ReloadTime = reloadTime;
                 FireRate = fireRate;
                 Accuracy = accuracy;
-                HorizontalRecoilResist = horizontalRecoilResist;
-                VerticalRecoilResist = verticalRecoilResist;
-                SightingMaxRange = sightingMaxRange;
                 Speed = speed;
             }
         }
@@ -86,8 +71,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, 1, 60, 3.0f, 0.05f, 1.0f, 1.0f, 1.0f, 500, 200.0f),
-                new Row(2, 1, 60, 3.0f, 1.0f, 1.0f, 1.0f, 1.0f, 500, 200.0f),
+                new Row(1, 1, 60, 3.0f, 0.05f, 100.0f, 200.0f),
+                new Row(2, 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
             };
         }
     }

@@ -7,7 +7,7 @@ namespace AloneSpace
     public class ActorOrderModule : IOrderModule
     {
         ActorData actorData;
-        
+
         public ActorOrderModule(ActorData actorData)
         {
             this.actorData = actorData;
@@ -44,13 +44,13 @@ namespace AloneSpace
                     MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, nextMainTarget);
                 }
             }
-            
+
             foreach (var weaponData in actorData.WeaponData.Values)
             {
                 weaponData.SetLookAtDirection(actorData.ActorStateData.LookAtDirection);
                 weaponData.SetTargetData(actorData.ActorStateData.MainTarget);
             }
-            
+
             // 移動チェック
             if (actorData.ActorStateData.ActorMode == ActorMode.Warp)
             {
@@ -62,32 +62,32 @@ namespace AloneSpace
 
                     // Area内の移動
                     var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
-                    actorData.MovingModule.SetInertiaTensor(actorData.MovingModule.InertiaTensor + offset.normalized * deltaTime * 2.0f);
+                    actorData.MovingModule.SetMovementVelocity(actorData.MovingModule.MovementVelocity + offset.normalized * deltaTime * 2.0f);
 
                     // 範囲外になったらAreaから脱出 一旦1000.0f
                     if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
                     {
                         MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, null);
                         actorData.SetPosition(areaData.StarSystemPosition);
-                        actorData.MovingModule.SetInertiaTensor(Vector3.zero);
+                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                     }
                 }
                 else if (!actorData.AreaId.HasValue)
                 {
                     // ワープ中Areaの外に居る時の座標
                     var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
-                    
+
                     // Area外の移動
                     var offset = moveTargetAreaData.StarSystemPosition - actorData.Position;
-                    actorData.MovingModule.SetInertiaTensor(offset.normalized * deltaTime * 2.0f * 30.0f);
+                    actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
 
                     // 目的地に近くなったらAreaに入る
-                    if (offset.sqrMagnitude < actorData.MovingModule.InertiaTensor.sqrMagnitude)
+                    if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
                     {
                         // FIXME: 移動先ちゃんと考える
                         MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, actorData.ActorStateData.MoveTarget.AreaId);
                         actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
-                        actorData.MovingModule.SetInertiaTensor(Vector3.zero);
+                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                     }
                 }
                 else if (actorData.AreaId.HasValue && actorData.AreaId == actorData.ActorStateData.MoveTarget.AreaId)
@@ -96,39 +96,39 @@ namespace AloneSpace
                     // ワープ終了目的のAreaに居る時は減速
                     // Area内の移動
                     var offset = actorData.ActorStateData.MoveTarget.Position - actorData.Position;
-                    actorData.MovingModule.SetInertiaTensor(offset.normalized * deltaTime * 2.0f * 30.0f);
+                    actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
 
                     // 目的地に近くなったらWarp終了
-                    if (offset.sqrMagnitude < actorData.MovingModule.InertiaTensor.sqrMagnitude)
+                    if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
                     {
                         actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
-                        actorData.MovingModule.SetInertiaTensor(Vector3.zero);
-                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, null); 
+                        actorData.MovingModule.SetMovementVelocity(Vector3.zero);
+                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, null);
                     }
                 }
             }
             else
             {
-                var inertiaTensor = actorData.MovingModule.InertiaTensor;
-                inertiaTensor += actorData.Rotation
+                // ベースにする場合は1秒単位に戻す
+                var prevMovementVelocity = actorData.MovingModule.MovementVelocity / deltaTime;
+                var nextMovementVelocity = prevMovementVelocity + actorData.Rotation
                                  * new Vector3(
                                      (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
                                      (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
                                      actorData.ActorStateData.ForwardBoosterPowerRatio * actorData.ActorSpecData.MainBoosterPower + -actorData.ActorStateData.BackBoosterPowerRatio * actorData.ActorSpecData.SubBoosterPower);
-                
-                // 最大速度制限
-                if ((actorData.ActorSpecData.MaxSpeed * actorData.ActorSpecData.MaxSpeed) < inertiaTensor.sqrMagnitude)
-                {
-                    inertiaTensor *= actorData.ActorSpecData.MaxSpeed / actorData.MovingModule.InertiaTensor.magnitude;
-                }
-                
-                actorData.MovingModule.SetInertiaTensor(inertiaTensor);
 
-                actorData.MovingModule.SetInertiaRotation(
-                    Quaternion.Euler(
+                // 最大速度制限
+                if ((actorData.ActorSpecData.MaxSpeed * actorData.ActorSpecData.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
+                {
+                    nextMovementVelocity *= actorData.ActorSpecData.MaxSpeed / prevMovementVelocity.magnitude;
+                }
+
+                actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
+                actorData.MovingModule.SetQuaternionVelocityRHS(
+                    Quaternion.Euler(new Vector3(
                         actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecData.PitchBoosterPower,
                         actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecData.YawBoosterPower,
-                        actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecData.RollBoosterPower));
+                        actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecData.RollBoosterPower) * deltaTime));
             }
         }
     }

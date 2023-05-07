@@ -29,6 +29,9 @@ namespace AloneSpace
             // 射出初速
             public float LaunchSpeed { get; }
             
+            // 速度
+            public float Speed { get; }
+            
             // 連続射出時間
             public float FireRate { get; }
             
@@ -43,6 +46,7 @@ namespace AloneSpace
                 float? launchAngleX,
                 float? launchAngleY,
                 float launchSpeed,
+                float speed,
                 float fireRate,
                 float sightingMaxRange)
             {
@@ -53,6 +57,7 @@ namespace AloneSpace
                 LaunchAngleX = launchAngleX;
                 LaunchAngleY = launchAngleY;
                 LaunchSpeed = launchSpeed;
+                Speed = speed;
                 FireRate = fireRate;
                 SightingMaxRange = sightingMaxRange;
             }
@@ -83,8 +88,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, 2, 1, 7.0f, null, null, 1.0f, 1.0f, 500),
-                new Row(2, 2, 4, 7.0f, null, null, 1.0f, 1.0f, 500),
+                new Row(1, 2, 2, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
+                new Row(2, 2, 4, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
             };
         }
     }

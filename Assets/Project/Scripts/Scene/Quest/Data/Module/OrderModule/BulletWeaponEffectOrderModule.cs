@@ -1,15 +1,18 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
     public class BulletWeaponEffectOrderModule : IOrderModule
     {
-        BulletWeaponEffectData bulletWeaponEffectData;
-        
+        BulletWeaponEffectData effectData;
+        bool isFirstUpdate;
+
         public BulletWeaponEffectOrderModule(BulletWeaponEffectData bulletWeaponEffectData)
         {
-            this.bulletWeaponEffectData = bulletWeaponEffectData;
+            this.effectData = bulletWeaponEffectData;
+            isFirstUpdate = true;
         }
 
         public void ActivateModule()
@@ -24,12 +27,20 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            bulletWeaponEffectData.CurrentLifeTime += deltaTime;
-            if (bulletWeaponEffectData.CurrentLifeTime > bulletWeaponEffectData.LifeTime || bulletWeaponEffectData.CollisionData.IsCollided)
+            if (isFirstUpdate)
             {
-                bulletWeaponEffectData.IsAlive = false;
-                bulletWeaponEffectData.DeactivateModules();
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(bulletWeaponEffectData);
+                isFirstUpdate = false;
+
+                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.ParameterVO.Accuracy);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.ParameterVO.Speed * deltaTime);
+            }
+
+            effectData.CurrentLifeTime += deltaTime;
+            if (effectData.CurrentLifeTime > effectData.LifeTime || effectData.CollisionData.IsCollided)
+            {
+                effectData.IsAlive = false;
+                effectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
             }
         }
     }
