@@ -82,10 +82,10 @@ namespace AloneSpace
 
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
-            var assetPathVO = weaponEffectData.WeaponData.ActorPartsWeaponParameterVO switch
+            var assetPathVO = weaponEffectData.WeaponData.WeaponSpecVO switch
             {
-                ActorPartsWeaponBulletMakerParameterVO bullet => bullet.ProjectilePath,
-                ActorPartsWeaponMissileMakerParameterVO missile => missile.ProjectilePath,
+                WeaponBulletMakerSpecVO bullet => bullet.ProjectilePath,
+                WeaponMissileMakerSpecVO missile => missile.ProjectilePath,
                 _ => throw new NotImplementedException(),
             };
 

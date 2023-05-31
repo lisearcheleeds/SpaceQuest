@@ -79,7 +79,7 @@ namespace AloneSpace
                     var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                         targetMovingModuleHolder.MovingModule.MovementVelocity,
                         targetPosition,
-                        targetDirection * weaponData.ParameterVO.Speed * deltaTime,
+                        targetDirection * weaponData.VO.Speed * deltaTime,
                         weaponData.BasePositionData.Position);
 
                     if (catchUpToDirection.HasValue)
@@ -106,7 +106,7 @@ namespace AloneSpace
             // 実行可能か
             weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.WeaponResourceMaxCount;
         }
 
         void Execute()
@@ -132,7 +132,7 @@ namespace AloneSpace
                     weaponData.WeaponStateData.TargetData);
 
                 weaponData.WeaponStateData.ResourceIndex++;
-                weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
+                weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
             }
         }
     }

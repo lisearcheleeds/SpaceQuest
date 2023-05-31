@@ -29,7 +29,7 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.ParameterVO.LaunchSpeed * deltaTime);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.VO.LaunchSpeed * deltaTime);
             }
 
             effectData.CurrentLifeTime += deltaTime;
@@ -49,12 +49,12 @@ namespace AloneSpace
                 var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                     targetMovingModuleHolder.MovingModule.MovementVelocity,
                     effectData.TargetData.Position,
-                    effectData.Rotation * Vector3.forward * effectData.ParameterVO.Speed * deltaTime,
+                    effectData.Rotation * Vector3.forward * effectData.VO.Speed * deltaTime,
                     effectData.Position);
 
                 if (catchUpToDirection.HasValue)
                 {
-                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.ParameterVO.Speed * deltaTime);
+                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.VO.Speed * deltaTime);
                     effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
                 }
                 else
@@ -64,7 +64,7 @@ namespace AloneSpace
             }
             else
             {
-                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.ParameterVO.Speed * deltaTime);
+                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.VO.Speed * deltaTime);
                 effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
             }
         }

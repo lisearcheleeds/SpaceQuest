@@ -8,16 +8,16 @@ namespace AloneSpace
     {
         public override Guid InstanceId { get; }
         public override IOrderModule OrderModule { get; protected set; }
-        public override IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO => ParameterVO;
+        public override IWeaponSpecVO WeaponSpecVO => VO;
         public override WeaponStateData WeaponStateData { get; } = new BulletMakerWeaponStateData();
-        
-        public ActorPartsWeaponBulletMakerParameterVO ParameterVO { get; }
-        
-        public BulletMakerWeaponData(ActorPartsWeaponBulletMakerParameterVO actorPartsWeaponBulletMakerParameterVO)
+
+        public WeaponBulletMakerSpecVO VO { get; }
+
+        public BulletMakerWeaponData(WeaponBulletMakerSpecVO weaponBulletMakerSpecVO)
         {
             InstanceId = Guid.NewGuid();
-            ParameterVO = actorPartsWeaponBulletMakerParameterVO;
-                
+            VO = weaponBulletMakerSpecVO;
+
             ActivateModules();
         }
 
@@ -35,7 +35,7 @@ namespace AloneSpace
 
         public override void Reload()
         {
-            WeaponStateData.ReloadRemainTime += ParameterVO.ReloadTime;
+            WeaponStateData.ReloadRemainTime += VO.ReloadTime;
         }
     }
 }

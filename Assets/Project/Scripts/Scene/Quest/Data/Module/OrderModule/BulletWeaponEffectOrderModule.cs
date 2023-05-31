@@ -31,8 +31,8 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.ParameterVO.Accuracy);
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.ParameterVO.Speed * deltaTime);
+                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.VO.Accuracy);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.VO.Speed * deltaTime);
             }
 
             effectData.CurrentLifeTime += deltaTime;

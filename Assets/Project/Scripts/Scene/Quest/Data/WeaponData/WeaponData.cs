@@ -10,12 +10,12 @@ namespace AloneSpace
     public abstract class WeaponData : IOrderModuleHolder
     {
         public abstract Guid InstanceId { get; }
-        
+
         // Module
         public abstract IOrderModule OrderModule { get; protected set; }
-        public abstract IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO { get; }
+        public abstract IWeaponSpecVO WeaponSpecVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
-        
+
         public ActorData WeaponHolder { get; private set; }
         public IPositionData BasePositionData { get; private set; }
 
@@ -32,17 +32,17 @@ namespace AloneSpace
         {
             WeaponStateData.LookAtDirection = lookAtDirection;
         }
-        
+
         public void SetTargetData(IPositionData targetData)
         {
             WeaponStateData.TargetData = targetData;
         }
-        
+
         public void SetExecute(bool isExecute)
         {
             WeaponStateData.IsExecute = isExecute;
         }
-        
+
         public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             WeaponStateData.WeaponEffectDataList.Add(weaponEffectData);

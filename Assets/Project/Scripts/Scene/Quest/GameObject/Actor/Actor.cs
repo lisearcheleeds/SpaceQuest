@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -8,7 +9,8 @@ namespace AloneSpace
     {
         public ActorData ActorData { get; private set; }
 
-        [SerializeField] ActorModel actorModel;
+        public ActorModel ActorModel { get; private set; }
+        public WeaponModel[] WeaponModels { get; private set; }
 
         /// <summary>
         /// ActorStatusからActorを作成
@@ -19,13 +21,12 @@ namespace AloneSpace
             yield return AssetLoader.LoadAsync<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
             {
                 actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation, parent);
+                actor.ActorData = actorData;
             });
 
-            actor.ActorData = actorData;
-            
-            yield return actor.actorModel.LoadActorModel(actorData.ActorSpecData);
+            yield return actor.LoadActorModel(actorData.ActorSpecVO, actorData.WeaponSpecVOs);
             yield return null;
-            
+
             onCreated(actor);
         }
 
@@ -38,6 +39,20 @@ namespace AloneSpace
         {
             transform.position = ActorData.Position;
             transform.rotation = ActorData.Rotation;
+        }
+
+        IEnumerator LoadActorModel(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs)
+        {
+            yield return AssetLoader.LoadAsync<ActorModel>(actorSpecVO, prefab => ActorModel = Instantiate(prefab, transform, false));
+
+            WeaponModels = new WeaponModel[weaponSpecVOs.Length];
+
+            yield return new ParallelCoroutine(weaponSpecVOs.Select((vo, weaponIndex) => LoadWeaponModel(vo, ActorModel, weaponIndex)).ToArray());
+        }
+
+        IEnumerator LoadWeaponModel(IWeaponSpecVO weaponSpecVO, ActorModel actorModel, int weaponIndex)
+        {
+            yield return AssetLoader.LoadAsync<WeaponModel>(weaponSpecVO.AssetPath, prefab => WeaponModels[weaponIndex] = Instantiate(prefab, actorModel.WeaponHolder[weaponIndex], false));
         }
     }
 }

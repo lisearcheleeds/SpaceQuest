@@ -80,7 +80,7 @@ namespace AloneSpace
             weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.TargetData != null
                 && weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.WeaponResourceMaxCount;
         }
 
         void Execute()
@@ -106,7 +106,7 @@ namespace AloneSpace
                     weaponData.WeaponStateData.TargetData);
 
                 weaponData.WeaponStateData.ResourceIndex++;
-                weaponData.WeaponStateData.FireTime += weaponData.ParameterVO.FireRate;
+                weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
             }
         }
     }

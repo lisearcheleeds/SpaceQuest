@@ -9,7 +9,7 @@ namespace AloneSpace
         public override CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
         public override CollisionData CollisionData { get; }
 
-        public ActorPartsWeaponBulletMakerParameterVO ParameterVO { get; }
+        public WeaponBulletMakerSpecVO VO { get; }
 
         public float LifeTime { get; set; }
         public float CurrentLifeTime { get; set; }
@@ -19,13 +19,13 @@ namespace AloneSpace
         /// 武器の使用
         /// </summary>
         /// <param name="weaponData">武器データ</param>
-        /// <param name="parameterVO">武器Paramデータ</param>
+        /// <param name="vorameterVO">武器Paramデータ</param>
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
         public BulletWeaponEffectData(
             WeaponData weaponData,
-            ActorPartsWeaponBulletMakerParameterVO parameterVO,
+            WeaponBulletMakerSpecVO vo,
             IPositionData fromPositionData,
             Quaternion rotation,
             IPositionData targetData) : base(weaponData)
@@ -34,7 +34,7 @@ namespace AloneSpace
             Position = fromPositionData.Position;
             Rotation = rotation;
 
-            ParameterVO = parameterVO;
+            VO = vo;
 
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
 

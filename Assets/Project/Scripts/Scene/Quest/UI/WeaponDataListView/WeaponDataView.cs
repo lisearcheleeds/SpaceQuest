@@ -35,7 +35,7 @@ namespace AloneSpace
             prevResourceValue = -1;
             prevReloadValueIsZero = false;
             prevWeaponEffectCount = -1;
-            resourceMax.text = $"/{weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount}";
+            resourceMax.text = $"/{weaponData.WeaponSpecVO.WeaponResourceMaxCount}";
         }
 
         public void OnLateUpdate()
@@ -59,10 +59,10 @@ namespace AloneSpace
             {
                 prevResourceValue = weaponData.WeaponStateData.ResourceIndex;
                 
-                var resourceRemainCount = weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount - weaponData.WeaponStateData.ResourceIndex;
+                var resourceRemainCount = weaponData.WeaponSpecVO.WeaponResourceMaxCount - weaponData.WeaponStateData.ResourceIndex;
                 resourceValue.text = resourceRemainCount.ToString();
 
-                var resourceRatio = (float)resourceRemainCount / weaponData.ActorPartsWeaponParameterVO.WeaponResourceMaxCount;
+                var resourceRatio = (float)resourceRemainCount / weaponData.WeaponSpecVO.WeaponResourceMaxCount;
                 var resourceGaugeRectLocalScale = resourceGaugeRect.localScale;
                 resourceGaugeRectLocalScale.x = resourceRatio;
                 resourceGaugeRect.localScale = resourceGaugeRectLocalScale;
@@ -71,7 +71,7 @@ namespace AloneSpace
             if (!prevReloadValueIsZero || 0 != weaponData.WeaponStateData.ReloadRemainTime)
             {
                 prevReloadValueIsZero = weaponData.WeaponStateData.ReloadRemainTime == 0;
-                var reloadRatio = prevReloadValueIsZero ? 0.0f : 1.0f - (weaponData.WeaponStateData.ReloadRemainTime / weaponData.ActorPartsWeaponParameterVO.ReloadTime);
+                var reloadRatio = prevReloadValueIsZero ? 0.0f : 1.0f - (weaponData.WeaponStateData.ReloadRemainTime / weaponData.WeaponSpecVO.ReloadTime);
                 var reloadGaugeRectLocalScale = reloadGaugeRect.localScale;
                 reloadGaugeRectLocalScale.x = reloadRatio;
                 reloadGaugeRect.localScale = reloadGaugeRectLocalScale;

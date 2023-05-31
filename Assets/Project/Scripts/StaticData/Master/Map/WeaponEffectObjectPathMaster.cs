@@ -15,7 +15,7 @@ namespace AloneSpace
                 Path = path;
             }
         }
-        
+
         static WeaponEffectObjectPathMaster instance;
         Row[] record;
 
@@ -41,8 +41,8 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(1, "WeaponEffect/Projectile/Bullet/Bullet"),
-                new Row(2, "WeaponEffect/Projectile/Missile/Missile"),
+                new Row(1, "Prefab/WeaponEffect/Projectile/Bullet/Bullet"),
+                new Row(2, "Prefab/WeaponEffect/Projectile/Missile/Missile"),
             };
         }
     }

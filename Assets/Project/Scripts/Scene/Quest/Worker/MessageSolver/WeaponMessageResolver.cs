@@ -30,10 +30,10 @@ namespace AloneSpace
         /// <param name="targetData">ターゲット</param>
         void CreateWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
         {
-            WeaponEffectData weaponEffectData = weaponData.ActorPartsWeaponParameterVO switch
+            WeaponEffectData weaponEffectData = weaponData.WeaponSpecVO switch
             {
-                ActorPartsWeaponBulletMakerParameterVO parameterVO => new BulletWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
-                ActorPartsWeaponMissileMakerParameterVO parameterVO => new MissileWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                WeaponBulletMakerSpecVO parameterVO => new BulletWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                WeaponMissileMakerSpecVO parameterVO => new MissileWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
                 _ => throw new NotImplementedException(),
             };
 

@@ -15,7 +15,7 @@ namespace AloneSpace
                 Path = path;
             }
         }
-        
+
         static AmbientObjectAssetMaster instance;
         Row[] record;
 
@@ -41,7 +41,7 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(0, "AreaAmbientObjects/Default"),
+                new Row(0, "Prefab/AreaAmbientObjects/Default"),
             };
         }
     }

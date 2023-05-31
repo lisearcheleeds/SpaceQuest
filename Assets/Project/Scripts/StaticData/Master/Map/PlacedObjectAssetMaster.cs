@@ -15,7 +15,7 @@ namespace AloneSpace
                 Path = path;
             }
         }
-        
+
         static PlacedObjectAssetMaster instance;
         Row[] record;
 
@@ -41,7 +41,7 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(0, "AreaPlacedObjects/Default"),
+                new Row(0, "Prefab/AreaPlacedObjects/Default"),
             };
         }
     }

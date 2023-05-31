@@ -16,22 +16,18 @@ namespace AloneSpace
                         // areaData[Random.Range(0, areaData.Length)],
                         areaData[0],
                         new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f)));
-                    
+
                     playerQuestData.SetMainActorData(actorData);
-                    
+
                     return actorData;
                 }).ToArray();
-            
+
             return (playerQuestDataList, actorDataList);
         }
 
         static ActorData GetTempAddActorData(PlayerQuestData playerQuestData, AreaData areaData, Vector3 position)
         {
-            var bp = new ActorBluePrint();
-            var specData = new ActorSpecData();
-            specData.Setup(bp);
-            
-            var actorData = new ActorData(specData, playerQuestData.InstanceId);
+            var actorData = new ActorData(new ActorSpecVO(1), new IWeaponSpecVO[] {}, playerQuestData.InstanceId);
             MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, areaData.AreaId);
             actorData.SetPosition(areaData.SpawnPoint.Position + position);
             return actorData;

@@ -142,22 +142,22 @@ namespace AloneSpace
             var prevMovementVelocity = actorData.MovingModule.MovementVelocity / deltaTime;
             var nextMovementVelocity = prevMovementVelocity + actorData.Rotation
                 * new Vector3(
-                    (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
-                    (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecData.SubBoosterPower,
-                    actorData.ActorStateData.ForwardBoosterPowerRatio * actorData.ActorSpecData.MainBoosterPower + -actorData.ActorStateData.BackBoosterPowerRatio * actorData.ActorSpecData.SubBoosterPower);
+                    (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecVO.SubBoosterPower,
+                    (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecVO.SubBoosterPower,
+                    actorData.ActorStateData.ForwardBoosterPowerRatio * actorData.ActorSpecVO.MainBoosterPower + -actorData.ActorStateData.BackBoosterPowerRatio * actorData.ActorSpecVO.SubBoosterPower);
 
             // 最大速度制限
-            if ((actorData.ActorSpecData.MaxSpeed * actorData.ActorSpecData.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
+            if ((actorData.ActorSpecVO.MaxSpeed * actorData.ActorSpecVO.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
             {
-                nextMovementVelocity *= actorData.ActorSpecData.MaxSpeed / prevMovementVelocity.magnitude;
+                nextMovementVelocity *= actorData.ActorSpecVO.MaxSpeed / prevMovementVelocity.magnitude;
             }
 
             actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
             actorData.MovingModule.SetQuaternionVelocityRHS(
                 Quaternion.Euler(new Vector3(
-                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecData.PitchBoosterPower,
-                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecData.YawBoosterPower,
-                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecData.RollBoosterPower) * deltaTime));
+                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchBoosterPower,
+                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecVO.YawBoosterPower,
+                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecVO.RollBoosterPower) * deltaTime));
         }
 
         void UpdateInteract(float deltaTime)
@@ -187,8 +187,7 @@ namespace AloneSpace
             switch (actorData.ActorStateData.InteractOrder)
             {
                 case ItemInteractData itemInteractData:
-                    var insertableInventory = actorData.InventoryDataList.FirstOrDefault(x => x.VariableInventoryViewData.GetInsertableId(itemInteractData.ItemData).HasValue);
-                    MessageBus.Instance.ManagerCommandPickItem.Broadcast(insertableInventory, itemInteractData);
+                    MessageBus.Instance.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
                     break;
                 case BrokenActorInteractData brokenActorInteractData:
                     throw new NotImplementedException();

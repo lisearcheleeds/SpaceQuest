@@ -33,28 +33,26 @@ namespace AloneSpace
         public ActorStateData ActorStateData { get; }
 
         // 関連データ
-        public ActorSpecData ActorSpecData { get; }
-        public InventoryData[] InventoryDataList { get; }
+        public ActorSpecVO ActorSpecVO { get; }
+        public IWeaponSpecVO[] WeaponSpecVOs { get; }
+
+        public InventoryData InventoryData { get; }
         public List<Guid>[] WeaponDataGroup { get; private set; }
         public Dictionary<Guid, WeaponData> WeaponData { get; private set; }
 
-        public ActorData(ActorSpecData actorSpecData, Guid playerInstanceId)
+        public ActorData(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
 
             PlayerInstanceId = playerInstanceId;
-            ActorSpecData = actorSpecData;
+            ActorSpecVO = actorSpecVO;
+            WeaponSpecVOs = weaponSpecVOs;
 
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 3.0f));
-
-            InventoryDataList = actorSpecData.ActorPartsExclusiveInventoryParameterVOs
-                .Select(vo => new InventoryData(vo.CapacityWidth, vo.CapacityHeight)).ToArray();
-
+            InventoryData = new InventoryData(actorSpecVO.CapacityWidth, actorSpecVO.CapacityHeight);
             ActorStateData = new ActorStateData();
-
             WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
-
-            WeaponData = ActorSpecData.ActorPartsWeaponParameterVOs.Select(x =>
+            WeaponData = weaponSpecVOs.Select(x =>
             {
                 var weaponData = WeaponDataHelper.GetWeaponData(x);
                 weaponData.SetHolderActor(this, this);

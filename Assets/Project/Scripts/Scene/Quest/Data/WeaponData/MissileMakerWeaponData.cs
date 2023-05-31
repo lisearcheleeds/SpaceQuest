@@ -9,16 +9,16 @@ namespace AloneSpace
     {
         public override Guid InstanceId { get; }
         public override IOrderModule OrderModule { get; protected set; }
-        public override IActorPartsWeaponParameterVO ActorPartsWeaponParameterVO => ParameterVO;
+        public override IWeaponSpecVO WeaponSpecVO => VO;
         public override WeaponStateData WeaponStateData { get; } = new MissileMakerWeaponStateData();
-        
-        public ActorPartsWeaponMissileMakerParameterVO ParameterVO { get; }
-        
-        public MissileMakerWeaponData(ActorPartsWeaponMissileMakerParameterVO actorPartsWeaponMissileMakerParameterVO)
+
+        public WeaponMissileMakerSpecVO VO { get; }
+
+        public MissileMakerWeaponData(WeaponMissileMakerSpecVO weaponMissileMakerSpecVO)
         {
             InstanceId = Guid.NewGuid();
-            ParameterVO = actorPartsWeaponMissileMakerParameterVO;
-                
+            VO = weaponMissileMakerSpecVO;
+
             ActivateModules();
         }
 
@@ -36,7 +36,7 @@ namespace AloneSpace
 
         public override void Reload()
         {
-            WeaponStateData.ReloadRemainTime += ParameterVO.ReloadTime;
+            WeaponStateData.ReloadRemainTime += VO.ReloadTime;
         }
     }
 }
