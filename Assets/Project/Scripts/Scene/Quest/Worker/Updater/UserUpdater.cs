@@ -13,29 +13,30 @@ namespace AloneSpace
         [SerializeField] CameraController cameraController;
 
         UserData userData;
-        
+
         ActorMode prevObserveActorMode;
-        
+
         public void Initialize(QuestData questData)
         {
             userData = questData.UserData;
-            
+
             uiManager.Initialize(questData, userData);
             gameObjectUpdater.Initialize(questData);
-            
+
             areaAmbientController.Initialize(questData);
             cameraController.Initialize();
-            
+
             MessageBus.Instance.SetOrderUserPlayer.AddListener(SetOrderUserPlayer);
             MessageBus.Instance.SetOrderUserArea.AddListener(SetOrderUserArea);
-            
+
             MessageBus.Instance.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
-            
+            MessageBus.Instance.UserCommandSetLookAtDistance.AddListener(UserCommandSetLookAtDistance);
+
             MessageBus.Instance.UserInputSetExecuteWeapon.AddListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInputReloadWeapon.AddListener(UserInputReloadWeapon);
             MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.AddListener(UserInputSetCurrentWeaponGroupIndex);
-            
+
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.AddListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.AddListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.AddListener(UserInputRightBoosterPowerRatio);
@@ -45,7 +46,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.AddListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
-            
+
             MessageBus.Instance.UserInputSwitchActorMode.AddListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.AddListener(UserInputSetActorCombatMode);
         }
@@ -54,20 +55,21 @@ namespace AloneSpace
         {
             uiManager.Finalize();
             gameObjectUpdater.Finalize();
-            
+
             areaAmbientController.Finalize();
             cameraController.Finalize();
-            
+
             MessageBus.Instance.SetOrderUserPlayer.RemoveListener(SetOrderUserPlayer);
             MessageBus.Instance.SetOrderUserArea.RemoveListener(SetOrderUserArea);
-            
+
             MessageBus.Instance.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
-            
+            MessageBus.Instance.UserCommandSetLookAtDistance.RemoveListener(UserCommandSetLookAtDistance);
+
             MessageBus.Instance.UserInputSetExecuteWeapon.RemoveListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInputReloadWeapon.RemoveListener(UserInputReloadWeapon);
             MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
-            
+
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.RemoveListener(UserInputForwardBoosterPowerRatio);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.RemoveListener(UserInputBackBoosterPowerRatio);
             MessageBus.Instance.UserInputRightBoosterPowerRatio.RemoveListener(UserInputRightBoosterPowerRatio);
@@ -77,11 +79,11 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.RemoveListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
-            
+
             MessageBus.Instance.UserInputSwitchActorMode.RemoveListener(UserInputSwitchActorMode);
             MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
         }
-        
+
         public void OnLateUpdate()
         {
             if (userData?.PlayerQuestData == null)
@@ -116,12 +118,12 @@ namespace AloneSpace
 
             prevObserveActorMode = userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode;
         }
-        
+
         void SetOrderUserPlayer(Guid playerInstanceId)
         {
             userData.SetPlayerQuestData(MessageBus.Instance.UtilGetPlayerQuestData.Unicast(playerInstanceId));
             MessageBus.Instance.SetUserPlayer.Broadcast(userData.PlayerQuestData);
-            
+
             MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
             MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(userData.PlayerQuestData.MainActorData);
         }
@@ -136,10 +138,15 @@ namespace AloneSpace
         {
             userData.SetLookAtAngle(lookAt);
         }
-        
+
         void UserCommandSetLookAtSpace(Quaternion quaternion)
         {
             userData.SetLookAtSpace(quaternion);
+        }
+
+        void UserCommandSetLookAtDistance(float distance)
+        {
+            userData.SetLookAtDistance(distance);
         }
 
         void UserInputSetExecuteWeapon(bool isExecute)
@@ -161,42 +168,42 @@ namespace AloneSpace
         {
             MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputBackBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandBackBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputRightBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandRightBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputLeftBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputTopBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandTopBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputBottomBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputPitchBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputRollBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandRollBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
         }
-        
+
         void UserInputYawBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);

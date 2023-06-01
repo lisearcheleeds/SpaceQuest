@@ -6,6 +6,7 @@ namespace AloneSpace
     public class ActorModel : MonoBehaviour
     {
         public Transform[] WeaponHolder => weaponHolder;
+
         public Bounds Bounds
         {
             get
@@ -16,7 +17,19 @@ namespace AloneSpace
         }
 
         [SerializeField] Transform[] weaponHolder;
+
+        IPositionData positionData;
         Bounds? bounds;
+
+        public void Init(IPositionData positionData)
+        {
+            this.positionData = positionData;
+        }
+
+        public ActorFeedback GetActorFeedback()
+        {
+            return new ActorFeedback();
+        }
 
         Bounds CalculateBounds()
         {

@@ -7,7 +7,7 @@ namespace AloneSpace
     public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }
-        
+
         // Module
         public MovingModule MovingModule { get; private set; }
         public abstract IOrderModule OrderModule { get; protected set; }
@@ -16,22 +16,23 @@ namespace AloneSpace
 
         // IPlayer
         public Guid PlayerInstanceId => WeaponData.WeaponHolder.PlayerInstanceId;
-        
+
         // IPositionData
         public int? AreaId { get; protected set; }
         public Vector3 Position { get; protected set; }
         public Quaternion Rotation { get; protected set; }
-        
+
         // 情報
         public bool IsAlive { get; set; }
         public WeaponData WeaponData { get; }
         public IPositionData TargetData { get; protected set; }
 
-        protected WeaponEffectData(WeaponData weaponData)
+        protected WeaponEffectData(WeaponData weaponData, IPositionData targetData)
         {
             InstanceId = Guid.NewGuid();
             WeaponData = weaponData;
-                
+            TargetData = targetData;
+
             ActivateModules();
         }
 

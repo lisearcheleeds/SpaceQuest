@@ -94,8 +94,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, string.Empty, 2, 2, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
-                new Row(2, string.Empty, 2, 4, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
+                new Row(1, "Prefab/Weapon/MissileMaker1", 2, 2, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
+                new Row(2, "Prefab/Weapon/MissileMaker2", 2, 4, 4.0f, null, null, 1.0f, 80.0f, 1.0f, 500),
             };
         }
     }

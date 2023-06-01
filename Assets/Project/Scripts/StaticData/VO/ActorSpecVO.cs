@@ -3,10 +3,10 @@
     /// <summary>
     /// Actorの基本スペックと品質
     /// </summary>
-    public class ActorSpecVO : IAssetPath
+    public class ActorSpecVO
     {
         public int Id => row.Id;
-        public string Path => row.Path;
+        public IAssetPath Path => row;
 
         // 耐久
         public float EnduranceValue => row.EnduranceValue;

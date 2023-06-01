@@ -76,8 +76,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, string.Empty, 1, 60, 3.0f, 0.05f, 100.0f, 200.0f),
-                new Row(2, string.Empty, 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
+                new Row(1, "Prefab/Weapon/BulletMaker1", 1, 60, 3.0f, 0.05f, 1000.0f, 200.0f),
+                new Row(2, "Prefab/Weapon/BulletMaker2", 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
             };
         }
     }

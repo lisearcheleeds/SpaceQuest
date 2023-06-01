@@ -16,16 +16,18 @@ namespace AloneSpace
         public abstract IWeaponSpecVO WeaponSpecVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
 
-        public ActorData WeaponHolder { get; private set; }
-        public IPositionData BasePositionData { get; private set; }
+        public ActorData WeaponHolder { get; }
+        public int WeaponIndex { get; }
+
+        public WeaponFeedback WeaponFeedback { get; private set; }
 
         public abstract void ActivateModules();
         public abstract void DeactivateModules();
 
-        public void SetHolderActor(ActorData weaponHolder, IPositionData basePositionData)
+        protected WeaponData(ActorData actorData, int weaponIndex)
         {
-            WeaponHolder = weaponHolder;
-            BasePositionData = basePositionData;
+            WeaponHolder = actorData;
+            WeaponIndex = weaponIndex;
         }
 
         public void SetLookAtDirection(Vector3 lookAtDirection)
@@ -51,6 +53,11 @@ namespace AloneSpace
         public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             WeaponStateData.WeaponEffectDataList.Remove(weaponEffectData);
+        }
+
+        public void SetWeaponFeedback(WeaponFeedback weaponFeedback)
+        {
+            WeaponFeedback = weaponFeedback;
         }
 
         public abstract void Reload();

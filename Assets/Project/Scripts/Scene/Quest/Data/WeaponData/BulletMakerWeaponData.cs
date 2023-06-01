@@ -13,7 +13,7 @@ namespace AloneSpace
 
         public WeaponBulletMakerSpecVO VO { get; }
 
-        public BulletMakerWeaponData(WeaponBulletMakerSpecVO weaponBulletMakerSpecVO)
+        public BulletMakerWeaponData(WeaponBulletMakerSpecVO weaponBulletMakerSpecVO, ActorData actorData, int weaponIndex) : base(actorData, weaponIndex)
         {
             InstanceId = Guid.NewGuid();
             VO = weaponBulletMakerSpecVO;

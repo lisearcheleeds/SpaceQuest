@@ -14,7 +14,7 @@ namespace AloneSpace
 
         public WeaponMissileMakerSpecVO VO { get; }
 
-        public MissileMakerWeaponData(WeaponMissileMakerSpecVO weaponMissileMakerSpecVO)
+        public MissileMakerWeaponData(WeaponMissileMakerSpecVO weaponMissileMakerSpecVO, ActorData actorData, int weaponIndex) : base(actorData, weaponIndex)
         {
             InstanceId = Guid.NewGuid();
             VO = weaponMissileMakerSpecVO;

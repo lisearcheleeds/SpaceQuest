@@ -13,7 +13,7 @@
         // 登録系メッセージ
         public MessageBusDefine.RegisterCollision RegisterCollision { get; } = new MessageBusDefine.RegisterCollision();
         public MessageBusDefine.UnRegisterCollision UnRegisterCollision { get; } = new MessageBusDefine.UnRegisterCollision();
-        
+
         public MessageBusDefine.RegisterMovingModule RegisterMovingModule { get; } = new MessageBusDefine.RegisterMovingModule();
         public MessageBusDefine.UnRegisterMovingModule UnRegisterMovingModule { get; } = new MessageBusDefine.UnRegisterMovingModule();
         public MessageBusDefine.RegisterOrderModule RegisterOrderModule { get; } = new MessageBusDefine.RegisterOrderModule();
@@ -29,7 +29,7 @@
         public MessageBusDefine.UtilGetPlayerQuestData UtilGetPlayerQuestData { get; } = new MessageBusDefine.UtilGetPlayerQuestData();
         public MessageBusDefine.UtilGetAreaData UtilGetAreaData { get; } = new MessageBusDefine.UtilGetAreaData();
         public MessageBusDefine.UtilGetAreaActorData UtilGetAreaActorData { get; } = new MessageBusDefine.UtilGetAreaActorData();
-        
+
         // プレイヤー設定
         public MessageBusDefine.SetOrderUserPlayer SetOrderUserPlayer { get; } = new MessageBusDefine.SetOrderUserPlayer();
         public MessageBusDefine.SetUserPlayer SetUserPlayer { get; } = new MessageBusDefine.SetUserPlayer();
@@ -40,20 +40,20 @@
         public MessageBusDefine.NoticeCollisionEffectData NoticeCollisionEffectData { get; } = new MessageBusDefine.NoticeCollisionEffectData();
 
         // UI
-        public MessageBusDefine.UserInputSwitchMap UserInputSwitchMap { get; } = new MessageBusDefine.UserInputSwitchMap(); 
+        public MessageBusDefine.UserInputSwitchMap UserInputSwitchMap { get; } = new MessageBusDefine.UserInputSwitchMap();
         public MessageBusDefine.UserInputOpenMap UserInputOpenMap { get; } = new MessageBusDefine.UserInputOpenMap();
         public MessageBusDefine.UserInputCloseMap UserInputCloseMap { get; } = new MessageBusDefine.UserInputCloseMap();
-        public MessageBusDefine.UserInputSwitchInteractList UserInputSwitchInteractList { get; } = new MessageBusDefine.UserInputSwitchInteractList(); 
+        public MessageBusDefine.UserInputSwitchInteractList UserInputSwitchInteractList { get; } = new MessageBusDefine.UserInputSwitchInteractList();
         public MessageBusDefine.UserInputOpenInteractList UserInputOpenInteractList { get; } = new MessageBusDefine.UserInputOpenInteractList();
         public MessageBusDefine.UserInputCloseInteractList UserInputCloseInteractList { get; } = new MessageBusDefine.UserInputCloseInteractList();
-        public MessageBusDefine.UserInputSwitchInventory UserInputSwitchInventory { get; } = new MessageBusDefine.UserInputSwitchInventory(); 
+        public MessageBusDefine.UserInputSwitchInventory UserInputSwitchInventory { get; } = new MessageBusDefine.UserInputSwitchInventory();
         public MessageBusDefine.UserInputOpenInventory UserInputOpenInventory { get; } = new MessageBusDefine.UserInputOpenInventory();
         public MessageBusDefine.UserInputCloseInventory UserInputCloseInventory { get; } = new MessageBusDefine.UserInputCloseInventory();
-        
+
         public MessageBusDefine.UserInputExecuteWeapon UserInputSetExecuteWeapon { get; } = new MessageBusDefine.UserInputExecuteWeapon();
         public MessageBusDefine.UserInputReloadWeapon UserInputReloadWeapon { get; } = new MessageBusDefine.UserInputReloadWeapon();
         public MessageBusDefine.UserInputSetCurrentWeaponGroupIndex UserInputSetCurrentWeaponGroupIndex { get; } = new MessageBusDefine.UserInputSetCurrentWeaponGroupIndex();
-        
+
         public MessageBusDefine.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
         public MessageBusDefine.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBackBoosterPower();
         public MessageBusDefine.UserInputRightBoosterPower UserInputRightBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRightBoosterPower();
@@ -63,10 +63,10 @@
         public MessageBusDefine.UserInputPitchBoosterPower UserInputPitchBoosterPowerRatio { get; } = new MessageBusDefine.UserInputPitchBoosterPower();
         public MessageBusDefine.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRollBoosterPower();
         public MessageBusDefine.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefine.UserInputYawBoosterPower();
-        
+
         public MessageBusDefine.UserInputSwitchActorMode UserInputSwitchActorMode { get; } = new MessageBusDefine.UserInputSwitchActorMode();
         public MessageBusDefine.UserInputSetActorCombatMode UserInputSetActorCombatMode { get; } = new MessageBusDefine.UserInputSetActorCombatMode();
-        
+
         // ゲームコマンド
         public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
         public MessageBusDefine.UserCommandCloseItemDataMenu UserCommandCloseItemDataMenu { get; } = new MessageBusDefine.UserCommandCloseItemDataMenu();
@@ -77,10 +77,11 @@
 
         public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
-        
+
         public MessageBusDefine.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefine.UserCommandSetLookAtAngle();
         public MessageBusDefine.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefine.UserCommandSetLookAtSpace();
-        
+        public MessageBusDefine.UserCommandSetLookAtDistance UserCommandSetLookAtDistance { get; } = new MessageBusDefine.UserCommandSetLookAtDistance();
+
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetAreaId PlayerCommandSetAreaId { get; } = new MessageBusDefine.PlayerCommandSetAreaId();
         public MessageBusDefine.PlayerCommandSetMoveTarget PlayerCommandSetMoveTarget { get; } = new MessageBusDefine.PlayerCommandSetMoveTarget();
@@ -101,25 +102,25 @@
         public MessageBusDefine.ActorCommandPitchBoosterPower ActorCommandPitchBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandPitchBoosterPower();
         public MessageBusDefine.ActorCommandRollBoosterPower ActorCommandRollBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandRollBoosterPower();
         public MessageBusDefine.ActorCommandYawBoosterPower ActorCommandYawBoosterPowerRatio { get; } = new MessageBusDefine.ActorCommandYawBoosterPower();
-        
+
         public MessageBusDefine.ActorCommandSetLookAtDirection ActorCommandSetLookAtDirection { get; } = new MessageBusDefine.ActorCommandSetLookAtDirection();
-        
+
         public MessageBusDefine.ActorCommandSetActorMode ActorCommandSetActorMode { get; } = new MessageBusDefine.ActorCommandSetActorMode();
         public MessageBusDefine.ActorCommandSetActorCombatMode ActorCommandSetActorCombatMode { get; } = new MessageBusDefine.ActorCommandSetActorCombatMode();
-        
+
         public MessageBusDefine.ActorCommandSetMainTarget ActorCommandSetMainTarget { get; } = new MessageBusDefine.ActorCommandSetMainTarget();
         public MessageBusDefine.ActorCommandSetAroundTargets ActorCommandSetAroundTargets { get; } = new MessageBusDefine.ActorCommandSetAroundTargets();
-        
+
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();
         public MessageBusDefine.ManagerCommandTransferItem ManagerCommandTransferItem { get; } = new MessageBusDefine.ManagerCommandTransferItem();
-        
+
         // Weapon
         public MessageBusDefine.CreateWeaponEffectData CreateWeaponEffectData { get; } = new MessageBusDefine.CreateWeaponEffectData();
         public MessageBusDefine.ReleaseWeaponEffectData ReleaseWeaponEffectData { get; } = new MessageBusDefine.ReleaseWeaponEffectData();
         public MessageBusDefine.AddWeaponEffectData AddWeaponEffectData { get; } = new MessageBusDefine.AddWeaponEffectData();
         public MessageBusDefine.RemoveWeaponEffectData RemoveWeaponEffectData { get; } = new MessageBusDefine.RemoveWeaponEffectData();
-        
+
         // GameObject
         public MessageBusDefine.SetDirtyActorObjectList SetDirtyActorObjectList { get; } = new MessageBusDefine.SetDirtyActorObjectList();
         public MessageBusDefine.SetDirtyInteractObjectList SetDirtyInteractObjectList { get; } = new MessageBusDefine.SetDirtyInteractObjectList();

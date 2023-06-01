@@ -97,17 +97,29 @@ namespace AloneSpace
 
             if (weaponData.WeaponStateData.IsExecute)
             {
-                var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
+                var outputPosition = GetOutputPosition();
+                var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
 
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     weaponData,
-                    weaponData.BasePositionData,
+                    outputPosition,
                     rotation,
                     weaponData.WeaponStateData.TargetData);
 
                 weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
             }
+        }
+
+        IPositionData GetOutputPosition()
+        {
+            if (weaponData.WeaponFeedback == null)
+            {
+                return weaponData.WeaponHolder;
+            }
+
+            var outputIndex = weaponData.WeaponStateData.ResourceIndex % weaponData.WeaponFeedback.OutputPositionData.Length;
+            return weaponData.WeaponFeedback.OutputPositionData[outputIndex];
         }
     }
 }

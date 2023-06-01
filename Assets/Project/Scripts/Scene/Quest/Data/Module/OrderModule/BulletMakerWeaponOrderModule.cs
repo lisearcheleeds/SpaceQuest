@@ -69,8 +69,9 @@ namespace AloneSpace
             var targetDirection = weaponData.WeaponStateData.LookAtDirection;
             if (weaponData.WeaponStateData.TargetData != null)
             {
+                var outputPosition = GetOutputPosition();
                 var targetPosition = weaponData.WeaponStateData.TargetData.Position;
-                var targetRelativePosition = targetPosition - weaponData.BasePositionData.Position;
+                var targetRelativePosition = targetPosition - outputPosition.Position;
                 targetDirection = targetRelativePosition.normalized;
 
                 // ターゲットが移動する場合は移動先に回転
@@ -80,7 +81,7 @@ namespace AloneSpace
                         targetMovingModuleHolder.MovingModule.MovementVelocity,
                         targetPosition,
                         targetDirection * weaponData.VO.Speed * deltaTime,
-                        weaponData.BasePositionData.Position);
+                        outputPosition.Position);
 
                     if (catchUpToDirection.HasValue)
                     {
@@ -123,17 +124,29 @@ namespace AloneSpace
 
             if (weaponData.WeaponStateData.IsExecute)
             {
-                var rotation = weaponData.BasePositionData.Rotation * weaponData.WeaponStateData.OffsetRotation;
+                var outputPosition = GetOutputPosition();
+                var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
 
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     weaponData,
-                    weaponData.BasePositionData,
+                    outputPosition,
                     rotation,
                     weaponData.WeaponStateData.TargetData);
 
                 weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
             }
+        }
+
+        IPositionData GetOutputPosition()
+        {
+            if (weaponData.WeaponFeedback == null)
+            {
+                return weaponData.WeaponHolder;
+            }
+
+            var outputIndex = weaponData.WeaponStateData.ResourceIndex % weaponData.WeaponFeedback.OutputPositionData.Length;
+            return weaponData.WeaponFeedback.OutputPositionData[outputIndex];
         }
     }
 }

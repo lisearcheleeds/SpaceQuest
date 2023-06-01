@@ -9,6 +9,7 @@ namespace AloneSpace
 
         public Vector3 LookAtAngle { get; private set; } = Vector3.forward;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;
+        public float LookAtDistance { get; private set; }
 
         public void SetPlayerQuestData(PlayerQuestData playerQuestData)
         {
@@ -28,6 +29,11 @@ namespace AloneSpace
         public void SetLookAtSpace(Quaternion lookAtSpace)
         {
             LookAtSpace = lookAtSpace;
+        }
+
+        public void SetLookAtDistance(float distance)
+        {
+            LookAtDistance = distance;
         }
     }
 }

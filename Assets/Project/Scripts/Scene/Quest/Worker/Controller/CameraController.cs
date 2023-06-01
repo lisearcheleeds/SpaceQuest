@@ -5,8 +5,9 @@ namespace AloneSpace
     public class CameraController : MonoBehaviour
     {
         static readonly float CameraModeSwitchTime = 1.0f;
-        
+
         [SerializeField] Camera cameraAmbient;
+        [SerializeField] Camera cameraArea;
         [SerializeField] Camera camera3d;
 
         [SerializeField] Camera cameraUi;
@@ -20,14 +21,14 @@ namespace AloneSpace
         Quaternion currentQuaternion = Quaternion.identity;
 
         IPositionData trackingTarget;
-        
+
         public enum CameraMode
         {
             Default,
             Map,
             Cockpit,
         }
-        
+
         public enum CameraType
         {
             CameraAmbient,
@@ -39,7 +40,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
 
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
-            
+
             MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
         }
@@ -47,9 +48,9 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.UserCommandSetCameraMode.RemoveListener(UserCommandSetCameraMode);
-            
+
             MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
-            
+
             MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
         }
@@ -73,18 +74,20 @@ namespace AloneSpace
 
                 targetRotation = userData.LookAtSpace * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up) * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
             }
-         
+
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);
-            
+
             currentQuaternion = Quaternion.Lerp(GetCameraAngleQuaternion(beforeCameraMode), GetCameraAngleQuaternion(currentCameraMode), cameraModeLerpRatio);
             cameraAmbient.transform.rotation = currentQuaternion;
+            cameraArea.transform.rotation = currentQuaternion;
             camera3d.transform.rotation = currentQuaternion;
-            
+
             cameraAmbient.transform.position = Vector3.Lerp(GetAmbientCameraPosition(beforeCameraMode), GetAmbientCameraPosition(currentCameraMode), cameraModeLerpRatio);
+            cameraArea.transform.position = Vector3.Lerp(Get3dCameraPosition(beforeCameraMode), Get3dCameraPosition(currentCameraMode), cameraModeLerpRatio);
             camera3d.transform.position = Vector3.Lerp(Get3dCameraPosition(beforeCameraMode), Get3dCameraPosition(currentCameraMode), cameraModeLerpRatio);
-            
+
             MessageBus.Instance.UserCommandSetCameraAngle.Broadcast(currentQuaternion);
-            
+
             Quaternion GetCameraAngleQuaternion(CameraMode cameraMode)
             {
                 return cameraMode switch
@@ -104,14 +107,14 @@ namespace AloneSpace
                     CameraMode.Cockpit => Vector3.Lerp(cameraAmbient.transform.position, targetAmbientCameraPosition, 0.05f),
                 };
             }
-            
+
             Vector3 Get3dCameraPosition(CameraMode cameraMode)
             {
                 return cameraMode switch
                 {
-                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, -35f),
+                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, userData.LookAtDistance),
                     CameraMode.Map => -targetAmbientCameraPosition * 10.0f,
-                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, -35f),
+                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, userData.LookAtDistance),
                 };
             }
         }
@@ -128,7 +131,7 @@ namespace AloneSpace
         {
             targetAngle.x = targetAngle.x + delta.x;
             targetAngle.y = Mathf.Clamp(targetAngle.y + delta.y, -90, 90);
-            
+
             targetQuaternion = Quaternion.AngleAxis(targetAngle.x, Vector3.up) * Quaternion.AngleAxis(targetAngle.y, Vector3.right);
         }
 

@@ -28,7 +28,7 @@ namespace AloneSpace
             WeaponBulletMakerSpecVO vo,
             IPositionData fromPositionData,
             Quaternion rotation,
-            IPositionData targetData) : base(weaponData)
+            IPositionData targetData) : base(weaponData, targetData)
         {
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;

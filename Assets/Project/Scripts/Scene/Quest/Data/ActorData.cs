@@ -40,6 +40,8 @@ namespace AloneSpace
         public List<Guid>[] WeaponDataGroup { get; private set; }
         public Dictionary<Guid, WeaponData> WeaponData { get; private set; }
 
+        public ActorFeedback ActorFeedback { get; private set; }
+
         public ActorData(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
@@ -52,13 +54,11 @@ namespace AloneSpace
             InventoryData = new InventoryData(actorSpecVO.CapacityWidth, actorSpecVO.CapacityHeight);
             ActorStateData = new ActorStateData();
             WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
-            WeaponData = weaponSpecVOs.Select(x =>
-            {
-                var weaponData = WeaponDataHelper.GetWeaponData(x);
-                weaponData.SetHolderActor(this, this);
-                WeaponDataGroup[0].Add(weaponData.InstanceId);
-                return weaponData;
-            }).ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
+            WeaponData = weaponSpecVOs
+                .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
+                .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
+
+            WeaponDataGroup[0].AddRange(WeaponData.Keys);
 
             ActivateModules();
         }
@@ -242,6 +242,11 @@ namespace AloneSpace
         public void SetAroundTargets(IPositionData[] targets)
         {
             ActorStateData.AroundTargets = targets;
+        }
+
+        public void SetActorFeedback(ActorFeedback actorFeedback)
+        {
+            ActorFeedback = actorFeedback;
         }
     }
 }

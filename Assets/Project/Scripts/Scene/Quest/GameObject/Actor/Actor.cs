@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -24,7 +25,8 @@ namespace AloneSpace
                 actor.ActorData = actorData;
             });
 
-            yield return actor.LoadActorModel(actorData.ActorSpecVO, actorData.WeaponSpecVOs);
+            yield return LoadActorModel(actorData, actor);
+            yield return LoadWeaponModel(actorData.WeaponData, actor);
             yield return null;
 
             onCreated(actor);
@@ -32,6 +34,7 @@ namespace AloneSpace
 
         public void DestroyActor()
         {
+            ActorData.SetActorFeedback(null);
             Destroy(gameObject);
         }
 
@@ -41,18 +44,30 @@ namespace AloneSpace
             transform.rotation = ActorData.Rotation;
         }
 
-        IEnumerator LoadActorModel(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs)
+        static IEnumerator LoadActorModel(ActorData actorData, Actor actor)
         {
-            yield return AssetLoader.LoadAsync<ActorModel>(actorSpecVO, prefab => ActorModel = Instantiate(prefab, transform, false));
-
-            WeaponModels = new WeaponModel[weaponSpecVOs.Length];
-
-            yield return new ParallelCoroutine(weaponSpecVOs.Select((vo, weaponIndex) => LoadWeaponModel(vo, ActorModel, weaponIndex)).ToArray());
+            yield return AssetLoader.LoadAsync<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
+            {
+                actor.ActorModel = Instantiate(prefab, actor.transform, false);
+                actor.ActorModel.Init(actorData);
+                actorData.SetActorFeedback(actor.ActorModel.GetActorFeedback());
+            });
         }
 
-        IEnumerator LoadWeaponModel(IWeaponSpecVO weaponSpecVO, ActorModel actorModel, int weaponIndex)
+        static IEnumerator LoadWeaponModel(Dictionary<Guid, WeaponData> weaponData, Actor actor)
         {
-            yield return AssetLoader.LoadAsync<WeaponModel>(weaponSpecVO.AssetPath, prefab => WeaponModels[weaponIndex] = Instantiate(prefab, actorModel.WeaponHolder[weaponIndex], false));
+            actor.WeaponModels = new WeaponModel[weaponData.Count];
+            yield return new ParallelCoroutine(weaponData.Values.Select(data =>
+            {
+                return AssetLoader.LoadAsync<WeaponModel>(
+                    data.WeaponSpecVO.AssetPath,
+                    prefab =>
+                    {
+                        actor.WeaponModels[data.WeaponIndex] = Instantiate(prefab, actor.ActorModel.WeaponHolder[data.WeaponIndex], false);
+                        actor.WeaponModels[data.WeaponIndex].Init(data.WeaponHolder);
+                        data.SetWeaponFeedback(actor.WeaponModels[data.WeaponIndex].GetWeaponFeedback());
+                    });
+            }).ToArray());
         }
     }
 }

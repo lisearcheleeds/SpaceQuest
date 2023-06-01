@@ -6,19 +6,25 @@ namespace AloneSpace
     public class WeaponMessageResolver
     {
         QuestData questData;
-        
+
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
+
             MessageBus.Instance.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
             MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
+
+            MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
             MessageBus.Instance.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
+
+            MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
         }
 
         /// <summary>
@@ -38,15 +44,25 @@ namespace AloneSpace
             };
 
             questData.WeaponEffectData.Add(weaponEffectData.InstanceId, weaponEffectData);
-            
+
             MessageBus.Instance.AddWeaponEffectData.Broadcast(weaponEffectData);
         }
-        
+
         void ReleaseWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             questData.WeaponEffectData.Remove(weaponEffectData.InstanceId);
-            
+
             MessageBus.Instance.RemoveWeaponEffectData.Broadcast(weaponEffectData);
+        }
+
+        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
+        }
+
+        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        {
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
     }
 }

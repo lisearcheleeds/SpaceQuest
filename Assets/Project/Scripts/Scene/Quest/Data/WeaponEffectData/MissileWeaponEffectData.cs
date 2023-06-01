@@ -26,7 +26,7 @@ namespace AloneSpace
             WeaponMissileMakerSpecVO vo,
             IPositionData fromPositionData,
             Quaternion rotation,
-            IPositionData targetData) : base(weaponData)
+            IPositionData targetData) : base(weaponData, targetData)
         {
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;
@@ -35,8 +35,6 @@ namespace AloneSpace
             VO = vo;
 
             CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
-
-            TargetData = targetData;
 
             LifeTime = 8.0f;
             CurrentLifeTime = 0;
