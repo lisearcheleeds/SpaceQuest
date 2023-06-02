@@ -36,7 +36,7 @@ namespace AloneSpace
 
         public override void Reload()
         {
-            WeaponStateData.ReloadRemainTime += VO.ReloadTime;
+            WeaponStateData.ReloadRemainTime = VO.ReloadTime;
         }
     }
 }

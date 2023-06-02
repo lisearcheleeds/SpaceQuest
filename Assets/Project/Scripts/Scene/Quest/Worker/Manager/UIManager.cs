@@ -103,7 +103,7 @@ namespace AloneSpace
                     MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
                 }
 
-                MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.LookAtDistance + Mouse.current.scroll.ReadValue().y);
+                MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f);
 
                 MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(
                     userData.PlayerQuestData.MainActorData.InstanceId,

@@ -15,7 +15,7 @@ namespace AloneSpace
                         playerQuestData,
                         // areaData[Random.Range(0, areaData.Length)],
                         areaData[0],
-                        i == 1 ? 1 : 5,
+                        i != 1 ? 1 : 5,
                         new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f)));
 
                     playerQuestData.SetMainActorData(actorData);
@@ -36,7 +36,7 @@ namespace AloneSpace
             }
             else
             {
-                weapons = new IWeaponSpecVO[] {new WeaponBulletMakerSpecVO(1), new WeaponBulletMakerSpecVO(1)};
+                weapons = new IWeaponSpecVO[] {new WeaponBulletMakerSpecVO(1), new WeaponBulletMakerSpecVO(1), new WeaponMissileMakerSpecVO(2)};
             }
 
             var actorData = new ActorData(new ActorSpecVO(actorId), weapons, playerQuestData.InstanceId);

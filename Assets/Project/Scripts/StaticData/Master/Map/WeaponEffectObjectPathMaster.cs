@@ -42,7 +42,8 @@ namespace AloneSpace
             record = new[]
             {
                 new Row(1, "Prefab/WeaponEffect/Projectile/Bullet/Bullet"),
-                new Row(2, "Prefab/WeaponEffect/Projectile/Missile/Missile"),
+                new Row(2, "Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"),
+                new Row(3, "Prefab/WeaponEffect/Projectile/Missile/ShortMissile"),
             };
         }
     }

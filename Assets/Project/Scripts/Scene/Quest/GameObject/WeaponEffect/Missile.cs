@@ -1,7 +1,11 @@
-﻿namespace AloneSpace
+﻿using UnityEngine;
+
+namespace AloneSpace
 {
     public class Missile : WeaponEffect
     {
+        [SerializeField] TrailRenderer trailRenderer;
+
         MissileWeaponEffectData missileData;
 
         public override WeaponEffectData WeaponEffectData => missileData;
@@ -12,6 +16,8 @@
 
             transform.position = missileData.Position;
             transform.rotation = missileData.Rotation;
+
+            trailRenderer.Clear();
         }
 
         public override void OnLateUpdate()
