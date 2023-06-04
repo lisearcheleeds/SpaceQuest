@@ -6,12 +6,12 @@ namespace AloneSpace
 {
     public class BulletWeaponEffectOrderModule : IOrderModule
     {
-        BulletWeaponEffectData effectData;
+        BulletWeaponEventEffectData eventEffectData;
         bool isFirstUpdate;
 
-        public BulletWeaponEffectOrderModule(BulletWeaponEffectData bulletWeaponEffectData)
+        public BulletWeaponEffectOrderModule(BulletWeaponEventEffectData bulletWeaponEventEffectData)
         {
-            this.effectData = bulletWeaponEffectData;
+            this.eventEffectData = bulletWeaponEventEffectData;
             isFirstUpdate = true;
         }
 
@@ -31,16 +31,16 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.VO.Accuracy);
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.VO.Speed * deltaTime);
+                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / eventEffectData.VO.Accuracy);
+                eventEffectData.MovingModule.SetMovementVelocity(eventEffectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * eventEffectData.VO.Speed * deltaTime);
             }
 
-            effectData.CurrentLifeTime += deltaTime;
-            if (effectData.CurrentLifeTime > effectData.LifeTime || effectData.CollisionData.IsCollided)
+            eventEffectData.CurrentLifeTime += deltaTime;
+            if (eventEffectData.CurrentLifeTime > eventEffectData.LifeTime)
             {
-                effectData.IsAlive = false;
-                effectData.DeactivateModules();
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                eventEffectData.IsAlive = false;
+                eventEffectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(eventEffectData);
             }
         }
     }

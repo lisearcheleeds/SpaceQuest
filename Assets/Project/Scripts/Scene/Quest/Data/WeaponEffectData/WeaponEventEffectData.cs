@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEffectSenderModuleHolder, IOrderModuleHolder
+    public abstract class WeaponEventEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }
 
         // Module
         public MovingModule MovingModule { get; private set; }
         public abstract IOrderModule OrderModule { get; protected set; }
-        public abstract CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
-        public abstract CollisionData CollisionData { get; }
+        public abstract CollisionEventModule CollisionEventModule { get; protected set; }
+        public abstract CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
         // IPlayer
         public Guid PlayerInstanceId => WeaponData.WeaponHolder.PlayerInstanceId;
@@ -27,7 +27,9 @@ namespace AloneSpace
         public WeaponData WeaponData { get; }
         public IPositionData TargetData { get; protected set; }
 
-        protected WeaponEffectData(WeaponData weaponData, IPositionData targetData)
+        public WeaponEffectGameObjectHandler WeaponEffectGameObjectHandler { get; private set; }
+
+        protected WeaponEventEffectData(WeaponData weaponData, IPositionData targetData)
         {
             InstanceId = Guid.NewGuid();
             WeaponData = weaponData;
@@ -63,9 +65,9 @@ namespace AloneSpace
             Rotation = rotation;
         }
 
-        public void AddHit(ICollisionDataHolder otherCollisionDataHolder)
+        public void SetWeaponEffectGameObjectHandler(WeaponEffectGameObjectHandler weaponEffectGameObjectHandler)
         {
-            CollisionEffectSenderModule.AddHit(otherCollisionDataHolder);
+            WeaponEffectGameObjectHandler = weaponEffectGameObjectHandler;
         }
     }
 }

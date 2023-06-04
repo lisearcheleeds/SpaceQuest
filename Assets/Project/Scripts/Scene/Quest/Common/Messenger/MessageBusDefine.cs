@@ -5,11 +5,11 @@ namespace AloneSpace
 {
     public class MessageBusDefine
     {
-        public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
-        public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
+        public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEventEffectData>{}
+        public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEventEffectData>{}
 
-        public class RegisterCollision : MessageBusBroadcaster<ICollisionDataHolder>{}
-        public class UnRegisterCollision : MessageBusBroadcaster<ICollisionDataHolder>{}
+        public class RegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
+        public class UnRegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
 
         public class RegisterMovingModule : MessageBusBroadcaster<MovingModule>{}
         public class UnRegisterMovingModule : MessageBusBroadcaster<MovingModule>{}
@@ -17,10 +17,12 @@ namespace AloneSpace
         public class UnRegisterOrderModule : MessageBusBroadcaster<IOrderModule>{}
         public class RegisterThinkModule : MessageBusBroadcaster<IThinkModule>{}
         public class UnRegisterThinkModule : MessageBusBroadcaster<IThinkModule>{}
-        public class RegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEffectReceiverModule>{}
-        public class UnRegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEffectReceiverModule>{}
-        public class RegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEffectSenderModule>{}
-        public class UnRegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEffectSenderModule>{}
+        public class RegisterCollisionEventModule : MessageBusBroadcaster<CollisionEventModule>{}
+        public class UnRegisterCollisionEventModule : MessageBusBroadcaster<CollisionEventModule>{}
+        public class RegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEventEffectReceiverModule>{}
+        public class UnRegisterCollisionEffectReceiverModuleModule : MessageBusBroadcaster<CollisionEventEffectReceiverModule>{}
+        public class RegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEventEffectSenderModule>{}
+        public class UnRegisterCollisionEffectSenderModuleModule : MessageBusBroadcaster<CollisionEventEffectSenderModule>{}
 
         public class UtilGetPlayerQuestData : MessageBusUnicaster<Guid, PlayerQuestData>{}
         public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
@@ -31,7 +33,8 @@ namespace AloneSpace
         public class SetOrderUserArea : MessageBusBroadcaster<int?>{}
         public class SetUserArea : MessageBusBroadcaster<AreaData>{}
 
-        public class NoticeCollisionEffectData : MessageBusBroadcaster<CollisionEffectData>{}
+        public class NoticeCollisionEventData : MessageBusBroadcaster<CollisionEventData>{}
+        public class NoticeCollisionEventEffectData : MessageBusBroadcaster<CollisionEventEffectData>{}
 
         public class UserInputSwitchMap : MessageBusBroadcaster{}
         public class UserInputOpenMap : MessageBusBroadcaster{}
@@ -108,7 +111,7 @@ namespace AloneSpace
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
 
         public class CreateWeaponEffectData : MessageBusBroadcaster<WeaponData, IPositionData, Quaternion, IPositionData>{}
-        public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
+        public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEventEffectData>{}
 
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
         public class SetDirtyInteractObjectList : MessageBusBroadcaster{}

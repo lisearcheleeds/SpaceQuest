@@ -8,7 +8,7 @@ namespace AloneSpace
     /// <summary>
     /// ActorData
     /// </summary>
-    public class ActorData : IPlayer, IPositionData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEffectReceiverModuleHolder
+    public class ActorData : IPlayer, IPositionData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEventEffectReceiverModuleHolder
     {
         public Guid InstanceId { get; }
 
@@ -16,10 +16,8 @@ namespace AloneSpace
         public IThinkModule ThinkModule { get; private set; }
         public IOrderModule OrderModule { get; private set; }
         public MovingModule MovingModule { get; private set; }
-        public CollisionEffectReceiverModule CollisionEffectReceiverModule { get; private set; }
-
-        // ModuleData
-        public CollisionData CollisionData { get; }
+        public CollisionEventModule CollisionEventModule { get; protected set; }
+        public CollisionEventEffectReceiverModule CollisionEventEffectReceiverModule { get; private set; }
 
         // IPlayer
         public Guid PlayerInstanceId { get; }
@@ -40,7 +38,7 @@ namespace AloneSpace
         public List<Guid>[] WeaponDataGroup { get; private set; }
         public Dictionary<Guid, WeaponData> WeaponData { get; private set; }
 
-        public ActorFeedback ActorFeedback { get; private set; }
+        public ActorGameObjectHandler ActorGameObjectHandler { get; private set; }
 
         public ActorData(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs, Guid playerInstanceId)
         {
@@ -50,7 +48,6 @@ namespace AloneSpace
             ActorSpecVO = actorSpecVO;
             WeaponSpecVOs = weaponSpecVOs;
 
-            CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 3.0f));
             InventoryData = new InventoryData(actorSpecVO.CapacityWidth, actorSpecVO.CapacityHeight);
             ActorStateData = new ActorStateData();
             WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
@@ -68,12 +65,14 @@ namespace AloneSpace
             MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);
             OrderModule = new ActorOrderModule(this);
-            CollisionEffectReceiverModule = new CollisionEffectReceiverModule();
+            CollisionEventModule = new CollisionEventModule(InstanceId, new CollisionShapeSphere(this, 3.0f));
+            CollisionEventEffectReceiverModule = new CollisionEventEffectReceiverModule(InstanceId);
 
             MovingModule.ActivateModule();
             ThinkModule.ActivateModule();
             OrderModule.ActivateModule();
-            CollisionEffectReceiverModule.ActivateModule();
+            CollisionEventModule.ActivateModule();
+            CollisionEventEffectReceiverModule.ActivateModule();
         }
 
         public void DeactivateModules()
@@ -81,12 +80,14 @@ namespace AloneSpace
             MovingModule.DeactivateModule();
             ThinkModule.DeactivateModule();
             OrderModule.DeactivateModule();
-            CollisionEffectReceiverModule.DeactivateModule();
+            CollisionEventModule.DeactivateModule();
+            CollisionEventEffectReceiverModule.DeactivateModule();
 
              MovingModule = null;
              ThinkModule = null;
              OrderModule = null;
-             CollisionEffectReceiverModule = null;
+             CollisionEventModule = null;
+             CollisionEventEffectReceiverModule = null;
         }
 
         public void SetInteractOrder(IInteractData interactData)
@@ -219,19 +220,14 @@ namespace AloneSpace
             ActorStateData.CurrentWeaponGroupIndex = weaponGroupIndex;
         }
 
-        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        public void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
         {
-            WeaponData[weaponEffectData.WeaponData.InstanceId].AddWeaponEffectData(weaponEffectData);
+            WeaponData[weaponEventEffectData.WeaponData.InstanceId].AddWeaponEffectData(weaponEventEffectData);
         }
 
-        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        public void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
         {
-            WeaponData[weaponEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEffectData);
-        }
-
-        public void AddHit(ICollisionDataHolder otherCollisionDataHolder)
-        {
-            CollisionEffectReceiverModule.AddHit(otherCollisionDataHolder);
+            WeaponData[weaponEventEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEventEffectData);
         }
 
         public void SetMainTarget(IPositionData target)
@@ -244,9 +240,9 @@ namespace AloneSpace
             ActorStateData.AroundTargets = targets;
         }
 
-        public void SetActorFeedback(ActorFeedback actorFeedback)
+        public void SetActorGameObjectHandler(ActorGameObjectHandler actorGameObjectHandler)
         {
-            ActorFeedback = actorFeedback;
+            ActorGameObjectHandler = actorGameObjectHandler;
         }
     }
 }

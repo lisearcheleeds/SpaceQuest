@@ -1,19 +1,17 @@
-﻿using AloneSpace;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AloneSpace
 {
-    public class BulletWeaponEffectData : WeaponEffectData
+    public class MissileWeaponEventEffectData : WeaponEventEffectData
     {
         public override IOrderModule OrderModule { get; protected set; }
-        public override CollisionEffectSenderModule CollisionEffectSenderModule { get; protected set; }
-        public override CollisionData CollisionData { get; }
+        public override CollisionEventModule CollisionEventModule { get; protected set; }
+        public override CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
-        public WeaponBulletMakerSpecVO VO { get; }
+        public WeaponMissileMakerSpecVO VO { get; }
 
         public float LifeTime { get; set; }
         public float CurrentLifeTime { get; set; }
-
 
         /// <summary>
         /// 武器の使用
@@ -23,9 +21,9 @@ namespace AloneSpace
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public BulletWeaponEffectData(
+        public MissileWeaponEventEffectData(
             WeaponData weaponData,
-            WeaponBulletMakerSpecVO vo,
+            WeaponMissileMakerSpecVO vo,
             IPositionData fromPositionData,
             Quaternion rotation,
             IPositionData targetData) : base(weaponData, targetData)
@@ -36,9 +34,7 @@ namespace AloneSpace
 
             VO = vo;
 
-            CollisionData = new CollisionData(this, new CollisionShapeSphere(this, 1.0f));
-
-            LifeTime = 4;
+            LifeTime = 8.0f;
             CurrentLifeTime = 0;
         }
 
@@ -46,10 +42,12 @@ namespace AloneSpace
         {
             base.ActivateModules();
 
-            OrderModule = new BulletWeaponEffectOrderModule(this);
+            OrderModule = new MissileWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEffectSenderModule = new CollisionEffectSenderModule();
-            CollisionEffectSenderModule.ActivateModule();
+            CollisionEventModule = new CollisionEventModule(InstanceId, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventModule.ActivateModule();
+            CollisionEventEffectSenderModule = new CollisionEventEffectSenderModule(InstanceId);
+            CollisionEventEffectSenderModule.ActivateModule();
         }
 
         public override void DeactivateModules()
@@ -58,8 +56,10 @@ namespace AloneSpace
 
             OrderModule.DeactivateModule();
             OrderModule = null;
-            CollisionEffectSenderModule.DeactivateModule();
-            CollisionEffectSenderModule = null;
+            CollisionEventModule.DeactivateModule();
+            CollisionEventModule = null;
+            CollisionEventEffectSenderModule.DeactivateModule();
+            CollisionEventEffectSenderModule = null;
         }
     }
 }

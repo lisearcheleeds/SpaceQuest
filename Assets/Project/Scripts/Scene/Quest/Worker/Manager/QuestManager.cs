@@ -16,10 +16,14 @@ namespace AloneSpace
         ThinkModuleUpdater thinkModuleUpdater = new ThinkModuleUpdater();
         OrderModuleUpdater orderModuleUpdater = new OrderModuleUpdater();
         MovingModuleUpdater movingModuleUpdater = new MovingModuleUpdater();
+
+        CollisionChecker collisionChecker = new CollisionChecker();
+
+        CollisionEventModuleUpdater collisionEventModuleUpdater = new CollisionEventModuleUpdater();
+
         CollisionEffectSenderModuleUpdater collisionEffectSenderModuleUpdater = new CollisionEffectSenderModuleUpdater();
         CollisionEffectReceiverModuleUpdater collisionEffectReceiverModuleUpdater = new CollisionEffectReceiverModuleUpdater();
 
-        CollisionChecker collisionChecker = new CollisionChecker();
 
         public void Initialize(QuestData questData)
         {
@@ -35,10 +39,13 @@ namespace AloneSpace
             thinkModuleUpdater.Initialize(questData);
             orderModuleUpdater.Initialize(questData);
             movingModuleUpdater.Initialize(questData);
-            collisionEffectSenderModuleUpdater.Initialize(questData);
-            collisionEffectReceiverModuleUpdater.Initialize(questData);
 
             collisionChecker.Initialize();
+
+            collisionEventModuleUpdater.Initialize(questData);
+
+            collisionEffectSenderModuleUpdater.Initialize(questData);
+            collisionEffectReceiverModuleUpdater.Initialize(questData);
         }
 
         public void FinishQuest()
@@ -55,10 +62,13 @@ namespace AloneSpace
             thinkModuleUpdater.Finalize();
             orderModuleUpdater.Finalize();
             movingModuleUpdater.Finalize();
-            collisionEffectSenderModuleUpdater.Finalize();
-            collisionEffectReceiverModuleUpdater.Finalize();
 
             collisionChecker.Finalize();
+
+            collisionEventModuleUpdater.Finalize();
+
+            collisionEffectSenderModuleUpdater.Finalize();
+            collisionEffectReceiverModuleUpdater.Finalize();
         }
 
         void LateUpdate()
@@ -70,10 +80,13 @@ namespace AloneSpace
             thinkModuleUpdater.UpdateModule(deltaTime);
             orderModuleUpdater.UpdateModule(deltaTime);
             movingModuleUpdater.UpdateModule(deltaTime);
-            collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
-            collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
 
             collisionChecker.OnLateUpdate();
+
+            collisionEventModuleUpdater.UpdateModule(deltaTime);
+
+            collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
+            collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
         }
 
         /*

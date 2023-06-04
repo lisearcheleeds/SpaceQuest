@@ -1,9 +1,15 @@
-﻿namespace AloneSpace
+﻿using System;
+using System.Collections.Generic;
+
+namespace AloneSpace
 {
-    public class CollisionEffectReceiverModule : IModule
+    public class CollisionEventEffectReceiverModule : IModule<List<CollisionEventEffectSenderModule>>, ICollisionEventModule
     {
-        public void AddHit(ICollisionDataHolder otherCollisionDataHolder)
+        public Guid InstanceId { get; }
+
+        public CollisionEventEffectReceiverModule(Guid instanceId)
         {
+            InstanceId = instanceId;
         }
 
         public void ActivateModule()
@@ -15,8 +21,8 @@
         {
             MessageBus.Instance.UnRegisterCollisionEffectReceiverModule.Broadcast(this);
         }
-        
-        public void OnUpdateModule(float deltaTime)
+
+        public void OnUpdateModule(float deltaTime, List<CollisionEventEffectSenderModule> senderList)
         {
             // MessageBus.Instance.NoticeCollisionEffectData.Broadcast(new CollisionEffectData(sender, receiver));
         }

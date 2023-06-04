@@ -5,7 +5,7 @@ namespace AloneSpace
 {
     public class CollisionChecker
     {
-        List<ICollisionDataHolder> collisionList = new List<ICollisionDataHolder>();
+        List<CollisionEventModule> collisionList = new List<CollisionEventModule>();
 
         public void Initialize()
         {
@@ -26,6 +26,9 @@ namespace AloneSpace
 
         void CheckCollision()
         {
+            return;
+            // ↓はArea外の簡易判定にのみ使う
+            /*
             for (var i = 0; i < collisionList.Count; i++)
             {
                 if (!collisionList[i].CollisionData.IsCollidable)
@@ -39,7 +42,7 @@ namespace AloneSpace
                     {
                         continue;
                     }
-                    
+
                     if (collisionList[i].CollisionData.Player.PlayerInstanceId == collisionList[t].CollisionData.Player.PlayerInstanceId)
                     {
                         continue;
@@ -52,14 +55,15 @@ namespace AloneSpace
                     }
                 }
             }
+            */
         }
 
-        void RegisterCollision(ICollisionDataHolder entryCollision)
+        void RegisterCollision(CollisionEventModule entryCollision)
         {
             collisionList.Add(entryCollision);
         }
-        
-        void UnRegisterCollision(ICollisionDataHolder entryCollision)
+
+        void UnRegisterCollision(CollisionEventModule entryCollision)
         {
             collisionList.Remove(entryCollision);
         }

@@ -8,7 +8,7 @@ namespace AloneSpace
     public class ActorObjectUpdater
     {
         QuestData questData;
-        
+
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
         Transform variableParent;
@@ -16,7 +16,7 @@ namespace AloneSpace
         PlayerQuestData observePlayerQuestData;
         AreaData observeAreaData;
         bool isDirty;
-        
+
         List<Actor> actors = new List<Actor>();
 
         public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
@@ -24,9 +24,9 @@ namespace AloneSpace
             this.questData = questData;
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
-            
+
             MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
-            
+
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
@@ -34,7 +34,7 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
-            
+
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
             MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
@@ -44,7 +44,7 @@ namespace AloneSpace
             if (isDirty)
             {
                 isDirty = false;
-            
+
                 if (currentCoroutine != null)
                 {
                     coroutineWorker.StopCoroutine(currentCoroutine);
@@ -52,7 +52,7 @@ namespace AloneSpace
 
                 currentCoroutine = coroutineWorker.StartCoroutine(Refresh());
             }
-            
+
             foreach (var actor in actors)
             {
                 actor.OnLateUpdate();
@@ -64,7 +64,7 @@ namespace AloneSpace
             this.observePlayerQuestData = playerQuestData;
             SetDirtyActorObjectList();
         }
-        
+
         void SetUserArea(AreaData areaData)
         {
             this.observeAreaData = areaData;
@@ -74,7 +74,7 @@ namespace AloneSpace
         IEnumerator Refresh()
         {
             // ObserveのMainActorDataもしくは現在のエリア内のActorを表示
-            // ワープ中のActorを表示するため 
+            // ワープ中のActorを表示するため
             var actorDataList = questData.ActorData.Values
                 .Where(actorData => observePlayerQuestData?.MainActorData?.InstanceId == actorData.InstanceId || (actorData.AreaId.HasValue && actorData.AreaId == observeAreaData?.AreaId));
 
@@ -86,20 +86,20 @@ namespace AloneSpace
                     DestroyActor(actor);
                 }
             }
-            
+
             if (observeAreaData == null)
             {
                 yield break;
             }
-            
+
             var coroutines = new List<IEnumerator>();
-            
+
             // オブジェクトを生成
             foreach (var actorData in actorDataList)
             {
                 if (actors.All(actor => actorData.InstanceId != actor.ActorData.InstanceId))
                 {
-                    coroutines.Add(CreatePlayerActors(actorData));
+                    coroutines.Add(CreatePlayerActor(actorData));
                 }
             }
 
@@ -107,7 +107,7 @@ namespace AloneSpace
             currentCoroutine = null;
         }
 
-        IEnumerator CreatePlayerActors(ActorData actorData)
+        IEnumerator CreatePlayerActor(ActorData actorData)
         {
             yield return Actor.CreateActor(
                 actorData,

@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public class ActorFeedback
+    public interface IGameObjectHandler
     {
     }
 }

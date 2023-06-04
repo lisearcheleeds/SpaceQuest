@@ -18,6 +18,6 @@ namespace AloneSpace
         public float ReloadRemainTime { get; set; }
         public int ResourceIndex { get; set; }
 
-        public List<WeaponEffectData> WeaponEffectDataList { get; set; } = new List<WeaponEffectData>();
+        public List<WeaponEventEffectData> WeaponEffectDataList { get; set; } = new List<WeaponEventEffectData>();
     }
 }

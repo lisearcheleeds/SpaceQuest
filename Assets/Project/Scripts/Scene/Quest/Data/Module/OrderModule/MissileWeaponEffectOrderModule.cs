@@ -5,12 +5,12 @@ namespace AloneSpace
 {
     public class MissileWeaponEffectOrderModule : IOrderModule
     {
-        MissileWeaponEffectData effectData;
+        MissileWeaponEventEffectData eventEffectData;
         bool isFirstUpdate;
 
-        public MissileWeaponEffectOrderModule(MissileWeaponEffectData missileWeaponEffectData)
+        public MissileWeaponEffectOrderModule(MissileWeaponEventEffectData missileWeaponEventEffectData)
         {
-            this.effectData = missileWeaponEffectData;
+            this.eventEffectData = missileWeaponEventEffectData;
         }
 
         public void ActivateModule()
@@ -29,33 +29,33 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.VO.LaunchSpeed * deltaTime);
+                eventEffectData.MovingModule.SetMovementVelocity(eventEffectData.Rotation * Vector3.forward * eventEffectData.VO.LaunchSpeed * deltaTime);
             }
 
-            effectData.CurrentLifeTime += deltaTime;
-            if (effectData.CurrentLifeTime > effectData.LifeTime || effectData.CollisionData.IsCollided)
+            eventEffectData.CurrentLifeTime += deltaTime;
+            if (eventEffectData.CurrentLifeTime > eventEffectData.LifeTime)
             {
-                effectData.IsAlive = false;
-                effectData.DeactivateModules();
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                eventEffectData.IsAlive = false;
+                eventEffectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(eventEffectData);
                 return;
             }
 
-            var targetDirection = (effectData.TargetData.Position - effectData.Position).normalized;
-            var currentDirection = effectData.Rotation * Vector3.forward;
-            if (effectData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
+            var targetDirection = (eventEffectData.TargetData.Position - eventEffectData.Position).normalized;
+            var currentDirection = eventEffectData.Rotation * Vector3.forward;
+            if (eventEffectData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
             {
                 // ターゲットが移動する場合は移動先に回転
                 var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                     targetMovingModuleHolder.MovingModule.MovementVelocity,
-                    effectData.TargetData.Position,
-                    effectData.Rotation * Vector3.forward * effectData.VO.Speed * deltaTime,
-                    effectData.Position);
+                    eventEffectData.TargetData.Position,
+                    eventEffectData.Rotation * Vector3.forward * eventEffectData.VO.Speed * deltaTime,
+                    eventEffectData.Position);
 
                 if (catchUpToDirection.HasValue)
                 {
-                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.VO.Speed * deltaTime);
-                    effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+                    eventEffectData.MovingModule.SetMovementVelocity(currentDirection * eventEffectData.VO.Speed * deltaTime);
+                    eventEffectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
                 }
                 else
                 {
@@ -64,8 +64,8 @@ namespace AloneSpace
             }
             else
             {
-                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.VO.Speed * deltaTime);
-                effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+                eventEffectData.MovingModule.SetMovementVelocity(currentDirection * eventEffectData.VO.Speed * deltaTime);
+                eventEffectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
             }
         }
     }

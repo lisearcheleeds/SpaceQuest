@@ -4839,7 +4839,6 @@ GameObject:
   - component: {fileID: 5860490698834711721}
   - component: {fileID: 5860490698834711724}
   - component: {fileID: 5860490698834711723}
-  - component: {fileID: 5860490698834711722}
   m_Layer: 16
   m_Name: Sun
   m_TagString: Untagged
@@ -4912,19 +4911,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5860490698834711722
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860490698834711720}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5860490699045332113
 GameObject:
   m_ObjectHideFlags: 0
@@ -4936,7 +4922,6 @@ GameObject:
   - component: {fileID: 5860490699045332114}
   - component: {fileID: 5860490699045332117}
   - component: {fileID: 5860490699045332116}
-  - component: {fileID: 5860490699045332115}
   m_Layer: 16
   m_Name: Planet
   m_TagString: Untagged
@@ -5009,19 +4994,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5860490699045332115
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860490699045332113}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5860490699050146357
 GameObject:
   m_ObjectHideFlags: 0
@@ -14758,7 +14730,6 @@ GameObject:
   - component: {fileID: 5860490699377509865}
   - component: {fileID: 5860490699377509868}
   - component: {fileID: 5860490699377509867}
-  - component: {fileID: 5860490699377509866}
   m_Layer: 16
   m_Name: Planet
   m_TagString: Untagged
@@ -14831,19 +14802,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5860490699377509866
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860490699377509864}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5860490699389504174
 GameObject:
   m_ObjectHideFlags: 0
@@ -19782,7 +19740,6 @@ GameObject:
   - component: {fileID: 5860490700392449039}
   - component: {fileID: 5860490700392449026}
   - component: {fileID: 5860490700392449025}
-  - component: {fileID: 5860490700392449024}
   m_Layer: 16
   m_Name: Planet
   m_TagString: Untagged
@@ -19855,19 +19812,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5860490700392449024
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860490700392449038}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5860490700507022396
 GameObject:
   m_ObjectHideFlags: 0
@@ -19879,7 +19823,6 @@ GameObject:
   - component: {fileID: 5860490700507022397}
   - component: {fileID: 5860490700507022384}
   - component: {fileID: 5860490700507022399}
-  - component: {fileID: 5860490700507022398}
   m_Layer: 16
   m_Name: Planet
   m_TagString: Untagged
@@ -19952,16 +19895,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5860490700507022398
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5860490700507022396}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

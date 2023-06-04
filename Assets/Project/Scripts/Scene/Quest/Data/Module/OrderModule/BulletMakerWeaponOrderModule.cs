@@ -140,13 +140,13 @@ namespace AloneSpace
 
         IPositionData GetOutputPosition()
         {
-            if (weaponData.WeaponFeedback == null)
+            if (weaponData.WeaponGameObjectHandler == null)
             {
                 return weaponData.WeaponHolder;
             }
 
-            var outputIndex = weaponData.WeaponStateData.ResourceIndex % weaponData.WeaponFeedback.OutputPositionData.Length;
-            return weaponData.WeaponFeedback.OutputPositionData[outputIndex];
+            var outputIndex = weaponData.WeaponStateData.ResourceIndex % weaponData.WeaponGameObjectHandler.OutputPositionData.Length;
+            return weaponData.WeaponGameObjectHandler.OutputPositionData[outputIndex];
         }
     }
 }

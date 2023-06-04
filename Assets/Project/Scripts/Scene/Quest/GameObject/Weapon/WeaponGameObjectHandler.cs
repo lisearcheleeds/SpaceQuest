@@ -1,10 +1,10 @@
 ﻿namespace AloneSpace
 {
-    public class WeaponFeedback
+    public class WeaponGameObjectHandler : IGameObjectHandler
     {
         public IPositionData[] OutputPositionData { get; }
 
-        public WeaponFeedback(IPositionData[] outputPositionData)
+        public WeaponGameObjectHandler(IPositionData[] outputPositionData)
         {
             OutputPositionData = outputPositionData;
         }

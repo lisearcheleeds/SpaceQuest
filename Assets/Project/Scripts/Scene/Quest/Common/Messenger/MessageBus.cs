@@ -20,6 +20,8 @@
         public MessageBusDefine.UnRegisterOrderModule UnRegisterOrderModule { get; } = new MessageBusDefine.UnRegisterOrderModule();
         public MessageBusDefine.RegisterThinkModule RegisterThinkModule { get; } = new MessageBusDefine.RegisterThinkModule();
         public MessageBusDefine.UnRegisterThinkModule UnRegisterThinkModule { get; } = new MessageBusDefine.UnRegisterThinkModule();
+        public MessageBusDefine.RegisterCollisionEventModule RegisterCollisionEventModule { get; } = new MessageBusDefine.RegisterCollisionEventModule();
+        public MessageBusDefine.UnRegisterCollisionEventModule UnRegisterCollisionEventModule { get; } = new MessageBusDefine.UnRegisterCollisionEventModule();
         public MessageBusDefine.RegisterCollisionEffectReceiverModuleModule RegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.RegisterCollisionEffectReceiverModuleModule();
         public MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule UnRegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule();
         public MessageBusDefine.RegisterCollisionEffectSenderModuleModule RegisterCollisionEffectSenderModule { get; } = new MessageBusDefine.RegisterCollisionEffectSenderModuleModule();
@@ -37,7 +39,8 @@
         public MessageBusDefine.SetUserArea SetUserArea { get; } = new MessageBusDefine.SetUserArea();
 
         // イベント通知
-        public MessageBusDefine.NoticeCollisionEffectData NoticeCollisionEffectData { get; } = new MessageBusDefine.NoticeCollisionEffectData();
+        public MessageBusDefine.NoticeCollisionEventData NoticeCollisionEventData { get; } = new MessageBusDefine.NoticeCollisionEventData();
+        public MessageBusDefine.NoticeCollisionEventEffectData NoticeCollisionEventEffectData { get; } = new MessageBusDefine.NoticeCollisionEventEffectData();
 
         // UI
         public MessageBusDefine.UserInputSwitchMap UserInputSwitchMap { get; } = new MessageBusDefine.UserInputSwitchMap();

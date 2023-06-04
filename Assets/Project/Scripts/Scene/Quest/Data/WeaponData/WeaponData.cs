@@ -19,7 +19,7 @@ namespace AloneSpace
         public ActorData WeaponHolder { get; }
         public int WeaponIndex { get; }
 
-        public WeaponFeedback WeaponFeedback { get; private set; }
+        public WeaponGameObjectHandler WeaponGameObjectHandler { get; private set; }
 
         public abstract void ActivateModules();
         public abstract void DeactivateModules();
@@ -45,19 +45,19 @@ namespace AloneSpace
             WeaponStateData.IsExecute = isExecute;
         }
 
-        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        public void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
         {
-            WeaponStateData.WeaponEffectDataList.Add(weaponEffectData);
+            WeaponStateData.WeaponEffectDataList.Add(weaponEventEffectData);
         }
 
-        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        public void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
         {
-            WeaponStateData.WeaponEffectDataList.Remove(weaponEffectData);
+            WeaponStateData.WeaponEffectDataList.Remove(weaponEventEffectData);
         }
 
-        public void SetWeaponFeedback(WeaponFeedback weaponFeedback)
+        public void SetWeaponGameObjectHandler(WeaponGameObjectHandler weaponGameObjectHandler)
         {
-            WeaponFeedback = weaponFeedback;
+            WeaponGameObjectHandler = weaponGameObjectHandler;
         }
 
         public abstract void Reload();

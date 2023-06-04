@@ -34,7 +34,7 @@ namespace AloneSpace
 
         public void DestroyActor()
         {
-            ActorData.SetActorFeedback(null);
+            ActorData.SetActorGameObjectHandler(null);
             Destroy(gameObject);
         }
 
@@ -49,8 +49,7 @@ namespace AloneSpace
             yield return AssetLoader.LoadAsync<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
             {
                 actor.ActorModel = Instantiate(prefab, actor.transform, false);
-                actor.ActorModel.Init(actorData);
-                actorData.SetActorFeedback(actor.ActorModel.GetActorFeedback());
+                actorData.SetActorGameObjectHandler(actor.ActorModel.Init(actorData, actorData.CollisionEventModule));
             });
         }
 
@@ -63,9 +62,8 @@ namespace AloneSpace
                     data.WeaponSpecVO.AssetPath,
                     prefab =>
                     {
-                        actor.WeaponModels[data.WeaponIndex] = Instantiate(prefab, actor.ActorModel.WeaponHolder[data.WeaponIndex], false);
-                        actor.WeaponModels[data.WeaponIndex].Init(data.WeaponHolder);
-                        data.SetWeaponFeedback(actor.WeaponModels[data.WeaponIndex].GetWeaponFeedback());
+                        actor.WeaponModels[data.WeaponIndex] = Instantiate(prefab, actor.ActorData.ActorGameObjectHandler.WeaponHolders[data.WeaponIndex], false);
+                        data.SetWeaponGameObjectHandler(actor.WeaponModels[data.WeaponIndex].Init(data.WeaponHolder));
                     });
             }).ToArray());
         }
