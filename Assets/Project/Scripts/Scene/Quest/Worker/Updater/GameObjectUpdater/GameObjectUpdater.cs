@@ -11,7 +11,7 @@ namespace AloneSpace
         ActorObjectUpdater actorObjectUpdater = new ActorObjectUpdater();
         WeaponEffectObjectUpdater weaponEffectObjectUpdater = new WeaponEffectObjectUpdater();
         InteractObjectUpdater interactObjectUpdater = new InteractObjectUpdater();
-        
+
         public void Initialize(QuestData questData)
         {
             actorObjectUpdater.Initialize(questData, variableParent, this);

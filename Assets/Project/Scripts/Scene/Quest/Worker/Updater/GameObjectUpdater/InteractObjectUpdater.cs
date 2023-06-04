@@ -8,21 +8,21 @@ namespace AloneSpace
     public class InteractObjectUpdater
     {
         QuestData questData;
-        
+
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
         Transform variableParent;
         AreaData currentAreaData;
         bool isDirty;
-        
+
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
-        
+
         public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
         {
             this.questData = questData;
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
-            
+
             MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
@@ -38,7 +38,7 @@ namespace AloneSpace
             if (isDirty)
             {
                 isDirty = false;
-            
+
                 if (currentCoroutine != null)
                 {
                     coroutineWorker.StopCoroutine(currentCoroutine);
@@ -46,13 +46,13 @@ namespace AloneSpace
 
                 currentCoroutine = coroutineWorker.StartCoroutine(Refresh());
             }
-            
+
             foreach (var interactionObject in interactionObjectList)
             {
                 interactionObject.OnLateUpdate();
             }
         }
-        
+
         void SetUserArea(AreaData areaData)
         {
             this.currentAreaData = areaData;
@@ -67,12 +67,12 @@ namespace AloneSpace
                 interactionObject.Release();
                 interactionObjectList.Remove(interactionObject);
             }
-            
+
             if (currentAreaData == null)
             {
                 yield break;
             }
-            
+
             // 必要なオブジェクトを作る
             var waitCount = 0;
             var waitCounter = 0;
@@ -106,8 +106,7 @@ namespace AloneSpace
                 assetPathVO,
                 interactionObject =>
                 {
-                    interactionObject.SetInteractData(interactData); 
-                    interactionObject.IsActive = true;
+                    interactionObject.SetInteractData(interactData);
                     interactionObject.transform.SetParent(variableParent, false);
                     interactionObjectList.Add(interactionObject);
                     onComplete();

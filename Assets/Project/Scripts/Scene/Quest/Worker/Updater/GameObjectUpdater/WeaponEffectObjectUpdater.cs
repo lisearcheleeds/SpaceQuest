@@ -93,7 +93,6 @@ namespace AloneSpace
                 assetPathVO,
                 weaponEffect =>
                 {
-                    weaponEffect.IsActive = true;
                     weaponEffect.transform.SetParent(variableParent, false);
                     weaponEffect.Init(weaponEffectData);
                     weaponEffectList.Add(weaponEffect);

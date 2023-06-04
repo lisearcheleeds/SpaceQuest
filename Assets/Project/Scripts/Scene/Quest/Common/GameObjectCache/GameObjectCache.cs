@@ -45,7 +45,7 @@ namespace AloneSpace
 
         public void ReleaseCache(CacheableGameObject usedAsset)
         {
-            usedAsset.IsActive = false;
+            usedAsset.IsUse = false;
             usedAsset.transform.SetParent(cacheRoot, false);
         }
 
@@ -62,7 +62,7 @@ namespace AloneSpace
                 assetCache[path.Path] = new List<CacheableGameObject>();
             }
 
-            var cache = (T)assetCache[path.Path].FirstOrDefault(target => !target.IsActive);
+            var cache = (T)assetCache[path.Path].FirstOrDefault(target => !target.IsUse);
 
             if (cache == null)
             {
@@ -70,6 +70,7 @@ namespace AloneSpace
                 assetCache[path.Path].Add(cache);
             }
 
+            cache.IsUse = true;
             onLoad(cache);
         }
     }

@@ -4,7 +4,7 @@ namespace AloneSpace
 {
     public abstract class CacheableGameObject : MonoBehaviour
     {
-        public bool IsActive
+        public bool IsUse
         {
             get => gameObject.activeSelf;
             set => gameObject.SetActive(value);
@@ -14,11 +14,6 @@ namespace AloneSpace
         {
             GameObjectCache.Instance.ReleaseCache(this);
             OnRelease();
-        }
-
-        public void SetParent(Transform parent)
-        {
-            transform.SetParent(parent, false);
         }
 
         protected abstract void OnRelease();
