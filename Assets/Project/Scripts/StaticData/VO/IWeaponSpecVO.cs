@@ -9,7 +9,7 @@
         int Id { get; }
 
         // AssetPath
-        public IAssetPath AssetPath { get; }
+        public AssetPath Path { get; }
 
         // 武器タイプ
         WeaponType WeaponType { get; }

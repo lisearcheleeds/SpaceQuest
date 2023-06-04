@@ -6,7 +6,7 @@
     public class ActorSpecVO
     {
         public int Id => row.Id;
-        public IAssetPath Path => row;
+        public AssetPath Path => row.Path;
 
         // 耐久
         public float EnduranceValue => row.EnduranceValue;

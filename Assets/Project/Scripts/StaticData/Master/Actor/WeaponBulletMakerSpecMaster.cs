@@ -4,13 +4,13 @@ namespace AloneSpace
 {
     public class WeaponBulletMakerSpecMaster
     {
-        public class Row : IAssetPath, IWeaponSpecMaster
+        public class Row : IWeaponSpecMaster
         {
             // ID
             public int Id { get; }
 
             // Path
-            public string Path { get; }
+            public AssetPath Path { get; }
 
             // 射出物アセット
             public int WeaponEffectAssetId { get; }
@@ -32,7 +32,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
-                string path,
+                AssetPath path,
                 int weaponEffectAssetId,
                 int weaponResourceMaxCount,
                 float reloadTime,
@@ -76,8 +76,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "Prefab/Weapon/BulletMaker1", 1, 60, 3.0f, 0.05f, 1000.0f, 200.0f),
-                new Row(2, "Prefab/Weapon/BulletMaker2", 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
+                new Row(1, new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f, 200.0f),
+                new Row(2, new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
             };
         }
     }

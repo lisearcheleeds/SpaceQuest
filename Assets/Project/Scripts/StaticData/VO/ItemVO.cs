@@ -12,7 +12,8 @@ namespace AloneSpace
         public int Width => itemMaster.Width;
         public int Height => itemMaster.Height;
         public int? MaxAmount => itemMaster.MaxAmount;
-        public IVariableInventoryAsset ImageAsset => itemMaster.ImageAsset;
+        public IVariableInventoryAsset ImageAsset => null;
+        // public IVariableInventoryAsset ImageAsset => itemMaster.ImageAsset;
 
         public ItemType[] ItemTypes { get; }
         public IItemExclusiveVO[] ItemExclusiveVOs { get; }
@@ -22,7 +23,7 @@ namespace AloneSpace
         public ItemVO(int itemId)
         {
             itemMaster = ItemMaster.Instance.Get(itemId);
-            
+
             var exclusiveItemMasters = ItemExclusiveMaster.Instance.GetRange(itemId);
             ItemTypes = exclusiveItemMasters.Select(x => x.ItemType).ToArray();
             ItemExclusiveVOs = exclusiveItemMasters.Select(master =>
@@ -37,7 +38,7 @@ namespace AloneSpace
                         return  new ItemExclusiveTacticsVO(ItemExclusiveTacticsMaster.Instance.Get(master.ItemExclusiveId));
                     default:
                         return (IItemExclusiveVO) null;
-                }                
+                }
             }).Where(vo => vo != null).ToArray();
         }
     }

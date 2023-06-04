@@ -17,10 +17,10 @@ namespace AloneSpace
         public AreaInteractData SpawnPoint { get; }
         public List<IInteractData> InteractData { get; } = new List<IInteractData>();
 
-        public IAssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;
-        
+        public AssetPath PlacedObjectAsset => areaPresetVO.PlacedObjectAsset;
+
         AreaPresetVO areaPresetVO;
-        
+
         public AreaData(AreaPresetVO areaPresetVO)
         {
             this.areaPresetVO = areaPresetVO;
@@ -43,7 +43,7 @@ namespace AloneSpace
         {
             InteractData.Add(interactData);
         }
-        
+
         public void RemoveInteractData(IInteractData interactData)
         {
             InteractData.Remove(interactData);

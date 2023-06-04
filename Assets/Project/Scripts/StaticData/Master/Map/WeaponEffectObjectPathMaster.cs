@@ -4,12 +4,12 @@ namespace AloneSpace
 {
     public class WeaponEffectObjectPathMaster
     {
-        public class Row : ICacheableGameObjectPath
+        public class Row
         {
             public int Id { get; }
-            public string Path { get; }
+            public CacheableGameObjectPath Path { get; }
 
-            public Row(int id, string path)
+            public Row(int id, CacheableGameObjectPath path)
             {
                 Id = id;
                 Path = path;
@@ -41,9 +41,9 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(1, "Prefab/WeaponEffect/Projectile/Bullet/Bullet"),
-                new Row(2, "Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"),
-                new Row(3, "Prefab/WeaponEffect/Projectile/Missile/ShortMissile"),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Bullet/Bullet")),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile")),
+                new Row(3, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile")),
             };
         }
     }

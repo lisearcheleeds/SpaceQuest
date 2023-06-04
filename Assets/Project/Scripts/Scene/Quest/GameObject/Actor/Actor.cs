@@ -59,7 +59,7 @@ namespace AloneSpace
             yield return new ParallelCoroutine(weaponData.Values.Select(data =>
             {
                 return AssetLoader.LoadAsync<WeaponModel>(
-                    data.WeaponSpecVO.AssetPath,
+                    data.WeaponSpecVO.Path,
                     prefab =>
                     {
                         actor.WeaponModels[data.WeaponIndex] = Instantiate(prefab, actor.ActorData.ActorGameObjectHandler.WeaponHolders[data.WeaponIndex], false);

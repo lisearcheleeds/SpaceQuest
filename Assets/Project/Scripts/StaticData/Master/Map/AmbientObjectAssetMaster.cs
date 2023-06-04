@@ -4,12 +4,12 @@ namespace AloneSpace
 {
     public class AmbientObjectAssetMaster
     {
-        public class Row : IAssetPath
+        public class Row
         {
             public int Id { get; }
-            public string Path { get; }
+            public AssetPath Path { get; }
 
-            public Row(int id, string path)
+            public Row(int id, AssetPath path)
             {
                 Id = id;
                 Path = path;
@@ -41,7 +41,7 @@ namespace AloneSpace
         {
             record = new[]
             {
-                new Row(0, "Prefab/AreaAmbientObjects/Default"),
+                new Row(0, new AssetPath("Prefab/AreaAmbientObjects/Default")),
             };
         }
     }

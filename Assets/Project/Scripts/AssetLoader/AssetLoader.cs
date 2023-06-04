@@ -6,12 +6,12 @@ namespace AloneSpace
 {
     public static class AssetLoader
     {
-        public static IEnumerator LoadAsync(IAssetPath path, Action<GameObject> onLoad)
+        public static IEnumerator LoadAsync(AssetPath path, Action<GameObject> onLoad)
         {
             yield return LoadAsync<GameObject>(path, onLoad);
         }
-        
-        public static IEnumerator LoadAsync<T>(IAssetPath path, Action<T> onLoad) where T : UnityEngine.Object
+
+        public static IEnumerator LoadAsync<T>(AssetPath path, Action<T> onLoad) where T : UnityEngine.Object
         {
             var loader = Resources.LoadAsync<T>(path.Path);
             yield return loader;

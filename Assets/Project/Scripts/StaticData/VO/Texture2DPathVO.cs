@@ -1,14 +1,12 @@
 ﻿namespace AloneSpace
 {
-    public class Texture2DPathVO : IAssetPath
+    public class Texture2DPathVO : AssetPath
     {
         public int Id { get; }
-        public string Path { get; }
 
-        public Texture2DPathVO(int id, string path)
+        public Texture2DPathVO(int id, string path) : base(path)
         {
             Id = id;
-            Path = path;
         }
     }
 }

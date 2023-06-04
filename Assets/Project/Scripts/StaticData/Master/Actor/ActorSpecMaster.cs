@@ -4,10 +4,10 @@ namespace AloneSpace
 {
     public class ActorSpecMaster
     {
-        public class Row : IAssetPath
+        public class Row
         {
             public int Id { get; }
-            public string Path { get; }
+            public AssetPath Path { get; }
 
             // 耐久
             public float EnduranceValue { get; }
@@ -41,7 +41,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
-                string path,
+                AssetPath path,
                 float enduranceValue,
                 float shieldValue,
                 float shieldTruncateValue,
@@ -111,7 +111,7 @@ namespace AloneSpace
             {
                 new Row(
                     id: 1,
-                    path: "Prefab/Actor/Krishna",
+                    path: new AssetPath("Prefab/Actor/Krishna"),
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -132,7 +132,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 2,
-                    path: "Prefab/Actor/Arjuna",
+                    path: new AssetPath("Prefab/Actor/Arjuna"),
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -153,7 +153,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 3,
-                    path: "Prefab/Actor/Ilis",
+                    path: new AssetPath("Prefab/Actor/Ilis"),
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -174,7 +174,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 4,
-                    path: "Prefab/Actor/Transporter",
+                    path: new AssetPath("Prefab/Actor/Transporter"),
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -195,7 +195,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 5,
-                    path: "Prefab/Actor/WarShip",
+                    path: new AssetPath("Prefab/Actor/WarShip"),
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,

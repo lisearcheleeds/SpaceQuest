@@ -12,18 +12,18 @@ namespace AloneSpace
     public class StarSystemData
     {
         public Vector3 SpaceSize => starSystemPresetVO.SpaceSize;
-        public IAssetPath AmbientObjectAsset => starSystemPresetVO.AmbientObjectAsset;
+        public AssetPath AmbientObjectAsset => starSystemPresetVO.AmbientObjectAsset;
 
         public AreaData[] AreaData { get; }
 
         // SpaceSize.magnitudeは適当なスケール
         public float AreaScale;
-        
+
         StarSystemPresetVO starSystemPresetVO;
 
         public StarSystemData(StarSystemPresetVO starSystemPresetVO)
         {
-            this.starSystemPresetVO = starSystemPresetVO;            
+            this.starSystemPresetVO = starSystemPresetVO;
             AreaData = starSystemPresetVO.AreaPresetVOs
                 .Select(areaPresetVO => new AreaData(areaPresetVO))
                 .ToArray();
@@ -43,7 +43,7 @@ namespace AloneSpace
 
             AreaScale = SpaceSize.magnitude;
         }
-        
+
         public AreaData GetAreaData(int areaId)
         {
             return AreaData.First(x => x.AreaId == areaId);

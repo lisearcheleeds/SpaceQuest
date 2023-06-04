@@ -6,15 +6,15 @@ namespace AloneSpace
     public class StarSystemPresetVO
     {
         public int StarSystemId => starSystemMaster.Id;
-        public IAssetPath AmbientObjectAsset { get; }
-        
+        public AssetPath AmbientObjectAsset { get; }
+
         public AreaPresetVO[] AreaPresetVOs { get; }
-        
+
         public Vector3 SpaceSize { get; }
         public Vector3 Position { get; }
-        
+
         StarSystemMaster.Row starSystemMaster;
-        
+
         public StarSystemPresetVO(int id)
         {
             starSystemMaster = StarSystemMaster.Instance.Get(id);
@@ -23,8 +23,8 @@ namespace AloneSpace
             AreaPresetVOs = areaMasters
                 .Select(areaMaster => new AreaPresetVO(starSystemMaster, areaMaster))
                 .ToArray();
-            AmbientObjectAsset = AmbientObjectAssetMaster.Instance.Get(starSystemMaster.AmbientObjectAssetId);
-            
+            AmbientObjectAsset = AmbientObjectAssetMaster.Instance.Get(starSystemMaster.AmbientObjectAssetId).Path;
+
             SpaceSize = new Vector3(starSystemMaster.SpaceSizeX, starSystemMaster.SpaceSizeY, starSystemMaster.SpaceSizeZ);
         }
     }

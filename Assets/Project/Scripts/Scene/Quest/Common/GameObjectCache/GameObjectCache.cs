@@ -16,7 +16,7 @@ namespace AloneSpace
 
         Transform cacheRoot;
 
-        public void GetAsset<T>(ICacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
+        public void GetAsset<T>(CacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
         {
             if (loadCache.ContainsKey(path.Path))
             {
@@ -55,7 +55,7 @@ namespace AloneSpace
             cacheRoot.SetParent(transform, false);
         }
 
-        void GetAssetCache<T>(ICacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
+        void GetAssetCache<T>(CacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
         {
             if (!assetCache.ContainsKey(path.Path))
             {

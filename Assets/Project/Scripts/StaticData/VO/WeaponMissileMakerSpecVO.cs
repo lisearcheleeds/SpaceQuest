@@ -6,13 +6,13 @@
         public int Id => row.Id;
 
         // AssetPath
-        public IAssetPath AssetPath => row;
+        public AssetPath Path => row.Path;
 
         // 武器タイプ
         public WeaponType WeaponType => WeaponType.MissileLauncher;
 
         // 射出物アセット
-        public ICacheableGameObjectPath ProjectilePath => projectilePath;
+        public CacheableGameObjectPath ProjectilePath => projectilePath.Path;
 
         // 一度に使用するリソース
         public int WeaponResourceMaxCount => row.WeaponResourceMaxCount;

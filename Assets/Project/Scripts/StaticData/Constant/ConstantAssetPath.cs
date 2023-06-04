@@ -4,10 +4,10 @@ namespace AloneSpace
 {
     public static class ConstantAssetPath
     {
-        public static ConstantAssetPathVO ActorPathVO = new ConstantAssetPathVO("Prefab/Actor/Actor");
+        public static CacheableGameObjectPath ActorPathVO = new CacheableGameObjectPath("Prefab/Actor/Actor");
 
-        public static ConstantAssetPathVO ItemObjectPathVO = new ConstantAssetPathVO("Prefab/AreaObjects/ItemObject");
-        public static ConstantAssetPathVO BrokenActorObjectPathVO = new ConstantAssetPathVO("Prefab/AreaObjects/BrokenActorObject");
-        public static ConstantAssetPathVO InventoryObjectPathVO = new ConstantAssetPathVO("Prefab/AreaObjects/InventoryObject");
+        public static CacheableGameObjectPath ItemObjectPathVO = new CacheableGameObjectPath("Prefab/AreaObjects/ItemObject");
+        public static CacheableGameObjectPath BrokenActorObjectPathVO = new CacheableGameObjectPath("Prefab/AreaObjects/BrokenActorObject");
+        public static CacheableGameObjectPath InventoryObjectPathVO = new CacheableGameObjectPath("Prefab/AreaObjects/InventoryObject");
     }
 }
