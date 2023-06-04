@@ -4,16 +4,26 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class CollisionEventModule : IModule<List<CollisionEventModule>>, ICollisionEventModule
+    public abstract class CollisionEventModule : IModule<HashSet<CollisionEventModule>>, ICollisionEventModule
     {
         public Guid InstanceId { get; }
+
+        public ICollisionEventModuleHolder Holder { get; }
+        public CollisionEventEffectSenderModule Sender => senderHolder?.CollisionEventEffectSenderModule;
+        public CollisionEventEffectReceiverModule Receiver => receiverHolder?.CollisionEventEffectReceiverModule;
 
         // 簡易当たり判定
         public CollisionShape SimplyCollisionShape { get; }
 
-        public CollisionEventModule(Guid instanceId, CollisionShape collisionShape)
+        ICollisionEventEffectSenderModuleHolder senderHolder;
+        ICollisionEventEffectReceiverModuleHolder receiverHolder;
+
+        protected CollisionEventModule(Guid instanceId, ICollisionEventModuleHolder holder, CollisionShape collisionShape)
         {
             InstanceId = instanceId;
+            Holder = holder;
+            senderHolder = holder as ICollisionEventEffectSenderModuleHolder;
+            receiverHolder = holder as ICollisionEventEffectReceiverModuleHolder;
             SimplyCollisionShape = collisionShape;
         }
 
@@ -27,8 +37,6 @@ namespace AloneSpace
             MessageBus.Instance.UnRegisterCollisionEventModule.Broadcast(this);
         }
 
-        public void OnUpdateModule(float deltaTime, List<CollisionEventModule> ourCollisions)
-        {
-        }
+        public abstract void OnUpdateModule(float deltaTime, HashSet<CollisionEventModule> theirCollisions);
     }
 }

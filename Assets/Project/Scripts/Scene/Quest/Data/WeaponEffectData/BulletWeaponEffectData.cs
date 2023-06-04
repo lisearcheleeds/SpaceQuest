@@ -1,9 +1,10 @@
-﻿using AloneSpace;
+﻿using System.Collections.Generic;
+using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
-    public class BulletWeaponEventEffectData : WeaponEventEffectData
+    public class BulletWeaponEffectData : WeaponEffectData
     {
         public override IOrderModule OrderModule { get; protected set; }
         public override CollisionEventModule CollisionEventModule { get; protected set; }
@@ -14,7 +15,6 @@ namespace AloneSpace
         public float LifeTime { get; set; }
         public float CurrentLifeTime { get; set; }
 
-
         /// <summary>
         /// 武器の使用
         /// </summary>
@@ -23,7 +23,7 @@ namespace AloneSpace
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public BulletWeaponEventEffectData(
+        public BulletWeaponEffectData(
             WeaponData weaponData,
             WeaponBulletMakerSpecVO vo,
             IPositionData fromPositionData,
@@ -46,9 +46,9 @@ namespace AloneSpace
 
             OrderModule = new BulletWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEventModule = new CollisionEventModule(InstanceId, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventModule = new BulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
-            CollisionEventEffectSenderModule = new CollisionEventEffectSenderModule(InstanceId);
+            CollisionEventEffectSenderModule = new BulletWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
         }
 

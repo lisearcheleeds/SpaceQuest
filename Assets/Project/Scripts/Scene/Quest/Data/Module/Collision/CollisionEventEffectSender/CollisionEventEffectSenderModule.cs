@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace AloneSpace
 {
-    public class CollisionEventEffectSenderModule : IModule<List<CollisionEventEffectReceiverModule>>, ICollisionEventModule
+    public abstract class CollisionEventEffectSenderModule : IModule<HashSet<CollisionEventEffectReceiverModule>>, ICollisionEventModule
     {
         public Guid InstanceId { get; }
 
-        public CollisionEventEffectSenderModule(Guid instanceId)
+        protected CollisionEventEffectSenderModule(Guid instanceId)
         {
             InstanceId = instanceId;
         }
@@ -22,8 +22,6 @@ namespace AloneSpace
             MessageBus.Instance.UnRegisterCollisionEffectSenderModule.Broadcast(this);
         }
 
-        public void OnUpdateModule(float deltaTime, List<CollisionEventEffectReceiverModule> receiverList)
-        {
-        }
+        public abstract void OnUpdateModule(float deltaTime, HashSet<CollisionEventEffectReceiverModule> receiverList);
     }
 }

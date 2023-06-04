@@ -36,33 +36,33 @@ namespace AloneSpace
         /// <param name="targetData">ターゲット</param>
         void CreateWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
         {
-            WeaponEventEffectData weaponEventEffectData = weaponData.WeaponSpecVO switch
+            WeaponEffectData weaponEffectData = weaponData.WeaponSpecVO switch
             {
-                WeaponBulletMakerSpecVO parameterVO => new BulletWeaponEventEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
-                WeaponMissileMakerSpecVO parameterVO => new MissileWeaponEventEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                WeaponBulletMakerSpecVO parameterVO => new BulletWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                WeaponMissileMakerSpecVO parameterVO => new MissileWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
                 _ => throw new NotImplementedException(),
             };
 
-            questData.WeaponEffectData.Add(weaponEventEffectData.InstanceId, weaponEventEffectData);
+            questData.WeaponEffectData.Add(weaponEffectData.InstanceId, weaponEffectData);
 
-            MessageBus.Instance.AddWeaponEffectData.Broadcast(weaponEventEffectData);
+            MessageBus.Instance.AddWeaponEffectData.Broadcast(weaponEffectData);
         }
 
-        void ReleaseWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        void ReleaseWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            questData.WeaponEffectData.Remove(weaponEventEffectData.InstanceId);
+            questData.WeaponEffectData.Remove(weaponEffectData.InstanceId);
 
-            MessageBus.Instance.RemoveWeaponEffectData.Broadcast(weaponEventEffectData);
+            MessageBus.Instance.RemoveWeaponEffectData.Broadcast(weaponEffectData);
         }
 
-        void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            questData.ActorData[weaponEventEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEventEffectData);
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
         }
 
-        void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            questData.ActorData[weaponEventEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEventEffectData);
+            questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
     }
 }

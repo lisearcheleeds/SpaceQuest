@@ -40,7 +40,7 @@ namespace AloneSpace
             orderModuleUpdater.Initialize(questData);
             movingModuleUpdater.Initialize(questData);
 
-            collisionChecker.Initialize();
+            // collisionChecker.Initialize();
 
             collisionEventModuleUpdater.Initialize(questData);
 
@@ -63,7 +63,7 @@ namespace AloneSpace
             orderModuleUpdater.Finalize();
             movingModuleUpdater.Finalize();
 
-            collisionChecker.Finalize();
+            // collisionChecker.Finalize();
 
             collisionEventModuleUpdater.Finalize();
 
@@ -81,7 +81,7 @@ namespace AloneSpace
             orderModuleUpdater.UpdateModule(deltaTime);
             movingModuleUpdater.UpdateModule(deltaTime);
 
-            collisionChecker.OnLateUpdate();
+            // collisionChecker.OnLateUpdate();
 
             collisionEventModuleUpdater.UpdateModule(deltaTime);
 

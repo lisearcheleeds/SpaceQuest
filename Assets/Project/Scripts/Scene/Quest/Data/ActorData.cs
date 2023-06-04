@@ -65,8 +65,8 @@ namespace AloneSpace
             MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);
             OrderModule = new ActorOrderModule(this);
-            CollisionEventModule = new CollisionEventModule(InstanceId, new CollisionShapeSphere(this, 3.0f));
-            CollisionEventEffectReceiverModule = new CollisionEventEffectReceiverModule(InstanceId);
+            CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
+            CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
 
             MovingModule.ActivateModule();
             ThinkModule.ActivateModule();
@@ -220,14 +220,14 @@ namespace AloneSpace
             ActorStateData.CurrentWeaponGroupIndex = weaponGroupIndex;
         }
 
-        public void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            WeaponData[weaponEventEffectData.WeaponData.InstanceId].AddWeaponEffectData(weaponEventEffectData);
+            WeaponData[weaponEffectData.WeaponData.InstanceId].AddWeaponEffectData(weaponEffectData);
         }
 
-        public void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            WeaponData[weaponEventEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEventEffectData);
+            WeaponData[weaponEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
 
         public void SetMainTarget(IPositionData target)

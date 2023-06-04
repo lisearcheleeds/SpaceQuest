@@ -6,13 +6,13 @@ namespace AloneSpace
     {
         [SerializeField] TrailRenderer trailRenderer;
 
-        MissileWeaponEventEffectData missileData;
+        MissileWeaponEffectData missileData;
 
-        public override WeaponEventEffectData WeaponEventEffectData => missileData;
+        public override WeaponEffectData WeaponEffectData => missileData;
 
-        protected override void OnInit(WeaponEventEffectData weaponEventEffectData)
+        protected override void OnInit(WeaponEffectData weaponEffectData)
         {
-            missileData = (MissileWeaponEventEffectData) weaponEventEffectData;
+            missileData = (MissileWeaponEffectData) weaponEffectData;
 
             transform.position = missileData.Position;
             transform.rotation = missileData.Rotation;

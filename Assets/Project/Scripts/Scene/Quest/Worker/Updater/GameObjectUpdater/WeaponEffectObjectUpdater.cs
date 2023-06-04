@@ -64,7 +64,7 @@ namespace AloneSpace
             foreach (var weaponEffect in weaponEffectList.ToArray())
             {
                 // 違うエリアだったり、questData.WeaponEffectDataに存在しないweaponEffectであれば削除
-                if (!questData.WeaponEffectData.ContainsKey(weaponEffect.WeaponEventEffectData.InstanceId) || weaponEffect.WeaponEventEffectData.AreaId != observeAreaData?.AreaId)
+                if (!questData.WeaponEffectData.ContainsKey(weaponEffect.WeaponEffectData.InstanceId) || weaponEffect.WeaponEffectData.AreaId != observeAreaData?.AreaId)
                 {
                     ReleaseWeaponEffect(weaponEffect);
                 }
@@ -73,16 +73,16 @@ namespace AloneSpace
             foreach (var weaponEffectData in questData.WeaponEffectData.Values)
             {
                 // 同じエリアでweaponEffectListに存在しないweaponEffectDataであれば生成
-                if (weaponEffectData.AreaId == observeAreaData?.AreaId && weaponEffectList.All(weaponEffect => weaponEffect.WeaponEventEffectData.InstanceId != weaponEffectData.InstanceId))
+                if (weaponEffectData.AreaId == observeAreaData?.AreaId && weaponEffectList.All(weaponEffect => weaponEffect.WeaponEffectData.InstanceId != weaponEffectData.InstanceId))
                 {
                     CreateWeaponEffect(weaponEffectData);
                 }
             }
         }
 
-        void CreateWeaponEffect(WeaponEventEffectData weaponEventEffectData)
+        void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
-            var assetPathVO = weaponEventEffectData.WeaponData.WeaponSpecVO switch
+            var assetPathVO = weaponEffectData.WeaponData.WeaponSpecVO switch
             {
                 WeaponBulletMakerSpecVO bullet => bullet.ProjectilePath,
                 WeaponMissileMakerSpecVO missile => missile.ProjectilePath,
@@ -95,7 +95,7 @@ namespace AloneSpace
                 {
                     weaponEffect.IsActive = true;
                     weaponEffect.transform.SetParent(variableParent, false);
-                    weaponEffect.Init(weaponEventEffectData);
+                    weaponEffect.Init(weaponEffectData);
                     weaponEffectList.Add(weaponEffect);
                 });
         }
@@ -111,19 +111,19 @@ namespace AloneSpace
             isDirty = true;
         }
 
-        void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            if (weaponEventEffectData.AreaId == observeAreaData?.AreaId)
+            if (weaponEffectData.AreaId == observeAreaData?.AreaId)
             {
-                CreateWeaponEffect(weaponEventEffectData);
+                CreateWeaponEffect(weaponEffectData);
             }
         }
 
-        void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            if (weaponEventEffectData.AreaId == observeAreaData?.AreaId)
+            if (weaponEffectData.AreaId == observeAreaData?.AreaId)
             {
-                ReleaseWeaponEffect(weaponEffectList.First(x => x.WeaponEventEffectData.InstanceId == weaponEventEffectData.InstanceId));
+                ReleaseWeaponEffect(weaponEffectList.First(x => x.WeaponEffectData.InstanceId == weaponEffectData.InstanceId));
             }
         }
     }

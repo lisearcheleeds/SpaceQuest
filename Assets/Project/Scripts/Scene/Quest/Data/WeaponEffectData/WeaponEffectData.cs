@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
 {
-    public abstract class WeaponEventEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
+    public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }
 
@@ -29,7 +30,9 @@ namespace AloneSpace
 
         public WeaponEffectGameObjectHandler WeaponEffectGameObjectHandler { get; private set; }
 
-        protected WeaponEventEffectData(WeaponData weaponData, IPositionData targetData)
+        public HashSet<CollisionEventEffectReceiverModule> CollisionEventEffectReceiverModuleList { get; private set; } = new HashSet<CollisionEventEffectReceiverModule>();
+
+        protected WeaponEffectData(WeaponData weaponData, IPositionData targetData)
         {
             InstanceId = Guid.NewGuid();
             WeaponData = weaponData;
@@ -68,6 +71,11 @@ namespace AloneSpace
         public void SetWeaponEffectGameObjectHandler(WeaponEffectGameObjectHandler weaponEffectGameObjectHandler)
         {
             WeaponEffectGameObjectHandler = weaponEffectGameObjectHandler;
+        }
+
+        public void AddCollisionEventEffectList(IEnumerable<CollisionEventEffectReceiverModule> receiverList)
+        {
+            CollisionEventEffectReceiverModuleList.UnionWith(receiverList);
         }
     }
 }

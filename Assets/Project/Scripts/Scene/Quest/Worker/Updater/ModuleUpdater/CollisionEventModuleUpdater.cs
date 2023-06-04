@@ -13,7 +13,7 @@ namespace AloneSpace
         List<CollisionEventModule> registerModuleList = new List<CollisionEventModule>();
         List<CollisionEventModule> unRegisterModuleList = new List<CollisionEventModule>();
 
-        Dictionary<Guid, List<CollisionEventModule>> collideCurrentFrame = new Dictionary<Guid, List<CollisionEventModule>>();
+        Dictionary<Guid, HashSet<CollisionEventModule>> collideCurrentFrame = new Dictionary<Guid, HashSet<CollisionEventModule>>();
 
         public void Initialize(QuestData questData)
         {
@@ -49,9 +49,9 @@ namespace AloneSpace
 
             foreach (var module in moduleList)
             {
-                if (!collideCurrentFrame.ContainsKey(module.InstanceId))
+                if (!collideCurrentFrame.ContainsKey(module.InstanceId) || collideCurrentFrame[module.InstanceId].Count == 0)
                 {
-                    collideCurrentFrame[module.InstanceId] = new List<CollisionEventModule>();
+                    continue;
                 }
 
                 module.OnUpdateModule(deltaTime, collideCurrentFrame[module.InstanceId]);
@@ -81,7 +81,7 @@ namespace AloneSpace
             // それぞれ左右入れ替わって2回登録されるが、Distinctしても同じ計算量だと思うのでそのまま管理する
             if (!collideCurrentFrame.ContainsKey(collisionEventData.CollisionEventModule1.InstanceId))
             {
-                collideCurrentFrame[collisionEventData.CollisionEventModule1.InstanceId] = new List<CollisionEventModule>();
+                collideCurrentFrame[collisionEventData.CollisionEventModule1.InstanceId] = new HashSet<CollisionEventModule>();
             }
 
             collideCurrentFrame[collisionEventData.CollisionEventModule1.InstanceId].Add(collisionEventData.CollisionEventModule2);

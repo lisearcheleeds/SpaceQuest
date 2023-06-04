@@ -45,14 +45,14 @@ namespace AloneSpace
             WeaponStateData.IsExecute = isExecute;
         }
 
-        public void AddWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        public void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            WeaponStateData.WeaponEffectDataList.Add(weaponEventEffectData);
+            WeaponStateData.WeaponEffectDataList.Add(weaponEffectData);
         }
 
-        public void RemoveWeaponEffectData(WeaponEventEffectData weaponEventEffectData)
+        public void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            WeaponStateData.WeaponEffectDataList.Remove(weaponEventEffectData);
+            WeaponStateData.WeaponEffectDataList.Remove(weaponEffectData);
         }
 
         public void SetWeaponGameObjectHandler(WeaponGameObjectHandler weaponGameObjectHandler)

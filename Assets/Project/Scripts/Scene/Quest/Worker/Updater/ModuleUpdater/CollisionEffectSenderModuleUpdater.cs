@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -12,7 +13,7 @@ namespace AloneSpace
         List<CollisionEventEffectSenderModule> registerModuleList = new List<CollisionEventEffectSenderModule>();
         List<CollisionEventEffectSenderModule> unRegisterModuleList = new List<CollisionEventEffectSenderModule>();
 
-        Dictionary<Guid, List<CollisionEventEffectReceiverModule>> collideReceiverThisFrame = new Dictionary<Guid, List<CollisionEventEffectReceiverModule>>();
+        Dictionary<Guid, HashSet<CollisionEventEffectReceiverModule>> collideReceiverThisFrame = new Dictionary<Guid, HashSet<CollisionEventEffectReceiverModule>>();
 
         public void Initialize(QuestData questData)
         {
@@ -46,9 +47,9 @@ namespace AloneSpace
 
             foreach (var module in moduleList)
             {
-                if (!collideReceiverThisFrame.ContainsKey(module.InstanceId))
+                if (!collideReceiverThisFrame.ContainsKey(module.InstanceId) || collideReceiverThisFrame[module.InstanceId].Count == 0)
                 {
-                    collideReceiverThisFrame[module.InstanceId] = new List<CollisionEventEffectReceiverModule>();
+                    continue;
                 }
 
                 module.OnUpdateModule(deltaTime, collideReceiverThisFrame[module.InstanceId]);
@@ -78,7 +79,7 @@ namespace AloneSpace
             // Senderごとに管理する
             if (!collideReceiverThisFrame.ContainsKey(effectData.SenderModule.InstanceId))
             {
-                collideReceiverThisFrame[effectData.SenderModule.InstanceId] = new List<CollisionEventEffectReceiverModule>();
+                collideReceiverThisFrame[effectData.SenderModule.InstanceId] = new HashSet<CollisionEventEffectReceiverModule>();
             }
 
             collideReceiverThisFrame[effectData.SenderModule.InstanceId].Add(effectData.ReceiverModule);

@@ -6,12 +6,12 @@ namespace AloneSpace
 {
     public class BulletWeaponEffectOrderModule : IOrderModule
     {
-        BulletWeaponEventEffectData eventEffectData;
+        BulletWeaponEffectData effectData;
         bool isFirstUpdate;
 
-        public BulletWeaponEffectOrderModule(BulletWeaponEventEffectData bulletWeaponEventEffectData)
+        public BulletWeaponEffectOrderModule(BulletWeaponEffectData bulletWeaponEffectData)
         {
-            this.eventEffectData = bulletWeaponEventEffectData;
+            this.effectData = bulletWeaponEffectData;
             isFirstUpdate = true;
         }
 
@@ -31,16 +31,25 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / eventEffectData.VO.Accuracy);
-                eventEffectData.MovingModule.SetMovementVelocity(eventEffectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * eventEffectData.VO.Speed * deltaTime);
+                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.VO.Accuracy);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.VO.Speed * deltaTime);
             }
 
-            eventEffectData.CurrentLifeTime += deltaTime;
-            if (eventEffectData.CurrentLifeTime > eventEffectData.LifeTime)
+            effectData.CurrentLifeTime += deltaTime;
+            if (effectData.CurrentLifeTime > effectData.LifeTime)
             {
-                eventEffectData.IsAlive = false;
-                eventEffectData.DeactivateModules();
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(eventEffectData);
+                effectData.IsAlive = false;
+                effectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                return;
+            }
+
+            if (effectData.CollisionEventEffectReceiverModuleList.Count != 0)
+            {
+                effectData.IsAlive = false;
+                effectData.DeactivateModules();
+                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                return;
             }
         }
     }

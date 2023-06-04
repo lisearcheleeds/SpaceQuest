@@ -4,13 +4,13 @@ namespace AloneSpace
 {
     public class Bullet : WeaponEffect
     {
-        BulletWeaponEventEffectData bulletData;
+        BulletWeaponEffectData bulletData;
 
-        public override WeaponEventEffectData WeaponEventEffectData => bulletData;
+        public override WeaponEffectData WeaponEffectData => bulletData;
 
-        protected override void OnInit(WeaponEventEffectData weaponEventEffectData)
+        protected override void OnInit(WeaponEffectData weaponEffectData)
         {
-            bulletData = (BulletWeaponEventEffectData) weaponEventEffectData;
+            bulletData = (BulletWeaponEffectData) weaponEffectData;
 
             transform.position = bulletData.Position;
             transform.rotation = bulletData.Rotation;

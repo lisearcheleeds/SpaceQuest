@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
-    public class MissileWeaponEventEffectData : WeaponEventEffectData
+    public class MissileWeaponEffectData : WeaponEffectData
     {
         public override IOrderModule OrderModule { get; protected set; }
         public override CollisionEventModule CollisionEventModule { get; protected set; }
@@ -21,7 +22,7 @@ namespace AloneSpace
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public MissileWeaponEventEffectData(
+        public MissileWeaponEffectData(
             WeaponData weaponData,
             WeaponMissileMakerSpecVO vo,
             IPositionData fromPositionData,
@@ -44,9 +45,9 @@ namespace AloneSpace
 
             OrderModule = new MissileWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEventModule = new CollisionEventModule(InstanceId, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventModule = new MissileWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
-            CollisionEventEffectSenderModule = new CollisionEventEffectSenderModule(InstanceId);
+            CollisionEventEffectSenderModule = new MissileWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
         }
 
