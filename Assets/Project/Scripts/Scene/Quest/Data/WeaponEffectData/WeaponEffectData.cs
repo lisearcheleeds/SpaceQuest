@@ -15,6 +15,8 @@ namespace AloneSpace
         public abstract CollisionEventModule CollisionEventModule { get; protected set; }
         public abstract CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
+        public abstract IWeaponEffectSpecVO WeaponEffectSpecVO { get; }
+
         // IPlayer
         public Guid PlayerInstanceId => WeaponData.WeaponHolder.PlayerInstanceId;
 

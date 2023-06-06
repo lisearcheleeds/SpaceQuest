@@ -1,6 +1,4 @@
-﻿using AloneSpace;
-
-namespace AloneSpace
+﻿namespace AloneSpace
 {
     public class WeaponBulletMakerSpecVO : IWeaponSpecVO
     {
@@ -9,12 +7,6 @@ namespace AloneSpace
 
         // AssetPath
         public AssetPath Path => row.Path;
-
-        // 武器タイプ
-        public WeaponType WeaponType => WeaponType.Rifle;
-
-        // 射出物アセット
-        public CacheableGameObjectPath ProjectilePath => projectilePath.Path;
 
         // マガジンサイズ
         public int WeaponResourceMaxCount => row.WeaponResourceMaxCount;
@@ -28,11 +20,9 @@ namespace AloneSpace
         // 精度 1.0f以上
         public float Accuracy => row.Accuracy;
 
-        // 速度
-        public float Speed => row.Speed;
+        public BulletWeaponEffectSpecVO BulletWeaponEffectSpecVO { get; }
 
         WeaponBulletMakerSpecMaster.Row row;
-        WeaponEffectObjectPathMaster.Row projectilePath;
 
         public WeaponBulletMakerSpecVO(int id) : this(id, WeaponBulletMakerQualityType.Default, 1.0f)
         {
@@ -41,7 +31,7 @@ namespace AloneSpace
         public WeaponBulletMakerSpecVO(int id, WeaponBulletMakerQualityType qualityType, float quality)
         {
             row = WeaponBulletMakerSpecMaster.Instance.Get(id);
-            projectilePath = WeaponEffectObjectPathMaster.Instance.Get(row.WeaponEffectAssetId);
+            BulletWeaponEffectSpecVO = new BulletWeaponEffectSpecVO(row.BulletWeaponEffectSpecMasterId);
         }
     }
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class BulletWeaponEffectData : WeaponEffectData
+    public class ExplosionWeaponEffectData : WeaponEffectData
     {
         public override IOrderModule OrderModule { get; protected set; }
         public override CollisionEventModule CollisionEventModule { get; protected set; }
         public override CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
         public override IWeaponEffectSpecVO WeaponEffectSpecVO => SpecVO;
-        public BulletWeaponEffectSpecVO SpecVO { get; }
+        public ExplosionWeaponEffectSpecVO SpecVO { get; }
 
         public float LifeTime { get; set; }
         public float CurrentLifeTime { get; set; }
@@ -24,8 +24,8 @@ namespace AloneSpace
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        public BulletWeaponEffectData(
-            BulletWeaponEffectSpecVO specVO,
+        public ExplosionWeaponEffectData(
+            ExplosionWeaponEffectSpecVO specVO,
             WeaponData weaponData,
             IPositionData fromPositionData,
             Quaternion rotation,
@@ -45,12 +45,14 @@ namespace AloneSpace
         {
             base.ActivateModules();
 
-            OrderModule = new BulletWeaponEffectOrderModule(this);
+            /*
+            OrderModule = new ExplosionWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEventModule = new BulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventModule = new ExplosionWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
-            CollisionEventEffectSenderModule = new BulletWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
+            CollisionEventEffectSenderModule = new ExplosionWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
+            */
         }
 
         public override void DeactivateModules()

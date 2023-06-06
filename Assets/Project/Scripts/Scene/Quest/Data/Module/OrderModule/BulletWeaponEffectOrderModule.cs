@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
 
 namespace AloneSpace
 {
@@ -31,8 +29,7 @@ namespace AloneSpace
             {
                 isFirstUpdate = false;
 
-                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / effectData.VO.Accuracy);
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * (Vector3.forward + accuracyRandomVector).normalized * effectData.VO.Speed * deltaTime);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed * deltaTime);
             }
 
             effectData.CurrentLifeTime += deltaTime;

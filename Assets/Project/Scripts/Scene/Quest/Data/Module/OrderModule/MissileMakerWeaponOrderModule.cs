@@ -101,6 +101,7 @@ namespace AloneSpace
                 var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
 
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                    weaponData.VO.MissileWeaponEffectSpecVO,
                     weaponData,
                     outputPosition,
                     rotation,

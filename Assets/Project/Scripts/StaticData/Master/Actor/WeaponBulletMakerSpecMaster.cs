@@ -12,8 +12,8 @@ namespace AloneSpace
             // Path
             public AssetPath Path { get; }
 
-            // 射出物アセット
-            public int WeaponEffectAssetId { get; }
+            // WeaponEffect
+            public int BulletWeaponEffectSpecMasterId { get; }
 
             // マガジンサイズ
             public int WeaponResourceMaxCount { get; }
@@ -27,27 +27,22 @@ namespace AloneSpace
             // 精度(0.0 ~ 1.0f)
             public float Accuracy { get; }
 
-            // 速度
-            public float Speed { get; }
-
             public Row(
                 int id,
                 AssetPath path,
-                int weaponEffectAssetId,
+                int bulletWeaponEffectSpecMasterId,
                 int weaponResourceMaxCount,
                 float reloadTime,
                 float fireRate,
-                float accuracy,
-                float speed)
+                float accuracy)
             {
                 Id = id;
                 Path = path;
-                WeaponEffectAssetId = weaponEffectAssetId;
+                BulletWeaponEffectSpecMasterId = bulletWeaponEffectSpecMasterId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
                 FireRate = fireRate;
                 Accuracy = accuracy;
-                Speed = speed;
             }
         }
 
@@ -76,8 +71,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f, 200.0f),
-                new Row(2, new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 200.0f),
+                new Row(1, new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f),
+                new Row(2, new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f),
             };
         }
     }

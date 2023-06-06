@@ -30,16 +30,18 @@ namespace AloneSpace
         /// <summary>
         /// 武器の使用
         /// </summary>
+        /// <param name="weaponEffectSpecVO">武器データ</param>
         /// <param name="weaponData">武器データ</param>
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
-        void CreateWeaponEffectData(WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
+        void CreateWeaponEffectData(IWeaponEffectSpecVO weaponEffectSpecVO, WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
         {
-            WeaponEffectData weaponEffectData = weaponData.WeaponSpecVO switch
+            WeaponEffectData weaponEffectData = weaponEffectSpecVO switch
             {
-                WeaponBulletMakerSpecVO parameterVO => new BulletWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
-                WeaponMissileMakerSpecVO parameterVO => new MissileWeaponEffectData(weaponData, parameterVO, fromPositionData, rotation, targetData),
+                BulletWeaponEffectSpecVO specVO => new BulletWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
+                MissileWeaponEffectSpecVO specVO => new MissileWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
+                ExplosionWeaponEffectSpecVO specVO => new ExplosionWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
                 _ => throw new NotImplementedException(),
             };
 

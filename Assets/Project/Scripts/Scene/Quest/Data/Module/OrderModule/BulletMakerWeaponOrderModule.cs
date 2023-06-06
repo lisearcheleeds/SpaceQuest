@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
@@ -80,7 +81,7 @@ namespace AloneSpace
                     var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                         targetMovingModuleHolder.MovingModule.MovementVelocity,
                         targetPosition,
-                        targetDirection * weaponData.VO.Speed * deltaTime,
+                        targetDirection * weaponData.VO.BulletWeaponEffectSpecVO.Speed * deltaTime,
                         outputPosition.Position);
 
                     if (catchUpToDirection.HasValue)
@@ -127,7 +128,11 @@ namespace AloneSpace
                 var outputPosition = GetOutputPosition();
                 var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
 
+                var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / weaponData.VO.Accuracy);
+                rotation = rotation * Quaternion.LookRotation(Vector3.forward + accuracyRandomVector);
+
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                    weaponData.VO.BulletWeaponEffectSpecVO,
                     weaponData,
                     outputPosition,
                     rotation,

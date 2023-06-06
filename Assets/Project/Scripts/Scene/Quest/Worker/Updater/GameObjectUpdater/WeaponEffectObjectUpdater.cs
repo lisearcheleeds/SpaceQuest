@@ -82,15 +82,8 @@ namespace AloneSpace
 
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
-            var assetPathVO = weaponEffectData.WeaponData.WeaponSpecVO switch
-            {
-                WeaponBulletMakerSpecVO bullet => bullet.ProjectilePath,
-                WeaponMissileMakerSpecVO missile => missile.ProjectilePath,
-                _ => throw new NotImplementedException(),
-            };
-
             GameObjectCache.Instance.GetAsset<WeaponEffect>(
-                assetPathVO,
+                weaponEffectData.WeaponEffectSpecVO.Path,
                 weaponEffect =>
                 {
                     weaponEffect.transform.SetParent(variableParent, false);

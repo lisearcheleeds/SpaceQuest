@@ -9,7 +9,8 @@ namespace AloneSpace
         public override CollisionEventModule CollisionEventModule { get; protected set; }
         public override CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
-        public WeaponMissileMakerSpecVO VO { get; }
+        public override IWeaponEffectSpecVO WeaponEffectSpecVO => SpecVO;
+        public MissileWeaponEffectSpecVO SpecVO { get; }
 
         public float LifeTime { get; set; }
         public float CurrentLifeTime { get; set; }
@@ -17,14 +18,14 @@ namespace AloneSpace
         /// <summary>
         /// 武器の使用
         /// </summary>
-        /// <param name="weaponData">武器データ</param>
-        /// <param name="vorameterVO">武器Paramデータ</param>
+        /// <param name="specVO">WeaponEffectデータ</param>
+        /// <param name="weaponData">weaponData</param>
         /// <param name="fromPositionData">発射位置</param>
         /// <param name="rotation">方向</param>
         /// <param name="targetData">ターゲット</param>
         public MissileWeaponEffectData(
+            MissileWeaponEffectSpecVO specVO,
             WeaponData weaponData,
-            WeaponMissileMakerSpecVO vo,
             IPositionData fromPositionData,
             Quaternion rotation,
             IPositionData targetData) : base(weaponData, targetData)
@@ -33,7 +34,7 @@ namespace AloneSpace
             Position = fromPositionData.Position;
             Rotation = rotation;
 
-            VO = vo;
+            SpecVO = specVO;
 
             LifeTime = 8.0f;
             CurrentLifeTime = 0;

@@ -14,7 +14,7 @@ namespace AloneSpace
             public AssetPath Path { get; }
 
             // 射出物アセット
-            public int WeaponEffectAssetId { get; }
+            public int MissileWeaponEffectSpecMasterId { get; }
 
             // 一度に使用するリソース
             public int WeaponResourceMaxCount { get; }
@@ -22,50 +22,23 @@ namespace AloneSpace
             // リロード時間
             public float ReloadTime { get; }
 
-            // 発射時の方向X
-            // 設定されているとtargetの位置にかかわらずshooterの方向とBaseAngleに依存して射出する
-            public float? LaunchAngleX { get; }
-
-            // 発射時の方向Y
-            // 設定されているとtargetの位置にかかわらずshooterの方向とBaseAngleに依存して射出する
-            public float? LaunchAngleY { get; }
-
-            // 射出初速
-            public float LaunchSpeed { get; }
-
-            // 速度
-            public float Speed { get; }
-
             // 連続射出時間
             public float FireRate { get; }
-
-            // 照準最大距離（弾の性能に寄って下がる）
-            public float SightingMaxRange { get; }
 
             public Row(
                 int id,
                 AssetPath path,
-                int weaponEffectAssetId,
+                int missileWeaponEffectSpecMasterId,
                 int weaponResourceMaxCount,
                 float reloadTime,
-                float? launchAngleX,
-                float? launchAngleY,
-                float launchSpeed,
-                float speed,
-                float fireRate,
-                float sightingMaxRange)
+                float fireRate)
             {
                 Id = id;
                 Path = path;
-                WeaponEffectAssetId = weaponEffectAssetId;
+                MissileWeaponEffectSpecMasterId = missileWeaponEffectSpecMasterId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
-                LaunchAngleX = launchAngleX;
-                LaunchAngleY = launchAngleY;
-                LaunchSpeed = launchSpeed;
-                Speed = speed;
                 FireRate = fireRate;
-                SightingMaxRange = sightingMaxRange;
             }
         }
 
@@ -94,8 +67,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 2, 4, 5.0f, null, null, 1.0f, 80.0f, 0.15f, 500),
-                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 3, 12, 4.0f, null, null, 1.0f, 80.0f, 0.1f, 500),
+                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 4, 5.0f, 0.15f),
+                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 12, 4.0f, 0.1f),
             };
         }
     }
