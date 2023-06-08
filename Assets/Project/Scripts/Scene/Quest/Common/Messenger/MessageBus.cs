@@ -1,12 +1,8 @@
 ﻿namespace AloneSpace
 {
     /// <summary>
-    /// 命名規則
-    /// UpdateOrder~ Idを指定した設定の更新
-    /// Register~ 登録
-    /// UnRegister~ 登録解除
-    /// UtilGet~ 問い合わせ
-    /// UserInput~ ユーザー入力(ボタン/キーボード/マウス)
+    /// Pub/Sub
+    /// MessagePipeに乗り換え予定
     /// </summary>
     public class MessageBus : MonoSingleton<MessageBus>
     {
