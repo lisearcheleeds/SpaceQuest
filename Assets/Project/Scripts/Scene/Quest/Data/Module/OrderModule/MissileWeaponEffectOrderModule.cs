@@ -43,6 +43,13 @@ namespace AloneSpace
 
             if (effectData.CollisionEventEffectReceiverModuleList.Count != 0)
             {
+                MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                    ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
+                    effectData.WeaponData,
+                    effectData,
+                    effectData.Rotation,
+                    effectData.WeaponData.WeaponStateData.TargetData);
+
                 effectData.IsAlive = false;
                 effectData.DeactivateModules();
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);

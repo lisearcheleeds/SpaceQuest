@@ -31,7 +31,7 @@ namespace AloneSpace
                 }
             }
 
-            var isReloadable = actorData.WeaponData.Values.All(v => v.WeaponStateData.IsReloadable);
+            var isReloadable = actorData.WeaponData.Values.All(v => !v.WeaponStateData.IsExecutable && v.WeaponStateData.IsReloadable);
             if (isReloadable)
             {
                 foreach (var weaponData in actorData.WeaponData.Values)

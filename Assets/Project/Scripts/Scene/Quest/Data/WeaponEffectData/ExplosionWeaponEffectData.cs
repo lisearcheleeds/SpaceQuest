@@ -45,14 +45,12 @@ namespace AloneSpace
         {
             base.ActivateModules();
 
-            /*
             OrderModule = new ExplosionWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
             CollisionEventModule = new ExplosionWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
             CollisionEventEffectSenderModule = new ExplosionWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
-            */
         }
 
         public override void DeactivateModules()

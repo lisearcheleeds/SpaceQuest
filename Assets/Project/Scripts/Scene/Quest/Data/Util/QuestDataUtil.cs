@@ -32,7 +32,7 @@ namespace AloneSpace
 
             if (actorId == 5)
             {
-                weapons = Enumerable.Range(0, 10).Select(_ => new WeaponBulletMakerSpecVO(1)).ToArray();
+                weapons = Enumerable.Range(0, 10).Select(index => index < 8 ? (IWeaponSpecVO)new WeaponBulletMakerSpecVO(1) : new WeaponMissileMakerSpecVO(2)).ToArray();
             }
             else
             {

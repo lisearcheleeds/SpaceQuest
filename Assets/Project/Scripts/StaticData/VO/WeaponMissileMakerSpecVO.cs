@@ -19,6 +19,8 @@
 
         public MissileWeaponEffectSpecVO MissileWeaponEffectSpecVO { get; }
 
+        public ExplosionWeaponEffectSpecVO ExplosionWeaponEffectSpecVO { get; }
+
         WeaponMissileMakerSpecMaster.Row row;
 
         public WeaponMissileMakerSpecVO(int id) : this(id, WeaponMissileMakerQualityType.Default, 1.0f)
@@ -29,6 +31,7 @@
         {
             row = WeaponMissileMakerSpecMaster.Instance.Get(id);
             MissileWeaponEffectSpecVO = new MissileWeaponEffectSpecVO(row.MissileWeaponEffectSpecMasterId);
+            ExplosionWeaponEffectSpecVO = new ExplosionWeaponEffectSpecVO(row.ExplosionWeaponEffectSpecMasterId);
         }
     }
 }
