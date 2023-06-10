@@ -5,7 +5,6 @@ namespace AloneSpace
     public class QuestManager : MonoBehaviour
     {
         [SerializeField] UserUpdater userUpdater;
-        [SerializeField] DebugViewer debugViewer;
 
         QuestDataMessageResolver questDataMessageResolver = new QuestDataMessageResolver();
         InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
@@ -28,7 +27,6 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             userUpdater.Initialize(questData);
-            debugViewer.Initialize(questData);
 
             questDataMessageResolver.Initialize(questData);
             interactMessageResolver.Initialize(questData);
@@ -51,7 +49,6 @@ namespace AloneSpace
         public void FinishQuest()
         {
             userUpdater.Finalize();
-            debugViewer.Finalize();
 
             questDataMessageResolver.Finalize();
             interactMessageResolver.Finalize();

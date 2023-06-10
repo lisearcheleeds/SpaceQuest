@@ -7726,7 +7726,6 @@ GameObject:
   - component: {fileID: 2073653834}
   - component: {fileID: 2073653836}
   - component: {fileID: 2073653838}
-  - component: {fileID: 2073653837}
   m_Layer: 0
   m_Name: EntryPoint
   m_TagString: Untagged
@@ -7777,21 +7776,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   userUpdater: {fileID: 2073653838}
-  debugViewer: {fileID: 2073653837}
---- !u!114 &2073653837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2073653832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3217c44778f4fb69ffe926e1cd3f5ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerQuestDataView: []
-  areaDataView: []
 --- !u!114 &2073653838
 MonoBehaviour:
   m_ObjectHideFlags: 0
