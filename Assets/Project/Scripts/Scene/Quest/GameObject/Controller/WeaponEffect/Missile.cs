@@ -18,7 +18,7 @@ namespace AloneSpace
             transform.position = missileData.Position;
             transform.rotation = missileData.Rotation;
 
-            var weaponSpecVO = (GraphicMissileMakerSpecVO)missileData.WeaponData.WeaponSpecVO;
+            var weaponSpecVO = (WeaponMissileMakerSpecVO)missileData.WeaponData.WeaponSpecVO;
             missileGraphicEffectHandler = new MissileGraphicEffectHandler(new TransformPositionData(weaponEffectData, smokePos));
             MessageBus.Instance.SpawnGraphicEffect.Broadcast(weaponSpecVO.SmokeGraphicEffectSpecVO, missileGraphicEffectHandler);
         }
