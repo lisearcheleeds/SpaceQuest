@@ -26,7 +26,7 @@ namespace AloneSpace
                 {
                     if (weaponData.WeaponStateData.IsExecutable)
                     {
-                        MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, true);
+                        // MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, true);
                     }
                 }
             }

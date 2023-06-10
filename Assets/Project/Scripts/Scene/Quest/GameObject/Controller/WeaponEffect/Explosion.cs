@@ -12,16 +12,15 @@
 
             transform.position = explosionData.Position;
             transform.rotation = explosionData.Rotation;
+
+            var weaponSpecVO = (IExplosionGraphicEffectSpecVOHolder)explosionData.WeaponData.WeaponSpecVO;
+            MessageBus.Instance.SpawnGraphicEffect.Broadcast(weaponSpecVO.ExplosionGraphicEffectSpecVO, new ExplosionGraphicEffectHandler(explosionData));
         }
 
         public override void OnLateUpdate()
         {
             transform.position = explosionData.Position;
             transform.rotation = explosionData.Rotation;
-        }
-
-        protected override void OnRelease()
-        {
         }
     }
 }

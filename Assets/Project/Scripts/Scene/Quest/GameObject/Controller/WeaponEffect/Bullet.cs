@@ -21,9 +21,5 @@ namespace AloneSpace
             transform.position = bulletData.Position;
             transform.rotation = bulletData.Rotation;
         }
-
-        protected override void OnRelease()
-        {
-        }
     }
 }

@@ -113,6 +113,8 @@ namespace AloneSpace
         public class CreateWeaponEffectData : MessageBusBroadcaster<IWeaponEffectSpecVO, WeaponData, IPositionData, Quaternion, IPositionData>{}
         public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
 
+        public class SpawnGraphicEffect : MessageBusBroadcaster<GraphicEffectSpecVO, IGraphicEffectHandler>{}
+
         public class SetDirtyActorObjectList : MessageBusBroadcaster{}
         public class SetDirtyInteractObjectList : MessageBusBroadcaster{}
         public class SetDirtyWeaponEffectObjectList : MessageBusBroadcaster{}

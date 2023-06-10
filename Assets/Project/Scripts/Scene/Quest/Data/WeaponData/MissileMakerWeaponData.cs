@@ -12,12 +12,12 @@ namespace AloneSpace
         public override IWeaponSpecVO WeaponSpecVO => VO;
         public override WeaponStateData WeaponStateData { get; } = new MissileMakerWeaponStateData();
 
-        public WeaponMissileMakerSpecVO VO { get; }
+        public GraphicMissileMakerSpecVO VO { get; }
 
-        public MissileMakerWeaponData(WeaponMissileMakerSpecVO weaponMissileMakerSpecVO, ActorData actorData, int weaponIndex) : base(actorData, weaponIndex)
+        public MissileMakerWeaponData(GraphicMissileMakerSpecVO graphicMissileMakerSpecVO, ActorData actorData, int weaponIndex) : base(actorData, weaponIndex)
         {
             InstanceId = Guid.NewGuid();
-            VO = weaponMissileMakerSpecVO;
+            VO = graphicMissileMakerSpecVO;
 
             ActivateModules();
         }

@@ -84,7 +84,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
         }
 
-        public void OnLateUpdate()
+        public void OnLateUpdate(float deltaTime)
         {
             if (userData?.PlayerQuestData == null)
             {
@@ -92,7 +92,7 @@ namespace AloneSpace
             }
 
             uiManager.OnLateUpdate();
-            gameObjectUpdater.OnLateUpdate();
+            gameObjectUpdater.OnLateUpdate(deltaTime);
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate(userData);
 

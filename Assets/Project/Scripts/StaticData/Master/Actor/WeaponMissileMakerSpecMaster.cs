@@ -19,6 +19,12 @@ namespace AloneSpace
             // 爆発物アセット
             public int ExplosionWeaponEffectSpecMasterId { get; }
 
+            // 煙グラフィックアセット
+            public int SmokeGraphicEffectSpecMasterId { get; }
+
+            // 爆発グラフィックアセット
+            public int ExplosionGraphicEffectSpecMasterId { get; }
+
             // 一度に使用するリソース
             public int WeaponResourceMaxCount { get; }
 
@@ -33,6 +39,8 @@ namespace AloneSpace
                 AssetPath path,
                 int missileWeaponEffectSpecMasterId,
                 int explosionWeaponEffectSpecMasterId,
+                int smokeGraphicEffectSpecMasterId,
+                int explosionGraphicEffectSpecMasterId,
                 int weaponResourceMaxCount,
                 float reloadTime,
                 float fireRate)
@@ -41,6 +49,8 @@ namespace AloneSpace
                 Path = path;
                 MissileWeaponEffectSpecMasterId = missileWeaponEffectSpecMasterId;
                 ExplosionWeaponEffectSpecMasterId = explosionWeaponEffectSpecMasterId;
+                SmokeGraphicEffectSpecMasterId = smokeGraphicEffectSpecMasterId;
+                ExplosionGraphicEffectSpecMasterId = explosionGraphicEffectSpecMasterId;
                 WeaponResourceMaxCount = weaponResourceMaxCount;
                 ReloadTime = reloadTime;
                 FireRate = fireRate;
@@ -72,8 +82,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 4, 5.0f, 0.15f),
-                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 12, 4.0f, 0.1f),
+                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f),
+                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f),
             };
         }
     }

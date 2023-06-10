@@ -32,11 +32,11 @@ namespace AloneSpace
 
             if (actorId == 5)
             {
-                weapons = Enumerable.Range(0, 10).Select(index => index < 8 ? (IWeaponSpecVO)new WeaponBulletMakerSpecVO(1) : new WeaponMissileMakerSpecVO(2)).ToArray();
+                weapons = Enumerable.Range(0, 10).Select(index => index < 8 ? (IWeaponSpecVO)new WeaponBulletMakerSpecVO(1) : new GraphicMissileMakerSpecVO(2)).ToArray();
             }
             else
             {
-                weapons = new IWeaponSpecVO[] {new WeaponBulletMakerSpecVO(1), new WeaponBulletMakerSpecVO(1), new WeaponMissileMakerSpecVO(2)};
+                weapons = new IWeaponSpecVO[] {new WeaponBulletMakerSpecVO(1), new WeaponBulletMakerSpecVO(1), new GraphicMissileMakerSpecVO(2)};
             }
 
             var actorData = new ActorData(new ActorSpecVO(actorId), weapons, playerQuestData.InstanceId);

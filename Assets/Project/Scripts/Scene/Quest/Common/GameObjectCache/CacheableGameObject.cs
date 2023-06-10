@@ -16,6 +16,8 @@ namespace AloneSpace
             OnRelease();
         }
 
-        protected abstract void OnRelease();
+        protected virtual void OnRelease()
+        {
+        }
     }
 }

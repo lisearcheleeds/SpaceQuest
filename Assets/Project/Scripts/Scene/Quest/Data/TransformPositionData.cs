@@ -13,7 +13,7 @@ namespace AloneSpace
         public int? AreaId => original.AreaId;
         public Vector3 Position => transform.position;
         public Quaternion Rotation => transform.rotation;
-
+        
         public TransformPositionData(IPositionData original, Transform transform)
         {
             InstanceId = new Guid();

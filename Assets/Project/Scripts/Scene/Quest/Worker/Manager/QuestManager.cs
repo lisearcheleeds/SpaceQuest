@@ -75,7 +75,7 @@ namespace AloneSpace
         {
             var deltaTime = Time.deltaTime;
 
-            userUpdater.OnLateUpdate();
+            userUpdater.OnLateUpdate(deltaTime);
 
             thinkModuleUpdater.UpdateModule(deltaTime);
             orderModuleUpdater.UpdateModule(deltaTime);

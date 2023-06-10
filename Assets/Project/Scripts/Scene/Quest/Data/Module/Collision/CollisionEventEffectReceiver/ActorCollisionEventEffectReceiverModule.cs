@@ -15,7 +15,7 @@ namespace AloneSpace
 
         public override void OnUpdateModule(float deltaTime, HashSet<CollisionEventEffectSenderModule> senderList)
         {
-            Debug.Log("ダメージを受けた" + senderList.Count);
+            // Debug.Log("ダメージを受けた" + senderList.Count);
         }
     }
 }

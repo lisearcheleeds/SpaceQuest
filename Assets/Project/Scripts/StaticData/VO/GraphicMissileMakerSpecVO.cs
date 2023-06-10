@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public class WeaponMissileMakerSpecVO : IWeaponSpecVO
+    public class GraphicMissileMakerSpecVO : IWeaponSpecVO, IExplosionGraphicEffectSpecVOHolder
     {
         // ID
         public int Id => row.Id;
@@ -18,20 +18,23 @@
         public float FireRate => row.FireRate;
 
         public MissileWeaponEffectSpecVO MissileWeaponEffectSpecVO { get; }
-
         public ExplosionWeaponEffectSpecVO ExplosionWeaponEffectSpecVO { get; }
+        public GraphicEffectSpecVO SmokeGraphicEffectSpecVO { get; }
+        public GraphicEffectSpecVO ExplosionGraphicEffectSpecVO { get; }
 
         WeaponMissileMakerSpecMaster.Row row;
 
-        public WeaponMissileMakerSpecVO(int id) : this(id, WeaponMissileMakerQualityType.Default, 1.0f)
+        public GraphicMissileMakerSpecVO(int id) : this(id, WeaponMissileMakerQualityType.Default, 1.0f)
         {
         }
 
-        public WeaponMissileMakerSpecVO(int id, WeaponMissileMakerQualityType qualityType, float quality)
+        public GraphicMissileMakerSpecVO(int id, WeaponMissileMakerQualityType qualityType, float quality)
         {
             row = WeaponMissileMakerSpecMaster.Instance.Get(id);
             MissileWeaponEffectSpecVO = new MissileWeaponEffectSpecVO(row.MissileWeaponEffectSpecMasterId);
             ExplosionWeaponEffectSpecVO = new ExplosionWeaponEffectSpecVO(row.ExplosionWeaponEffectSpecMasterId);
+            SmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(row.SmokeGraphicEffectSpecMasterId);
+            ExplosionGraphicEffectSpecVO = new GraphicEffectSpecVO(row.ExplosionGraphicEffectSpecMasterId);
         }
     }
 }
