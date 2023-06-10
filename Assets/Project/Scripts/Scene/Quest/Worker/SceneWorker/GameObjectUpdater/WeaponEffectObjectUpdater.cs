@@ -10,18 +10,14 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        Transform variableParent;
-
         AreaData observeAreaData;
         bool isDirty;
 
         List<WeaponEffect> weaponEffectList = new List<WeaponEffect>();
 
-        public void Initialize(QuestData questData, Transform variableParent)
+        public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            this.variableParent = variableParent;
-
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
@@ -82,14 +78,12 @@ namespace AloneSpace
 
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
-            GameObjectCache.Instance.GetAsset<WeaponEffect>(
-                weaponEffectData.WeaponEffectSpecVO.Path,
-                weaponEffect =>
-                {
-                    weaponEffect.transform.SetParent(variableParent, false);
-                    weaponEffect.Init(weaponEffectData);
-                    weaponEffectList.Add(weaponEffect);
-                });
+            MessageBus.Instance.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
+            {
+                var weaponEffect = (WeaponEffect)c;
+                weaponEffect.Init(weaponEffectData);
+                weaponEffectList.Add(weaponEffect);
+            });
         }
 
         void ReleaseWeaponEffect(WeaponEffect weaponEffect)

@@ -11,16 +11,14 @@ namespace AloneSpace
 
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
-        Transform variableParent;
         AreaData currentAreaData;
         bool isDirty;
 
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
 
-        public void Initialize(QuestData questData, Transform variableParent, MonoBehaviour coroutineWorker)
+        public void Initialize(QuestData questData, MonoBehaviour coroutineWorker)
         {
             this.questData = questData;
-            this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
 
             MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
@@ -102,15 +100,13 @@ namespace AloneSpace
                 return;
             }
 
-            GameObjectCache.Instance.GetAsset<InteractionObject>(
-                assetPathVO,
-                interactionObject =>
-                {
-                    interactionObject.SetInteractData(interactData);
-                    interactionObject.transform.SetParent(variableParent, false);
-                    interactionObjectList.Add(interactionObject);
-                    onComplete();
-                });
+            MessageBus.Instance.GetCacheAsset.Broadcast(assetPathVO, c =>
+            {
+                var interactionObject = (InteractionObject)c;
+                interactionObject.SetInteractData(interactData);
+                interactionObjectList.Add(interactionObject);
+                onComplete();
+            });
         }
 
         void SetDirtyInteractObjectList()

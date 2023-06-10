@@ -6,16 +6,14 @@ namespace AloneSpace
     public class GraphicEffectObjectUpdater
     {
         QuestData questData;
-        Transform variableParent;
         AreaData observeAreaData;
         bool isReset;
 
         List<GraphicEffect> graphicEffectList = new List<GraphicEffect>();
 
-        public void Initialize(QuestData questData, Transform variableParent)
+        public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            this.variableParent = variableParent;
 
             MessageBus.Instance.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
@@ -63,14 +61,12 @@ namespace AloneSpace
                 return;
             }
 
-            GameObjectCache.Instance.GetAsset<GraphicEffect>(
-                graphicEffectSpecVO.Path,
-                graphicEffect =>
-                {
-                    graphicEffect.transform.SetParent(variableParent, false);
-                    graphicEffect.Init(graphicEffectSpecVO, graphicEffectHandler);
-                    graphicEffectList.Add(graphicEffect);
-                });
+            MessageBus.Instance.GetCacheAsset.Broadcast(graphicEffectSpecVO.Path, c =>
+            {
+                var graphicEffect = (GraphicEffect)c;
+                graphicEffect.Init(graphicEffectSpecVO, graphicEffectHandler);
+                graphicEffectList.Add(graphicEffect);
+            });
         }
     }
 }

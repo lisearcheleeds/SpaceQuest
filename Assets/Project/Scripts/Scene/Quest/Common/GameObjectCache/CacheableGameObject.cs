@@ -12,7 +12,7 @@ namespace AloneSpace
 
         public void Release()
         {
-            GameObjectCache.Instance.ReleaseCache(this);
+            MessageBus.Instance.ReleaseCacheAsset.Broadcast(this);
             OnRelease();
         }
 

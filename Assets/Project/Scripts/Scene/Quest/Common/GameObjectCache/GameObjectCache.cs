@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class GameObjectCache : MonoSingleton<GameObjectCache>
+    public class GameObjectCache
     {
         // ロード済みのアセット
         Dictionary<string, GameObject> loadCache = new Dictionary<string, GameObject>();
@@ -14,9 +14,27 @@ namespace AloneSpace
         // Instanciate済みのアセット
         Dictionary<string, List<CacheableGameObject>> assetCache = new Dictionary<string, List<CacheableGameObject>>();
 
-        Transform cacheRoot;
+        Transform variableParent;
+        Transform cacheParent;
 
-        public void GetAsset<T>(CacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
+        public void Initialize(Transform variableParent, Transform cacheParent)
+        {
+            this.variableParent = variableParent;
+            this.cacheParent = cacheParent;
+
+            MessageBus.Instance.GetCacheAsset.AddListener(GetCacheAsset);
+            MessageBus.Instance.ReleaseCacheAsset.AddListener(ReleaseCacheAsset);
+            MessageBus.Instance.ReleaseCacheAssetAll.AddListener(ReleaseCacheAssetAll);
+        }
+
+        public void Finalize()
+        {
+            MessageBus.Instance.GetCacheAsset.RemoveListener(GetCacheAsset);
+            MessageBus.Instance.ReleaseCacheAsset.RemoveListener(ReleaseCacheAsset);
+            MessageBus.Instance.ReleaseCacheAssetAll.RemoveListener(ReleaseCacheAssetAll);
+        }
+
+        void GetCacheAsset(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)
         {
             if (loadCache.ContainsKey(path.Path))
             {
@@ -32,7 +50,13 @@ namespace AloneSpace
             }));
         }
 
-        public void AllRelease()
+        void ReleaseCacheAsset(CacheableGameObject usedAsset)
+        {
+            usedAsset.IsUse = false;
+            usedAsset.transform.SetParent(cacheParent, false);
+        }
+
+        void ReleaseCacheAssetAll()
         {
             foreach (var assets in assetCache)
             {
@@ -43,34 +67,23 @@ namespace AloneSpace
             }
         }
 
-        public void ReleaseCache(CacheableGameObject usedAsset)
-        {
-            usedAsset.IsUse = false;
-            usedAsset.transform.SetParent(cacheRoot, false);
-        }
-
-        protected override void OnInitialize()
-        {
-            cacheRoot = new GameObject("CacheRoot").transform;
-            cacheRoot.SetParent(transform, false);
-        }
-
-        void GetAssetCache<T>(CacheableGameObjectPath path, Action<T> onLoad) where T : CacheableGameObject
+        void GetAssetCache(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)
         {
             if (!assetCache.ContainsKey(path.Path))
             {
                 assetCache[path.Path] = new List<CacheableGameObject>();
             }
 
-            var cache = (T)assetCache[path.Path].FirstOrDefault(target => !target.IsUse);
+            var cache = assetCache[path.Path].FirstOrDefault(target => !target.IsUse);
 
             if (cache == null)
             {
-                cache = Instantiate(loadCache[path.Path], cacheRoot, false).GetComponent<T>();
+                cache = GameObject.Instantiate(loadCache[path.Path], cacheParent, false).GetComponent<CacheableGameObject>();
                 assetCache[path.Path].Add(cache);
             }
 
             cache.IsUse = true;
+            cache.transform.SetParent(variableParent, false);
             onLoad(cache);
         }
     }
