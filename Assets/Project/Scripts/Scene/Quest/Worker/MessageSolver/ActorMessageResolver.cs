@@ -40,6 +40,8 @@ namespace AloneSpace
 
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
+
+            MessageBus.Instance.NoticeDamageEventData.AddListener(NoticeDamageEventData);
         }
 
         public void Finalize()
@@ -71,6 +73,8 @@ namespace AloneSpace
 
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
+
+            MessageBus.Instance.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
         }
 
         void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
@@ -180,6 +184,11 @@ namespace AloneSpace
         void ActorCommandSetAroundTargets(Guid actorId, IPositionData[] targets)
         {
             questData.ActorData[actorId].SetAroundTargets(targets);
+        }
+
+        void NoticeDamageEventData(DamageEventData damageEventData)
+        {
+            questData.ActorData[damageEventData.DamagedActorData.InstanceId].AddDamageEventData(damageEventData);
         }
     }
 }

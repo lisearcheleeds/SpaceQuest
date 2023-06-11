@@ -1,7 +1,8 @@
-﻿using AloneSpace;
-
-namespace AloneSpace
+﻿namespace AloneSpace
 {
+    /// <summary>
+    /// TODO: InstanceIdで管理したい気持ちある
+    /// </summary>
     public class CollisionEventEffectData
     {
         public CollisionEventEffectSenderModule SenderModule { get; }

@@ -34,10 +34,14 @@ namespace AloneSpace
         public ActorSpecVO ActorSpecVO { get; }
         public IWeaponSpecVO[] WeaponSpecVOs { get; }
 
+        // インベントリ
         public InventoryData InventoryData { get; }
+
+        // 装備
         public List<Guid>[] WeaponDataGroup { get; private set; }
         public Dictionary<Guid, WeaponData> WeaponData { get; private set; }
 
+        // GameObjectHandler
         public ActorGameObjectHandler ActorGameObjectHandler { get; private set; }
 
         public ActorData(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs, Guid playerInstanceId)
@@ -243,6 +247,11 @@ namespace AloneSpace
         public void SetActorGameObjectHandler(ActorGameObjectHandler actorGameObjectHandler)
         {
             ActorGameObjectHandler = actorGameObjectHandler;
+        }
+
+        public void AddDamageEventData(DamageEventData damageEventData)
+        {
+            ActorStateData.CurrentDamageEventData.Add(damageEventData);
         }
     }
 }

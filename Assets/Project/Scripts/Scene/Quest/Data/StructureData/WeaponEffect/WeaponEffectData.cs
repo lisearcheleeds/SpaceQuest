@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using AloneSpace;
 using UnityEngine;
 
 namespace AloneSpace
@@ -39,8 +38,6 @@ namespace AloneSpace
             InstanceId = Guid.NewGuid();
             WeaponData = weaponData;
             TargetData = targetData;
-
-            ActivateModules();
         }
 
         public virtual void ActivateModules()

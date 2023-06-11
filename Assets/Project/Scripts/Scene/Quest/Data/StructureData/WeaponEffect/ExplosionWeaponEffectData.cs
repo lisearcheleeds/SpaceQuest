@@ -37,8 +37,10 @@ namespace AloneSpace
 
             SpecVO = specVO;
 
-            LifeTime = 4;
+            LifeTime = 400;
             CurrentLifeTime = 0;
+
+            ActivateModules();
         }
 
         public override void ActivateModules()

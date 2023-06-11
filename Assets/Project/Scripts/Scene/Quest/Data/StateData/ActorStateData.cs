@@ -13,7 +13,7 @@ namespace AloneSpace
     {
         public ActorAIState ActorAIState { get; set; }
         public bool IsUserControl { get; set; }
-        
+
         public ActorMode ActorMode { get; set; }
         public ActorCombatMode ActorCombatMode { get; set; } = ActorCombatMode.Fighter;
 
@@ -29,7 +29,7 @@ namespace AloneSpace
         public float LeftBoosterPowerRatio { get; set; }
         public float TopBoosterPowerRatio { get; set; }
         public float BottomBoosterPowerRatio { get; set; }
-        
+
         public float PitchBoosterPowerRatio { get; set; }
         public float RollBoosterPowerRatio { get; set; }
         public float YawBoosterPowerRatio { get; set; }
@@ -38,5 +38,8 @@ namespace AloneSpace
         public IPositionData MoveTarget { get; set; }
 
         public int CurrentWeaponGroupIndex { get; set; }
+
+        public List<DamageEventData> CurrentDamageEventData { get; set; } = new List<DamageEventData>();
+        public List<DamageEventData> HistoryDamageEventData { get; set; } = new List<DamageEventData>();
     }
 }

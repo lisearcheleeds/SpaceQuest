@@ -7,5 +7,7 @@
     public interface IWeaponEffectSpecVO
     {
         CacheableGameObjectPath Path { get; }
+
+        float BaseDamage { get; }
     }
 }

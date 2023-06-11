@@ -5,6 +5,9 @@
         // Path
         public CacheableGameObjectPath Path => row.Path;
 
+        // BaseDamage
+        public float BaseDamage => row.BaseDamage;
+
         // 射出初速
         public float LaunchSpeed => row.LaunchSpeed;
 

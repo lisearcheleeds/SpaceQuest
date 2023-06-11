@@ -25,7 +25,6 @@ namespace AloneSpace
             }
 
             MeshBounds = CalculateBounds();
-
             return OnInit(positionData);
         }
 
@@ -44,15 +43,13 @@ namespace AloneSpace
 
         void OnPartsTriggerStay(int colliderIndex, Collider other)
         {
-            /*
             if (CheckOurCollider(other))
             {
                 return;
             }
 
             var otherModelCollider = other.gameObject.GetComponent<ModelCollider>();
-            MessageBus.Instance.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionDataHolder, otherModelCollider.CollisionDataHolder));
-            */
+            MessageBus.Instance.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
         }
 
         void OnPartsTriggerExit(int colliderIndex, Collider other)

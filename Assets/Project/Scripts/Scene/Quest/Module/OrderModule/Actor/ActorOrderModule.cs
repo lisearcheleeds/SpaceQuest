@@ -25,11 +25,23 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
+            UpdateDamage();
             UpdateTarget();
             UpdateWeapon();
             UpdateWarp(deltaTime);
             UpdateMove(deltaTime);
             UpdateInteract(deltaTime);
+        }
+
+        void UpdateDamage()
+        {
+            foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventData)
+            {
+                Debug.Log($"ダメージを受けた {currentDamageEventData.DamageValue}");
+                actorData.ActorStateData.HistoryDamageEventData.Add(currentDamageEventData);
+            }
+
+            actorData.ActorStateData.CurrentDamageEventData.Clear();
         }
 
         void UpdateTarget()

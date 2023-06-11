@@ -15,6 +15,7 @@
         // イベント通知
         public MessageBusDefine.NoticeCollisionEventData NoticeCollisionEventData { get; } = new MessageBusDefine.NoticeCollisionEventData();
         public MessageBusDefine.NoticeCollisionEventEffectData NoticeCollisionEventEffectData { get; } = new MessageBusDefine.NoticeCollisionEventEffectData();
+        public MessageBusDefine.NoticeDamageEventData NoticeDamageEventData { get; } = new MessageBusDefine.NoticeDamageEventData();
 
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetAreaId PlayerCommandSetAreaId { get; } = new MessageBusDefine.PlayerCommandSetAreaId();

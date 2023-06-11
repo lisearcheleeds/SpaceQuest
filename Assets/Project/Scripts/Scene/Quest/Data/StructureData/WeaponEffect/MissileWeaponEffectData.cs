@@ -38,6 +38,8 @@ namespace AloneSpace
 
             LifeTime = 8.0f;
             CurrentLifeTime = 0;
+
+            ActivateModules();
         }
 
         public override void ActivateModules()

@@ -12,6 +12,9 @@ namespace AloneSpace
             // Path
             public CacheableGameObjectPath Path { get; }
 
+            // BaseDamage
+            public float BaseDamage { get; }
+
             // 射出初速
             public float LaunchSpeed { get; }
 
@@ -21,11 +24,13 @@ namespace AloneSpace
             public Row(
                 int id,
                 CacheableGameObjectPath path,
+                float baseDamage,
                 float launchSpeed,
                 float speed)
             {
                 Id = id;
                 Path = path;
+                BaseDamage = baseDamage;
                 LaunchSpeed = launchSpeed;
                 Speed = speed;
             }
@@ -56,8 +61,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1.0f, 80.0f),
-                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1.0f, 80.0f),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1, 1.0f, 80.0f),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1, 1.0f, 80.0f),
             };
         }
     }

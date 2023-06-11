@@ -1,5 +1,8 @@
 ﻿namespace AloneSpace
 {
+    /// <summary>
+    /// TODO: InstanceIdで管理したい気持ちある
+    /// </summary>
     public class CollisionEventData
     {
         public CollisionEventModule CollisionEventModule1 { get; }
