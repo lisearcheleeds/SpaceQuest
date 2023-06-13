@@ -4,16 +4,16 @@ namespace AloneSpace
 {
     public class UserData
     {
-        public PlayerQuestData PlayerQuestData { get; private set; }
+        public PlayerData PlayerData { get; private set; }
         public AreaData CurrentAreaData { get; private set; }
 
         public Vector3 LookAtAngle { get; private set; } = Vector3.forward;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;
         public float LookAtDistance { get; private set; }
 
-        public void SetPlayerQuestData(PlayerQuestData playerQuestData)
+        public void SetPlayerData(PlayerData playerData)
         {
-            PlayerQuestData = playerQuestData;
+            PlayerData = playerData;
         }
 
         public void SetCurrentAreaData(AreaData currentAreaData)

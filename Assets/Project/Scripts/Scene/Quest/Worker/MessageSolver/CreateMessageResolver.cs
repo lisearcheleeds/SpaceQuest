@@ -75,7 +75,7 @@ namespace AloneSpace
         {
             var (playerQuestData, actorDataList) = QuestDataHelper.CreatePlayerData(playerPresetVO, areaData, position);
 
-            questData.AddPlayerQuestData(playerQuestData);
+            questData.AddPlayerData(playerQuestData);
             MessageBus.Instance.AddedPlayerData.Broadcast(playerQuestData);
             foreach (var actorData in actorDataList)
             {
@@ -84,28 +84,28 @@ namespace AloneSpace
             }
         }
 
-        void ReleasePlayerData(PlayerQuestData playerData)
+        void ReleasePlayerData(PlayerData playerData)
         {
-            questData.RemovePlayerQuestData(playerData);
+            questData.RemovePlayerData(playerData);
             MessageBus.Instance.RemovedPlayerData.Broadcast(playerData);
         }
 
-        void AddedPlayerData(PlayerQuestData playerData)
+        void AddedPlayerData(PlayerData playerData)
         {
         }
 
-        void RemovedPlayerData(PlayerQuestData playerData)
+        void RemovedPlayerData(PlayerData playerData)
         {
         }
 
-        void CreateActorDataFromPresetId(PlayerQuestData playerQuestData, int actorPresetId, AreaData areaData, Vector3 position)
+        void CreateActorDataFromPresetId(PlayerData playerData, int actorPresetId, AreaData areaData, Vector3 position)
         {
-            CreateActorDataFromPreset(playerQuestData, new ActorPresetVO(actorPresetId), areaData, position);
+            CreateActorDataFromPreset(playerData, new ActorPresetVO(actorPresetId), areaData, position);
         }
 
-        void CreateActorDataFromPreset(PlayerQuestData playerQuestData, ActorPresetVO actorPresetVO, AreaData areaData, Vector3 position)
+        void CreateActorDataFromPreset(PlayerData playerData, ActorPresetVO actorPresetVO, AreaData areaData, Vector3 position)
         {
-            var actorData = QuestDataHelper.CreateActorData(playerQuestData, actorPresetVO, areaData, position);
+            var actorData = QuestDataHelper.CreateActorData(playerData, actorPresetVO, areaData, position);
             questData.AddActorData(actorData);
             MessageBus.Instance.AddedActorData.Broadcast(actorData);
         }

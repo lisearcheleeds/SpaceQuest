@@ -32,7 +32,7 @@ namespace AloneSpace
 
         QuestData questData;
 
-        PlayerQuestData observePlayerQuestData;
+        PlayerData observePlayerData;
         
         public void Initialize(QuestData questData)
         {
@@ -63,9 +63,9 @@ namespace AloneSpace
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
         }
         
-        void SetUserPlayer(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerData playerData)
         {
-            this.observePlayerQuestData = playerQuestData;
+            this.observePlayerData = playerData;
         }
         
         void ApplyInventoryData(InventoryData[] data, bool isRight)

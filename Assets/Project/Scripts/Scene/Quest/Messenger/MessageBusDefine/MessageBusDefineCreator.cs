@@ -9,12 +9,12 @@ namespace AloneSpace
         public class CreatePlayerDataFromPresetIdAndAreaId : MessageBusBroadcaster<int, int, Vector3>{}
         public class CreatePlayerDataFromPresetId : MessageBusBroadcaster<int, AreaData, Vector3>{}
         public class CreatePlayerDataFromPreset : MessageBusBroadcaster<PlayerPresetVO, AreaData, Vector3>{}
-        public class ReleasePlayerData : MessageBusBroadcaster<PlayerQuestData>{}
-        public class AddedPlayerData : MessageBusBroadcaster<PlayerQuestData>{}
-        public class RemovedPlayerData : MessageBusBroadcaster<PlayerQuestData>{}
+        public class ReleasePlayerData : MessageBusBroadcaster<PlayerData>{}
+        public class AddedPlayerData : MessageBusBroadcaster<PlayerData>{}
+        public class RemovedPlayerData : MessageBusBroadcaster<PlayerData>{}
 
-        public class CreateActorDataFromPresetId : MessageBusBroadcaster<PlayerQuestData, int, AreaData, Vector3>{}
-        public class CreateActorDataFromPreset : MessageBusBroadcaster<PlayerQuestData, ActorPresetVO, AreaData, Vector3>{}
+        public class CreateActorDataFromPresetId : MessageBusBroadcaster<PlayerData, int, AreaData, Vector3>{}
+        public class CreateActorDataFromPreset : MessageBusBroadcaster<PlayerData, ActorPresetVO, AreaData, Vector3>{}
         public class ReleaseActorData : MessageBusBroadcaster<ActorData>{}
         public class AddedActorData : MessageBusBroadcaster<ActorData>{}
         public class RemovedActorData : MessageBusBroadcaster<ActorData>{}

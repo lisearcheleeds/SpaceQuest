@@ -9,7 +9,7 @@ namespace AloneSpace
         [SerializeField] InteractionListView interactionListView;
 
         QuestData questData;
-        PlayerQuestData observePlayerQuestData;
+        PlayerData observePlayerData;
         AreaData observeAreaData;
      
         InteractionListViewCell.CellData selectCellData;
@@ -55,24 +55,24 @@ namespace AloneSpace
 
             string GetDistanceText(IInteractData targetData)
             {
-                if (observePlayerQuestData.MainActorData.AreaId == targetData.AreaId)
+                if (observePlayerData.MainActorData.AreaId == targetData.AreaId)
                 {
                     // 同一エリア内
-                    return $"{(targetData.Position - observePlayerQuestData.MainActorData.Position).magnitude * 1000.0f}m";
+                    return $"{(targetData.Position - observePlayerData.MainActorData.Position).magnitude * 1000.0f}m";
                 }
 
-                if (observePlayerQuestData.MainActorData.AreaId.HasValue)
+                if (observePlayerData.MainActorData.AreaId.HasValue)
                 {
                     // 移動中
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
-                    var offsetPosition = targetAreaData.StarSystemPosition - observePlayerQuestData.MainActorData.Position;
+                    var offsetPosition = targetAreaData.StarSystemPosition - observePlayerData.MainActorData.Position;
                     return $"{offsetPosition.magnitude * 1000.0f}m";
                 }
 
-                if (observePlayerQuestData.MainActorData.AreaId != targetData.AreaId)
+                if (observePlayerData.MainActorData.AreaId != targetData.AreaId)
                 {
                     // 違うエリア内
-                    var observeActorStarSystemPosition = MessageBus.Instance.UtilGetAreaData.Unicast(observePlayerQuestData.MainActorData.AreaId.Value);
+                    var observeActorStarSystemPosition = MessageBus.Instance.UtilGetAreaData.Unicast(observePlayerData.MainActorData.AreaId.Value);
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
 
                     var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
@@ -83,9 +83,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserPlayer(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerData playerData)
         {
-            this.observePlayerQuestData = playerQuestData;
+            this.observePlayerData = playerData;
             Refresh();
         }
         
@@ -104,7 +104,7 @@ namespace AloneSpace
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
             MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(
-                observePlayerQuestData.MainActorData,
+                observePlayerData.MainActorData,
                 cellData.InteractData);
         }
         

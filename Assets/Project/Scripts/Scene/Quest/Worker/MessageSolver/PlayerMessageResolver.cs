@@ -20,7 +20,7 @@ namespace AloneSpace
 
         void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)
         {
-            questData.PlayerQuestData[playerInstanceId].SetTacticsType(tacticsType);
+            questData.PlayerData[playerInstanceId].SetTacticsType(tacticsType);
         }
     }
 }

@@ -6,13 +6,13 @@ namespace AloneSpace
 {
     public class PlayerThinkModule : IThinkModule
     {
-        PlayerQuestData playerQuestData;
+        PlayerData playerData;
 
-        public Guid InstanceId => playerQuestData.InstanceId;
+        public Guid InstanceId => playerData.InstanceId;
 
-        public PlayerThinkModule(PlayerQuestData playerQuestData)
+        public PlayerThinkModule(PlayerData playerData)
         {
-            this.playerQuestData = playerQuestData;
+            this.playerData = playerData;
         }
 
         public void ActivateModule()
@@ -27,64 +27,64 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            if (playerQuestData.PlayerStance == PlayerStance.Scavenger)
+            if (playerData.PlayerStance == PlayerStance.Scavenger)
             {
                 return;
             }
 
-            if (!playerQuestData.MainActorData?.AreaId.HasValue ?? true)
+            if (!playerData.MainActorData?.AreaId.HasValue ?? true)
             {
                 return;
             }
 
-            var areaActorData = MessageBus.Instance.UtilGetAreaActorData.Unicast(playerQuestData.MainActorData.AreaId.Value);
+            var areaActorData = MessageBus.Instance.UtilGetAreaActorData.Unicast(playerData.MainActorData.AreaId.Value);
 
-            var isExistScavenger = areaActorData.Any(x => MessageBus.Instance.UtilGetPlayerQuestData.Unicast(x.PlayerInstanceId).PlayerStance == PlayerStance.Scavenger);
+            var isExistScavenger = areaActorData.Any(x => MessageBus.Instance.UtilGetPlayerData.Unicast(x.PlayerInstanceId).PlayerStance == PlayerStance.Scavenger);
             var isExistOtherPlayer = areaActorData.Any(x =>
             {
-                var playerData = MessageBus.Instance.UtilGetPlayerQuestData.Unicast(x.PlayerInstanceId);
-                return playerData.PlayerStance != PlayerStance.Scavenger && playerData.InstanceId != playerQuestData.InstanceId;
+                var playerData = MessageBus.Instance.UtilGetPlayerData.Unicast(x.PlayerInstanceId);
+                return playerData.PlayerStance != PlayerStance.Scavenger && playerData.InstanceId != this.playerData.InstanceId;
             });;
 
-            switch (playerQuestData.PlayerStance)
+            switch (playerData.PlayerStance)
             {
                 case PlayerStance.None:
                 case PlayerStance.Scavenger:
                     return;
                 case PlayerStance.Fugitive:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Escape);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Escape);
                     return;
                 case PlayerStance.ScavengerKiller:
                     if (isExistScavenger && !isExistOtherPlayer)
                     {
-                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Combat);
+                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     }
                     else
                     {
-                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Survey);
+                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
                     }
                     return;
                 case PlayerStance.Collector:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Survey);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
                     return;
                 case PlayerStance.Hunter:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.Stalker:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.ConquestUser:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.FacilityUser:
-                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerQuestData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
             }
         }
 
-        void UpdateInteract(QuestData questData, PlayerQuestData playerQuestData)
+        void UpdateInteract(QuestData questData, PlayerData playerData)
         {
-            if (playerQuestData.PlayerStance == PlayerStance.Scavenger)
+            if (playerData.PlayerStance == PlayerStance.Scavenger)
             {
                 // FIXME: ScavでもInteract出来るようにする
                 return;

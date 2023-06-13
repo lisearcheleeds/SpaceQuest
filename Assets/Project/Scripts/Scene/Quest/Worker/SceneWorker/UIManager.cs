@@ -70,7 +70,7 @@ namespace AloneSpace
             targetView.OnLateUpdate();
 
             // WASDとマウス
-            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
+            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
             {
                 MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
@@ -95,7 +95,7 @@ namespace AloneSpace
                 if (Mouse.current.rightButton.wasReleasedThisFrame)
                 {
                     // 角度基準リセット
-                    MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerQuestData.MainActorData.Rotation);
+                    MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerData.MainActorData.Rotation);
                     MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(Vector3.zero);
                 }
                 else
@@ -106,16 +106,16 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f);
 
                 MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(
-                    userData.PlayerQuestData.MainActorData.InstanceId,
+                    userData.PlayerData.MainActorData.InstanceId,
                     userData.LookAtSpace * Quaternion.Euler(localLookAtAngle) * Vector3.forward);
 
                 if (Mouse.current.rightButton.isPressed)
                 {
                     // 追従
                     var lookAtDirection = userData.LookAtSpace * Quaternion.Euler(userData.LookAtAngle) * Vector3.forward;
-                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
-                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerQuestData.MainActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
-                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.PlayerQuestData.MainActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerData.MainActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerData.MainActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.PlayerData.MainActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);
                 }
                 else
                 {
@@ -167,7 +167,7 @@ namespace AloneSpace
             }
 
             // マウスカーソルの切り替え
-            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
+            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }

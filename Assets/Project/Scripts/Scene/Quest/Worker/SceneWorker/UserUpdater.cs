@@ -86,7 +86,7 @@ namespace AloneSpace
 
         public void OnLateUpdate(float deltaTime)
         {
-            if (userData?.PlayerQuestData == null)
+            if (userData?.PlayerData == null)
             {
                 return;
             }
@@ -96,36 +96,36 @@ namespace AloneSpace
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate(userData);
 
-            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Warp)
+            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Warp)
             {
-                if (userData.PlayerQuestData.MainActorData.AreaId != userData.CurrentAreaData?.AreaId)
+                if (userData.PlayerData.MainActorData.AreaId != userData.CurrentAreaData?.AreaId)
                 {
-                    MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
+                    MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerData.MainActorData.AreaId);
                 }
             }
 
-            if (prevObserveActorMode != userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode)
+            if (prevObserveActorMode != userData.PlayerData.MainActorData.ActorStateData.ActorMode)
             {
-                if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
+                if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Cockpit);
                 }
-                else if(userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode != ActorMode.Cockpit)
+                else if(userData.PlayerData.MainActorData.ActorStateData.ActorMode != ActorMode.Cockpit)
                 {
                     MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
                 }
             }
 
-            prevObserveActorMode = userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode;
+            prevObserveActorMode = userData.PlayerData.MainActorData.ActorStateData.ActorMode;
         }
 
         void SetOrderUserPlayer(Guid playerInstanceId)
         {
-            userData.SetPlayerQuestData(MessageBus.Instance.UtilGetPlayerQuestData.Unicast(playerInstanceId));
-            MessageBus.Instance.SetUserPlayer.Broadcast(userData.PlayerQuestData);
+            userData.SetPlayerData(MessageBus.Instance.UtilGetPlayerData.Unicast(playerInstanceId));
+            MessageBus.Instance.SetUserPlayer.Broadcast(userData.PlayerData);
 
-            MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerQuestData.MainActorData.AreaId);
-            MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(userData.PlayerQuestData.MainActorData);
+            MessageBus.Instance.SetOrderUserArea.Broadcast(userData.PlayerData.MainActorData.AreaId);
+            MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(userData.PlayerData.MainActorData);
         }
 
         void SetOrderUserArea(int? areaId)
@@ -151,79 +151,79 @@ namespace AloneSpace
 
         void UserInputSetExecuteWeapon(bool isExecute)
         {
-            MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, isExecute);
+            MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(userData.PlayerData.MainActorData.InstanceId, isExecute);
         }
 
         void UserInputReloadWeapon()
         {
-            MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId);
+            MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(userData.PlayerData.MainActorData.InstanceId);
         }
 
         void UserInputSetCurrentWeaponGroupIndex(int index)
         {
-            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, index);
+            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.Broadcast(userData.PlayerData.MainActorData.InstanceId, index);
         }
 
         void UserInputForwardBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputBackBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputRightBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputLeftBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputTopBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputBottomBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputPitchBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputRollBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputYawBoosterPowerRatio(float power)
         {
-            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, power);
+            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
         }
 
         void UserInputSwitchActorMode()
         {
-            if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.ThirdPersonViewpoint)
+            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.ThirdPersonViewpoint)
             {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, ActorMode.Cockpit);
+                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, ActorMode.Cockpit);
             }
-            else if (userData.PlayerQuestData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
+            else if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
             {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, ActorMode.ThirdPersonViewpoint);
+                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, ActorMode.ThirdPersonViewpoint);
             }
         }
 
         void UserInputSetActorCombatMode(ActorCombatMode actorCombatMode)
         {
-            MessageBus.Instance.ActorCommandSetActorCombatMode.Broadcast(userData.PlayerQuestData.MainActorData.InstanceId, actorCombatMode);
+            MessageBus.Instance.ActorCommandSetActorCombatMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, actorCombatMode);
         }
     }
 }

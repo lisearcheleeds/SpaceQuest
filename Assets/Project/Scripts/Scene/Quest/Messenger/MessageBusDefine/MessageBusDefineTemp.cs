@@ -9,7 +9,7 @@ namespace AloneSpace
         public class UnRegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
 
         public class SetOrderUserPlayer : MessageBusBroadcaster<Guid>{}
-        public class SetUserPlayer : MessageBusBroadcaster<PlayerQuestData>{}
+        public class SetUserPlayer : MessageBusBroadcaster<PlayerData>{}
         public class SetOrderUserArea : MessageBusBroadcaster<int?>{}
         public class SetUserArea : MessageBusBroadcaster<AreaData>{}
 

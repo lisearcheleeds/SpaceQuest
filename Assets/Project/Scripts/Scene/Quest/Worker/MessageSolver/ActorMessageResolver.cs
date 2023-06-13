@@ -168,7 +168,7 @@ namespace AloneSpace
             questData.ActorData[actorId].SetCurrentWeaponGroupIndex(index);
         }
 
-        void SetUserPlayer(PlayerQuestData userPlayer)
+        void SetUserPlayer(PlayerData userPlayer)
         {
             foreach (var actorData in questData.ActorData.Values)
             {

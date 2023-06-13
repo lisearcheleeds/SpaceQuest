@@ -13,7 +13,7 @@ namespace AloneSpace
         Coroutine currentCoroutine;
         Transform variableParent;
 
-        PlayerQuestData observePlayerQuestData;
+        PlayerData observePlayerData;
         AreaData observeAreaData;
         bool isDirty;
 
@@ -59,9 +59,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserPlayer(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerData playerData)
         {
-            this.observePlayerQuestData = playerQuestData;
+            this.observePlayerData = playerData;
             SetDirtyActorObjectList();
         }
 
@@ -76,7 +76,7 @@ namespace AloneSpace
             // ObserveのMainActorDataもしくは現在のエリア内のActorを表示
             // ワープ中のActorを表示するため
             var actorDataList = questData.ActorData.Values
-                .Where(actorData => observePlayerQuestData?.MainActorData?.InstanceId == actorData.InstanceId || (actorData.AreaId.HasValue && actorData.AreaId == observeAreaData?.AreaId));
+                .Where(actorData => observePlayerData?.MainActorData?.InstanceId == actorData.InstanceId || (actorData.AreaId.HasValue && actorData.AreaId == observeAreaData?.AreaId));
 
             // オブジェクトを削除
             foreach (var actor in actors.ToArray())

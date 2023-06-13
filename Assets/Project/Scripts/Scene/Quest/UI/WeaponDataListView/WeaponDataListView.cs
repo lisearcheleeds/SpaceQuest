@@ -60,9 +60,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserPlayer(PlayerQuestData playerQuestData)
+        void SetUserPlayer(PlayerData playerData)
         {
-            actorData = playerQuestData.MainActorData;
+            actorData = playerData.MainActorData;
             isDirty = true;
         }
 

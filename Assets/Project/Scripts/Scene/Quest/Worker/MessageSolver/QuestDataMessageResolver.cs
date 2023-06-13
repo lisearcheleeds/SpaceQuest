@@ -11,21 +11,21 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.UtilGetPlayerQuestData.SetListener(UtilGetPlayerQuestData);
+            MessageBus.Instance.UtilGetPlayerData.SetListener(UtilGetPlayerData);
             MessageBus.Instance.UtilGetAreaData.SetListener(UtilGetAreaData);
             MessageBus.Instance.UtilGetAreaActorData.SetListener(UtilGetAreaActorData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UtilGetPlayerQuestData.Clear();
+            MessageBus.Instance.UtilGetPlayerData.Clear();
             MessageBus.Instance.UtilGetAreaData.Clear();
             MessageBus.Instance.UtilGetAreaActorData.Clear();
         }
 
-        PlayerQuestData UtilGetPlayerQuestData(Guid instanceId)
+        PlayerData UtilGetPlayerData(Guid instanceId)
         {
-            return questData.PlayerQuestData[instanceId];
+            return questData.PlayerData[instanceId];
         }
 
         AreaData UtilGetAreaData(int areaId)
