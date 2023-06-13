@@ -19,16 +19,16 @@ namespace AloneSpace
         {
             this.questData = questData;
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
-            MessageBus.Instance.AddWeaponEffectData.AddListener(AddWeaponEffectData);
-            MessageBus.Instance.RemoveWeaponEffectData.AddListener(RemoveWeaponEffectData);
+            MessageBus.Instance.AddedWeaponEffectData.AddListener(AddWeaponEffectData);
+            MessageBus.Instance.RemovedWeaponEffectData.AddListener(RemoveWeaponEffectData);
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.RemoveListener(SetDirtyWeaponEffectObjectList);
-            MessageBus.Instance.AddWeaponEffectData.RemoveListener(AddWeaponEffectData);
-            MessageBus.Instance.RemoveWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
+            MessageBus.Instance.AddedWeaponEffectData.RemoveListener(AddWeaponEffectData);
+            MessageBus.Instance.RemovedWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
             MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
 

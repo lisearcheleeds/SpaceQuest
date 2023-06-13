@@ -11,7 +11,5 @@ namespace AloneSpace
         public class GetCacheAsset : MessageBusBroadcaster<CacheableGameObjectPath, Action<CacheableGameObject>>{}
         public class ReleaseCacheAssetAll : MessageBusBroadcaster{}
         public class ReleaseCacheAsset : MessageBusBroadcaster<CacheableGameObject>{}
-
-        public class SpawnGraphicEffect : MessageBusBroadcaster<GraphicEffectSpecVO, IGraphicEffectHandler>{}
     }
 }

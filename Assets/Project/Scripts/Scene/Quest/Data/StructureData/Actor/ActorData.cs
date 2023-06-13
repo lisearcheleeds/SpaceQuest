@@ -44,22 +44,24 @@ namespace AloneSpace
         // GameObjectHandler
         public ActorGameObjectHandler ActorGameObjectHandler { get; private set; }
 
-        public ActorData(ActorSpecVO actorSpecVO, IWeaponSpecVO[] weaponSpecVOs, Guid playerInstanceId)
+        public ActorData(ActorPresetVO actorPresetVO, Guid playerInstanceId)
         {
             InstanceId = Guid.NewGuid();
 
             PlayerInstanceId = playerInstanceId;
-            ActorSpecVO = actorSpecVO;
-            WeaponSpecVOs = weaponSpecVOs;
+            ActorSpecVO = actorPresetVO.ActorSpecVO;
+            WeaponSpecVOs = actorPresetVO.WeaponSpecVOs;
 
-            InventoryData = new InventoryData(actorSpecVO.CapacityWidth, actorSpecVO.CapacityHeight);
+            InventoryData = new InventoryData(actorPresetVO.ActorSpecVO.CapacityWidth, actorPresetVO.ActorSpecVO.CapacityHeight);
             ActorStateData = new ActorStateData();
             WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
-            WeaponData = weaponSpecVOs
+            WeaponData = actorPresetVO.WeaponSpecVOs
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
                 .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
 
             WeaponDataGroup[0].AddRange(WeaponData.Keys);
+
+            ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
 
             ActivateModules();
         }

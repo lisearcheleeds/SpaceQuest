@@ -8,21 +8,20 @@ namespace AloneSpace
     {
         // 1秒間に更新を行うレート
         static readonly float TickRate = 1.0f / 1.0f;
-        
+
         QuestData questData;
 
         Dictionary<Guid, float> updateTimeStamps = new Dictionary<Guid, float>();
-        
+
         List<IThinkModule> moduleList = new List<IThinkModule>();
-        
+
         List<IThinkModule> registerModuleList = new List<IThinkModule>();
         List<IThinkModule> unRegisterModuleList = new List<IThinkModule>();
 
-        
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
+
             MessageBus.Instance.RegisterThinkModule.AddListener(RegisterThinkModule);
             MessageBus.Instance.UnRegisterThinkModule.AddListener(UnRegisterThinkModule);
         }
@@ -32,7 +31,7 @@ namespace AloneSpace
             MessageBus.Instance.RegisterThinkModule.RemoveListener(RegisterThinkModule);
             MessageBus.Instance.UnRegisterThinkModule.RemoveListener(UnRegisterThinkModule);
         }
-        
+
         public void UpdateModule(float deltaTime)
         {
             if (questData == null)
@@ -45,7 +44,7 @@ namespace AloneSpace
                 moduleList.Remove(removeModule);
                 updateTimeStamps.Remove(removeModule.InstanceId);
             }
-            
+
             unRegisterModuleList.Clear();
 
             foreach (var module in moduleList)
@@ -62,7 +61,7 @@ namespace AloneSpace
                 moduleList.Add(registerModule);
                 updateTimeStamps[registerModule.InstanceId] = Time.time - TickRate - 1.0f;
             }
-            
+
             registerModuleList.Clear();
         }
 
@@ -70,7 +69,7 @@ namespace AloneSpace
         {
             registerModuleList.Add(thinkModule);
         }
-        
+
         void UnRegisterThinkModule(IThinkModule thinkModule)
         {
             unRegisterModuleList.Add(thinkModule);

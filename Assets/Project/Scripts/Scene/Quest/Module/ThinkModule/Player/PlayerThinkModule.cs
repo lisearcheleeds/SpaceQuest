@@ -32,20 +32,20 @@ namespace AloneSpace
                 return;
             }
 
-            if (!playerQuestData.MainActorData.AreaId.HasValue)
+            if (!playerQuestData.MainActorData?.AreaId.HasValue ?? true)
             {
                 return;
             }
 
             var areaActorData = MessageBus.Instance.UtilGetAreaActorData.Unicast(playerQuestData.MainActorData.AreaId.Value);
-            
+
             var isExistScavenger = areaActorData.Any(x => MessageBus.Instance.UtilGetPlayerQuestData.Unicast(x.PlayerInstanceId).PlayerStance == PlayerStance.Scavenger);
             var isExistOtherPlayer = areaActorData.Any(x =>
             {
                 var playerData = MessageBus.Instance.UtilGetPlayerQuestData.Unicast(x.PlayerInstanceId);
                 return playerData.PlayerStance != PlayerStance.Scavenger && playerData.InstanceId != playerQuestData.InstanceId;
             });;
-            
+
             switch (playerQuestData.PlayerStance)
             {
                 case PlayerStance.None:
@@ -81,7 +81,7 @@ namespace AloneSpace
                     return;
             }
         }
-        
+
         void UpdateInteract(QuestData questData, PlayerQuestData playerQuestData)
         {
             if (playerQuestData.PlayerStance == PlayerStance.Scavenger)

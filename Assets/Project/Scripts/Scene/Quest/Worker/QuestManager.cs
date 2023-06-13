@@ -6,11 +6,13 @@ namespace AloneSpace
     {
         [SerializeField] UserUpdater userUpdater;
 
+        QuestUpdater questUpdater = new QuestUpdater();
+
         QuestDataMessageResolver questDataMessageResolver = new QuestDataMessageResolver();
         InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
         PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
         ActorMessageResolver actorMessageResolver = new ActorMessageResolver();
-        WeaponMessageResolver weaponMessageResolver = new WeaponMessageResolver();
+        CreateMessageResolver createMessageResolver = new CreateMessageResolver();
 
         ThinkModuleUpdater thinkModuleUpdater = new ThinkModuleUpdater();
         OrderModuleUpdater orderModuleUpdater = new OrderModuleUpdater();
@@ -23,16 +25,17 @@ namespace AloneSpace
         CollisionEffectSenderModuleUpdater collisionEffectSenderModuleUpdater = new CollisionEffectSenderModuleUpdater();
         CollisionEffectReceiverModuleUpdater collisionEffectReceiverModuleUpdater = new CollisionEffectReceiverModuleUpdater();
 
-
         public void Initialize(QuestData questData)
         {
             userUpdater.Initialize(questData);
+
+            questUpdater.Initialize(questData);
 
             questDataMessageResolver.Initialize(questData);
             interactMessageResolver.Initialize(questData);
             playerMessageResolver.Initialize(questData);
             actorMessageResolver.Initialize(questData);
-            weaponMessageResolver.Initialize(questData);
+            createMessageResolver.Initialize(questData);
 
             thinkModuleUpdater.Initialize(questData);
             orderModuleUpdater.Initialize(questData);
@@ -46,15 +49,25 @@ namespace AloneSpace
             collisionEffectReceiverModuleUpdater.Initialize(questData);
         }
 
-        public void FinishQuest()
+        public void OnStart()
+        {
+            questUpdater.OnStart();
+
+            // TODO SetDirtyを軒並み呼ぶ
+            MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
+        }
+
+        public void Finalize()
         {
             userUpdater.Finalize();
+
+            questUpdater.Finalize();
 
             questDataMessageResolver.Finalize();
             interactMessageResolver.Finalize();
             playerMessageResolver.Finalize();
             actorMessageResolver.Finalize();
-            weaponMessageResolver.Finalize();
+            createMessageResolver.Finalize();
 
             thinkModuleUpdater.Finalize();
             orderModuleUpdater.Finalize();
@@ -68,11 +81,13 @@ namespace AloneSpace
             collisionEffectReceiverModuleUpdater.Finalize();
         }
 
-        void LateUpdate()
+        public void OnLateUpdate()
         {
             var deltaTime = Time.deltaTime;
 
             userUpdater.OnLateUpdate(deltaTime);
+
+            questUpdater.OnLateUpdate(deltaTime);
 
             thinkModuleUpdater.UpdateModule(deltaTime);
             orderModuleUpdater.UpdateModule(deltaTime);

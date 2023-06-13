@@ -35,10 +35,20 @@ namespace AloneSpace
 
         void UpdateDamage()
         {
-            foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventData)
+            if (0 < actorData.ActorStateData.EnduranceValue)
             {
-                Debug.Log($"ダメージを受けた {currentDamageEventData.DamageValue}");
-                actorData.ActorStateData.HistoryDamageEventData.Add(currentDamageEventData);
+                foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventData)
+                {
+                    actorData.ActorStateData.EnduranceValue -= currentDamageEventData.DamageValue;
+                    actorData.ActorStateData.HistoryDamageEventData.Add(currentDamageEventData);
+
+                    if (actorData.ActorStateData.EnduranceValue <= 0)
+                    {
+                        MessageBus.Instance.NoticeBrokenActorEventData.Broadcast(
+                            new BrokenActorEventData(actorData, currentDamageEventData));
+                        break;
+                    }
+                }
             }
 
             actorData.ActorStateData.CurrentDamageEventData.Clear();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace AloneSpace
@@ -13,23 +14,56 @@ namespace AloneSpace
         public StarSystemData StarSystemData { get; }
 
         public UserData UserData { get; }
-        public Dictionary<Guid, PlayerQuestData> PlayerQuestData { get; private set; }
-        public Dictionary<Guid, ActorData> ActorData { get; private set; }
-        public Dictionary<Guid, WeaponEffectData> WeaponEffectData { get; private set; }
+        public ReadOnlyDictionary<Guid, PlayerQuestData> PlayerQuestData { get; }
+        public ReadOnlyDictionary<Guid, ActorData> ActorData { get; }
+        public ReadOnlyDictionary<Guid, WeaponEffectData> WeaponEffectData { get; }
+
+        Dictionary<Guid, PlayerQuestData> playerQuestData;
+        Dictionary<Guid, ActorData> actorData;
+        Dictionary<Guid, WeaponEffectData> weaponEffectData;
 
         public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
             StarSystemData = new StarSystemData(starSystemPresetVo);
             UserData = new UserData();
-            WeaponEffectData = new Dictionary<Guid, WeaponEffectData>();
+
+            playerQuestData = new Dictionary<Guid, PlayerQuestData>();
+            actorData = new Dictionary<Guid, ActorData>();
+            weaponEffectData = new Dictionary<Guid, WeaponEffectData>();
+
+            PlayerQuestData = new ReadOnlyDictionary<Guid, PlayerQuestData>(playerQuestData);
+            ActorData = new ReadOnlyDictionary<Guid, ActorData>(actorData);
+            WeaponEffectData = new ReadOnlyDictionary<Guid, WeaponEffectData>(weaponEffectData);
         }
 
-        public void SetupPlayerQuestData()
+        public void AddPlayerQuestData(PlayerQuestData　data)
         {
-            var (players, actors) = QuestDataHelper.GetRandomPlayerDataList(2, StarSystemData.AreaData);
+            playerQuestData[data.InstanceId] = data;
+        }
 
-            PlayerQuestData = players.ToDictionary(kv => kv.InstanceId, kv => kv);
-            ActorData = actors.ToDictionary(kv => kv.InstanceId, kv => kv);
+        public void RemovePlayerQuestData(PlayerQuestData　data)
+        {
+            playerQuestData.Remove(data.InstanceId);
+        }
+
+        public void AddActorData(ActorData　data)
+        {
+            actorData[data.InstanceId] = data;
+        }
+
+        public void RemoveActorData(ActorData　data)
+        {
+            actorData.Remove(data.InstanceId);
+        }
+
+        public void AddWeaponEffectData(WeaponEffectData　data)
+        {
+            weaponEffectData[data.InstanceId] = data;
+        }
+
+        public void RemoveWeaponEffectData(WeaponEffectData　data)
+        {
+            weaponEffectData.Remove(data.InstanceId);
         }
     }
 }

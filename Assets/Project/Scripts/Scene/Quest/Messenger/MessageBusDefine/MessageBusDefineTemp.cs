@@ -5,9 +5,6 @@ namespace AloneSpace
 {
     public partial class MessageBusDefine
     {
-        public class AddWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
-        public class RemoveWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
-
         public class RegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
         public class UnRegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
 
@@ -19,6 +16,7 @@ namespace AloneSpace
         public class NoticeCollisionEventData : MessageBusBroadcaster<CollisionEventData>{}
         public class NoticeCollisionEventEffectData : MessageBusBroadcaster<CollisionEventEffectData>{}
         public class NoticeDamageEventData : MessageBusBroadcaster<DamageEventData>{}
+        public class NoticeBrokenActorEventData : MessageBusBroadcaster<BrokenActorEventData>{}
 
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPositionData>{}
@@ -27,8 +25,5 @@ namespace AloneSpace
 
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
-
-        public class CreateWeaponEffectData : MessageBusBroadcaster<IWeaponEffectSpecVO, WeaponData, IPositionData, Quaternion, IPositionData>{}
-        public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
     }
 }

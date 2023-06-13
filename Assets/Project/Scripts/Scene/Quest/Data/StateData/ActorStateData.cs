@@ -41,5 +41,7 @@ namespace AloneSpace
 
         public List<DamageEventData> CurrentDamageEventData { get; set; } = new List<DamageEventData>();
         public List<DamageEventData> HistoryDamageEventData { get; set; } = new List<DamageEventData>();
+
+        public float EnduranceValue { get; set; }
     }
 }

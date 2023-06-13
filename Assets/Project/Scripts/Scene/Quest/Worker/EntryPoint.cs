@@ -14,17 +14,21 @@ namespace AloneSpace
         {
             questData = new QuestData(new StarSystemPresetVO(1));
             questManager.Initialize(questData);
-            questData.SetupPlayerQuestData();
         }
 
         void Start()
         {
-            MessageBus.Instance.SetOrderUserPlayer.Broadcast(questData.PlayerQuestData.Keys.First());
+            questManager.OnStart();
+        }
+
+        void LateUpdate()
+        {
+            questManager.OnLateUpdate();
         }
 
         void EndQuest()
         {
-            questManager.FinishQuest();
+            questManager.Finalize();
             SceneManager.LoadScene("Menu");
         }
     }
