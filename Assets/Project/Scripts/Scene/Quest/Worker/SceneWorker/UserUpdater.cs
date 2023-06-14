@@ -14,7 +14,7 @@ namespace AloneSpace
 
         UserData userData;
 
-        ActorMode prevObserveActorMode;
+        ActorOperationMode prevActorOperationMode;
 
         public void Initialize(QuestData questData)
         {
@@ -28,6 +28,8 @@ namespace AloneSpace
 
             MessageBus.Instance.SetOrderUserPlayer.AddListener(SetOrderUserPlayer);
             MessageBus.Instance.SetOrderUserArea.AddListener(SetOrderUserArea);
+
+            MessageBus.Instance.UserCommandSetActorOperationMode.AddListener(UserCommandSetActorOperationMode);
 
             MessageBus.Instance.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
@@ -46,9 +48,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.AddListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
-
-            MessageBus.Instance.UserInputSwitchActorMode.AddListener(UserInputSwitchActorMode);
-            MessageBus.Instance.UserInputSetActorCombatMode.AddListener(UserInputSetActorCombatMode);
         }
 
         public void Finalize()
@@ -61,6 +60,8 @@ namespace AloneSpace
 
             MessageBus.Instance.SetOrderUserPlayer.RemoveListener(SetOrderUserPlayer);
             MessageBus.Instance.SetOrderUserArea.RemoveListener(SetOrderUserArea);
+
+            MessageBus.Instance.UserCommandSetActorOperationMode.RemoveListener(UserCommandSetActorOperationMode);
 
             MessageBus.Instance.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
@@ -79,9 +80,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.RemoveListener(UserInputPitchBoosterPowerRatio);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
-
-            MessageBus.Instance.UserInputSwitchActorMode.RemoveListener(UserInputSwitchActorMode);
-            MessageBus.Instance.UserInputSetActorCombatMode.RemoveListener(UserInputSetActorCombatMode);
         }
 
         public void OnLateUpdate(float deltaTime)
@@ -96,7 +94,7 @@ namespace AloneSpace
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate(userData);
 
-            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Warp)
+            if (userData.PlayerData.MainActorData.ActorStateData.IsWarping)
             {
                 if (userData.PlayerData.MainActorData.AreaId != userData.CurrentAreaData?.AreaId)
                 {
@@ -104,19 +102,19 @@ namespace AloneSpace
                 }
             }
 
-            if (prevObserveActorMode != userData.PlayerData.MainActorData.ActorStateData.ActorMode)
+            if (prevActorOperationMode != userData.ActorOperationMode)
             {
-                if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
+                if (userData.ActorOperationMode != ActorOperationMode.Observe)
                 {
-                    MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Cockpit);
+                    MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
                 }
-                else if(userData.PlayerData.MainActorData.ActorStateData.ActorMode != ActorMode.Cockpit)
+                else
                 {
-                    MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
+                    MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Default);
                 }
             }
 
-            prevObserveActorMode = userData.PlayerData.MainActorData.ActorStateData.ActorMode;
+            prevActorOperationMode = userData.ActorOperationMode;
         }
 
         void SetOrderUserPlayer(Guid playerInstanceId)
@@ -132,6 +130,11 @@ namespace AloneSpace
         {
             userData.SetCurrentAreaData(areaId.HasValue ? MessageBus.Instance.UtilGetAreaData.Unicast(areaId.Value) : null);
             MessageBus.Instance.SetUserArea.Broadcast(userData.CurrentAreaData);
+        }
+
+        void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
+        {
+            userData.SetActorOperationMode(actorOperationMode);
         }
 
         void UserCommandLookAtAngle(Vector3 lookAt)
@@ -207,23 +210,6 @@ namespace AloneSpace
         void UserInputYawBoosterPowerRatio(float power)
         {
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(userData.PlayerData.MainActorData.InstanceId, power);
-        }
-
-        void UserInputSwitchActorMode()
-        {
-            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.ThirdPersonViewpoint)
-            {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, ActorMode.Cockpit);
-            }
-            else if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
-            {
-                MessageBus.Instance.ActorCommandSetActorMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, ActorMode.ThirdPersonViewpoint);
-            }
-        }
-
-        void UserInputSetActorCombatMode(ActorCombatMode actorCombatMode)
-        {
-            MessageBus.Instance.ActorCommandSetActorCombatMode.Broadcast(userData.PlayerData.MainActorData.InstanceId, actorCombatMode);
         }
     }
 }

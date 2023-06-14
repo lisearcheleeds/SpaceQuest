@@ -27,8 +27,7 @@
         public MessageBusDefine.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRollBoosterPower();
         public MessageBusDefine.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefine.UserInputYawBoosterPower();
 
-        public MessageBusDefine.UserInputSwitchActorMode UserInputSwitchActorMode { get; } = new MessageBusDefine.UserInputSwitchActorMode();
-        public MessageBusDefine.UserInputSetActorCombatMode UserInputSetActorCombatMode { get; } = new MessageBusDefine.UserInputSetActorCombatMode();
+        public MessageBusDefine.UserCommandSetActorOperationMode UserCommandSetActorOperationMode { get; } = new MessageBusDefine.UserCommandSetActorOperationMode();
 
         public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
         public MessageBusDefine.UserCommandCloseItemDataMenu UserCommandCloseItemDataMenu { get; } = new MessageBusDefine.UserCommandCloseItemDataMenu();

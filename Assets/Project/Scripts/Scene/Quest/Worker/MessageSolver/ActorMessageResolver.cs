@@ -33,9 +33,6 @@ namespace AloneSpace
 
             MessageBus.Instance.ActorCommandSetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
 
-            MessageBus.Instance.ActorCommandSetActorMode.AddListener(ActorCommandSetActorMode);
-            MessageBus.Instance.ActorCommandSetActorCombatMode.AddListener(ActorCommandSetActorCombatMode);
-
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
 
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
@@ -65,9 +62,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
 
             MessageBus.Instance.ActorCommandSetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
-
-            MessageBus.Instance.ActorCommandSetActorMode.RemoveListener(ActorCommandSetActorMode);
-            MessageBus.Instance.ActorCommandSetActorCombatMode.RemoveListener(ActorCommandSetActorCombatMode);
 
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
 
@@ -151,16 +145,6 @@ namespace AloneSpace
         void ActorCommandSetLookAtDirection(Guid actorId, Vector3 lookAt)
         {
             questData.ActorData[actorId].SetLookAtDirection(lookAt);
-        }
-
-        void ActorCommandSetActorMode(Guid actorId, ActorMode actorMode)
-        {
-            questData.ActorData[actorId].SetActorMode(actorMode);
-        }
-
-        void ActorCommandSetActorCombatMode(Guid actorId, ActorCombatMode actorCombatMode)
-        {
-            questData.ActorData[actorId].SetActorCombatMode(actorCombatMode);
         }
 
         void ActorCommandSetCurrentWeaponGroupIndex(Guid actorId, int index)

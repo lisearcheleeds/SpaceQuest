@@ -7,6 +7,8 @@ namespace AloneSpace
         public PlayerData PlayerData { get; private set; }
         public AreaData CurrentAreaData { get; private set; }
 
+        public ActorOperationMode ActorOperationMode { get; private set; } = ActorOperationMode.Observe;
+
         public Vector3 LookAtAngle { get; private set; } = Vector3.forward;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;
         public float LookAtDistance { get; private set; }
@@ -19,6 +21,11 @@ namespace AloneSpace
         public void SetCurrentAreaData(AreaData currentAreaData)
         {
             CurrentAreaData = currentAreaData;
+        }
+
+        public void SetActorOperationMode(ActorOperationMode actorOperationMode)
+        {
+            ActorOperationMode = actorOperationMode;
         }
 
         public void SetLookAtAngle(Vector3 lookAtAngle)

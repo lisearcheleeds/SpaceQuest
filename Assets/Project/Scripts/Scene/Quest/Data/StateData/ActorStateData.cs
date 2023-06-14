@@ -14,8 +14,7 @@ namespace AloneSpace
         public ActorAIState ActorAIState { get; set; }
         public bool IsUserControl { get; set; }
 
-        public ActorMode ActorMode { get; set; }
-        public ActorCombatMode ActorCombatMode { get; set; } = ActorCombatMode.Fighter;
+        public bool IsWarping { get; set; }
 
         public IInteractData InteractOrder { get; set; }
         public float CurrentInteractingTime { get; set; }

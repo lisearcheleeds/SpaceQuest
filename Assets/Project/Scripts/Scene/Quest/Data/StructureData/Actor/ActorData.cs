@@ -16,7 +16,7 @@ namespace AloneSpace
         public IThinkModule ThinkModule { get; private set; }
         public IOrderModule OrderModule { get; private set; }
         public MovingModule MovingModule { get; private set; }
-        public CollisionEventModule CollisionEventModule { get; protected set; }
+        public CollisionEventModule CollisionEventModule { get; private set; }
         public CollisionEventEffectReceiverModule CollisionEventEffectReceiverModule { get; private set; }
 
         // IPlayer
@@ -120,7 +120,7 @@ namespace AloneSpace
         {
             if (moveTarget == null)
             {
-                ActorStateData.ActorMode = ActorMode.ThirdPersonViewpoint;
+                ActorStateData.IsWarping = false;
                 ActorStateData.MoveTarget = null;
                 return;
             }
@@ -128,11 +128,11 @@ namespace AloneSpace
             // 今どのエリアにも居ない時、もしくは移動先のエリアが違う時ワープ状態とする
             if (AreaId != moveTarget.AreaId)
             {
-                ActorStateData.ActorMode = ActorMode.Warp;
+                ActorStateData.IsWarping = true;
             }
             else
             {
-                ActorStateData.ActorMode = ActorMode.ThirdPersonViewpoint;
+                ActorStateData.IsWarping = false;
             }
 
             ActorStateData.MoveTarget = moveTarget;
@@ -209,16 +209,6 @@ namespace AloneSpace
         public void SetLookAtDirection(Vector3 lookAt)
         {
             ActorStateData.LookAtDirection = lookAt;
-        }
-
-        public void SetActorMode(ActorMode actorMode)
-        {
-            ActorStateData.ActorMode = actorMode;
-        }
-
-        public void SetActorCombatMode(ActorCombatMode actorCombatMode)
-        {
-            ActorStateData.ActorCombatMode = actorCombatMode;
         }
 
         public void SetCurrentWeaponGroupIndex(int weaponGroupIndex)

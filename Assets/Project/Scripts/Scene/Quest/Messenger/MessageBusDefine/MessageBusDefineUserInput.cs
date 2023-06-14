@@ -32,18 +32,17 @@ namespace AloneSpace
         public class UserInputLookAt : MessageBusBroadcaster<Vector3>{}
         public class UserInputRotateToLookAtDirection : MessageBusBroadcaster<bool>{}
 
-        public class UserInputSwitchActorMode : MessageBusBroadcaster {}
-        public class UserInputSetActorCombatMode : MessageBusBroadcaster <ActorCombatMode>{}
+        public class UserCommandSetActorOperationMode : MessageBusBroadcaster<ActorOperationMode> {}
 
         public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
         public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
-        public class UserCommandSetCameraMode : MessageBusBroadcaster<CameraController.CameraMode>{}
+        public class UserCommandSetCameraMode : MessageBusBroadcaster<CameraMode>{}
         public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
         public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
 
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
-        public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraController.CameraType, Vector3, RectTransform, Vector3?>{}
+        public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraType, Vector3, RectTransform, Vector3?>{}
 
         public class UserCommandSetLookAtAngle : MessageBusBroadcaster<Vector3>{}
         public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}

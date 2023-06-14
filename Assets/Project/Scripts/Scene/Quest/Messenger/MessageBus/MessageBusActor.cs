@@ -18,9 +18,6 @@
 
         public MessageBusDefine.ActorCommandSetLookAtDirection ActorCommandSetLookAtDirection { get; } = new MessageBusDefine.ActorCommandSetLookAtDirection();
 
-        public MessageBusDefine.ActorCommandSetActorMode ActorCommandSetActorMode { get; } = new MessageBusDefine.ActorCommandSetActorMode();
-        public MessageBusDefine.ActorCommandSetActorCombatMode ActorCommandSetActorCombatMode { get; } = new MessageBusDefine.ActorCommandSetActorCombatMode();
-
         public MessageBusDefine.ActorCommandSetMainTarget ActorCommandSetMainTarget { get; } = new MessageBusDefine.ActorCommandSetMainTarget();
         public MessageBusDefine.ActorCommandSetAroundTargets ActorCommandSetAroundTargets { get; } = new MessageBusDefine.ActorCommandSetAroundTargets();
     }

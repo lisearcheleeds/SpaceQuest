@@ -70,7 +70,7 @@ namespace AloneSpace
             targetView.OnLateUpdate();
 
             // WASDとマウス
-            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit)
+            if (userData.ActorOperationMode != ActorOperationMode.Observe)
             {
                 MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(Keyboard.current.wKey.isPressed ? 1.0f : 0.0f);
                 MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(Keyboard.current.sKey.isPressed ? 1.0f : 0.0f);
@@ -156,18 +156,21 @@ namespace AloneSpace
                 }
             }
 
-            // 戦闘モードの切り替え
-            if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
+            if (userData.ActorOperationMode == ActorOperationMode.Spot || userData.ActorOperationMode == ActorOperationMode.SpotFreeCamera)
             {
-                MessageBus.Instance.UserInputSetActorCombatMode.Broadcast(ActorCombatMode.Slip);
-            }
-            else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame)
-            {
-                MessageBus.Instance.UserInputSetActorCombatMode.Broadcast(ActorCombatMode.Fighter);
+                // 戦闘モードの切り替え
+                if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
+                {
+                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spot);
+                }
+                else if (Keyboard.current.leftShiftKey.wasReleasedThisFrame)
+                {
+                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotFreeCamera);
+                }
             }
 
             // マウスカーソルの切り替え
-            if (userData.PlayerData.MainActorData.ActorStateData.ActorMode == ActorMode.Cockpit && !Keyboard.current.leftAltKey.isPressed)
+            if (userData.ActorOperationMode != ActorOperationMode.Observe && !Keyboard.current.leftAltKey.isPressed)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
@@ -194,8 +197,17 @@ namespace AloneSpace
 
         void OnClickSwitchActorModeCombatButton()
         {
-            // Switchじゃなくてちゃんと指定したほうがいいかも
-            MessageBus.Instance.UserInputSwitchActorMode.Broadcast();
+            switch (userData.ActorOperationMode)
+            {
+                case ActorOperationMode.Observe:
+                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotFreeCamera);
+                    break;
+                case ActorOperationMode.Cockpit:
+                case ActorOperationMode.Spot:
+                case ActorOperationMode.SpotFreeCamera:
+                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                    break;
+            }
         }
     }
 }

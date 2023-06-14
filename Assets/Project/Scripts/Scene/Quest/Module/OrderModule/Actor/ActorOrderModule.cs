@@ -88,7 +88,7 @@ namespace AloneSpace
 
         void UpdateWarp(float deltaTime)
         {
-            if (actorData.ActorStateData.ActorMode != ActorMode.Warp)
+            if (!actorData.ActorStateData.IsWarping)
             {
                 return;
             }
@@ -155,7 +155,7 @@ namespace AloneSpace
 
         void UpdateMove(float deltaTime)
         {
-            if (actorData.ActorStateData.ActorMode == ActorMode.Warp)
+            if (actorData.ActorStateData.IsWarping)
             {
                 return;
             }

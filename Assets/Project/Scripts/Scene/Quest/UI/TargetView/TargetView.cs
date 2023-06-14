@@ -8,7 +8,7 @@ namespace AloneSpace
     {
         [SerializeField] TargetMarker targetMarkerPrefab;
         [SerializeField] RectTransform actorMarkerParent;
-        
+
         List<TargetMarker> targetMarkerList = new List<TargetMarker>();
         bool isDirty;
         ActorData actorData;
@@ -21,14 +21,14 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
         }
-        
+
         public void Finalize()
         {
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
         }
-        
+
         public void OnLateUpdate()
         {
             if (isDirty)
@@ -36,7 +36,7 @@ namespace AloneSpace
                 isDirty = false;
                 RefreshWeaponDataView();
             }
-            
+
             foreach (var actorMarker in targetMarkerList)
             {
                 actorMarker.OnLateUpdate();
@@ -95,7 +95,7 @@ namespace AloneSpace
 
         Vector3? GetScreenPositionFromWorldPosition(Vector3 worldPosition)
         {
-            return MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(CameraController.CameraType.Camera3d,
+            return MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(CameraType.Camera3d,
                 worldPosition, actorMarkerParent);
         }
     }

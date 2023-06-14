@@ -13,17 +13,17 @@ namespace AloneSpace
         AreaData observeAreaData;
 
         List<AreaDataCell> mapPanelCells = new List<AreaDataCell>();
-        
+
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
+
             MessageBus.Instance.UserInputSwitchMap.AddListener(UserInputSwitchMap);
             MessageBus.Instance.UserInputOpenMap.AddListener(UserInputOpenMap);
             MessageBus.Instance.UserInputCloseMap.AddListener(UserInputCloseMap);
 
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(SetCameraAngle);
-            
+
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
 
             UserInputCloseMap();
@@ -36,17 +36,17 @@ namespace AloneSpace
             MessageBus.Instance.UserInputCloseMap.RemoveListener(UserInputCloseMap);
 
             MessageBus.Instance.UserCommandSetCameraAngle.RemoveListener(SetCameraAngle);
-            
+
             MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
         }
-        
+
         void UpdateView()
         {
             if (!gameObject.activeSelf)
             {
                 return;
             }
-            
+
             for (var i = 0; i < Mathf.Max(mapPanelCells.Count, questData.StarSystemData.AreaData.Length); i++)
             {
                 if (mapPanelCells.Count < i + 1)
@@ -62,7 +62,7 @@ namespace AloneSpace
                     mapPanelCells[i].Apply(areaData, areaData.AreaId == observeAreaData?.AreaId, OnClickCell);
 
                     mapPanelCells[i].UpdatePosition(MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(
-                        CameraController.CameraType.CameraAmbient,
+                        CameraType.CameraAmbient,
                         areaData.StarSystemPosition,
                         cellParent));
                 }
@@ -85,7 +85,7 @@ namespace AloneSpace
             {
                 var index = i;
                 mapPanelCells[index].UpdatePosition(MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(
-                    CameraController.CameraType.CameraAmbient,
+                    CameraType.CameraAmbient,
                     questData.StarSystemData.AreaData[index].StarSystemPosition,
                     cellParent));
             }
@@ -114,16 +114,16 @@ namespace AloneSpace
 
         void UserInputOpenMap()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Map);
-            
+            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Map);
+
             gameObject.SetActive(true);
             UpdateView();
         }
-        
+
         void UserInputCloseMap()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraController.CameraMode.Default);
-            
+            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Default);
+
             gameObject.SetActive(false);
         }
     }

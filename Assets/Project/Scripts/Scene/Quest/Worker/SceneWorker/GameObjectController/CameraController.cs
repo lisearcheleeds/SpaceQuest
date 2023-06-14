@@ -22,19 +22,6 @@ namespace AloneSpace
 
         IPositionData trackingTarget;
 
-        public enum CameraMode
-        {
-            Default,
-            Map,
-            Cockpit,
-        }
-
-        public enum CameraType
-        {
-            CameraAmbient,
-            Camera3d,
-        }
-
         public void Initialize()
         {
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
