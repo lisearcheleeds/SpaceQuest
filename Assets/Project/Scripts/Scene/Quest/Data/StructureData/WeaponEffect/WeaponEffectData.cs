@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public abstract class WeaponEffectData : IPlayer, IPositionData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
+    public abstract class WeaponEffectData : IPlayer, IPositionData, IReleasableData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }
 
@@ -14,8 +14,6 @@ namespace AloneSpace
         public abstract CollisionEventModule CollisionEventModule { get; protected set; }
         public abstract CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
-        public abstract IWeaponEffectSpecVO WeaponEffectSpecVO { get; }
-
         // IPlayer
         public Guid PlayerInstanceId => WeaponData.WeaponHolder.PlayerInstanceId;
 
@@ -24,8 +22,12 @@ namespace AloneSpace
         public Vector3 Position { get; protected set; }
         public Quaternion Rotation { get; protected set; }
 
+        // IReleasableData
+        public bool IsReleased { get; private set; }
+
+        public abstract IWeaponEffectSpecVO WeaponEffectSpecVO { get; }
+
         // 情報
-        public bool IsAlive { get; set; }
         public WeaponData WeaponData { get; }
         public IPositionData TargetData { get; protected set; }
 
@@ -38,17 +40,20 @@ namespace AloneSpace
             InstanceId = Guid.NewGuid();
             WeaponData = weaponData;
             TargetData = targetData;
+
+            MovingModule = new MovingModule(this);
         }
 
         public virtual void ActivateModules()
         {
-            MovingModule = new MovingModule(this);
             MovingModule.ActivateModule();
         }
 
         public virtual void DeactivateModules()
         {
             MovingModule.DeactivateModule();
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
             MovingModule = null;
         }
 
@@ -75,6 +80,11 @@ namespace AloneSpace
         public void AddCollisionEventEffectList(IEnumerable<CollisionEventEffectReceiverModule> receiverList)
         {
             CollisionEventEffectReceiverModuleList.UnionWith(receiverList);
+        }
+
+        public void Release()
+        {
+            IsReleased = true;
         }
     }
 }

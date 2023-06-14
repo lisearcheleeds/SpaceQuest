@@ -25,12 +25,28 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
+            if (CheckRelease())
+            {
+                return;
+            }
+
             UpdateDamage();
             UpdateTarget();
             UpdateWeapon();
             UpdateWarp(deltaTime);
             UpdateMove(deltaTime);
             UpdateInteract(deltaTime);
+        }
+
+        bool CheckRelease()
+        {
+            if (actorData.IsReleased)
+            {
+                MessageBus.Instance.ReleaseActorData.Broadcast(actorData);
+                return true;
+            }
+
+            return false;
         }
 
         void UpdateDamage()

@@ -18,18 +18,19 @@ namespace AloneSpace
             InstanceId = Guid.NewGuid();
             VO = weaponBulletMakerSpecVO;
 
-            ActivateModules();
+            OrderModule = new BulletMakerWeaponOrderModule(this);
         }
 
         public override void ActivateModules()
         {
-            OrderModule = new BulletMakerWeaponOrderModule(this);
             OrderModule.ActivateModule();
         }
 
         public override void DeactivateModules()
         {
             OrderModule.DeactivateModule();
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
             OrderModule = null;
         }
 

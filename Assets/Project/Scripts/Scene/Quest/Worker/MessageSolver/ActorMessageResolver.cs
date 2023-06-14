@@ -39,6 +39,7 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
 
             MessageBus.Instance.NoticeDamageEventData.AddListener(NoticeDamageEventData);
+            MessageBus.Instance.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
         }
 
         public void Finalize()
@@ -69,6 +70,7 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
 
             MessageBus.Instance.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
+            MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
         }
 
         void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
@@ -172,7 +174,14 @@ namespace AloneSpace
 
         void NoticeDamageEventData(DamageEventData damageEventData)
         {
+            // TODO: foreachで全部のActorに知らせたい（特殊効果のために）
             questData.ActorData[damageEventData.DamagedActorData.InstanceId].AddDamageEventData(damageEventData);
+        }
+
+        void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
+        {
+            // TODO: foreachで全部のActorに知らせたい（特殊効果のために）
+            questData.ActorData[brokenActorEventData.BrokenActorData.InstanceId].Release();
         }
     }
 }

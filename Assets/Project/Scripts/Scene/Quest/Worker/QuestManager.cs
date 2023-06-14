@@ -25,8 +25,13 @@ namespace AloneSpace
         CollisionEffectSenderModuleUpdater collisionEffectSenderModuleUpdater = new CollisionEffectSenderModuleUpdater();
         CollisionEffectReceiverModuleUpdater collisionEffectReceiverModuleUpdater = new CollisionEffectReceiverModuleUpdater();
 
+        CreatedDataUpdater createdDataUpdater = new CreatedDataUpdater();
+        ReleasedDataUpdater releasedDataUpdater = new ReleasedDataUpdater();
+
         public void Initialize(QuestData questData)
         {
+            createdDataUpdater.Initialize(questData);
+
             userUpdater.Initialize(questData);
 
             questUpdater.Initialize(questData);
@@ -47,6 +52,8 @@ namespace AloneSpace
 
             collisionEffectSenderModuleUpdater.Initialize(questData);
             collisionEffectReceiverModuleUpdater.Initialize(questData);
+
+            releasedDataUpdater.Initialize(questData);
         }
 
         public void OnStart()
@@ -59,6 +66,8 @@ namespace AloneSpace
 
         public void Finalize()
         {
+            createdDataUpdater.Finalize();
+
             userUpdater.Finalize();
 
             questUpdater.Finalize();
@@ -79,11 +88,15 @@ namespace AloneSpace
 
             collisionEffectSenderModuleUpdater.Finalize();
             collisionEffectReceiverModuleUpdater.Finalize();
+
+            releasedDataUpdater.Finalize();
         }
 
         public void OnLateUpdate()
         {
             var deltaTime = Time.deltaTime;
+
+            createdDataUpdater.OnLateUpdate(deltaTime);
 
             userUpdater.OnLateUpdate(deltaTime);
 
@@ -99,6 +112,8 @@ namespace AloneSpace
 
             collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
             collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
+
+            releasedDataUpdater.OnLateUpdate(deltaTime);
         }
 
         /*

@@ -32,7 +32,6 @@ namespace AloneSpace
             UpdateState();
 
             Execute();
-
         }
 
         void CheckReload(float deltaTime)

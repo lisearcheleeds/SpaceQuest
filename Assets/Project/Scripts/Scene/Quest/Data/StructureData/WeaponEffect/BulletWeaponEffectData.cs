@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using AloneSpace;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace AloneSpace
 {
@@ -40,18 +38,17 @@ namespace AloneSpace
             LifeTime = 4;
             CurrentLifeTime = 0;
 
-            ActivateModules();
+            OrderModule = new BulletWeaponEffectOrderModule(this);
+            CollisionEventModule = new BulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventEffectSenderModule = new BulletWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
         }
 
         public override void ActivateModules()
         {
             base.ActivateModules();
 
-            OrderModule = new BulletWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEventModule = new BulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
-            CollisionEventEffectSenderModule = new BulletWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
         }
 
@@ -60,10 +57,12 @@ namespace AloneSpace
             base.DeactivateModules();
 
             OrderModule.DeactivateModule();
-            OrderModule = null;
             CollisionEventModule.DeactivateModule();
-            CollisionEventModule = null;
             CollisionEventEffectSenderModule.DeactivateModule();
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
+            OrderModule = null;
+            CollisionEventModule = null;
             CollisionEventEffectSenderModule = null;
         }
     }

@@ -35,8 +35,6 @@ namespace AloneSpace
             effectData.CurrentLifeTime += deltaTime;
             if (effectData.CurrentLifeTime > effectData.LifeTime)
             {
-                effectData.IsAlive = false;
-                effectData.DeactivateModules();
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
@@ -50,8 +48,6 @@ namespace AloneSpace
                     effectData.Rotation,
                     effectData.WeaponData.WeaponStateData.TargetData);
 
-                effectData.IsAlive = false;
-                effectData.DeactivateModules();
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
@@ -79,6 +75,7 @@ namespace AloneSpace
             }
             else
             {
+                // ターゲットが移動しない場合はターゲットの位置に回転
                 effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed * deltaTime);
                 effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
             }

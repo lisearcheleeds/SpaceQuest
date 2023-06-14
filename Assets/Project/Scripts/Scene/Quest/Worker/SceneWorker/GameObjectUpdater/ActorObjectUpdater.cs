@@ -27,6 +27,9 @@ namespace AloneSpace
 
             MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
 
+            MessageBus.Instance.CreatedActorData.AddListener(AddedActorData);
+            MessageBus.Instance.ReleasedActorData.AddListener(RemovedActorData);
+
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
             MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
         }
@@ -34,6 +37,9 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
+
+            MessageBus.Instance.CreatedActorData.RemoveListener(AddedActorData);
+            MessageBus.Instance.ReleasedActorData.RemoveListener(RemovedActorData);
 
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
             MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
@@ -124,6 +130,23 @@ namespace AloneSpace
         void SetDirtyActorObjectList()
         {
             isDirty = true;
+        }
+
+        void AddedActorData(ActorData actorData)
+        {
+            if (actorData.AreaId == observeAreaData?.AreaId)
+            {
+                // 多分タイミング的に問題ないはず
+                coroutineWorker.StartCoroutine(CreatePlayerActor(actorData));
+            }
+        }
+
+        void RemovedActorData(ActorData actorData)
+        {
+            if (actorData.AreaId == observeAreaData?.AreaId)
+            {
+                DestroyActor(actors.First(x => x.ActorData.InstanceId == actorData.InstanceId));
+            }
         }
     }
 }

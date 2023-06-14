@@ -8,7 +8,7 @@ namespace AloneSpace
     /// <summary>
     /// ActorData
     /// </summary>
-    public class ActorData : IPlayer, IPositionData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEventEffectReceiverModuleHolder
+    public class ActorData : IPlayer, IPositionData, IReleasableData, IThinkModuleHolder, IOrderModuleHolder, IMovingModuleHolder, ICollisionEventEffectReceiverModuleHolder
     {
         public Guid InstanceId { get; }
 
@@ -26,6 +26,9 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; } = Quaternion.identity;
+
+        // IReleasableData
+        public bool IsReleased { get; private set; }
 
         // 状態
         public ActorStateData ActorStateData { get; }
@@ -63,22 +66,25 @@ namespace AloneSpace
 
             ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
 
-            ActivateModules();
-        }
-
-        public void ActivateModules()
-        {
             MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);
             OrderModule = new ActorOrderModule(this);
             CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
             CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
+        }
 
+        public void ActivateModules()
+        {
             MovingModule.ActivateModule();
             ThinkModule.ActivateModule();
             OrderModule.ActivateModule();
             CollisionEventModule.ActivateModule();
             CollisionEventEffectReceiverModule.ActivateModule();
+
+            foreach (var weaponData in WeaponData.Values)
+            {
+                weaponData.ActivateModules();
+            }
         }
 
         public void DeactivateModules()
@@ -89,11 +95,17 @@ namespace AloneSpace
             CollisionEventModule.DeactivateModule();
             CollisionEventEffectReceiverModule.DeactivateModule();
 
-             MovingModule = null;
-             ThinkModule = null;
-             OrderModule = null;
-             CollisionEventModule = null;
-             CollisionEventEffectReceiverModule = null;
+            foreach (var weaponData in WeaponData.Values)
+            {
+                weaponData.DeactivateModules();
+            }
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
+            MovingModule = null;
+            ThinkModule = null;
+            OrderModule = null;
+            CollisionEventModule = null;
+            CollisionEventEffectReceiverModule = null;
         }
 
         public void SetInteractOrder(IInteractData interactData)
@@ -244,6 +256,16 @@ namespace AloneSpace
         public void AddDamageEventData(DamageEventData damageEventData)
         {
             ActorStateData.CurrentDamageEventData.Add(damageEventData);
+        }
+
+        public void Release()
+        {
+            IsReleased = true;
+
+            foreach (var weaponData in WeaponData.Values)
+            {
+                weaponData.Release();
+            }
         }
     }
 }

@@ -18,19 +18,19 @@ namespace AloneSpace
             MessageBus.Instance.CreatePlayerDataFromPresetId.AddListener(CreatePlayerDataFromPresetId);
             MessageBus.Instance.CreatePlayerDataFromPreset.AddListener(CreatePlayerDataFromPreset);
             MessageBus.Instance.ReleasePlayerData.AddListener(ReleasePlayerData);
-            MessageBus.Instance.AddedPlayerData.AddListener(AddedPlayerData);
-            MessageBus.Instance.RemovedPlayerData.AddListener(RemovedPlayerData);
+            MessageBus.Instance.CreatedPlayerData.AddListener(AddedPlayerData);
+            MessageBus.Instance.ReleasedPlayerData.AddListener(RemovedPlayerData);
 
             MessageBus.Instance.CreateActorDataFromPresetId.AddListener(CreateActorDataFromPresetId);
             MessageBus.Instance.CreateActorDataFromPreset.AddListener(CreateActorDataFromPreset);
             MessageBus.Instance.ReleaseActorData.AddListener(ReleaseActorData);
-            MessageBus.Instance.AddedActorData.AddListener(AddedActorData);
-            MessageBus.Instance.RemovedActorData.AddListener(RemovedActorData);
+            MessageBus.Instance.CreatedActorData.AddListener(AddedActorData);
+            MessageBus.Instance.ReleasedActorData.AddListener(RemovedActorData);
 
             MessageBus.Instance.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
             MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
-            MessageBus.Instance.AddedWeaponEffectData.AddListener(AddedWeaponEffectData);
-            MessageBus.Instance.RemovedWeaponEffectData.AddListener(RemovedWeaponEffectData);
+            MessageBus.Instance.CreatedWeaponEffectData.AddListener(AddedWeaponEffectData);
+            MessageBus.Instance.ReleasedWeaponEffectData.AddListener(RemovedWeaponEffectData);
         }
 
         public void Finalize()
@@ -40,19 +40,19 @@ namespace AloneSpace
             MessageBus.Instance.CreatePlayerDataFromPresetId.RemoveListener(CreatePlayerDataFromPresetId);
             MessageBus.Instance.CreatePlayerDataFromPreset.RemoveListener(CreatePlayerDataFromPreset);
             MessageBus.Instance.ReleasePlayerData.RemoveListener(ReleasePlayerData);
-            MessageBus.Instance.AddedPlayerData.RemoveListener(AddedPlayerData);
-            MessageBus.Instance.RemovedPlayerData.RemoveListener(RemovedPlayerData);
+            MessageBus.Instance.CreatedPlayerData.RemoveListener(AddedPlayerData);
+            MessageBus.Instance.ReleasedPlayerData.RemoveListener(RemovedPlayerData);
 
             MessageBus.Instance.CreateActorDataFromPresetId.RemoveListener(CreateActorDataFromPresetId);
             MessageBus.Instance.CreateActorDataFromPreset.RemoveListener(CreateActorDataFromPreset);
             MessageBus.Instance.ReleaseActorData.RemoveListener(ReleaseActorData);
-            MessageBus.Instance.AddedActorData.RemoveListener(AddedActorData);
-            MessageBus.Instance.RemovedActorData.RemoveListener(RemovedActorData);
+            MessageBus.Instance.CreatedActorData.RemoveListener(AddedActorData);
+            MessageBus.Instance.ReleasedActorData.RemoveListener(RemovedActorData);
 
             MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
             MessageBus.Instance.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
-            MessageBus.Instance.AddedWeaponEffectData.RemoveListener(AddedWeaponEffectData);
-            MessageBus.Instance.RemovedWeaponEffectData.RemoveListener(RemovedWeaponEffectData);
+            MessageBus.Instance.CreatedWeaponEffectData.RemoveListener(AddedWeaponEffectData);
+            MessageBus.Instance.ReleasedWeaponEffectData.RemoveListener(RemovedWeaponEffectData);
         }
 
         void CreatePlayerDataFromPresetIdAndAreaIdRandomPosition(int playerPresetId, int areaId)
@@ -74,20 +74,19 @@ namespace AloneSpace
         void CreatePlayerDataFromPreset(PlayerPresetVO playerPresetVO, AreaData areaData, Vector3 position)
         {
             var (playerQuestData, actorDataList) = QuestDataHelper.CreatePlayerData(playerPresetVO, areaData, position);
-
-            questData.AddPlayerData(playerQuestData);
-            MessageBus.Instance.AddedPlayerData.Broadcast(playerQuestData);
+            MessageBus.Instance.CreatedPlayerData.Broadcast(playerQuestData);
             foreach (var actorData in actorDataList)
             {
-                questData.AddActorData(actorData);
-                MessageBus.Instance.AddedActorData.Broadcast(actorData);
+                MessageBus.Instance.CreatedActorData.Broadcast(actorData);
             }
         }
 
         void ReleasePlayerData(PlayerData playerData)
         {
-            questData.RemovePlayerData(playerData);
-            MessageBus.Instance.RemovedPlayerData.Broadcast(playerData);
+            playerData.Release();
+            MessageBus.Instance.ReleasedPlayerData.Broadcast(playerData);
+
+            // TODO: ActorのRelease
         }
 
         void AddedPlayerData(PlayerData playerData)
@@ -106,14 +105,13 @@ namespace AloneSpace
         void CreateActorDataFromPreset(PlayerData playerData, ActorPresetVO actorPresetVO, AreaData areaData, Vector3 position)
         {
             var actorData = QuestDataHelper.CreateActorData(playerData, actorPresetVO, areaData, position);
-            questData.AddActorData(actorData);
-            MessageBus.Instance.AddedActorData.Broadcast(actorData);
+            MessageBus.Instance.CreatedActorData.Broadcast(actorData);
         }
 
         void ReleaseActorData(ActorData actorData)
         {
-            questData.RemoveActorData(actorData);
-            MessageBus.Instance.RemovedActorData.Broadcast(actorData);
+            actorData.Release();
+            MessageBus.Instance.ReleasedActorData.Broadcast(actorData);
         }
 
         void AddedActorData(ActorData actorData)
@@ -142,14 +140,13 @@ namespace AloneSpace
                 _ => throw new NotImplementedException(),
             };
 
-            questData.AddWeaponEffectData(weaponEffectData);
-            MessageBus.Instance.AddedWeaponEffectData.Broadcast(weaponEffectData);
+            MessageBus.Instance.CreatedWeaponEffectData.Broadcast(weaponEffectData);
         }
 
         void ReleaseWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            questData.RemoveWeaponEffectData(weaponEffectData);
-            MessageBus.Instance.RemovedWeaponEffectData.Broadcast(weaponEffectData);
+            weaponEffectData.Release();
+            MessageBus.Instance.ReleasedWeaponEffectData.Broadcast(weaponEffectData);
         }
 
         void AddedWeaponEffectData(WeaponEffectData weaponEffectData)

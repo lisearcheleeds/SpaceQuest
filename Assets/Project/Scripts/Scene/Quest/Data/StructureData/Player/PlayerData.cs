@@ -1,12 +1,13 @@
 ﻿using System;
-using AloneSpace;
 
 namespace AloneSpace
 {
-    public class PlayerData : IThinkModuleHolder
+    public class PlayerData : IReleasableData, IThinkModuleHolder
     {
         public Guid InstanceId { get; }
         public IThinkModule ThinkModule { get; private set; }
+
+        public bool IsReleased { get; private set; }
 
         public PlayerStance PlayerStance { get; private set; }
 
@@ -18,18 +19,19 @@ namespace AloneSpace
         {
             InstanceId = Guid.NewGuid();
 
-            ActivateModules();
+            ThinkModule = new PlayerThinkModule(this);
         }
 
         public void ActivateModules()
         {
-            ThinkModule = new PlayerThinkModule(this);
             ThinkModule.ActivateModule();
         }
 
         public void DeactivateModules()
         {
             ThinkModule.DeactivateModule();
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
             ThinkModule = null;
         }
 
@@ -46,6 +48,11 @@ namespace AloneSpace
         public void SetMainActorData(ActorData actorData)
         {
             MainActorData = actorData;
+        }
+
+        public void Release()
+        {
+            IsReleased = true;
         }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class BrokenActorEventData
     {
-        ActorData BrokenActorData { get; }
-        DamageEventData LethalDamageEventData { get; }
+        public ActorData BrokenActorData { get; }
+        public DamageEventData LethalDamageEventData { get; }
 
         public BrokenActorEventData(ActorData brokenActorData, DamageEventData lethalDamageEventData)
         {

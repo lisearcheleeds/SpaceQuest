@@ -39,18 +39,17 @@ namespace AloneSpace
             LifeTime = 8.0f;
             CurrentLifeTime = 0;
 
-            ActivateModules();
+            OrderModule = new MissileWeaponEffectOrderModule(this);
+            CollisionEventModule = new MissileWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
+            CollisionEventEffectSenderModule = new MissileWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
         }
 
         public override void ActivateModules()
         {
             base.ActivateModules();
 
-            OrderModule = new MissileWeaponEffectOrderModule(this);
             OrderModule.ActivateModule();
-            CollisionEventModule = new MissileWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));
             CollisionEventModule.ActivateModule();
-            CollisionEventEffectSenderModule = new MissileWeaponEffectCollisionEventEffectSenderModule(InstanceId, this);
             CollisionEventEffectSenderModule.ActivateModule();
         }
 
@@ -59,10 +58,12 @@ namespace AloneSpace
             base.DeactivateModules();
 
             OrderModule.DeactivateModule();
-            OrderModule = null;
             CollisionEventModule.DeactivateModule();
-            CollisionEventModule = null;
             CollisionEventEffectSenderModule.DeactivateModule();
+
+            // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
+            OrderModule = null;
+            CollisionEventModule = null;
             CollisionEventEffectSenderModule = null;
         }
     }

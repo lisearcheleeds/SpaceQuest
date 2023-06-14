@@ -7,7 +7,7 @@ namespace AloneSpace
     /// Actorが装備しているWeaponData
     /// （ItemとしてのWeaponDataは存在せずActorに装備する時に生成する）
     /// </summary>
-    public abstract class WeaponData : IOrderModuleHolder
+    public abstract class WeaponData : IReleasableData, IOrderModuleHolder
     {
         public abstract Guid InstanceId { get; }
 
@@ -15,6 +15,8 @@ namespace AloneSpace
         public abstract IOrderModule OrderModule { get; protected set; }
         public abstract IWeaponSpecVO WeaponSpecVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
+
+        public bool IsReleased { get; private set; }
 
         public ActorData WeaponHolder { get; }
         public int WeaponIndex { get; }
@@ -61,5 +63,10 @@ namespace AloneSpace
         }
 
         public abstract void Reload();
+
+        public void Release()
+        {
+            IsReleased = true;
+        }
     }
 }

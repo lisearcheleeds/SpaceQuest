@@ -33,8 +33,6 @@ namespace AloneSpace
             effectData.CurrentLifeTime += deltaTime;
             if (effectData.CurrentLifeTime > effectData.LifeTime)
             {
-                effectData.IsAlive = false;
-                effectData.DeactivateModules();
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
