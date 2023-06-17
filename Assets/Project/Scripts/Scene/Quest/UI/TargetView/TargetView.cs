@@ -11,20 +11,20 @@ namespace AloneSpace
 
         List<TargetMarker> targetMarkerList = new List<TargetMarker>();
         bool isDirty;
-        ActorData actorData;
+        ActorData userControlActor;
 
         IPositionData[] prevAroundTargets;
 
         public void Initialize()
         {
-            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
         }
@@ -43,15 +43,15 @@ namespace AloneSpace
             }
         }
 
-        void SetUserPlayer(PlayerData playerData)
+        void SetUserControlActor(ActorData userControlActor)
         {
-            actorData = playerData.MainActorData;
+            this.userControlActor = userControlActor;
             isDirty = true;
         }
 
         void ActorCommandSetMainTarget(Guid instanceId, IPositionData target)
         {
-            if (actorData.InstanceId == instanceId)
+            if (userControlActor?.InstanceId == instanceId)
             {
                 isDirty = true;
             }
@@ -59,7 +59,7 @@ namespace AloneSpace
 
         void ActorCommandSetAroundTargets(Guid instanceId, IPositionData[] targets)
         {
-            if (actorData.InstanceId == instanceId)
+            if (userControlActor?.InstanceId == instanceId)
             {
                 isDirty = true;
             }
@@ -67,12 +67,12 @@ namespace AloneSpace
 
         void RefreshWeaponDataView()
         {
-            if (actorData?.AreaId == null)
+            if (userControlActor?.AreaId == null)
             {
                 return;
             }
 
-            var aroundTargets = actorData.ActorStateData.AroundTargets;
+            var aroundTargets = userControlActor.ActorStateData.AroundTargets;
             var loopMax = Mathf.Max(targetMarkerList.Count, aroundTargets.Length);
             for (var i = 0; i < loopMax; i++)
             {
@@ -82,13 +82,13 @@ namespace AloneSpace
                     targetMarkerList[i].Initialize(GetScreenPositionFromWorldPosition);
                 }
 
-                if (i < aroundTargets.Length && aroundTargets[i].InstanceId != actorData.InstanceId)
+                if (i < aroundTargets.Length && aroundTargets[i].InstanceId != userControlActor.InstanceId)
                 {
-                    targetMarkerList[i].SetTargetData(actorData, aroundTargets[i]);
+                    targetMarkerList[i].SetTargetData(userControlActor, aroundTargets[i]);
                 }
                 else
                 {
-                    targetMarkerList[i].SetTargetData(actorData, null);
+                    targetMarkerList[i].SetTargetData(userControlActor, null);
                 }
             }
         }

@@ -52,6 +52,14 @@ namespace AloneSpace
                 return;
             }
 
+            if (effectData.TargetData is IReleasableData releasableData)
+            {
+                if (releasableData.IsReleased)
+                {
+                    return;
+                }
+            }
+
             var targetDirection = (effectData.TargetData.Position - effectData.Position).normalized;
             var currentDirection = effectData.Rotation * Vector3.forward;
             if (effectData.TargetData is IMovingModuleHolder targetMovingModuleHolder)

@@ -21,7 +21,7 @@ namespace AloneSpace
         List<Button> rightTabButtons = new List<Button>();
         List<InventoryDataView> rightStashView = new List<InventoryDataView>();
         int? rightTabIndex;
-        
+
         [SerializeField] GameObject leftInventoryObject;
         [SerializeField] RectTransform leftInventoryTabButtonParent;
         [SerializeField] RectTransform leftInventoryParent;
@@ -30,44 +30,40 @@ namespace AloneSpace
         List<InventoryDataView> leftStashView = new List<InventoryDataView>();
         int? leftTabIndex;
 
-        QuestData questData;
-
         PlayerData observePlayerData;
-        
-        public void Initialize(QuestData questData)
+
+        public void Initialize()
         {
-            this.questData = questData;
-            
             MessageBus.Instance.UserCommandUpdateInventory.AddListener(UserCommandUpdateInventory);
-            
+
             MessageBus.Instance.UserInputSwitchInventory.AddListener(UserInputSwitchInventory);
             MessageBus.Instance.UserInputOpenInventory.AddListener(UserInputOpenInventory);
             MessageBus.Instance.UserInputCloseInventory.AddListener(UserInputCloseInventory);
-            
+
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
-            
+
             inventoryCore.Initialize();
             UserInputCloseInventory();
-            
+
             closeMapButton.onClick.AddListener(OnClickClose);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.UserCommandUpdateInventory.RemoveListener(UserCommandUpdateInventory);
-            
+
             MessageBus.Instance.UserInputSwitchInventory.RemoveListener(UserInputSwitchInventory);
             MessageBus.Instance.UserInputOpenInventory.RemoveListener(UserInputOpenInventory);
             MessageBus.Instance.UserInputCloseInventory.RemoveListener(UserInputCloseInventory);
-            
+
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
         }
-        
+
         void SetUserPlayer(PlayerData playerData)
         {
             this.observePlayerData = playerData;
         }
-        
+
         void ApplyInventoryData(InventoryData[] data, bool isRight)
         {
             if (isRight)
@@ -93,7 +89,7 @@ namespace AloneSpace
 
             UpdateSideView(rightInventoryObject, rightInventoryTabButtonParent, rightInventoryParent, rightData, rightTabButtons, rightStashView, ref rightTabIndex);
             UpdateSideView(leftInventoryObject, leftInventoryTabButtonParent, leftInventoryParent, leftData, leftTabButtons, leftStashView, ref leftTabIndex);
-            
+
             void UpdateSideView(
                 GameObject inventoryObject,
                 RectTransform inventoryTabButtonParent,
@@ -182,7 +178,7 @@ namespace AloneSpace
             gameObject.SetActive(true);
             UpdateView();
         }
-        
+
         void UserInputCloseInventory()
         {
             gameObject.SetActive(false);

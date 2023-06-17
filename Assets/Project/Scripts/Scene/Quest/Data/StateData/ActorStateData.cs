@@ -12,7 +12,7 @@ namespace AloneSpace
     public class ActorStateData
     {
         public ActorAIState ActorAIState { get; set; }
-        public bool IsUserControl { get; set; }
+        public bool EnableThink { get; set; }
 
         public bool IsWarping { get; set; }
 

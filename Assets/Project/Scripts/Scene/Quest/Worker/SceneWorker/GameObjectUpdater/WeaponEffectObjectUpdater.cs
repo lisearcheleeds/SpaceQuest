@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Collections;
-using UnityEngine;
 
 namespace AloneSpace
 {
@@ -10,10 +8,11 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        AreaData observeAreaData;
+        AreaData observeArea;
         bool isDirty;
 
-        List<WeaponEffect> weaponEffectList = new List<WeaponEffect>();
+        List<WeaponEffect> currentWeaponEffectList = new List<WeaponEffect>();
+        List<Guid> loadingWeaponEffect = new List<Guid>();
 
         public void Initialize(QuestData questData)
         {
@@ -21,7 +20,7 @@ namespace AloneSpace
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.CreatedWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.ReleasedWeaponEffectData.AddListener(RemoveWeaponEffectData);
-            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
@@ -29,7 +28,7 @@ namespace AloneSpace
             MessageBus.Instance.SetDirtyWeaponEffectObjectList.RemoveListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.CreatedWeaponEffectData.RemoveListener(AddWeaponEffectData);
             MessageBus.Instance.ReleasedWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
-            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnLateUpdate()
@@ -40,15 +39,15 @@ namespace AloneSpace
                 Refresh();
             }
 
-            foreach (var weaponEffect in weaponEffectList)
+            foreach (var currentWeaponEffect in currentWeaponEffectList)
             {
-                weaponEffect.OnLateUpdate();
+                currentWeaponEffect.OnLateUpdate();
             }
         }
 
-        void SetUserArea(AreaData areaData)
+        void SetUserObserveArea(AreaData areaData)
         {
-            this.observeAreaData = areaData;
+            this.observeArea = areaData;
             SetDirtyWeaponEffectObjectList();
         }
 
@@ -57,39 +56,57 @@ namespace AloneSpace
         /// </summary>
         void Refresh()
         {
-            foreach (var weaponEffect in weaponEffectList.ToArray())
+            WeaponEffectData[] shouldWeaponEffectDataList;
+
+            // TODO: エリア外をAreaIdの組み合わせで定義する
+            if (observeArea != null)
+            {
+                // 現在のエリア内のすべてのWeaponEffect
+                shouldWeaponEffectDataList = questData.WeaponEffectData.Values.Where(weaponEffectData => weaponEffectData.AreaId == observeArea.AreaId).ToArray();
+            }
+            else
+            {
+                shouldWeaponEffectDataList = new WeaponEffectData[0];
+            }
+
+            foreach (var currentWeaponEffect in currentWeaponEffectList.ToArray())
             {
                 // 違うエリアだったり、questData.WeaponEffectDataに存在しないweaponEffectであれば削除
-                if (!questData.WeaponEffectData.ContainsKey(weaponEffect.WeaponEffectData.InstanceId) || weaponEffect.WeaponEffectData.AreaId != observeAreaData?.AreaId)
+                if (shouldWeaponEffectDataList.All(x => x.InstanceId != currentWeaponEffect.WeaponEffectData.InstanceId))
                 {
-                    ReleaseWeaponEffect(weaponEffect);
+                    ReleaseWeaponEffect(currentWeaponEffect);
                 }
             }
 
-            foreach (var weaponEffectData in questData.WeaponEffectData.Values)
+            foreach (var shouldWeaponEffectData in shouldWeaponEffectDataList)
             {
                 // 同じエリアでweaponEffectListに存在しないweaponEffectDataであれば生成
-                if (weaponEffectData.AreaId == observeAreaData?.AreaId && weaponEffectList.All(weaponEffect => weaponEffect.WeaponEffectData.InstanceId != weaponEffectData.InstanceId))
+                if (currentWeaponEffectList.All(weaponEffect => weaponEffect.WeaponEffectData.InstanceId != shouldWeaponEffectData.InstanceId))
                 {
-                    CreateWeaponEffect(weaponEffectData);
+                    if (!loadingWeaponEffect.Contains(shouldWeaponEffectData.InstanceId))
+                    {
+                        CreateWeaponEffect(shouldWeaponEffectData);
+                    }
                 }
             }
         }
 
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
+            loadingWeaponEffect.Add(weaponEffectData.InstanceId);
             MessageBus.Instance.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
             {
                 var weaponEffect = (WeaponEffect)c;
                 weaponEffect.Init(weaponEffectData);
-                weaponEffectList.Add(weaponEffect);
+                currentWeaponEffectList.Add(weaponEffect);
+                loadingWeaponEffect.Remove(weaponEffectData.InstanceId);
             });
         }
 
         void ReleaseWeaponEffect(WeaponEffect weaponEffect)
         {
             weaponEffect.Release();
-            weaponEffectList.Remove(weaponEffect);
+            currentWeaponEffectList.Remove(weaponEffect);
         }
 
         void SetDirtyWeaponEffectObjectList()
@@ -99,7 +116,7 @@ namespace AloneSpace
 
         void AddWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            if (weaponEffectData.AreaId == observeAreaData?.AreaId)
+            if (weaponEffectData.AreaId == observeArea?.AreaId)
             {
                 CreateWeaponEffect(weaponEffectData);
             }
@@ -107,9 +124,9 @@ namespace AloneSpace
 
         void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
         {
-            if (weaponEffectData.AreaId == observeAreaData?.AreaId)
+            if (weaponEffectData.AreaId == observeArea?.AreaId)
             {
-                ReleaseWeaponEffect(weaponEffectList.First(x => x.WeaponEffectData.InstanceId == weaponEffectData.InstanceId));
+                ReleaseWeaponEffect(currentWeaponEffectList.First(x => x.WeaponEffectData.InstanceId == weaponEffectData.InstanceId));
             }
         }
     }

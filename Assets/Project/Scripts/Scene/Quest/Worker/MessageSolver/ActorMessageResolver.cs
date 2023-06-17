@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -33,8 +31,6 @@ namespace AloneSpace
 
             MessageBus.Instance.ActorCommandSetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
 
-            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
-
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
 
@@ -63,8 +59,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
 
             MessageBus.Instance.ActorCommandSetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
-
-            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
 
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
@@ -152,14 +146,6 @@ namespace AloneSpace
         void ActorCommandSetCurrentWeaponGroupIndex(Guid actorId, int index)
         {
             questData.ActorData[actorId].SetCurrentWeaponGroupIndex(index);
-        }
-
-        void SetUserPlayer(PlayerData userPlayer)
-        {
-            foreach (var actorData in questData.ActorData.Values)
-            {
-                actorData.ActorStateData.IsUserControl = actorData.InstanceId == userPlayer.MainActorData.InstanceId;
-            }
         }
 
         void ActorCommandSetMainTarget(Guid actorId, IPositionData target)

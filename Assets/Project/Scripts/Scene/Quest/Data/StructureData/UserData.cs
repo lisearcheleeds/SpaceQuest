@@ -5,7 +5,9 @@ namespace AloneSpace
     public class UserData
     {
         public PlayerData PlayerData { get; private set; }
-        public AreaData CurrentAreaData { get; private set; }
+        public ActorData ControlActorData { get; private set; }
+        public IPositionData ObserveTarget { get; private set; }
+        public AreaData ObserveAreaData { get; private set; }
 
         public ActorOperationMode ActorOperationMode { get; private set; } = ActorOperationMode.Observe;
 
@@ -18,9 +20,19 @@ namespace AloneSpace
             PlayerData = playerData;
         }
 
-        public void SetCurrentAreaData(AreaData currentAreaData)
+        public void SetControlActorData(ActorData controlActorData)
         {
-            CurrentAreaData = currentAreaData;
+            ControlActorData = controlActorData;
+        }
+
+        public void SetObserveTarget(IPositionData observeTarget)
+        {
+            ObserveTarget = observeTarget;
+        }
+
+        public void SetObserveAreaData(AreaData observeAreaData)
+        {
+            ObserveAreaData = observeAreaData;
         }
 
         public void SetActorOperationMode(ActorOperationMode actorOperationMode)

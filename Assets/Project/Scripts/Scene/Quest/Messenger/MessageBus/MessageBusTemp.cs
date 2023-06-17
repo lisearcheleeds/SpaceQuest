@@ -7,10 +7,11 @@
         public MessageBusDefine.UnRegisterCollision UnRegisterCollision { get; } = new MessageBusDefine.UnRegisterCollision();
 
         // プレイヤー設定
-        public MessageBusDefine.SetOrderUserPlayer SetOrderUserPlayer { get; } = new MessageBusDefine.SetOrderUserPlayer();
         public MessageBusDefine.SetUserPlayer SetUserPlayer { get; } = new MessageBusDefine.SetUserPlayer();
-        public MessageBusDefine.SetOrderUserArea SetOrderUserArea { get; } = new MessageBusDefine.SetOrderUserArea();
-        public MessageBusDefine.SetUserArea SetUserArea { get; } = new MessageBusDefine.SetUserArea();
+        public MessageBusDefine.SetUserControlActor SetUserControlActor { get; } = new MessageBusDefine.SetUserControlActor();
+        public MessageBusDefine.SetUserObserveTarget SetUserObserveTarget { get; } = new MessageBusDefine.SetUserObserveTarget();
+
+        public MessageBusDefine.SetUserObserveArea SetUserObserveArea { get; } = new MessageBusDefine.SetUserObserveArea();
 
         // イベント通知
         public MessageBusDefine.NoticeCollisionEventData NoticeCollisionEventData { get; } = new MessageBusDefine.NoticeCollisionEventData();

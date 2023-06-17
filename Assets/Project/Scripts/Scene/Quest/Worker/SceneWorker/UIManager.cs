@@ -29,9 +29,9 @@ namespace AloneSpace
 
         UserData userData;
 
-        public void Initialize(QuestData questData, UserData userData)
+        public void Initialize(QuestData questData)
         {
-            this.userData = userData;
+            this.userData = questData.UserData;
 
             cameraAngleControllerEffect.Initialize();
 
@@ -40,9 +40,9 @@ namespace AloneSpace
 
             mapPanelView.Initialize(questData);
             cameraAngleController.Initialize();
-            interactionList.Initialize(questData);
+            interactionList.Initialize();
             itemDataMenu.Initialize();
-            inventoryView.Initialize(questData);
+            inventoryView.Initialize();
 
             mapButton.onClick.AddListener(OnClickMap);
             interactButton.onClick.AddListener(OnClickInteract);
@@ -92,10 +92,10 @@ namespace AloneSpace
                 localLookAtAngle.z = 0;
 
                 // ActorとUserDataそれぞれに同じ値を設定
-                if (Mouse.current.rightButton.wasReleasedThisFrame)
+                if (Mouse.current.rightButton.wasReleasedThisFrame && userData.ControlActorData != null)
                 {
                     // 角度基準リセット
-                    MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.PlayerData.MainActorData.Rotation);
+                    MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
                     MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(Vector3.zero);
                 }
                 else
@@ -105,17 +105,13 @@ namespace AloneSpace
 
                 MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f);
 
-                MessageBus.Instance.ActorCommandSetLookAtDirection.Broadcast(
-                    userData.PlayerData.MainActorData.InstanceId,
-                    userData.LookAtSpace * Quaternion.Euler(localLookAtAngle) * Vector3.forward);
-
-                if (Mouse.current.rightButton.isPressed)
+                if (Mouse.current.rightButton.isPressed && userData.ControlActorData != null)
                 {
                     // 追従
                     var lookAtDirection = userData.LookAtSpace * Quaternion.Euler(userData.LookAtAngle) * Vector3.forward;
-                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerData.MainActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
-                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.PlayerData.MainActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
-                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.PlayerData.MainActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.ControlActorData.Rotation * Vector3.up) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Vector3.Dot(lookAtDirection, userData.ControlActorData.Rotation * Vector3.left) < 0 ? 1.0f : -1.0f);
+                    MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Vector3.Dot(userData.LookAtSpace * Vector3.up, userData.ControlActorData.Rotation * Vector3.right) < 0 ? 1.0f : -1.0f);
                 }
                 else
                 {

@@ -7,28 +7,25 @@ namespace AloneSpace
 {
     public class InteractObjectUpdater
     {
-        QuestData questData;
-
         MonoBehaviour coroutineWorker;
         Coroutine currentCoroutine;
-        AreaData currentAreaData;
+        AreaData observeArea;
         bool isDirty;
 
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
 
-        public void Initialize(QuestData questData, MonoBehaviour coroutineWorker)
+        public void Initialize(MonoBehaviour coroutineWorker)
         {
-            this.questData = questData;
             this.coroutineWorker = coroutineWorker;
 
             MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
-            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SetDirtyInteractObjectList.RemoveListener(SetDirtyInteractObjectList);
-            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnLateUpdate()
@@ -51,9 +48,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserArea(AreaData areaData)
+        void SetUserObserveArea(AreaData areaData)
         {
-            this.currentAreaData = areaData;
+            observeArea = areaData;
             SetDirtyInteractObjectList();
         }
 
@@ -66,7 +63,7 @@ namespace AloneSpace
                 interactionObjectList.Remove(interactionObject);
             }
 
-            if (currentAreaData == null)
+            if (observeArea == null)
             {
                 yield break;
             }
@@ -74,16 +71,16 @@ namespace AloneSpace
             // 必要なオブジェクトを作る
             var waitCount = 0;
             var waitCounter = 0;
-            foreach (var data in currentAreaData.InteractData)
+            foreach (var data in observeArea?.InteractData)
             {
                 waitCount++;
-                CreateInteractObject(questData, data, () => waitCounter++);
+                CreateInteractObject(data, () => waitCounter++);
             }
 
             yield return new WaitWhile(() => waitCount != waitCounter);
         }
 
-        void CreateInteractObject(QuestData questData, IInteractData interactData, Action onComplete)
+        void CreateInteractObject(IInteractData interactData, Action onComplete)
         {
             var assetPathVO = interactData switch
             {

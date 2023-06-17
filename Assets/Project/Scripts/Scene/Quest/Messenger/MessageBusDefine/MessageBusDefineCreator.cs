@@ -1,14 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AloneSpace
 {
     public partial class MessageBusDefine
     {
-        public class CreatePlayerDataFromPresetIdAndAreaIdRandomPosition : MessageBusBroadcaster<int, int>{}
-        public class CreatePlayerDataFromPresetIdAndAreaId : MessageBusBroadcaster<int, int, Vector3>{}
-        public class CreatePlayerDataFromPresetId : MessageBusBroadcaster<int, AreaData, Vector3>{}
-        public class CreatePlayerDataFromPreset : MessageBusBroadcaster<PlayerPresetVO, AreaData, Vector3>{}
+        public class CreatePlayerDataFromPresetIdAndAreaIdRandomPosition : MessageBusBroadcaster<int, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, int>{}
+        public class CreatePlayerDataFromPresetIdAndAreaId : MessageBusBroadcaster<int, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, int, Vector3>{}
+        public class CreatePlayerDataFromPresetId : MessageBusBroadcaster<int, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, AreaData, Vector3>{}
+        public class CreatePlayerDataFromPreset : MessageBusBroadcaster<PlayerPresetVO, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, AreaData, Vector3>{}
         public class ReleasePlayerData : MessageBusBroadcaster<PlayerData>{}
         public class CreatedPlayerData : MessageBusBroadcaster<PlayerData>{}
         public class ReleasedPlayerData : MessageBusBroadcaster<PlayerData>{}

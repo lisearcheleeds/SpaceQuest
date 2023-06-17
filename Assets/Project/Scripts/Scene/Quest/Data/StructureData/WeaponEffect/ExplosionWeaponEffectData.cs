@@ -37,7 +37,7 @@ namespace AloneSpace
 
             SpecVO = specVO;
 
-            LifeTime = 400;
+            LifeTime = 4;
             CurrentLifeTime = 0;
 
             OrderModule = new ExplosionWeaponEffectOrderModule(this);

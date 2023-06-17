@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AloneSpace
 {
@@ -13,13 +15,24 @@ namespace AloneSpace
 
         public TacticsType TacticsType { get; private set; }
 
-        public ActorData MainActorData { get; private set; }
+        public ReadOnlyCollection<ActorData> ActorDataList { get; private set; }
 
-        public PlayerData()
+        public ReadOnlyDictionary<PlayerPropertyKey, IPlayerPropertyValue> PlayerProperty { get; }
+
+        List<ActorData> actorDataList;
+        Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty;
+
+        public PlayerData(Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty)
         {
             InstanceId = Guid.NewGuid();
 
             ThinkModule = new PlayerThinkModule(this);
+
+            actorDataList = new List<ActorData>();
+            ActorDataList = new ReadOnlyCollection<ActorData>(actorDataList);
+
+            this.playerProperty = playerProperty ?? new Dictionary<PlayerPropertyKey, IPlayerPropertyValue>();
+            PlayerProperty = new ReadOnlyDictionary<PlayerPropertyKey, IPlayerPropertyValue>(this.playerProperty);
         }
 
         public void ActivateModules()
@@ -45,14 +58,29 @@ namespace AloneSpace
             TacticsType = tacticsType;
         }
 
-        public void SetMainActorData(ActorData actorData)
-        {
-            MainActorData = actorData;
-        }
-
         public void Release()
         {
             IsReleased = true;
+        }
+
+        public void AddActorData(ActorData actorData)
+        {
+            actorDataList.Add(actorData);
+        }
+
+        public void RemoveActorData(ActorData actorData)
+        {
+            actorDataList.Remove(actorData);
+        }
+
+        public void AddPlayerProperty(PlayerPropertyKey key, IPlayerPropertyValue value)
+        {
+            playerProperty.Add(key, value);
+        }
+
+        public void RemovePlayerProperty(PlayerPropertyKey key)
+        {
+            playerProperty.Remove(key);
         }
     }
 }

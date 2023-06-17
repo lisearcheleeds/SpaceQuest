@@ -8,7 +8,7 @@ namespace AloneSpace
     {
         [SerializeField] Transform ambientObjectParent;
         [SerializeField] Transform placedObjectParent;
-        
+
         Transform ambientObject;
         QuestData questData;
 
@@ -16,19 +16,19 @@ namespace AloneSpace
 
         bool isDirty;
         Coroutine currentCoroutine;
-        AreaData currentAreaData;
-        
+        AreaData observeArea;
+
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
-            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+
+            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
-            
+            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+
             if (ambientObject != null)
             {
                 Destroy(ambientObject.gameObject);
@@ -41,7 +41,7 @@ namespace AloneSpace
             if (isDirty)
             {
                 isDirty = false;
-            
+
                 if (currentCoroutine != null)
                 {
                     StopCoroutine(currentCoroutine);
@@ -51,9 +51,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserArea(AreaData areaData)
+        void SetUserObserveArea(AreaData areaData)
         {
-            currentAreaData = areaData;
+            observeArea = areaData;
             isDirty = true;
         }
 
@@ -67,24 +67,24 @@ namespace AloneSpace
                     questData.StarSystemData.AmbientObjectAsset,
                     target => Instantiate(target, ambientObjectParent)));
             }
-            
+
             foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
                 Destroy(loadedPlacedObject.gameObject);
             }
-            
+
             loadedPlacedObjects.Clear();
 
-            var placedObjectAsset = currentAreaData?.PlacedObjectAsset;
+            var placedObjectAsset = observeArea?.PlacedObjectAsset;
             if (placedObjectAsset != null)
             {
                 coroutines.Add(AssetLoader.LoadAsync<Transform>(
                     placedObjectAsset,
                     target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
             }
-            
+
             yield return new ParallelCoroutine(coroutines);
-            
+
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)
             {

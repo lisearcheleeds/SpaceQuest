@@ -10,7 +10,7 @@ namespace AloneSpace
         [SerializeField] RectTransform cellParent;
 
         QuestData questData;
-        AreaData observeAreaData;
+        AreaData observeArea;
 
         List<AreaDataCell> mapPanelCells = new List<AreaDataCell>();
 
@@ -24,7 +24,7 @@ namespace AloneSpace
 
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(SetCameraAngle);
 
-            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
 
             UserInputCloseMap();
         }
@@ -37,7 +37,7 @@ namespace AloneSpace
 
             MessageBus.Instance.UserCommandSetCameraAngle.RemoveListener(SetCameraAngle);
 
-            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         void UpdateView()
@@ -59,7 +59,7 @@ namespace AloneSpace
                 if (i < questData.StarSystemData.AreaData.Length)
                 {
                     var areaData = questData.StarSystemData.AreaData[i];
-                    mapPanelCells[i].Apply(areaData, areaData.AreaId == observeAreaData?.AreaId, OnClickCell);
+                    mapPanelCells[i].Apply(areaData, areaData.AreaId == observeArea?.AreaId, OnClickCell);
 
                     mapPanelCells[i].UpdatePosition(MessageBus.Instance.UserCommandGetWorldToCanvasPoint.Unicast(
                         CameraType.CameraAmbient,
@@ -69,9 +69,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserArea(AreaData observeAreaData)
+        void SetUserObserveArea(AreaData areaData)
         {
-            this.observeAreaData = observeAreaData;
+            observeArea = areaData;
         }
 
         void UpdatePosition()

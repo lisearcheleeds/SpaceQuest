@@ -38,7 +38,7 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            if (actorData.ActorStateData.IsUserControl)
+            if (actorData.ActorStateData.EnableThink)
             {
                 // skip
                 return;

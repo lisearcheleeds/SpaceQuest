@@ -5,24 +5,21 @@ namespace AloneSpace
 {
     public class GraphicEffectObjectUpdater
     {
-        QuestData questData;
-        AreaData observeAreaData;
+        AreaData observeArea;
         bool isReset;
 
         List<GraphicEffect> graphicEffectList = new List<GraphicEffect>();
 
-        public void Initialize(QuestData questData)
+        public void Initialize()
         {
-            this.questData = questData;
-
             MessageBus.Instance.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
-            MessageBus.Instance.SetUserArea.AddListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SpawnGraphicEffect.RemoveListener(SpawnGraphicEffect);
-            MessageBus.Instance.SetUserArea.RemoveListener(SetUserArea);
+            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnLateUpdate(float deltaTime)
@@ -43,9 +40,9 @@ namespace AloneSpace
             isReset = false;
         }
 
-        void SetUserArea(AreaData areaData)
+        void SetUserObserveArea(AreaData areaData)
         {
-            this.observeAreaData = areaData;
+            this.observeArea = areaData;
             ResetGraphicEffectObjectList();
         }
 
@@ -56,7 +53,7 @@ namespace AloneSpace
 
         void SpawnGraphicEffect(GraphicEffectSpecVO graphicEffectSpecVO, IGraphicEffectHandler graphicEffectHandler)
         {
-            if (graphicEffectHandler.PositionData.AreaId != observeAreaData?.AreaId)
+            if (graphicEffectHandler.PositionData.AreaId != observeArea?.AreaId)
             {
                 return;
             }

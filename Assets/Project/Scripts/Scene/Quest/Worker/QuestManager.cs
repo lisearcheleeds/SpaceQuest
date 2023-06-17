@@ -12,25 +12,23 @@ namespace AloneSpace
         InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
         PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
         ActorMessageResolver actorMessageResolver = new ActorMessageResolver();
-        CreateMessageResolver createMessageResolver = new CreateMessageResolver();
+        UserMessageResolver userMessageResolver = new UserMessageResolver();
 
         ThinkModuleUpdater thinkModuleUpdater = new ThinkModuleUpdater();
         OrderModuleUpdater orderModuleUpdater = new OrderModuleUpdater();
         MovingModuleUpdater movingModuleUpdater = new MovingModuleUpdater();
-
-        CollisionChecker collisionChecker = new CollisionChecker();
-
         CollisionEventModuleUpdater collisionEventModuleUpdater = new CollisionEventModuleUpdater();
-
         CollisionEffectSenderModuleUpdater collisionEffectSenderModuleUpdater = new CollisionEffectSenderModuleUpdater();
         CollisionEffectReceiverModuleUpdater collisionEffectReceiverModuleUpdater = new CollisionEffectReceiverModuleUpdater();
 
-        CreatedDataUpdater createdDataUpdater = new CreatedDataUpdater();
-        ReleasedDataUpdater releasedDataUpdater = new ReleasedDataUpdater();
+        CollisionChecker collisionChecker = new CollisionChecker();
+
+        CreateDataController createDataController = new CreateDataController();
+        ReleaseDataController releaseDataController = new ReleaseDataController();
 
         public void Initialize(QuestData questData)
         {
-            createdDataUpdater.Initialize(questData);
+            createDataController.Initialize(questData);
 
             userUpdater.Initialize(questData);
 
@@ -40,7 +38,7 @@ namespace AloneSpace
             interactMessageResolver.Initialize(questData);
             playerMessageResolver.Initialize(questData);
             actorMessageResolver.Initialize(questData);
-            createMessageResolver.Initialize(questData);
+            userMessageResolver.Initialize(questData);
 
             thinkModuleUpdater.Initialize(questData);
             orderModuleUpdater.Initialize(questData);
@@ -53,20 +51,17 @@ namespace AloneSpace
             collisionEffectSenderModuleUpdater.Initialize(questData);
             collisionEffectReceiverModuleUpdater.Initialize(questData);
 
-            releasedDataUpdater.Initialize(questData);
+            releaseDataController.Initialize(questData);
         }
 
         public void OnStart()
         {
             questUpdater.OnStart();
-
-            // TODO SetDirtyを軒並み呼ぶ
-            MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
         }
 
         public void Finalize()
         {
-            createdDataUpdater.Finalize();
+            createDataController.Finalize();
 
             userUpdater.Finalize();
 
@@ -76,7 +71,7 @@ namespace AloneSpace
             interactMessageResolver.Finalize();
             playerMessageResolver.Finalize();
             actorMessageResolver.Finalize();
-            createMessageResolver.Finalize();
+            userMessageResolver.Finalize();
 
             thinkModuleUpdater.Finalize();
             orderModuleUpdater.Finalize();
@@ -89,14 +84,14 @@ namespace AloneSpace
             collisionEffectSenderModuleUpdater.Finalize();
             collisionEffectReceiverModuleUpdater.Finalize();
 
-            releasedDataUpdater.Finalize();
+            releaseDataController.Finalize();
         }
 
         public void OnLateUpdate()
         {
             var deltaTime = Time.deltaTime;
 
-            createdDataUpdater.OnLateUpdate(deltaTime);
+            createDataController.OnLateUpdate(deltaTime);
 
             userUpdater.OnLateUpdate(deltaTime);
 
@@ -113,7 +108,7 @@ namespace AloneSpace
             collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
             collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
 
-            releasedDataUpdater.OnLateUpdate(deltaTime);
+            releaseDataController.OnLateUpdate(deltaTime);
         }
 
         /*

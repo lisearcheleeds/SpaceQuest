@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace AloneSpace
 {
@@ -8,10 +7,11 @@ namespace AloneSpace
         public class RegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
         public class UnRegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
 
-        public class SetOrderUserPlayer : MessageBusBroadcaster<Guid>{}
         public class SetUserPlayer : MessageBusBroadcaster<PlayerData>{}
-        public class SetOrderUserArea : MessageBusBroadcaster<int?>{}
-        public class SetUserArea : MessageBusBroadcaster<AreaData>{}
+        public class SetUserControlActor : MessageBusBroadcaster<ActorData>{}
+        public class SetUserObserveTarget : MessageBusBroadcaster<IPositionData>{}
+
+        public class SetUserObserveArea : MessageBusBroadcaster<AreaData>{}
 
         public class NoticeCollisionEventData : MessageBusBroadcaster<CollisionEventData>{}
         public class NoticeCollisionEventEffectData : MessageBusBroadcaster<CollisionEventEffectData>{}

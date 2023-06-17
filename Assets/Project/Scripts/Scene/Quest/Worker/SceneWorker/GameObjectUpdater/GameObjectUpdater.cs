@@ -18,8 +18,8 @@ namespace AloneSpace
         {
             actorObjectUpdater.Initialize(questData, variableParent, this);
             weaponEffectObjectUpdater.Initialize(questData);
-            interactObjectUpdater.Initialize(questData, this);
-            graphicEffectObjectUpdater.Initialize(questData);
+            interactObjectUpdater.Initialize(this);
+            graphicEffectObjectUpdater.Initialize();
 
             gameObjectCache.Initialize(variableParent, cacheParent);
         }

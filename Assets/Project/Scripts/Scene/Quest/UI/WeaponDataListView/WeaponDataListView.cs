@@ -9,11 +9,11 @@ namespace AloneSpace
     {
         [SerializeField] WeaponDataView weaponDataViewPrefab;
         [SerializeField] RectTransform weaponDataViewParent;
-        
+
         [SerializeField] WeaponGroupTab[] weaponGroupTabList;
 
         List<WeaponDataView> weaponDataViewList = new List<WeaponDataView>();
-        ActorData actorData;
+        ActorData userControlActor;
         bool isDirty;
 
         [Serializable]
@@ -36,13 +36,13 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.AddListener(UserInputSetCurrentWeaponGroupIndex);
         }
-        
+
         public void Finalize()
         {
-            MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
         }
 
@@ -60,9 +60,9 @@ namespace AloneSpace
             }
         }
 
-        void SetUserPlayer(PlayerData playerData)
+        void SetUserControlActor(ActorData userControlActor)
         {
-            actorData = playerData.MainActorData;
+            this.userControlActor = userControlActor;
             isDirty = true;
         }
 
@@ -73,12 +73,27 @@ namespace AloneSpace
 
         void RefreshWeaponDataView()
         {
-            for (var i = 0; i < weaponGroupTabList.Length; i++)
+            if (userControlActor == null)
             {
-                weaponGroupTabList[i].SetActiveColor(i == actorData.ActorStateData.CurrentWeaponGroupIndex);
+                foreach (var weaponGroupTab in weaponGroupTabList)
+                {
+                    weaponGroupTab.SetActiveColor(false);
+                }
+
+                foreach (var weaponDataView in weaponDataViewList)
+                {
+                    weaponDataView.SetWeaponData(null);
+                }
+
+                return;
             }
 
-            var currentWeaponDataGroup = actorData.WeaponDataGroup[actorData.ActorStateData.CurrentWeaponGroupIndex];
+            for (var i = 0; i < weaponGroupTabList.Length; i++)
+            {
+                weaponGroupTabList[i].SetActiveColor(i == userControlActor.ActorStateData.CurrentWeaponGroupIndex);
+            }
+
+            var currentWeaponDataGroup = userControlActor.WeaponDataGroup[userControlActor.ActorStateData.CurrentWeaponGroupIndex];
             var loopMax = Mathf.Max(weaponDataViewList.Count, currentWeaponDataGroup.Count);
             for (var i = 0; i < loopMax; i++)
             {
@@ -89,7 +104,7 @@ namespace AloneSpace
 
                 if (i < currentWeaponDataGroup.Count)
                 {
-                    weaponDataViewList[i].SetWeaponData(actorData.WeaponData[currentWeaponDataGroup[i]]);
+                    weaponDataViewList[i].SetWeaponData(userControlActor.WeaponData[currentWeaponDataGroup[i]]);
                 }
                 else
                 {

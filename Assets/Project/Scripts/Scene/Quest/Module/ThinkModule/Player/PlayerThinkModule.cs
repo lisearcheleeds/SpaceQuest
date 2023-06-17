@@ -32,19 +32,11 @@ namespace AloneSpace
                 return;
             }
 
-            if (!playerData.MainActorData?.AreaId.HasValue ?? true)
+            if (!playerData.ActorDataList.Any())
             {
                 return;
             }
 
-            var areaActorData = MessageBus.Instance.UtilGetAreaActorData.Unicast(playerData.MainActorData.AreaId.Value);
-
-            var isExistScavenger = areaActorData.Any(x => MessageBus.Instance.UtilGetPlayerData.Unicast(x.PlayerInstanceId).PlayerStance == PlayerStance.Scavenger);
-            var isExistOtherPlayer = areaActorData.Any(x =>
-            {
-                var playerData = MessageBus.Instance.UtilGetPlayerData.Unicast(x.PlayerInstanceId);
-                return playerData.PlayerStance != PlayerStance.Scavenger && playerData.InstanceId != this.playerData.InstanceId;
-            });;
 
             switch (playerData.PlayerStance)
             {
@@ -55,6 +47,7 @@ namespace AloneSpace
                     MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Escape);
                     return;
                 case PlayerStance.ScavengerKiller:
+                    /*
                     if (isExistScavenger && !isExistOtherPlayer)
                     {
                         MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
@@ -63,6 +56,7 @@ namespace AloneSpace
                     {
                         MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
                     }
+                    */
                     return;
                 case PlayerStance.Collector:
                     MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
