@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AloneSpace
 {
-    public class QuestDataMessageResolver
+    public class UtilMessageResolver
     {
         QuestData questData;
 

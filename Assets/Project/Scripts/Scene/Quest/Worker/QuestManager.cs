@@ -8,7 +8,7 @@ namespace AloneSpace
 
         QuestUpdater questUpdater = new QuestUpdater();
 
-        QuestDataMessageResolver questDataMessageResolver = new QuestDataMessageResolver();
+        UtilMessageResolver utilMessageResolver = new UtilMessageResolver();
         InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
         PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
         ActorMessageResolver actorMessageResolver = new ActorMessageResolver();
@@ -33,7 +33,7 @@ namespace AloneSpace
             sceneUpdater.Initialize(questData);
             questUpdater.Initialize(questData);
 
-            questDataMessageResolver.Initialize(questData);
+            utilMessageResolver.Initialize(questData);
             interactMessageResolver.Initialize(questData);
             playerMessageResolver.Initialize(questData);
             actorMessageResolver.Initialize(questData);
@@ -62,7 +62,7 @@ namespace AloneSpace
             sceneUpdater.Finalize();
             questUpdater.Finalize();
 
-            questDataMessageResolver.Finalize();
+            utilMessageResolver.Finalize();
             interactMessageResolver.Finalize();
             playerMessageResolver.Finalize();
             actorMessageResolver.Finalize();
