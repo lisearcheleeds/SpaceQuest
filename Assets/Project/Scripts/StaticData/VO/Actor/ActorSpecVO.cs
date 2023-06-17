@@ -8,6 +8,8 @@
         public int Id => row.Id;
         public AssetPath Path => row.Path;
 
+        public GraphicEffectSpecVO BrokenActorGraphicEffectSpecVO { get; }
+
         // 耐久
         public float EnduranceValue => row.EnduranceValue;
 
@@ -49,6 +51,7 @@
         public ActorSpecVO(int id, ActorQualityType qualityType, float quality)
         {
             row = ActorSpecMaster.Instance.Get(id);
+            BrokenActorGraphicEffectSpecVO = new GraphicEffectSpecVO(row.BrokenActorGraphicEffectSpecMasterId);
         }
     }
 }

@@ -168,6 +168,10 @@ namespace AloneSpace
         {
             // TODO: foreachで全部のActorに知らせたい（特殊効果のために）
             questData.ActorData[brokenActorEventData.BrokenActorData.InstanceId].Release();
+
+            MessageBus.Instance.SpawnGraphicEffect.Broadcast(
+                brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
+                new BrokenActorGraphicEffectHandler(brokenActorEventData.BrokenActorData));
         }
     }
 }

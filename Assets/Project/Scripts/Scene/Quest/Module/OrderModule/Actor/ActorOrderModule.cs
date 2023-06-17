@@ -60,8 +60,7 @@ namespace AloneSpace
 
                     if (actorData.ActorStateData.EnduranceValue <= 0)
                     {
-                        MessageBus.Instance.NoticeBrokenActorEventData.Broadcast(
-                            new BrokenActorEventData(actorData, currentDamageEventData));
+                        MessageBus.Instance.NoticeBrokenActorEventData.Broadcast(new BrokenActorEventData(actorData, currentDamageEventData));
                         break;
                     }
                 }

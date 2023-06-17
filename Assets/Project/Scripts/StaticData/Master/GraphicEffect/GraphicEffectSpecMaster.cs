@@ -48,6 +48,11 @@ namespace AloneSpace
             {
                 new Row(1, new CacheableGameObjectPath("Prefab/GraphicEffect/MissileSmoke")),
                 new Row(2, new CacheableGameObjectPath("Prefab/GraphicEffect/StandardExplosion")),
+                new Row(10001, new CacheableGameObjectPath("Prefab/GraphicEffect/BrokenActor/Krishna")),
+                new Row(10002, new CacheableGameObjectPath("Prefab/GraphicEffect/BrokenActor/Arjuna")),
+                new Row(10003, new CacheableGameObjectPath("Prefab/GraphicEffect/BrokenActor/Ilis")),
+                new Row(10004, new CacheableGameObjectPath("Prefab/GraphicEffect/BrokenActor/Transporter")),
+                new Row(10005, new CacheableGameObjectPath("Prefab/GraphicEffect/BrokenActor/WarShip")),
             };
         }
     }

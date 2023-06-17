@@ -9,6 +9,9 @@ namespace AloneSpace
             public int Id { get; }
             public AssetPath Path { get; }
 
+            // 破壊グラフィックアセット
+            public int BrokenActorGraphicEffectSpecMasterId { get; }
+
             // 耐久
             public float EnduranceValue { get; }
 
@@ -42,6 +45,7 @@ namespace AloneSpace
             public Row(
                 int id,
                 AssetPath path,
+                int brokenActorGraphicEffectSpecMasterId,
                 float enduranceValue,
                 float shieldValue,
                 float shieldTruncateValue,
@@ -63,6 +67,7 @@ namespace AloneSpace
             {
                 Id = id;
                 Path = path;
+                BrokenActorGraphicEffectSpecMasterId = brokenActorGraphicEffectSpecMasterId;
                 EnduranceValue = enduranceValue;
                 ShieldValue = shieldValue;
                 ShieldTruncateValue = shieldTruncateValue;
@@ -112,6 +117,7 @@ namespace AloneSpace
                 new Row(
                     id: 1,
                     path: new AssetPath("Prefab/Actor/Krishna"),
+                    brokenActorGraphicEffectSpecMasterId: 10001,
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -133,6 +139,7 @@ namespace AloneSpace
                 new Row(
                     id: 2,
                     path: new AssetPath("Prefab/Actor/Arjuna"),
+                    brokenActorGraphicEffectSpecMasterId: 10002,
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -154,6 +161,7 @@ namespace AloneSpace
                 new Row(
                     id: 3,
                     path: new AssetPath("Prefab/Actor/Ilis"),
+                    brokenActorGraphicEffectSpecMasterId: 10003,
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -175,6 +183,7 @@ namespace AloneSpace
                 new Row(
                     id: 4,
                     path: new AssetPath("Prefab/Actor/Transporter"),
+                    brokenActorGraphicEffectSpecMasterId: 10004,
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
@@ -196,6 +205,7 @@ namespace AloneSpace
                 new Row(
                     id: 5,
                     path: new AssetPath("Prefab/Actor/WarShip"),
+                    brokenActorGraphicEffectSpecMasterId: 10005,
                     enduranceValue: 100,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
