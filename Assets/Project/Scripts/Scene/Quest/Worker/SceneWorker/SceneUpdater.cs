@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public class UserUpdater : MonoBehaviour
+    public class SceneUpdater : MonoBehaviour
     {
         [SerializeField] UIManager uiManager;
         [SerializeField] GameObjectUpdater gameObjectUpdater;
@@ -17,16 +17,14 @@ namespace AloneSpace
 
             uiManager.Initialize(questData);
             gameObjectUpdater.Initialize(questData);
-
             areaAmbientController.Initialize(questData);
-            cameraController.Initialize();
+            cameraController.Initialize(questData);
         }
 
         public void Finalize()
         {
             uiManager.Finalize();
             gameObjectUpdater.Finalize();
-
             areaAmbientController.Finalize();
             cameraController.Finalize();
         }
@@ -41,7 +39,7 @@ namespace AloneSpace
             uiManager.OnLateUpdate();
             gameObjectUpdater.OnLateUpdate(deltaTime);
             areaAmbientController.OnLateUpdate();
-            cameraController.OnLateUpdate(questData.UserData);
+            cameraController.OnLateUpdate();
         }
     }
 }

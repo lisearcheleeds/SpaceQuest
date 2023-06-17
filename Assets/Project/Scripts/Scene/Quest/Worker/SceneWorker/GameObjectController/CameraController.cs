@@ -21,9 +21,12 @@ namespace AloneSpace
         Quaternion currentQuaternion = Quaternion.identity;
 
         IPositionData trackingTarget;
+        QuestData questData;
 
-        public void Initialize()
+        public void Initialize(QuestData questData)
         {
+            this.questData = questData;
+
             MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
 
             MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
@@ -42,7 +45,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
         }
 
-        public void OnLateUpdate(UserData userData)
+        public void OnLateUpdate()
         {
             var target3dCameraPosition = Vector3.zero;
             var targetAmbientCameraPosition = Vector3.zero;
@@ -59,7 +62,7 @@ namespace AloneSpace
                     targetAmbientCameraPosition = trackingTarget.Position;
                 }
 
-                targetRotation = userData.LookAtSpace * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up) * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
+                targetRotation = questData.UserData.LookAtSpace * Quaternion.AngleAxis(questData.UserData.LookAtAngle.y, Vector3.up) * Quaternion.AngleAxis(questData.UserData.LookAtAngle.x, Vector3.right);
             }
 
             var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);
@@ -99,9 +102,9 @@ namespace AloneSpace
             {
                 return cameraMode switch
                 {
-                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, userData.LookAtDistance),
+                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, questData.UserData.LookAtDistance),
                     CameraMode.Map => -targetAmbientCameraPosition * 10.0f,
-                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, userData.LookAtDistance),
+                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, questData.UserData.LookAtDistance),
                 };
             }
         }

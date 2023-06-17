@@ -4,7 +4,7 @@ namespace AloneSpace
 {
     public class QuestManager : MonoBehaviour
     {
-        [SerializeField] UserUpdater userUpdater;
+        [SerializeField] SceneUpdater sceneUpdater;
 
         QuestUpdater questUpdater = new QuestUpdater();
 
@@ -30,8 +30,7 @@ namespace AloneSpace
         {
             createDataController.Initialize(questData);
 
-            userUpdater.Initialize(questData);
-
+            sceneUpdater.Initialize(questData);
             questUpdater.Initialize(questData);
 
             questDataMessageResolver.Initialize(questData);
@@ -43,11 +42,8 @@ namespace AloneSpace
             thinkModuleUpdater.Initialize(questData);
             orderModuleUpdater.Initialize(questData);
             movingModuleUpdater.Initialize(questData);
-
             // collisionChecker.Initialize();
-
             collisionEventModuleUpdater.Initialize(questData);
-
             collisionEffectSenderModuleUpdater.Initialize(questData);
             collisionEffectReceiverModuleUpdater.Initialize(questData);
 
@@ -63,8 +59,7 @@ namespace AloneSpace
         {
             createDataController.Finalize();
 
-            userUpdater.Finalize();
-
+            sceneUpdater.Finalize();
             questUpdater.Finalize();
 
             questDataMessageResolver.Finalize();
@@ -76,11 +71,8 @@ namespace AloneSpace
             thinkModuleUpdater.Finalize();
             orderModuleUpdater.Finalize();
             movingModuleUpdater.Finalize();
-
             // collisionChecker.Finalize();
-
             collisionEventModuleUpdater.Finalize();
-
             collisionEffectSenderModuleUpdater.Finalize();
             collisionEffectReceiverModuleUpdater.Finalize();
 
@@ -93,31 +85,18 @@ namespace AloneSpace
 
             createDataController.OnLateUpdate(deltaTime);
 
-            userUpdater.OnLateUpdate(deltaTime);
-
+            sceneUpdater.OnLateUpdate(deltaTime);
             questUpdater.OnLateUpdate(deltaTime);
 
             thinkModuleUpdater.UpdateModule(deltaTime);
             orderModuleUpdater.UpdateModule(deltaTime);
             movingModuleUpdater.UpdateModule(deltaTime);
-
             // collisionChecker.OnLateUpdate();
-
             collisionEventModuleUpdater.UpdateModule(deltaTime);
-
             collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
             collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
 
             releaseDataController.OnLateUpdate(deltaTime);
         }
-
-        /*
-        宇宙船と兵装パーツを作る
-        リネーム祭り
-        当たり判定
-        ダメージ処理
-        アイテム拾う処理
-        換装する処理というかUI
-        */
     }
 }
