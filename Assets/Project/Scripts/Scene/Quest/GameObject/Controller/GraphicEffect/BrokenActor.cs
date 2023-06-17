@@ -41,8 +41,9 @@ namespace AloneSpace
                 mesh.RecalculateBounds();
                 piece.transform.localPosition = piece.transform.localPosition + centerOffset;
 
-                piece.AddForce(movementVelocity + Random.insideUnitSphere * 1.0f, ForceMode.Force);
-                piece.AddTorque(Random.insideUnitSphere * 1f, ForceMode.Force);
+                piece.AddForce(movementVelocity, ForceMode.VelocityChange);
+                piece.AddForce(Random.insideUnitSphere * 200.0f, ForceMode.Force);
+                piece.AddTorque(Random.insideUnitSphere * 2f, ForceMode.Force);
             }
         }
 
