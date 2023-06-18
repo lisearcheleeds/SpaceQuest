@@ -5,7 +5,7 @@ namespace AloneSpace
     public class CameraAngleControllerEffect : MonoBehaviour
     {
         [SerializeField] Transform cameraAnchor;
-      
+
         public void Initialize()
         {
             MessageBus.Instance.UserCommandSetCameraAngle.AddListener(UserCommandSetCameraAngle);
@@ -13,6 +13,7 @@ namespace AloneSpace
 
         public void Finalize()
         {
+            MessageBus.Instance.UserCommandSetCameraAngle.RemoveListener(UserCommandSetCameraAngle);
         }
 
         void UserCommandSetCameraAngle(Quaternion quaternion)

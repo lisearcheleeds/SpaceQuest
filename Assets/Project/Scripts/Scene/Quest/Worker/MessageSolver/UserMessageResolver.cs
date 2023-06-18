@@ -83,15 +83,6 @@ namespace AloneSpace
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
         {
             questData.UserData.SetActorOperationMode(actorOperationMode);
-
-            if (actorOperationMode != ActorOperationMode.Observe)
-            {
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
-            }
-            else
-            {
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Default);
-            }
         }
 
         void UserCommandLookAtAngle(Vector3 lookAt)

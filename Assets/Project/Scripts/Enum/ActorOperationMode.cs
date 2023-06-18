@@ -7,8 +7,8 @@
         // コックピット視点
         Cockpit,
         // 三人称コックピット視点
-        Spot,
+        Spotter,
         // 三人称フリー視点
-        SpotFreeCamera,
+        SpotterFreeCamera,
     }
 }

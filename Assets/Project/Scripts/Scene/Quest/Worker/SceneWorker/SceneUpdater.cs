@@ -9,6 +9,9 @@ namespace AloneSpace
         [SerializeField] AreaAmbientController areaAmbientController;
         [SerializeField] CameraController cameraController;
 
+        KeyBindController keyBindController = new KeyBindController();
+        MouseBindController mouseBindController = new MouseBindController();
+
         QuestData questData;
 
         public void Initialize(QuestData questData)
@@ -19,6 +22,9 @@ namespace AloneSpace
             gameObjectUpdater.Initialize(questData);
             areaAmbientController.Initialize(questData);
             cameraController.Initialize(questData);
+
+            keyBindController.Initialize(questData.UserData);
+            mouseBindController.Initialize(questData.UserData);
         }
 
         public void Finalize()
@@ -27,6 +33,9 @@ namespace AloneSpace
             gameObjectUpdater.Finalize();
             areaAmbientController.Finalize();
             cameraController.Finalize();
+
+            keyBindController.Finalize();
+            mouseBindController.Finalize();
         }
 
         public void OnLateUpdate(float deltaTime)
@@ -40,6 +49,9 @@ namespace AloneSpace
             gameObjectUpdater.OnLateUpdate(deltaTime);
             areaAmbientController.OnLateUpdate();
             cameraController.OnLateUpdate();
+
+            keyBindController.OnLateUpdate();
+            mouseBindController.OnLateUpdate();
         }
     }
 }
