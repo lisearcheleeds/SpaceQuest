@@ -6,9 +6,12 @@
 
         public ActorData ActorData { get; }
 
-        public BrokenActorGraphicEffectHandler(ActorData actorData)
+        public GraphicEffectSpecVO BrokenActorSmokeGraphicEffectSpecVO { get; }
+
+        public BrokenActorGraphicEffectHandler(ActorData actorData, GraphicEffectSpecVO brokenActorSmokeGraphicEffectSpecVO)
         {
             ActorData = actorData;
+            BrokenActorSmokeGraphicEffectSpecVO = brokenActorSmokeGraphicEffectSpecVO;
         }
     }
 }

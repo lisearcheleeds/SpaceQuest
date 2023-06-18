@@ -9,6 +9,7 @@
         public AssetPath Path => row.Path;
 
         public GraphicEffectSpecVO BrokenActorGraphicEffectSpecVO { get; }
+        public GraphicEffectSpecVO BrokenActorSmokeGraphicEffectSpecVO { get; }
 
         // 耐久
         public float EnduranceValue => row.EnduranceValue;
@@ -52,6 +53,7 @@
         {
             row = ActorSpecMaster.Instance.Get(id);
             BrokenActorGraphicEffectSpecVO = new GraphicEffectSpecVO(row.BrokenActorGraphicEffectSpecMasterId);
+            BrokenActorSmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(ConstantId.BrokenActorSmokeGraphicEffectId);
         }
     }
 }

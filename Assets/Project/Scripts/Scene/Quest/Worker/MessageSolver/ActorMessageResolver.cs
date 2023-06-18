@@ -171,7 +171,9 @@ namespace AloneSpace
 
             MessageBus.Instance.SpawnGraphicEffect.Broadcast(
                 brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
-                new BrokenActorGraphicEffectHandler(brokenActorEventData.BrokenActorData));
+                new BrokenActorGraphicEffectHandler(
+                    brokenActorEventData.BrokenActorData,
+                    brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorSmokeGraphicEffectSpecVO));
         }
     }
 }
