@@ -100,7 +100,7 @@ namespace AloneSpace
 
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
-            MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(userControlActor, cellData.InteractData);
+            MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
         }
 
         void UserInputSwitchInteractList()

@@ -121,7 +121,7 @@ namespace AloneSpace
                 // 範囲外になったらAreaから脱出 一旦1000.0f
                 if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
                 {
-                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, null);
+                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, null);
                     actorData.SetPosition(areaData.StarSystemPosition);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -142,7 +142,7 @@ namespace AloneSpace
                 if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
                 {
                     // FIXME: 移動先ちゃんと考える
-                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData, actorData.ActorStateData.MoveTarget.AreaId);
+                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, actorData.ActorStateData.MoveTarget.AreaId);
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -163,7 +163,7 @@ namespace AloneSpace
                 {
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, null);
+                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, null);
                 }
             }
         }
@@ -232,7 +232,7 @@ namespace AloneSpace
                     // ユーザー操作待ち 相手のインベントリをUIでOpenする
                     throw new NotImplementedException();
                 case AreaInteractData areaInteractData:
-                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData, areaInteractData);
+                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
                     break;
             }
 

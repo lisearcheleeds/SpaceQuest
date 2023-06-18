@@ -67,20 +67,20 @@ namespace AloneSpace
             MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
         }
 
-        void PlayerCommandSetInteractOrder(ActorData orderActor, IInteractData interactData)
+        void PlayerCommandSetInteractOrder(Guid actorId, IInteractData interactData)
         {
-            orderActor.SetInteractOrder(interactData);
+            questData.ActorData[actorId].SetInteractOrder(interactData);
         }
 
-        void PlayerCommandSetAreaId(ActorData orderActor, int? areaId)
+        void PlayerCommandSetAreaId(Guid actorId, int? areaId)
         {
-            orderActor.SetAreaId(areaId);
+            questData.ActorData[actorId].SetAreaId(areaId);
             MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
         }
 
-        void PlayerCommandSetMoveTarget(ActorData orderActor, IPositionData moveTarget)
+        void PlayerCommandSetMoveTarget(Guid actorId, IPositionData moveTarget)
         {
-            orderActor.SetMoveTarget(moveTarget);
+            questData.ActorData[actorId].SetMoveTarget(moveTarget);
         }
 
         void ActorCommandSetWeaponExecute(Guid actorId, bool isExecute)

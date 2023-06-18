@@ -18,9 +18,9 @@ namespace AloneSpace
         public class NoticeDamageEventData : MessageBusBroadcaster<DamageEventData>{}
         public class NoticeBrokenActorEventData : MessageBusBroadcaster<BrokenActorEventData>{}
 
-        public class PlayerCommandSetAreaId : MessageBusBroadcaster<ActorData, int?>{}
-        public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<ActorData, IPositionData>{}
-        public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<ActorData, IInteractData>{}
+        public class PlayerCommandSetAreaId : MessageBusBroadcaster<Guid, int?>{}
+        public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<Guid, IPositionData>{}
+        public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
 
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}

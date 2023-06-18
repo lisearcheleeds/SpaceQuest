@@ -236,9 +236,9 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(questData.UserData.ControlActorData.InstanceId, power);
         }
 
-        void PlayerCommandSetAreaId(ActorData orderActor, int? areaId)
+        void PlayerCommandSetAreaId(Guid actorId, int? areaId)
         {
-            if (orderActor.InstanceId != questData.UserData.ControlActorData?.InstanceId)
+            if (actorId != questData.UserData.ControlActorData?.InstanceId)
             {
                 return;
             }
