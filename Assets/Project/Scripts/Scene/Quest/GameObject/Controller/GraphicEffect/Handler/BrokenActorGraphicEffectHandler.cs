@@ -1,4 +1,6 @@
-﻿namespace AloneSpace
+﻿using UnityEngine;
+
+namespace AloneSpace
 {
     public class BrokenActorGraphicEffectHandler : IGraphicEffectHandler
     {
@@ -8,10 +10,16 @@
 
         public GraphicEffectSpecVO BrokenActorSmokeGraphicEffectSpecVO { get; }
 
-        public BrokenActorGraphicEffectHandler(ActorData actorData, GraphicEffectSpecVO brokenActorSmokeGraphicEffectSpecVO)
+        public Vector3 MovementVelocity { get; }
+
+        public BrokenActorGraphicEffectHandler(
+            ActorData actorData,
+            GraphicEffectSpecVO brokenActorSmokeGraphicEffectSpecVO,
+            Vector3 movementVelocity)
         {
             ActorData = actorData;
             BrokenActorSmokeGraphicEffectSpecVO = brokenActorSmokeGraphicEffectSpecVO;
+            MovementVelocity = movementVelocity;
         }
     }
 }

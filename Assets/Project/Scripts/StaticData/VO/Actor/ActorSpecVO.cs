@@ -31,9 +31,9 @@
         public float MainBoosterPower => row.MainBoosterPower;
         public float SubBoosterPower => row.SubBoosterPower;
         public float MaxSpeed => row.MaxSpeed;
-        public float PitchBoosterPower => row.RotatePower;
-        public float YawBoosterPower => row.RotatePower;
-        public float RollBoosterPower => row.RotatePower;
+        public float PitchRotatePower => row.PitchRotatePower;
+        public float YawRotatePower => row.YawRotatePower;
+        public float RollRotatePower => row.RollRotatePower;
 
         // インベントリ
         public int CapacityWidth => row.CapacityWidth;

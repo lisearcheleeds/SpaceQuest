@@ -5,5 +5,7 @@
         Default,
         Map,
         Cockpit,
+        Spotter,
+        FreeCamera,
     }
 }

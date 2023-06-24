@@ -38,6 +38,19 @@ namespace AloneSpace
             }
 
             var otherModelCollider = other.gameObject.GetComponent<ModelCollider>();
+
+            if (otherModelCollider == null)
+            {
+                Debug.LogError($"衝突相手がnullです {other.gameObject.name}");
+                return;
+            }
+
+            if (otherModelCollider.CollisionEventModule == null)
+            {
+                Debug.LogError($"衝突相手のCollisionがnullです {otherModelCollider.gameObject.name}");
+                return;
+            }
+
             MessageBus.Instance.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
         }
 

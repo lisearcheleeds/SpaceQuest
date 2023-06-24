@@ -24,7 +24,7 @@ namespace AloneSpace
             brokenActorGraphicEffectHandler = (BrokenActorGraphicEffectHandler)GraphicEffectHandler;
             actorGameObjectHandler = actorModel.Init(brokenActorGraphicEffectHandler.ActorData);
 
-            movementVelocity = brokenActorGraphicEffectHandler.ActorData.MovingModule.MovementVelocity;
+            movementVelocity = brokenActorGraphicEffectHandler.MovementVelocity;
 
             pieces = GetComponentsInChildren<Rigidbody>();
 

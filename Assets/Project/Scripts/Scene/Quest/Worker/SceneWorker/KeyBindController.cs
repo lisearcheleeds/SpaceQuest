@@ -22,6 +22,13 @@ namespace AloneSpace
             keyBindMap[KeyBindKey.Up] = Key.Space;
             keyBindMap[KeyBindKey.Down] = Key.LeftCtrl;
 
+            keyBindMap[KeyBindKey.PitchPlus] = Key.UpArrow;
+            keyBindMap[KeyBindKey.PitchMinus] = Key.DownArrow;
+            keyBindMap[KeyBindKey.YawPlus] = Key.D;
+            keyBindMap[KeyBindKey.YawMinus] = Key.A;
+            keyBindMap[KeyBindKey.RollPlus] = Key.RightArrow;
+            keyBindMap[KeyBindKey.RollMinus] = Key.LeftArrow;
+
             keyBindMap[KeyBindKey.Reload] = Key.R;
             keyBindMap[KeyBindKey.WeaponGroup1] = Key.Digit1;
             keyBindMap[KeyBindKey.WeaponGroup2] = Key.Digit2;
@@ -37,8 +44,9 @@ namespace AloneSpace
 
             keyBindMap[KeyBindKey.ActorOperationModeSwitchObserve] = Key.Z;
             keyBindMap[KeyBindKey.ActorOperationModeSwitchCockpit] = Key.X;
-            keyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Key.C;
-            keyBindMap[KeyBindKey.ActorOperationModeSwitchSpotFreeCamera] = Key.V;
+            keyBindMap[KeyBindKey.ActorOperationModeSwitchCockpitFreeCamera] = Key.C;
+            keyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Key.V;
+            keyBindMap[KeyBindKey.ActorOperationModeSwitchSpotterFreeCamera] = Key.B;
         }
 
         public void Finalize()
@@ -54,19 +62,25 @@ namespace AloneSpace
                     CheckUI();
                     break;
                 case ActorOperationMode.Cockpit:
-                    CheckMoving();
+                    CheckCockpitMoving();
+                    CheckWeapon();
+                    CheckMouseMode();
+                    CheckActorOperationMode();
+                    break;
+                case ActorOperationMode.CockpitFreeCamera:
+                    CheckCockpitMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
                     break;
                 case ActorOperationMode.Spotter:
-                    CheckMoving();
+                    CheckSpotterMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
                     break;
                 case ActorOperationMode.SpotterFreeCamera:
-                    CheckMoving();
+                    CheckSpotterMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
@@ -74,7 +88,19 @@ namespace AloneSpace
             }
         }
 
-        void CheckMoving()
+        void CheckCockpitMoving()
+        {
+            MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward) ? 1.0f : 0.0f);
+            // MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Right) ? 1.0f : 0.0f);
+            // MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Left) ? 1.0f : 0.0f);
+            // MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Up) ? 1.0f : 0.0f);
+            // MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Down) ? 1.0f : 0.0f);
+
+            MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast((IsPressed(KeyBindKey.YawPlus) ? 1.0f : 0.0f) + (IsPressed(KeyBindKey.YawMinus) ? -1.0f : 0.0f));
+        }
+
+        void CheckSpotterMoving()
         {
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward) ? 1.0f : 0.0f);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward) ? 1.0f : 0.0f);
@@ -173,6 +199,21 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
             }
 
+            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchCockpitFreeCamera))
+            {
+                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.CockpitFreeCamera);
+
+                // TODO: ここでやることじゃないのでやること決まったら移動
+                Cursor.lockState = CursorLockMode.Locked;
+                MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
+
+                MessageBus.Instance.UserInputCloseMap.Broadcast();
+                MessageBus.Instance.UserInputCloseInventory.Broadcast();
+                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
+
+                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
+            }
+
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotter))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
@@ -188,7 +229,7 @@ namespace AloneSpace
                 MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
             }
 
-            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotFreeCamera))
+            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotterFreeCamera))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotterFreeCamera);
 

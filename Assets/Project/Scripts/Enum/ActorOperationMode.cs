@@ -4,11 +4,13 @@
     {
         // 三人称視点
         Observe,
-        // コックピット視点
+        // 戦闘機形式
         Cockpit,
-        // 三人称コックピット視点
+        // 戦闘機形式フリー視点
+        CockpitFreeCamera,
+        // 簡易形式視点
         Spotter,
-        // 三人称フリー視点
+        // 簡易形式視点
         SpotterFreeCamera,
     }
 }

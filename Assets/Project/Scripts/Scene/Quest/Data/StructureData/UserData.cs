@@ -11,7 +11,7 @@ namespace AloneSpace
 
         public ActorOperationMode ActorOperationMode { get; private set; } = ActorOperationMode.Observe;
 
-        public Vector3 LookAtAngle { get; private set; } = Vector3.forward;
+        public Vector3 LookAtAngle { get; private set; } = Vector3.zero;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;
         public float LookAtDistance { get; private set; }
 

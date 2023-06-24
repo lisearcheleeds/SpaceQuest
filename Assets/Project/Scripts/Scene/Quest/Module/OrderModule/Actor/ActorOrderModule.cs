@@ -192,9 +192,9 @@ namespace AloneSpace
             actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
             actorData.MovingModule.SetQuaternionVelocityRHS(
                 Quaternion.Euler(new Vector3(
-                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchBoosterPower,
-                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecVO.YawBoosterPower,
-                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecVO.RollBoosterPower) * deltaTime));
+                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchRotatePower,
+                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecVO.YawRotatePower,
+                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecVO.RollRotatePower) * deltaTime));
         }
 
         void UpdateInteract(float deltaTime)

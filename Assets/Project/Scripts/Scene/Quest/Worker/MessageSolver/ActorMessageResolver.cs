@@ -173,7 +173,8 @@ namespace AloneSpace
                 brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
                 new BrokenActorGraphicEffectHandler(
                     brokenActorEventData.BrokenActorData,
-                    brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorSmokeGraphicEffectSpecVO));
+                    brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorSmokeGraphicEffectSpecVO,
+                    brokenActorEventData.BrokenActorData.MovingModule.MovementVelocity));
         }
     }
 }

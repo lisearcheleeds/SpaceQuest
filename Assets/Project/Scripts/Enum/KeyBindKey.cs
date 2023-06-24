@@ -40,7 +40,8 @@
 
         ActorOperationModeSwitchObserve,
         ActorOperationModeSwitchCockpit,
+        ActorOperationModeSwitchCockpitFreeCamera,
         ActorOperationModeSwitchSpotter,
-        ActorOperationModeSwitchSpotFreeCamera,
+        ActorOperationModeSwitchSpotterFreeCamera,
     }
 }
