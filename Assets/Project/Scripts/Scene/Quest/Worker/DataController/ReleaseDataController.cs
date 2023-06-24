@@ -26,7 +26,7 @@ namespace AloneSpace
             MessageBus.Instance.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             if (questData == null)
             {

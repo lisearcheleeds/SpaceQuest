@@ -9,8 +9,9 @@ namespace AloneSpace
         public override Guid InstanceId { get; }
         public override IOrderModule OrderModule { get; protected set; }
         public override IWeaponSpecVO WeaponSpecVO => VO;
-        public override WeaponStateData WeaponStateData { get; } = new BulletMakerWeaponStateData();
+        public override WeaponStateData WeaponStateData => BulletMakerWeaponStateData;
 
+        public BulletMakerWeaponStateData BulletMakerWeaponStateData = new BulletMakerWeaponStateData();
         public WeaponBulletMakerSpecVO VO { get; }
 
         public BulletMakerWeaponData(WeaponBulletMakerSpecVO weaponBulletMakerSpecVO, ActorData actorData, int weaponIndex) : base(actorData, weaponIndex)

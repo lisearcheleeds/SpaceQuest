@@ -21,7 +21,7 @@ namespace AloneSpace
         public class ReleasedActorData : MessageBusBroadcaster<ActorData>{}
 
         // WeaponEffect
-        public class CreateWeaponEffectData : MessageBusBroadcaster<IWeaponEffectSpecVO, WeaponData, IPositionData, Quaternion, IPositionData>{}
+        public class CreateWeaponEffectData : MessageBusBroadcaster<IWeaponEffectSpecVO, IWeaponEffectCreateOptionData>{}
         public class ReleaseWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         public class CreatedWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}
         public class ReleasedWeaponEffectData : MessageBusBroadcaster<WeaponEffectData>{}

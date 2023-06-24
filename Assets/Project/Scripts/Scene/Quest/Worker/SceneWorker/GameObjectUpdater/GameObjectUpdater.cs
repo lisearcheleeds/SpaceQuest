@@ -34,12 +34,12 @@ namespace AloneSpace
             gameObjectCache.Finalize();
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
-            actorObjectUpdater.OnLateUpdate();
-            weaponEffectObjectUpdater.OnLateUpdate();
-            interactObjectUpdater.OnLateUpdate();
-            graphicEffectObjectUpdater.OnLateUpdate(deltaTime);
+            actorObjectUpdater.OnUpdate();
+            weaponEffectObjectUpdater.OnUpdate();
+            interactObjectUpdater.OnUpdate();
+            graphicEffectObjectUpdater.OnUpdate(deltaTime);
         }
     }
 }

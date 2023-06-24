@@ -21,7 +21,7 @@ namespace AloneSpace
         int prevWeaponEffectCount;
         int prevResourceValue;
         bool prevReloadValueIsZero;
-        
+
         public void SetWeaponData(WeaponData weaponData)
         {
             this.weaponData = weaponData;
@@ -35,16 +35,16 @@ namespace AloneSpace
             prevResourceValue = -1;
             prevReloadValueIsZero = false;
             prevWeaponEffectCount = -1;
-            resourceMax.text = $"/{weaponData.WeaponSpecVO.WeaponResourceMaxCount}";
+            resourceMax.text = $"/{weaponData.WeaponSpecVO.MagazineSize}";
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             if (weaponData == null)
             {
                 return;
             }
-            
+
             executeImage.gameObject.SetActive(weaponData.WeaponStateData.IsExecute);
 
             var weaponEffectCount = weaponData.WeaponStateData.WeaponEffectDataList.Count;
@@ -58,11 +58,11 @@ namespace AloneSpace
             if (prevResourceValue != weaponData.WeaponStateData.ResourceIndex)
             {
                 prevResourceValue = weaponData.WeaponStateData.ResourceIndex;
-                
-                var resourceRemainCount = weaponData.WeaponSpecVO.WeaponResourceMaxCount - weaponData.WeaponStateData.ResourceIndex;
+
+                var resourceRemainCount = weaponData.WeaponSpecVO.MagazineSize - weaponData.WeaponStateData.ResourceIndex;
                 resourceValue.text = resourceRemainCount.ToString();
 
-                var resourceRatio = (float)resourceRemainCount / weaponData.WeaponSpecVO.WeaponResourceMaxCount;
+                var resourceRatio = (float)resourceRemainCount / weaponData.WeaponSpecVO.MagazineSize;
                 var resourceGaugeRectLocalScale = resourceGaugeRect.localScale;
                 resourceGaugeRectLocalScale.x = resourceRatio;
                 resourceGaugeRect.localScale = resourceGaugeRectLocalScale;

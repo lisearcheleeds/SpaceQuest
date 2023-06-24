@@ -6,7 +6,6 @@ namespace AloneSpace
     public class MissileWeaponEffectOrderModule : IOrderModule
     {
         MissileWeaponEffectData effectData;
-        bool isFirstUpdate;
 
         public MissileWeaponEffectOrderModule(MissileWeaponEffectData missileWeaponEffectData)
         {
@@ -25,15 +24,9 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            if (isFirstUpdate)
-            {
-                isFirstUpdate = false;
-
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.SpecVO.LaunchSpeed * deltaTime);
-            }
-
             effectData.CurrentLifeTime += deltaTime;
-            if (effectData.CurrentLifeTime > effectData.LifeTime)
+
+            if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
@@ -43,10 +36,7 @@ namespace AloneSpace
             {
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
-                    effectData.WeaponData,
-                    effectData,
-                    effectData.Rotation,
-                    effectData.WeaponData.WeaponStateData.TargetData);
+                    new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData, effectData.Rotation));
 
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
@@ -60,6 +50,14 @@ namespace AloneSpace
                 }
             }
 
+            if (effectData.CurrentLifeTime < effectData.SpecVO.LaunchWaitTime)
+            {
+                // 待機時間中はLaunchMovementVelocity以外の移動や回転は行わない
+                effectData.MovingModule.SetMovementVelocity(effectData.OptionData.LaunchMovementVelocity);
+                return;
+            }
+
+            // 誘導処理
             var targetDirection = (effectData.TargetData.Position - effectData.Position).normalized;
             var currentDirection = effectData.Rotation * Vector3.forward;
             if (effectData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
@@ -74,7 +72,7 @@ namespace AloneSpace
                 if (catchUpToDirection.HasValue)
                 {
                     effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed * deltaTime);
-                    effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+                    effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, targetDirection)));
                 }
                 else
                 {
@@ -85,7 +83,7 @@ namespace AloneSpace
             {
                 // ターゲットが移動しない場合はターゲットの位置に回転
                 effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed * deltaTime);
-                effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(150.0f * deltaTime, Vector3.Cross(currentDirection, targetDirection)));
+                effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, targetDirection)));
             }
         }
     }

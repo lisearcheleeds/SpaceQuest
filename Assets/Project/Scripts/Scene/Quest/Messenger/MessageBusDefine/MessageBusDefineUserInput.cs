@@ -37,9 +37,6 @@ namespace AloneSpace
         public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
         public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
         public class UserCommandUpdateInventory : MessageBusBroadcaster<Guid[]>{}
-        public class UserCommandSetCameraMode : MessageBusBroadcaster<CameraMode>{}
-        public class UserCommandRotateCamera : MessageBusBroadcaster<Vector2>{}
-        public class UserCommandSetCameraAngle : MessageBusBroadcaster<Quaternion>{}
 
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraType, Vector3, RectTransform, Vector3?>{}

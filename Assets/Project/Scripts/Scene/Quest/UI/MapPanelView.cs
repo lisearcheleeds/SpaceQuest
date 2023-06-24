@@ -22,8 +22,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputOpenMap.AddListener(UserInputOpenMap);
             MessageBus.Instance.UserInputCloseMap.AddListener(UserInputCloseMap);
 
-            MessageBus.Instance.UserCommandSetCameraAngle.AddListener(SetCameraAngle);
-
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
 
             UserInputCloseMap();
@@ -34,8 +32,6 @@ namespace AloneSpace
             MessageBus.Instance.UserInputSwitchMap.RemoveListener(UserInputSwitchMap);
             MessageBus.Instance.UserInputOpenMap.RemoveListener(UserInputOpenMap);
             MessageBus.Instance.UserInputCloseMap.RemoveListener(UserInputCloseMap);
-
-            MessageBus.Instance.UserCommandSetCameraAngle.RemoveListener(SetCameraAngle);
 
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
@@ -95,11 +91,6 @@ namespace AloneSpace
         {
         }
 
-        void SetCameraAngle(Quaternion quaternion)
-        {
-            UpdatePosition();
-        }
-
         void UserInputSwitchMap()
         {
             if (gameObject.activeSelf)
@@ -114,16 +105,12 @@ namespace AloneSpace
 
         void UserInputOpenMap()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Map);
-
             gameObject.SetActive(true);
             UpdateView();
         }
 
         void UserInputCloseMap()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Default);
-
             gameObject.SetActive(false);
         }
     }

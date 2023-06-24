@@ -12,31 +12,30 @@ namespace AloneSpace
         public override IWeaponEffectSpecVO WeaponEffectSpecVO => SpecVO;
         public MissileWeaponEffectSpecVO SpecVO { get; }
 
-        public float LifeTime { get; set; }
+        public MissileWeaponEffectCreateOptionData OptionData { get; }
+
         public float CurrentLifeTime { get; set; }
+
+        public IPositionData TargetData { get; }
 
         /// <summary>
         /// 武器の使用
         /// </summary>
         /// <param name="specVO">WeaponEffectデータ</param>
-        /// <param name="weaponData">weaponData</param>
-        /// <param name="fromPositionData">発射位置</param>
-        /// <param name="rotation">方向</param>
-        /// <param name="targetData">ターゲット</param>
+        /// <param name="optionData">optionData</param>
         public MissileWeaponEffectData(
             MissileWeaponEffectSpecVO specVO,
-            WeaponData weaponData,
-            IPositionData fromPositionData,
-            Quaternion rotation,
-            IPositionData targetData) : base(weaponData, targetData)
+            MissileWeaponEffectCreateOptionData optionData) : base(optionData)
         {
-            AreaId = fromPositionData.AreaId;
-            Position = fromPositionData.Position;
-            Rotation = rotation;
+            AreaId = optionData.AreaId;
+            Position = optionData.Position;
+            Rotation = optionData.Rotation;
+
+            TargetData = optionData.TargetData;
 
             SpecVO = specVO;
+            OptionData = optionData;
 
-            LifeTime = 8.0f;
             CurrentLifeTime = 0;
 
             OrderModule = new MissileWeaponEffectOrderModule(this);

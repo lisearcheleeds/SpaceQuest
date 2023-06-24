@@ -36,7 +36,7 @@ namespace AloneSpace
             }
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             if (isDirty)
             {

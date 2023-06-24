@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -79,24 +81,27 @@ namespace AloneSpace
             releaseDataController.Finalize();
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate(float deltaTime)
         {
-            var deltaTime = Time.deltaTime;
+            createDataController.OnUpdate(deltaTime);
 
-            createDataController.OnLateUpdate(deltaTime);
-
-            sceneUpdater.OnLateUpdate(deltaTime);
-            questUpdater.OnLateUpdate(deltaTime);
+            sceneUpdater.OnUpdate(deltaTime);
+            questUpdater.OnUpdate(deltaTime);
 
             thinkModuleUpdater.UpdateModule(deltaTime);
             orderModuleUpdater.UpdateModule(deltaTime);
             movingModuleUpdater.UpdateModule(deltaTime);
-            // collisionChecker.OnLateUpdate();
+            // collisionChecker.OnUpdate();
             collisionEventModuleUpdater.UpdateModule(deltaTime);
             collisionEffectSenderModuleUpdater.UpdateModule(deltaTime);
             collisionEffectReceiverModuleUpdater.UpdateModule(deltaTime);
 
-            releaseDataController.OnLateUpdate(deltaTime);
+            releaseDataController.OnUpdate(deltaTime);
+        }
+
+        public void OnLateUpdate()
+        {
+            sceneUpdater.OnLateUpdate();
         }
     }
 }

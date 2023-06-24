@@ -17,11 +17,12 @@ namespace AloneSpace
         {
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             switch (userData.ActorOperationMode)
             {
                 case ActorOperationMode.Observe:
+                    CheckObserve();
                     CheckLookAtDistance();
                     break;
                 case ActorOperationMode.Cockpit:
@@ -41,6 +42,20 @@ namespace AloneSpace
                     CheckWeapon();
                     break;
             }
+        }
+
+        void CheckObserve()
+        {
+            var mouseDelta = Mouse.current.delta.ReadValue();
+            var localLookAtAngle = Quaternion.AngleAxis(-mouseDelta.y, Vector3.right)
+                                   * Quaternion.AngleAxis(mouseDelta.x, Vector3.up)
+                                   * userData.LookAtAngle;
+
+            localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
+            localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
+            localLookAtAngle.z = 0;
+
+            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
         }
 
         void CheckCockpit()
@@ -114,8 +129,7 @@ namespace AloneSpace
                                    * Quaternion.AngleAxis(mouseDelta.x, Vector3.up)
                                    * userData.LookAtAngle;
 
-            // localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
-            localLookAtAngle.x = localLookAtAngle.x + mouseDelta.y * -1.0f;
+            localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
             localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
             localLookAtAngle.z = 0;
 
@@ -180,7 +194,6 @@ namespace AloneSpace
                                    * userData.LookAtAngle;
 
             localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
-            // localLookAtAngle.x = localLookAtAngle.x + mouseDelta.y * -1.0f;
             localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
             localLookAtAngle.z = 0;
 

@@ -25,14 +25,35 @@ namespace AloneSpace
             // 爆発グラフィックアセット
             public int ExplosionGraphicEffectSpecMasterId { get; }
 
-            // 一度に使用するリソース
-            public int WeaponResourceMaxCount { get; }
+            // マガジンサイズ
+            public int MagazineSize { get; }
 
-            // リロード時間
+            // リロード時間(s)
             public float ReloadTime { get; }
 
-            // 連続射出時間
+            // 連射速度(f/s)
             public float FireRate { get; }
+
+            // バーストサイズ
+            public int BurstSize { get; }
+
+            // 同時発射数
+            public int ShotCount { get; }
+
+            // 自動射撃
+            public bool HasAutoFireMode { get; }
+
+            // 水平発射
+            public bool HorizontalLaunch { get; }
+
+            // 発射スピード
+            public float LaunchSpeed { get; }
+
+            // ロックオン距離
+            public float LockOnDistance { get; }
+
+            // 撃ち切るかどうか
+            public bool ShootUp { get; }
 
             public Row(
                 int id,
@@ -41,9 +62,16 @@ namespace AloneSpace
                 int explosionWeaponEffectSpecMasterId,
                 int smokeGraphicEffectSpecMasterId,
                 int explosionGraphicEffectSpecMasterId,
-                int weaponResourceMaxCount,
+                int magazineSize,
                 float reloadTime,
-                float fireRate)
+                float fireRate,
+                int burstSize,
+                int shotCount,
+                bool hasAutoFireMode,
+                bool horizontalLaunch,
+                float launchSpeed,
+                float lockOnDistance,
+                bool shootUp)
             {
                 Id = id;
                 Path = path;
@@ -51,9 +79,16 @@ namespace AloneSpace
                 ExplosionWeaponEffectSpecMasterId = explosionWeaponEffectSpecMasterId;
                 SmokeGraphicEffectSpecMasterId = smokeGraphicEffectSpecMasterId;
                 ExplosionGraphicEffectSpecMasterId = explosionGraphicEffectSpecMasterId;
-                WeaponResourceMaxCount = weaponResourceMaxCount;
+                MagazineSize = magazineSize;
                 ReloadTime = reloadTime;
                 FireRate = fireRate;
+                BurstSize = burstSize;
+                ShotCount = shotCount;
+                HasAutoFireMode = hasAutoFireMode;
+                HorizontalLaunch = horizontalLaunch;
+                LaunchSpeed = launchSpeed;
+                LockOnDistance = lockOnDistance;
+                ShootUp = shootUp;
             }
         }
 
@@ -82,8 +117,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f),
-                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f),
+                new Row(1, new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f, 2, 1, true, true, 0.3f, 1000.0f, false),
+                new Row(2, new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f, 12, 1, true, false, 0.3f, 1000.0f, true),
             };
         }
     }

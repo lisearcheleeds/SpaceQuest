@@ -45,7 +45,7 @@ namespace AloneSpace
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             if (isDirty)
             {

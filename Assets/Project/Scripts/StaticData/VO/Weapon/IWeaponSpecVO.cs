@@ -12,7 +12,7 @@
         public AssetPath Path { get; }
 
         // 武器リソース最大値（マガジン最大値）
-        int WeaponResourceMaxCount { get; }
+        int MagazineSize { get; }
 
         // リロード時間
         float ReloadTime { get; }

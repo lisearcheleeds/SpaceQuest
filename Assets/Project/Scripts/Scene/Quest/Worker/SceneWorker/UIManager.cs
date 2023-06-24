@@ -13,27 +13,16 @@ namespace AloneSpace
 
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
-        [SerializeField] CameraAngleController cameraAngleController;
         [SerializeField] InteractionList interactionList;
         [SerializeField] ItemDataMenu itemDataMenu;
         [SerializeField] InventoryView inventoryView;
 
-        [Header("3D")]
-        [SerializeField] CameraAngleControllerEffect cameraAngleControllerEffect;
-
-        UserData userData;
-
         public void Initialize(QuestData questData)
         {
-            this.userData = questData.UserData;
-
-            cameraAngleControllerEffect.Initialize();
-
             weaponDataListView.Initialize();
             targetView.Initialize();
 
             mapPanelView.Initialize(questData);
-            cameraAngleController.Initialize();
             interactionList.Initialize();
             itemDataMenu.Initialize();
             inventoryView.Initialize();
@@ -41,22 +30,19 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            cameraAngleControllerEffect.Finalize();
-
             weaponDataListView.Finalize();
             targetView.Finalize();
 
             mapPanelView.Finalize();
-            cameraAngleController.Finalize();
             interactionList.Finalize();
             itemDataMenu.Finalize();
             inventoryView.Finalize();
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
-            weaponDataListView.OnLateUpdate();
-            targetView.OnLateUpdate();
+            weaponDataListView.OnUpdate();
+            targetView.OnUpdate();
         }
     }
 }

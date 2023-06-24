@@ -29,17 +29,15 @@ namespace AloneSpace
 
         // 情報
         public WeaponData WeaponData { get; }
-        public IPositionData TargetData { get; protected set; }
 
         public WeaponEffectGameObjectHandler WeaponEffectGameObjectHandler { get; private set; }
 
         public HashSet<CollisionEventEffectReceiverModule> CollisionEventEffectReceiverModuleList { get; private set; } = new HashSet<CollisionEventEffectReceiverModule>();
 
-        protected WeaponEffectData(WeaponData weaponData, IPositionData targetData)
+        protected WeaponEffectData(IWeaponEffectCreateOptionData optionData)
         {
             InstanceId = Guid.NewGuid();
-            WeaponData = weaponData;
-            TargetData = targetData;
+            WeaponData = optionData.WeaponData;
 
             MovingModule = new MovingModule(this);
         }

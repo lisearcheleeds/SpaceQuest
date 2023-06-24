@@ -15,24 +15,39 @@ namespace AloneSpace
             // BaseDamage
             public float BaseDamage { get; }
 
-            // 射出初速
-            public float LaunchSpeed { get; }
+            // 射出待機時間
+            public float LaunchWaitTime { get; }
 
-            // 速度
+            // 誘導角(s)
+            public float HomingAngle { get; }
+
+            // 速度(s)
             public float Speed { get; }
+
+            // 継続時間
+            public float LifeTime { get; }
+
+            // 衝突判定スケール
+            public float SizeScale { get; }
 
             public Row(
                 int id,
                 CacheableGameObjectPath path,
                 float baseDamage,
-                float launchSpeed,
-                float speed)
+                float launchWaitTime,
+                float homingAngle,
+                float speed,
+                float lifeTime,
+                float sizeScale)
             {
                 Id = id;
                 Path = path;
                 BaseDamage = baseDamage;
-                LaunchSpeed = launchSpeed;
+                LaunchWaitTime = launchWaitTime;
+                HomingAngle = homingAngle;
                 Speed = speed;
+                LifeTime = lifeTime;
+                SizeScale = sizeScale;
             }
         }
 
@@ -61,8 +76,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1, 1.0f, 80.0f),
-                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1, 1.0f, 80.0f),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1.0f),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1.0f),
             };
         }
     }

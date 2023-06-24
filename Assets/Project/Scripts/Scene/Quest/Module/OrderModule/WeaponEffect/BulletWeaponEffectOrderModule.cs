@@ -28,21 +28,25 @@ namespace AloneSpace
             if (isFirstUpdate)
             {
                 isFirstUpdate = false;
-
                 effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed * deltaTime);
             }
 
             effectData.CurrentLifeTime += deltaTime;
-            if (effectData.CurrentLifeTime > effectData.LifeTime)
+            if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
-            if (effectData.CollisionEventEffectReceiverModuleList.Count != 0)
+            if (effectData.CollideCount < effectData.CollisionEventEffectReceiverModuleList.Count)
             {
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
-                return;
+                effectData.CollideCount++;
+
+                if (effectData.SpecVO.Penetration < Random.value)
+                {
+                    MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                    return;
+                }
             }
         }
     }

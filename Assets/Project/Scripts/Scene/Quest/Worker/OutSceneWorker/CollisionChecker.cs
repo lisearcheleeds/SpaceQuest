@@ -19,7 +19,7 @@ namespace AloneSpace
             MessageBus.Instance.UnRegisterCollision.RemoveListener(UnRegisterCollision);
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             CheckCollision();
         }

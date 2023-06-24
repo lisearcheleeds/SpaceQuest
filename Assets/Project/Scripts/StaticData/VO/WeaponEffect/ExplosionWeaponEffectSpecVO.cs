@@ -8,6 +8,9 @@
         // BaseDamage
         public float BaseDamage => row.BaseDamage;
 
+        // 衝突判定スケール
+        public float SizeScale => row.SizeScale;
+
         ExplosionWeaponEffectSpecMaster.Row row;
 
         public ExplosionWeaponEffectSpecVO(int id)

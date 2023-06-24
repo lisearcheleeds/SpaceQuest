@@ -26,8 +26,8 @@ namespace AloneSpace
         {
             CheckReload(deltaTime);
             CheckFireRate(deltaTime);
+            CheckBurst();
 
-            AdjustRotate(deltaTime);
             UpdateState();
 
             Execute();
@@ -64,9 +64,12 @@ namespace AloneSpace
             }
         }
 
-        void AdjustRotate(float deltaTime)
+        void CheckBurst()
         {
-            // なし
+            if (!weaponData.WeaponStateData.IsExecute)
+            {
+                weaponData.MissileMakerWeaponStateData.BurstResourceIndex = 0;
+            }
         }
 
         void UpdateState()
@@ -80,7 +83,8 @@ namespace AloneSpace
             weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.TargetData != null
                 && weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.WeaponResourceMaxCount;
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.MagazineSize
+                && weaponData.MissileMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
         }
 
         void Execute()
@@ -97,18 +101,27 @@ namespace AloneSpace
 
             if (weaponData.WeaponStateData.IsExecute)
             {
-                var outputPosition = GetOutputPosition();
-                var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
-
-                MessageBus.Instance.CreateWeaponEffectData.Broadcast(
-                    weaponData.VO.MissileWeaponEffectSpecVO,
-                    weaponData,
-                    outputPosition,
-                    rotation,
-                    weaponData.WeaponStateData.TargetData);
-
-                weaponData.WeaponStateData.ResourceIndex++;
                 weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
+
+                for (var i = 0; i < weaponData.VO.ShotCount; i++)
+                {
+                    var outputPosition = GetOutputPosition();
+                    var launchDirection = weaponData.VO.HorizontalLaunch
+                        ? outputPosition.Rotation * Vector3.up
+                        : outputPosition.Rotation * Vector3.forward;
+
+                    MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                        weaponData.VO.MissileWeaponEffectSpecVO,
+                        new MissileWeaponEffectCreateOptionData(
+                            weaponData,
+                            outputPosition,
+                            outputPosition.Rotation,
+                            weaponData.WeaponStateData.TargetData,
+                            launchDirection * weaponData.VO.LaunchSpeed));
+
+                    weaponData.WeaponStateData.ResourceIndex++;
+                    weaponData.MissileMakerWeaponStateData.BurstResourceIndex++;
+                }
             }
         }
 

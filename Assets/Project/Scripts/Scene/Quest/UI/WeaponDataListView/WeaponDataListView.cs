@@ -46,7 +46,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             if (isDirty)
             {
@@ -56,7 +56,7 @@ namespace AloneSpace
 
             foreach (var weaponDataView in weaponDataViewList)
             {
-                weaponDataView.OnLateUpdate();
+                weaponDataView.OnUpdate();
             }
         }
 

@@ -15,14 +15,19 @@ namespace AloneSpace
             // BaseDamage
             public float BaseDamage { get; }
 
+            // 衝突判定スケール
+            public float SizeScale { get; }
+
             public Row(
                 int id,
                 CacheableGameObjectPath path,
-                float baseDamage)
+                float baseDamage,
+                float sizeScale)
             {
                 Id = id;
                 Path = path;
                 BaseDamage = baseDamage;
+                SizeScale = sizeScale;
             }
         }
 
@@ -51,7 +56,7 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Explosion/MiddleMissileExplosion"), 10),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Explosion/MiddleMissileExplosion"), 10, 1.0f),
             };
         }
     }

@@ -42,7 +42,7 @@ namespace AloneSpace
             MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             if (questData == null)
             {
@@ -120,13 +120,15 @@ namespace AloneSpace
             createActorDataList.Add(actorData);
         }
 
-        void CreateWeaponEffectData(IWeaponEffectSpecVO weaponEffectSpecVO, WeaponData weaponData, IPositionData fromPositionData, Quaternion rotation, IPositionData targetData)
+        void CreateWeaponEffectData(
+            IWeaponEffectSpecVO weaponEffectSpecVO,
+            IWeaponEffectCreateOptionData weaponEffectCreateOptionData)
         {
             WeaponEffectData weaponEffectData = weaponEffectSpecVO switch
             {
-                BulletWeaponEffectSpecVO specVO => new BulletWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
-                MissileWeaponEffectSpecVO specVO => new MissileWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
-                ExplosionWeaponEffectSpecVO specVO => new ExplosionWeaponEffectData(specVO, weaponData, fromPositionData, rotation, targetData),
+                BulletWeaponEffectSpecVO specVO => new BulletWeaponEffectData(specVO, (BulletWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
+                MissileWeaponEffectSpecVO specVO => new MissileWeaponEffectData(specVO, (MissileWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
+                ExplosionWeaponEffectSpecVO specVO => new ExplosionWeaponEffectData(specVO, (ExplosionWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
                 _ => throw new NotImplementedException(),
             };
 

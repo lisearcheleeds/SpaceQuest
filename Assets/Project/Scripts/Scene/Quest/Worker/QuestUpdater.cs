@@ -33,7 +33,7 @@ namespace AloneSpace
         {
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
         }
     }

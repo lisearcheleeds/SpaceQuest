@@ -38,20 +38,24 @@ namespace AloneSpace
             mouseBindController.Finalize();
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             if (questData.UserData?.PlayerData == null)
             {
                 return;
             }
 
-            uiManager.OnLateUpdate();
-            gameObjectUpdater.OnLateUpdate(deltaTime);
-            areaAmbientController.OnLateUpdate();
-            cameraController.OnLateUpdate();
+            keyBindController.OnUpdate();
+            mouseBindController.OnUpdate();
 
-            keyBindController.OnLateUpdate();
-            mouseBindController.OnLateUpdate();
+            uiManager.OnUpdate();
+            gameObjectUpdater.OnUpdate(deltaTime);
+            areaAmbientController.OnUpdate();
+            cameraController.OnUpdate();
+        }
+
+        public void OnLateUpdate()
+        {
         }
     }
 }

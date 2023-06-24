@@ -53,7 +53,7 @@ namespace AloneSpace
         {
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             switch (userData.ActorOperationMode)
             {
@@ -169,79 +169,51 @@ namespace AloneSpace
 
         void CheckActorOperationMode()
         {
+            var isChanged = false;
+
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchObserve))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
-
-                // TODO: ここでやることじゃないのでやること決まったら移動
                 Cursor.lockState = CursorLockMode.None;
-                MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
-
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Default);
+                isChanged = true;
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchCockpit))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
-
-                // TODO: ここでやることじゃないのでやること決まったら移動
                 Cursor.lockState = CursorLockMode.Locked;
-                MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
-
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
+                isChanged = true;
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchCockpitFreeCamera))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.CockpitFreeCamera);
-
-                // TODO: ここでやることじゃないのでやること決まったら移動
                 Cursor.lockState = CursorLockMode.Locked;
-                MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
-
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
+                isChanged = true;
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotter))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
-
-                // TODO: ここでやることじゃないのでやること決まったら移動
                 Cursor.lockState = CursorLockMode.Locked;
-                MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
-
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
+                isChanged = true;
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotterFreeCamera))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotterFreeCamera);
-
-                // TODO: ここでやることじゃないのでやること決まったら移動
                 Cursor.lockState = CursorLockMode.Locked;
+                isChanged = true;
+            }
+
+            if (isChanged)
+            {
+                // TODO: ここでやることじゃないのでやること決まったら移動
                 MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
 
                 MessageBus.Instance.UserInputCloseMap.Broadcast();
                 MessageBus.Instance.UserInputCloseInventory.Broadcast();
                 MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-
-                MessageBus.Instance.UserCommandSetCameraMode.Broadcast(CameraMode.Cockpit);
             }
         }
 

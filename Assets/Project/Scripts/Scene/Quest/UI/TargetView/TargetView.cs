@@ -29,7 +29,7 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
             if (isDirty)
             {

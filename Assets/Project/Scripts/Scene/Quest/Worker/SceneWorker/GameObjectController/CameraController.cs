@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -12,13 +13,9 @@ namespace AloneSpace
 
         [SerializeField] Camera cameraUi;
 
-        CameraMode beforeCameraMode = CameraMode.Default;
-        CameraMode currentCameraMode = CameraMode.Default;
-        float cameraModeSwitchTime;
-
-        Vector2 targetAngle;
-        Quaternion targetQuaternion = Quaternion.identity;
-        Quaternion currentQuaternion = Quaternion.identity;
+        Vector3 currentAmbientPosition = Vector3.zero;
+        Vector3 currentPosition = Vector3.zero;
+        Quaternion currentRotation = Quaternion.identity;
 
         IPositionData trackingTarget;
         QuestData questData;
@@ -27,102 +24,34 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.UserCommandSetCameraMode.AddListener(UserCommandSetCameraMode);
-
-            MessageBus.Instance.UserCommandRotateCamera.AddListener(UserCommandRotateCamera);
-
             MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserCommandSetCameraMode.RemoveListener(UserCommandSetCameraMode);
-
-            MessageBus.Instance.UserCommandRotateCamera.RemoveListener(UserCommandRotateCamera);
-
             MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
         }
 
-        public void OnLateUpdate()
+        public void OnUpdate()
         {
-            var target3dCameraPosition = Vector3.zero;
-            var targetAmbientCameraPosition = Vector3.zero;
-            var targetRotation = Quaternion.identity;
-            if (trackingTarget != null)
-            {
-                target3dCameraPosition = trackingTarget.Position;
-                if (trackingTarget.AreaId.HasValue)
-                {
-                    targetAmbientCameraPosition = MessageBus.Instance.UtilGetAreaData.Unicast(trackingTarget.AreaId.Value).StarSystemPosition;
-                }
-                else
-                {
-                    targetAmbientCameraPosition = trackingTarget.Position;
-                }
+            var targetPosition = trackingTarget?.Position ?? Vector3.zero;
+            var targetAmbientPosition = GetTargetAmbientPosition(trackingTarget);
+            var targetRotation = GetTargetRotation(questData.UserData);
 
-                targetRotation = questData.UserData.LookAtSpace * Quaternion.AngleAxis(questData.UserData.LookAtAngle.y, Vector3.up) * Quaternion.AngleAxis(questData.UserData.LookAtAngle.x, Vector3.right);
-            }
+            currentRotation = Quaternion.Lerp(currentRotation, targetRotation, 0.4f);
+            cameraAmbient.transform.rotation = currentRotation;
+            cameraArea.transform.rotation = currentRotation;
+            camera3d.transform.rotation = currentRotation;
 
-            var cameraModeLerpRatio = Mathf.Clamp01((Time.time - cameraModeSwitchTime) / CameraModeSwitchTime);
+            currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
+            cameraAmbient.transform.position = currentAmbientPosition;
 
-            currentQuaternion = Quaternion.Lerp(GetCameraAngleQuaternion(beforeCameraMode), GetCameraAngleQuaternion(currentCameraMode), cameraModeLerpRatio);
-            cameraAmbient.transform.rotation = currentQuaternion;
-            cameraArea.transform.rotation = currentQuaternion;
-            camera3d.transform.rotation = currentQuaternion;
-
-            cameraAmbient.transform.position = Vector3.Lerp(GetAmbientCameraPosition(beforeCameraMode), GetAmbientCameraPosition(currentCameraMode), cameraModeLerpRatio);
-            cameraArea.transform.position = Vector3.Lerp(Get3dCameraPosition(beforeCameraMode), Get3dCameraPosition(currentCameraMode), cameraModeLerpRatio);
-            camera3d.transform.position = Vector3.Lerp(Get3dCameraPosition(beforeCameraMode), Get3dCameraPosition(currentCameraMode), cameraModeLerpRatio);
-
-            MessageBus.Instance.UserCommandSetCameraAngle.Broadcast(currentQuaternion);
-
-            Quaternion GetCameraAngleQuaternion(CameraMode cameraMode)
-            {
-                return cameraMode switch
-                {
-                    CameraMode.Default => Quaternion.Lerp(currentQuaternion, targetQuaternion, 0.05f),
-                    CameraMode.Map => Quaternion.Lerp(currentQuaternion, Quaternion.AngleAxis(55, Vector3.right), 0.4f),
-                    CameraMode.Cockpit => Quaternion.Lerp(currentQuaternion, targetRotation, 0.4f),
-                };
-            }
-
-            Vector3 GetAmbientCameraPosition(CameraMode cameraMode)
-            {
-                return cameraMode switch
-                {
-                    CameraMode.Default => Vector3.Lerp(cameraAmbient.transform.position, targetAmbientCameraPosition, 0.05f),
-                    CameraMode.Map => Vector3.Lerp(cameraAmbient.transform.position, new Vector3(0, 250, -200), 0.05f),
-                    CameraMode.Cockpit => Vector3.Lerp(cameraAmbient.transform.position, targetAmbientCameraPosition, 0.05f),
-                };
-            }
-
-            Vector3 Get3dCameraPosition(CameraMode cameraMode)
-            {
-                return cameraMode switch
-                {
-                    CameraMode.Default => target3dCameraPosition + currentQuaternion * new Vector3(0, 0, questData.UserData.LookAtDistance),
-                    CameraMode.Map => -targetAmbientCameraPosition * 10.0f,
-                    CameraMode.Cockpit => target3dCameraPosition + currentQuaternion * new Vector3(0, 5, questData.UserData.LookAtDistance),
-                };
-            }
-        }
-
-        void UserCommandSetCameraMode(CameraMode mode)
-        {
-            beforeCameraMode = currentCameraMode;
-            currentCameraMode = mode;
-
-            cameraModeSwitchTime = Time.time;
-        }
-
-        void UserCommandRotateCamera(Vector2 delta)
-        {
-            targetAngle.x = targetAngle.x + delta.x;
-            targetAngle.y = Mathf.Clamp(targetAngle.y + delta.y, -90, 90);
-
-            targetQuaternion = Quaternion.AngleAxis(targetAngle.x, Vector3.up) * Quaternion.AngleAxis(targetAngle.y, Vector3.right);
+            currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.05f);
+            var cameraOffsetPosition = currentPosition + currentRotation * new Vector3(0, 5, questData.UserData.LookAtDistance);
+            cameraArea.transform.position = cameraOffsetPosition;
+            camera3d.transform.position = cameraOffsetPosition;
         }
 
         void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)
@@ -136,7 +65,7 @@ namespace AloneSpace
             {
                 CameraType.Camera3d => camera3d,
                 CameraType.CameraAmbient => cameraAmbient,
-                _ => null,
+                _ => throw new ArgumentException(),
             };
 
             var screenPoint = camera.WorldToScreenPoint(worldPos);
@@ -152,6 +81,28 @@ namespace AloneSpace
                 out var localPoint);
 
             return localPoint;
+        }
+
+        static Vector3 GetTargetAmbientPosition(IPositionData trackingTarget)
+        {
+            if (trackingTarget == null)
+            {
+                return Vector3.zero;
+            }
+
+            if (trackingTarget.AreaId.HasValue)
+            {
+                return MessageBus.Instance.UtilGetAreaData.Unicast(trackingTarget.AreaId.Value).StarSystemPosition;
+            }
+
+            return trackingTarget.Position;
+        }
+
+        static Quaternion GetTargetRotation(UserData userData)
+        {
+            return userData.LookAtSpace
+                   * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up)
+                   * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
         }
     }
 }

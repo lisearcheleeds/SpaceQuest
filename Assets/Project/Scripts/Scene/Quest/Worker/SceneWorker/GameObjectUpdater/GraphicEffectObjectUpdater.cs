@@ -22,7 +22,7 @@ namespace AloneSpace
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
-        public void OnLateUpdate(float deltaTime)
+        public void OnUpdate(float deltaTime)
         {
             // TODO: ToArray辞めたいが
             foreach (var graphicEffect in graphicEffectList.ToArray())

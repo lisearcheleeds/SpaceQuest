@@ -13,32 +13,23 @@ namespace AloneSpace
         public override IWeaponEffectSpecVO WeaponEffectSpecVO => SpecVO;
         public ExplosionWeaponEffectSpecVO SpecVO { get; }
 
-        public float LifeTime { get; set; }
-        public float CurrentLifeTime { get; set; }
+        public ExplosionWeaponEffectCreateOptionData OptionData { get; }
 
         /// <summary>
         /// 武器の使用
         /// </summary>
         /// <param name="specVO">WeaponEffectデータ</param>
-        /// <param name="weaponData">weaponData</param>
-        /// <param name="fromPositionData">発射位置</param>
-        /// <param name="rotation">方向</param>
-        /// <param name="targetData">ターゲット</param>
+        /// <param name="optionData">optionData</param>
         public ExplosionWeaponEffectData(
             ExplosionWeaponEffectSpecVO specVO,
-            WeaponData weaponData,
-            IPositionData fromPositionData,
-            Quaternion rotation,
-            IPositionData targetData) : base(weaponData, targetData)
+            ExplosionWeaponEffectCreateOptionData optionData) : base(optionData)
         {
-            AreaId = fromPositionData.AreaId;
-            Position = fromPositionData.Position;
-            Rotation = rotation;
+            AreaId = optionData.AreaId;
+            Position = optionData.Position;
+            Rotation = optionData.Rotation;
 
             SpecVO = specVO;
-
-            LifeTime = 4;
-            CurrentLifeTime = 0;
+            OptionData = optionData;
 
             OrderModule = new ExplosionWeaponEffectOrderModule(this);
             CollisionEventModule = new ExplosionWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,8 @@ namespace AloneSpace
 
         QuestData questData;
 
+        Queue<float> deltaTimeCache = new Queue<float>();
+
         void Awake()
         {
             questData = new QuestData(new StarSystemPresetVO(1));
@@ -19,6 +22,19 @@ namespace AloneSpace
         void Start()
         {
             questManager.OnStart();
+        }
+
+        void Update()
+        {
+            deltaTimeCache.Enqueue(Time.smoothDeltaTime);
+            if (deltaTimeCache.Count > 60)
+            {
+                deltaTimeCache.Dequeue();
+            }
+
+            var deltaTime = deltaTimeCache.Sum() / deltaTimeCache.Count;
+
+            questManager.OnUpdate(deltaTime);
         }
 
         void LateUpdate()
