@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,75 +7,192 @@ namespace AloneSpace
 {
     public class WeaponDataView : MonoBehaviour
     {
-        [SerializeField] Image weaponImage;
-        [SerializeField] Text currentWeaponEffectCount;
-        [SerializeField] GameObject hitEffect;
-        [SerializeField] Text hitCount;
-        [SerializeField] GameObject executeImage;
-        [SerializeField] RectTransform resourceGaugeRect;
-        [SerializeField] RectTransform reloadGaugeRect;
-        [SerializeField] Text resourceValue;
-        [SerializeField] Text resourceMax;
+        [SerializeField] Animator weaponDataViewAnimator;
+        [SerializeField] Animator hitAnimator;
 
-        WeaponData weaponData;
+        [SerializeField] Image singleWeaponIcon;
+        [SerializeField] Image multipleWeaponIconFront;
+        [SerializeField] Image multipleWeaponIconBack;
+        [SerializeField] RectTransform singleReloadGaugeRect;
+        [SerializeField] RectTransform multipleReloadGaugeRectFront;
+        [SerializeField] RectTransform multipleReloadGaugeRectBack;
+        [SerializeField] Text weaponName;
+        [SerializeField] Text resourceCount;
+        [SerializeField] Text weaponCount;
 
-        int prevWeaponEffectCount;
+        [SerializeField] Color executableColor;
+        [SerializeField] Color executingColor;
+        [SerializeField] Color reloadingColor;
+        [SerializeField] Color resourceEmptyColor;
+        [SerializeField] Color disableColor;
+
+        WeaponData[] weaponDataList;
+
+        int prevTotalCollideCount;
         int prevResourceValue;
         bool prevReloadValueIsZero;
 
-        public void SetWeaponData(WeaponData weaponData)
-        {
-            this.weaponData = weaponData;
-            gameObject.SetActive(weaponData != null);
+        bool isFirst = true;
 
-            if (weaponData == null)
+        public void SetWeaponDataList(WeaponData[] weaponDataList)
+        {
+            if (isFirst)
+            {
+                // 初回はとりあえず隠す
+                weaponDataViewAnimator.SetTrigger(AnimatorKey.Out);
+                weaponDataViewAnimator.SetBool(AnimatorKey.Use, false);
+                isFirst = false;
+            }
+
+            // 何も変化がなければアニメーションはskip
+            var prevWeaponIds = this.weaponDataList?.Select(weaponData => weaponData.InstanceId);
+            var nextWeaponIds = weaponDataList?.Select(weaponData => weaponData.InstanceId);
+            var skipSwitchAnim = (weaponDataList == null && this.weaponDataList == null) || (prevWeaponIds != null && nextWeaponIds != null && prevWeaponIds.SequenceEqual(nextWeaponIds));
+            if (!skipSwitchAnim)
+            {
+                if ((this.weaponDataList?.Length ?? 0) == 0)
+                {
+                    // 無し→有りの状態変化であればIn
+                    weaponDataViewAnimator.SetTrigger(AnimatorKey.In);
+                }
+                else
+                {
+                    // 有り→無しの状態変化であればOut
+                    // 有り→有りの状態変化であればOut後にIn
+                    weaponDataViewAnimator.SetTrigger(AnimatorKey.Out);
+                    weaponDataViewAnimator.SetBool(AnimatorKey.Use, (weaponDataList?.Length ?? 0) != 0);
+                }
+            }
+
+            this.weaponDataList = weaponDataList;
+            if (weaponDataList == null)
             {
                 return;
             }
 
+            singleWeaponIcon.gameObject.SetActive(weaponDataList.Length == 1);
+            multipleWeaponIconFront.gameObject.SetActive(weaponDataList.Length != 1);
+            multipleWeaponIconBack.gameObject.SetActive(weaponDataList.Length != 1);
+            singleReloadGaugeRect.gameObject.SetActive(weaponDataList.Length == 1);
+            multipleReloadGaugeRectFront.gameObject.SetActive(weaponDataList.Length != 1);
+            multipleReloadGaugeRectBack.gameObject.SetActive(weaponDataList.Length != 1);
+            weaponCount.text = weaponDataList.Length == 1 ? "" : $"x{weaponDataList.Length}";
+
             prevResourceValue = -1;
             prevReloadValueIsZero = false;
-            prevWeaponEffectCount = -1;
-            resourceMax.text = $"/{weaponData.WeaponSpecVO.MagazineSize}";
         }
 
         public void OnUpdate()
         {
-            if (weaponData == null)
+            if (weaponDataList == null)
             {
                 return;
             }
 
-            executeImage.gameObject.SetActive(weaponData.WeaponStateData.IsExecute);
+            UpdateIconColor();
+            UpdateTotalCollideCount();
+            UpdateResourceValue();
+            UpdateReloadTime();
+        }
 
-            var weaponEffectCount = weaponData.WeaponStateData.WeaponEffectDataList.Count;
-            if (prevWeaponEffectCount != weaponEffectCount)
+        void UpdateIconColor()
+        {
+            // SingleIconとFrontIcon
+            if (weaponDataList.Any(weaponData => weaponData.WeaponStateData.IsExecutable && weaponData.WeaponStateData.IsExecute))
             {
-                prevWeaponEffectCount = weaponEffectCount;
-
-                currentWeaponEffectCount.text = $"{weaponEffectCount}";
+                singleWeaponIcon.color = executingColor;
+                multipleWeaponIconFront.color = executingColor;
+            }
+            else if (weaponDataList.Any(weaponData => weaponData.WeaponStateData.IsExecutable))
+            {
+                singleWeaponIcon.color = executableColor;
+                multipleWeaponIconFront.color = executableColor;
+            }
+            else if (weaponDataList.Any(weaponData => weaponData.WeaponStateData.ReloadRemainTime != 0))
+            {
+                singleWeaponIcon.color = reloadingColor;
+                multipleWeaponIconFront.color = reloadingColor;
+            }
+            else if (weaponDataList.Any(weaponData => weaponData.WeaponSpecVO.MagazineSize == weaponData.WeaponStateData.ResourceIndex))
+            {
+                singleWeaponIcon.color = resourceEmptyColor;
+                multipleWeaponIconFront.color = reloadingColor;
+            }
+            else
+            {
+                singleWeaponIcon.color = disableColor;
+                multipleWeaponIconFront.color = disableColor;
             }
 
-            if (prevResourceValue != weaponData.WeaponStateData.ResourceIndex)
+            // BackIcon
+            if (weaponDataList.All(weaponData => weaponData.WeaponStateData.IsExecutable && weaponData.WeaponStateData.IsExecute))
             {
-                prevResourceValue = weaponData.WeaponStateData.ResourceIndex;
-
-                var resourceRemainCount = weaponData.WeaponSpecVO.MagazineSize - weaponData.WeaponStateData.ResourceIndex;
-                resourceValue.text = resourceRemainCount.ToString();
-
-                var resourceRatio = (float)resourceRemainCount / weaponData.WeaponSpecVO.MagazineSize;
-                var resourceGaugeRectLocalScale = resourceGaugeRect.localScale;
-                resourceGaugeRectLocalScale.x = resourceRatio;
-                resourceGaugeRect.localScale = resourceGaugeRectLocalScale;
+                multipleWeaponIconBack.color = executingColor;
             }
-
-            if (!prevReloadValueIsZero || 0 != weaponData.WeaponStateData.ReloadRemainTime)
+            else if (weaponDataList.All(weaponData => weaponData.WeaponStateData.IsExecutable))
             {
-                prevReloadValueIsZero = weaponData.WeaponStateData.ReloadRemainTime == 0;
-                var reloadRatio = prevReloadValueIsZero ? 0.0f : 1.0f - (weaponData.WeaponStateData.ReloadRemainTime / weaponData.WeaponSpecVO.ReloadTime);
-                var reloadGaugeRectLocalScale = reloadGaugeRect.localScale;
-                reloadGaugeRectLocalScale.x = reloadRatio;
-                reloadGaugeRect.localScale = reloadGaugeRectLocalScale;
+                multipleWeaponIconBack.color = executableColor;
+            }
+            else if (weaponDataList.All(weaponData => weaponData.WeaponStateData.ReloadRemainTime != 0))
+            {
+                multipleWeaponIconBack.color = reloadingColor;
+            }
+            else if (weaponDataList.All(weaponData => weaponData.WeaponSpecVO.MagazineSize == weaponData.WeaponStateData.ResourceIndex))
+            {
+                multipleWeaponIconBack.color = reloadingColor;
+            }
+            else
+            {
+                multipleWeaponIconBack.color = disableColor;
+            }
+        }
+
+        void UpdateTotalCollideCount()
+        {
+            var totalCollideCount = weaponDataList.Sum(weaponData => weaponData.WeaponStateData.WeaponEffectDataList.Sum(weaponEffectData => weaponEffectData.CollideCount));
+            if (prevTotalCollideCount != totalCollideCount)
+            {
+                prevTotalCollideCount = totalCollideCount;
+                hitAnimator.SetTrigger(AnimatorKey.Play);
+            }
+        }
+
+        void UpdateResourceValue()
+        {
+            if (prevResourceValue != weaponDataList.Max(weaponData => weaponData.WeaponStateData.ResourceIndex))
+            {
+                // リソース表示
+                prevResourceValue = weaponDataList.Max(weaponData => weaponData.WeaponStateData.ResourceIndex);
+                var minMagazine = weaponDataList.Min(weaponData => weaponData.WeaponSpecVO.MagazineSize);
+                var maxMagazine = weaponDataList.Max(weaponData => weaponData.WeaponSpecVO.MagazineSize);
+                resourceCount.text = (maxMagazine - prevResourceValue).ToString();
+                resourceCount.color = minMagazine < prevResourceValue ? Color.red : Color.white;
+            }
+        }
+
+        void UpdateReloadTime()
+        {
+            if (!prevReloadValueIsZero || weaponDataList.Any(weaponData => weaponData.WeaponStateData.ReloadRemainTime != 0))
+            {
+                // リロード表示
+                // 最後の1回が更新されないのでフラグでなんとかする
+                prevReloadValueIsZero = weaponDataList.Any(weaponData => weaponData.WeaponStateData.ReloadRemainTime == 0);
+                var maxReloadRatio = weaponDataList.Max(weaponData => 1.0f - (weaponData.WeaponStateData.ReloadRemainTime / weaponData.WeaponSpecVO.ReloadTime));
+                var minReloadRatio = weaponDataList.Min(weaponData => 1.0f - (weaponData.WeaponStateData.ReloadRemainTime / weaponData.WeaponSpecVO.ReloadTime));
+
+                var singleScale = singleReloadGaugeRect.localScale;
+                singleScale.x = maxReloadRatio;
+                singleReloadGaugeRect.localScale = singleScale;
+
+                var multipleFrontScale = multipleReloadGaugeRectFront.localScale;
+                multipleFrontScale.x = maxReloadRatio;
+                multipleReloadGaugeRectFront.localScale = multipleFrontScale;
+
+                var multipleBackScale = multipleReloadGaugeRectBack.localScale;
+                multipleBackScale.x = minReloadRatio;
+                multipleReloadGaugeRectBack.localScale = multipleBackScale;
+
+                hitAnimator.SetTrigger(AnimatorKey.Reset);
             }
         }
     }

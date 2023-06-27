@@ -9,7 +9,7 @@ namespace AloneSpace
 
         protected override ActorGameObjectHandler OnInit(IPositionData positionData)
         {
-            return new ActorGameObjectHandler(weaponHolders);
+            return new ActorGameObjectHandler(weaponHolders, MeshBounds.max.magnitude);
         }
     }
 }

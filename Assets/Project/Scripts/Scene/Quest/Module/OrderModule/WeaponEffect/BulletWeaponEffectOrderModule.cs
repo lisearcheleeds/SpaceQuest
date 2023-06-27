@@ -40,7 +40,7 @@ namespace AloneSpace
 
             if (effectData.CollideCount < effectData.CollisionEventEffectReceiverModuleList.Count)
             {
-                effectData.CollideCount++;
+                effectData.AddCollideCount();
 
                 if (effectData.SpecVO.Penetration < Random.value)
                 {

@@ -34,6 +34,9 @@ namespace AloneSpace
 
             if (effectData.CollisionEventEffectReceiverModuleList.Count != 0)
             {
+                // TODO: ダメージ与えたときだけAddCollideCountしたい
+                effectData.AddCollideCount();
+
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
                     new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData, effectData.Rotation));

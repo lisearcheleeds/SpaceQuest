@@ -8,8 +8,11 @@
         // ID
         int Id { get; }
 
+        // WeaponType
+        WeaponType WeaponType { get; }
+
         // AssetPath
-        public AssetPath Path { get; }
+        AssetPath Path { get; }
 
         // 武器リソース最大値（マガジン最大値）
         int MagazineSize { get; }

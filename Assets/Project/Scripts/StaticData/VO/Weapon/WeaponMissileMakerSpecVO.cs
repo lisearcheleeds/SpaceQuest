@@ -5,6 +5,9 @@
         // ID
         public int Id => row.Id;
 
+        // WeaponType
+        public WeaponType WeaponType => WeaponType.MissileMaker;
+
         // AssetPath
         public AssetPath Path => row.Path;
 

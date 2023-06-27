@@ -86,7 +86,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
             MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(userData.ControlActorData.Rotation * Vector3.forward);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(-20.0f);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
 
         void CheckCockpitFreeCamera()
@@ -112,7 +112,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
             MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(-20.0f);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
 
         void CheckSpotter()
@@ -181,7 +181,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(yawValue, -1.0f, 1.0f));
             MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Mathf.Clamp(rollValue, -1.0f, 1.0f));
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(-20.0f);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
 
         void CheckSpotterFreeCamera()
@@ -204,7 +204,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(0);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(-20.0f);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
 
         void Old()
@@ -263,7 +263,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(yawValue, -1.0f, 1.0f));
             MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Mathf.Clamp(rollValue, -1.0f, 1.0f));
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(-20.0f);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
 
         void CheckLookAtDistance()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,12 +8,9 @@ namespace AloneSpace
 {
     public class WeaponDataListView : MonoBehaviour
     {
-        [SerializeField] WeaponDataView weaponDataViewPrefab;
-        [SerializeField] RectTransform weaponDataViewParent;
-
         [SerializeField] WeaponGroupTab[] weaponGroupTabList;
+        [SerializeField] WeaponDataView[] weaponDataViews;
 
-        List<WeaponDataView> weaponDataViewList = new List<WeaponDataView>();
         ActorData userControlActor;
         bool isDirty;
 
@@ -54,7 +52,7 @@ namespace AloneSpace
                 RefreshWeaponDataView();
             }
 
-            foreach (var weaponDataView in weaponDataViewList)
+            foreach (var weaponDataView in weaponDataViews)
             {
                 weaponDataView.OnUpdate();
             }
@@ -80,9 +78,9 @@ namespace AloneSpace
                     weaponGroupTab.SetActiveColor(false);
                 }
 
-                foreach (var weaponDataView in weaponDataViewList)
+                foreach (var weaponDataView in weaponDataViews)
                 {
-                    weaponDataView.SetWeaponData(null);
+                    weaponDataView.SetWeaponDataList(null);
                 }
 
                 return;
@@ -93,23 +91,18 @@ namespace AloneSpace
                 weaponGroupTabList[i].SetActiveColor(i == userControlActor.ActorStateData.CurrentWeaponGroupIndex);
             }
 
-            var currentWeaponDataGroup = userControlActor.WeaponDataGroup[userControlActor.ActorStateData.CurrentWeaponGroupIndex];
-            var loopMax = Mathf.Max(weaponDataViewList.Count, currentWeaponDataGroup.Count);
-            for (var i = 0; i < loopMax; i++)
-            {
-                if (weaponDataViewList.Count <= i)
-                {
-                    weaponDataViewList.Add(Instantiate(weaponDataViewPrefab, weaponDataViewParent));
-                }
+            // TODO: 文字列でGroupByしてるが何か良い方法を探す
+            var currentWeaponDataGroup = userControlActor.WeaponDataGroup[userControlActor.ActorStateData.CurrentWeaponGroupIndex]
+                .GroupBy(id => $"{userControlActor.WeaponData[id].WeaponSpecVO.WeaponType}:{userControlActor.WeaponData[id].WeaponSpecVO.Id}")
+                .Select(x => x.Select(y => userControlActor.WeaponData[y]).ToArray())
+                .ToArray();
 
-                if (i < currentWeaponDataGroup.Count)
-                {
-                    weaponDataViewList[i].SetWeaponData(userControlActor.WeaponData[currentWeaponDataGroup[i]]);
-                }
-                else
-                {
-                    weaponDataViewList[i].SetWeaponData(null);
-                }
+            for (var i = 0; i < weaponDataViews.Length; i++)
+            {
+                weaponDataViews[i].SetWeaponDataList(
+                    i < currentWeaponDataGroup.Length
+                    ? currentWeaponDataGroup[i]
+                    : null);
             }
         }
     }

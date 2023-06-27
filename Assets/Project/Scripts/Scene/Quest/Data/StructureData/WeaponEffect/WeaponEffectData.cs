@@ -34,6 +34,8 @@ namespace AloneSpace
 
         public HashSet<CollisionEventEffectReceiverModule> CollisionEventEffectReceiverModuleList { get; private set; } = new HashSet<CollisionEventEffectReceiverModule>();
 
+        public int CollideCount { get; private set; }
+
         protected WeaponEffectData(IWeaponEffectCreateOptionData optionData)
         {
             InstanceId = Guid.NewGuid();
@@ -83,6 +85,11 @@ namespace AloneSpace
         public void Release()
         {
             IsReleased = true;
+        }
+
+        public void AddCollideCount()
+        {
+            CollideCount++;
         }
     }
 }

@@ -57,7 +57,7 @@ namespace AloneSpace
 
             InventoryData = new InventoryData(actorPresetVO.ActorSpecVO.CapacityWidth, actorPresetVO.ActorSpecVO.CapacityHeight);
             ActorStateData = new ActorStateData();
-            WeaponDataGroup = new[] { new List<Guid>(), new List<Guid>(), new List<Guid>() };
+            WeaponDataGroup = Enumerable.Range(0, ConstantInt.WeaponGroupCount).Select(_ => new List<Guid>()).ToArray();
             WeaponData = actorPresetVO.WeaponSpecVOs
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
                 .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);

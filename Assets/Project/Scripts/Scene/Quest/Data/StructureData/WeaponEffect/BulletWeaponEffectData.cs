@@ -14,7 +14,6 @@ namespace AloneSpace
         public BulletWeaponEffectCreateOptionData OptionData { get; }
 
         public float CurrentLifeTime { get; set; }
-        public int CollideCount { get; set; }
 
         /// <summary>
         /// 武器の使用
@@ -33,7 +32,6 @@ namespace AloneSpace
             OptionData = optionData;
 
             CurrentLifeTime = 0;
-            CollideCount = 0;
 
             OrderModule = new BulletWeaponEffectOrderModule(this);
             CollisionEventModule = new BulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));

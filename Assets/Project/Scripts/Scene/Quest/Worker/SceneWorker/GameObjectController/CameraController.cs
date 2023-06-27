@@ -49,7 +49,8 @@ namespace AloneSpace
             cameraAmbient.transform.position = currentAmbientPosition;
 
             currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.05f);
-            var cameraOffsetPosition = currentPosition + currentRotation * new Vector3(0, 5, questData.UserData.LookAtDistance);
+            var lookAtDistance = Mathf.Abs(questData.UserData.LookAtDistance);
+            var cameraOffsetPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
             cameraArea.transform.position = cameraOffsetPosition;
             camera3d.transform.position = cameraOffsetPosition;
         }
