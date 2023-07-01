@@ -32,17 +32,11 @@ namespace AloneSpace
         int prevResourceValue;
         bool prevReloadValueIsZero;
 
-        bool isFirst = true;
+        bool isInit;
 
         public void SetWeaponDataList(WeaponData[] weaponDataList)
         {
-            if (isFirst)
-            {
-                // 初回はとりあえず隠す
-                weaponDataViewAnimator.SetTrigger(AnimatorKey.Out);
-                weaponDataViewAnimator.SetBool(AnimatorKey.Use, false);
-                isFirst = false;
-            }
+            Init();
 
             // 何も変化がなければアニメーションはskip
             var prevWeaponIds = this.weaponDataList?.Select(weaponData => weaponData.InstanceId);
@@ -93,6 +87,24 @@ namespace AloneSpace
             UpdateTotalCollideCount();
             UpdateResourceValue();
             UpdateReloadTime();
+        }
+
+        void Awake()
+        {
+            Init();
+        }
+
+        void Init()
+        {
+            if (isInit)
+            {
+                return;
+            }
+
+            // 初回はとりあえず隠す
+            weaponDataViewAnimator.SetTrigger(AnimatorKey.Out);
+            weaponDataViewAnimator.SetBool(AnimatorKey.Use, false);
+            isInit = true;
         }
 
         void UpdateIconColor()
@@ -149,7 +161,7 @@ namespace AloneSpace
 
         void UpdateTotalCollideCount()
         {
-            var totalCollideCount = weaponDataList.Sum(weaponData => weaponData.WeaponStateData.WeaponEffectDataList.Sum(weaponEffectData => weaponEffectData.CollideCount));
+            var totalCollideCount = weaponDataList.Sum(weaponData => weaponData.WeaponStateData.CollideCount);
             if (prevTotalCollideCount != totalCollideCount)
             {
                 prevTotalCollideCount = totalCollideCount;
@@ -191,8 +203,6 @@ namespace AloneSpace
                 var multipleBackScale = multipleReloadGaugeRectBack.localScale;
                 multipleBackScale.x = minReloadRatio;
                 multipleReloadGaugeRectBack.localScale = multipleBackScale;
-
-                hitAnimator.SetTrigger(AnimatorKey.Reset);
             }
         }
     }

@@ -220,7 +220,7 @@ namespace AloneSpace
                     id: 5,
                     path: new AssetPath("Prefab/Actor/WarShip"),
                     brokenActorGraphicEffectSpecMasterId: 10005,
-                    enduranceValue: 100,
+                    enduranceValue: 10000,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
                     shieldAutoRecoveryResilienceTime: 2,

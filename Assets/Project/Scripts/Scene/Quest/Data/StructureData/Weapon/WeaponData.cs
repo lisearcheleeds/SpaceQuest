@@ -68,5 +68,10 @@ namespace AloneSpace
         {
             IsReleased = true;
         }
+
+        public void AddCollideCount()
+        {
+            WeaponStateData.CollideCount++;
+        }
     }
 }

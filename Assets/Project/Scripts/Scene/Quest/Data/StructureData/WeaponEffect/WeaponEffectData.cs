@@ -90,6 +90,7 @@ namespace AloneSpace
         public void AddCollideCount()
         {
             CollideCount++;
+            WeaponData.AddCollideCount();
         }
     }
 }
