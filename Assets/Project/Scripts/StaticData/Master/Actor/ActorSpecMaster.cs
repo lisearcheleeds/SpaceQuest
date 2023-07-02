@@ -7,6 +7,7 @@ namespace AloneSpace
         public class Row
         {
             public int Id { get; }
+            public string Name { get; }
             public AssetPath Path { get; }
 
             // 破壊グラフィックアセット
@@ -46,6 +47,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
+                string name,
                 AssetPath path,
                 int brokenActorGraphicEffectSpecMasterId,
                 float enduranceValue,
@@ -70,6 +72,7 @@ namespace AloneSpace
                 float radarSensorPerformance)
             {
                 Id = id;
+                Name = name;
                 Path = path;
                 BrokenActorGraphicEffectSpecMasterId = brokenActorGraphicEffectSpecMasterId;
                 EnduranceValue = enduranceValue;
@@ -122,6 +125,7 @@ namespace AloneSpace
             {
                 new Row(
                     id: 1,
+                    name: "Krishna",
                     path: new AssetPath("Prefab/Actor/Krishna"),
                     brokenActorGraphicEffectSpecMasterId: 10001,
                     enduranceValue: 200,
@@ -146,6 +150,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 2,
+                    name: "Arjuna",
                     path: new AssetPath("Prefab/Actor/Arjuna"),
                     brokenActorGraphicEffectSpecMasterId: 10002,
                     enduranceValue: 100,
@@ -170,6 +175,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 3,
+                    name: "Ilis",
                     path: new AssetPath("Prefab/Actor/Ilis"),
                     brokenActorGraphicEffectSpecMasterId: 10003,
                     enduranceValue: 100,
@@ -194,6 +200,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 4,
+                    name: "Transporter",
                     path: new AssetPath("Prefab/Actor/Transporter"),
                     brokenActorGraphicEffectSpecMasterId: 10004,
                     enduranceValue: 100,
@@ -218,6 +225,7 @@ namespace AloneSpace
                     radarSensorPerformance: 300),
                 new Row(
                     id: 5,
+                    name: "WarShip",
                     path: new AssetPath("Prefab/Actor/WarShip"),
                     brokenActorGraphicEffectSpecMasterId: 10005,
                     enduranceValue: 10000,

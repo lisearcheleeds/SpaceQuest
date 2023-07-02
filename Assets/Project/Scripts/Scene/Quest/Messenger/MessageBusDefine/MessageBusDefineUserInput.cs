@@ -15,6 +15,8 @@ namespace AloneSpace
         public class UserInputOpenInventory : MessageBusBroadcaster{}
         public class UserInputCloseInventory : MessageBusBroadcaster{}
 
+        public class UIMenuStatusViewSelectActorData : MessageBusBroadcaster<ActorData>{}
+
         public class UserInputExecuteWeapon : MessageBusBroadcaster<bool>{}
         public class UserInputReloadWeapon : MessageBusBroadcaster{}
         public class UserInputSetCurrentWeaponGroupIndex : MessageBusBroadcaster<int>{}

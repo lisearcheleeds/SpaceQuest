@@ -8,6 +8,9 @@
         // ID
         public int Id => row.Id;
 
+        // Name
+        public string Name => row.Name;
+
         // WeaponType
         public WeaponType WeaponType => WeaponType.MissileMaker;
 

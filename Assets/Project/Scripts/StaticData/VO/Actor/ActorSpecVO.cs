@@ -6,6 +6,7 @@
     public class ActorSpecVO
     {
         public int Id => row.Id;
+        public string Name => row.Name;
         public AssetPath Path => row.Path;
 
         public GraphicEffectSpecVO BrokenActorGraphicEffectSpecVO { get; }

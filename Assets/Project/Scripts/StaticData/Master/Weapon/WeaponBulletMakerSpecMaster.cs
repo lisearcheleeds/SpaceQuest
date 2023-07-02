@@ -9,6 +9,9 @@ namespace AloneSpace
             // ID
             public int Id { get; }
 
+            // Name
+            public string Name { get; }
+
             // Path
             public AssetPath Path { get; }
 
@@ -50,6 +53,7 @@ namespace AloneSpace
 
             public Row(
                 int id,
+                string name,
                 AssetPath path,
                 int bulletWeaponEffectSpecMasterId,
                 int magazineSize,
@@ -65,6 +69,7 @@ namespace AloneSpace
                 bool shootUp)
             {
                 Id = id;
+                Name = name;
                 Path = path;
                 BulletWeaponEffectSpecMasterId = bulletWeaponEffectSpecMasterId;
                 MagazineSize = magazineSize;
@@ -106,8 +111,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f, 90.0f, 60, 1, true, true, 150.0f, false),
-                new Row(2, new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
+                new Row(1, "BulletMaker1", new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f, 90.0f, 60, 1, true, true, 150.0f, false),
+                new Row(2, "BulletMaker2", new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
             };
         }
     }

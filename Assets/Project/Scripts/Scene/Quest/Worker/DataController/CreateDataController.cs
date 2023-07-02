@@ -94,7 +94,7 @@ namespace AloneSpace
 
         void CreatePlayerDataFromPresetIdAndAreaIdRandomPosition(int playerPresetId, Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty, int areaId)
         {
-            var randomOffset = new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f));
+            var randomOffset = new Vector3(Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f), Random.Range(-100.0f, 100.0f)) * 10.0f;
             CreatePlayerDataFromPresetIdAndAreaId(playerPresetId, playerProperty, areaId, randomOffset);
         }
 

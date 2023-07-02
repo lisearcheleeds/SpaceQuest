@@ -8,6 +8,9 @@
         // ID
         int Id { get; }
 
+        // Name
+        string Name { get; }
+
         // WeaponType
         WeaponType WeaponType { get; }
 

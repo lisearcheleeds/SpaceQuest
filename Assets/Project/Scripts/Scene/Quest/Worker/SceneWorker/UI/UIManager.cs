@@ -6,10 +6,9 @@ namespace AloneSpace
 {
     public class UIManager : MonoBehaviour
     {
-        [Header("Instruments")]
         [SerializeField] ActorView actorView;
         [SerializeField] TargetView targetView;
-        // [SerializeField] CockpitView cockpitView;
+        [SerializeField] MenuView menuView;
 
         [Header("Center")]
         [SerializeField] MapPanelView mapPanelView;
@@ -21,6 +20,7 @@ namespace AloneSpace
         {
             actorView.Initialize();
             targetView.Initialize();
+            menuView.Initialize(questData);
 
             mapPanelView.Initialize(questData);
             interactionList.Initialize();
@@ -32,6 +32,7 @@ namespace AloneSpace
         {
             actorView.Finalize();
             targetView.Finalize();
+            menuView.Finalize();
 
             mapPanelView.Finalize();
             interactionList.Finalize();
@@ -43,6 +44,7 @@ namespace AloneSpace
         {
             actorView.OnUpdate();
             targetView.OnUpdate();
+            menuView.OnUpdate();
         }
     }
 }
