@@ -19,28 +19,13 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.1f);
 
             // 武器
-            var isIsExecutable = actorData.WeaponData.Values.Any(v => v.WeaponStateData.IsExecutable);
-            if (isIsExecutable)
-            {
-                foreach (var weaponData in actorData.WeaponData.Values)
-                {
-                    if (weaponData.WeaponStateData.IsExecutable)
-                    {
-                        // MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, true);
-                    }
-                }
-            }
+            var isExecute = actorData.WeaponData.Values.Any(v => v.WeaponStateData.IsExecutable);
+            MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, isExecute);
 
             var isReloadable = actorData.WeaponData.Values.All(v => !v.WeaponStateData.IsExecutable && v.WeaponStateData.IsReloadable);
             if (isReloadable)
             {
-                foreach (var weaponData in actorData.WeaponData.Values)
-                {
-                    if (weaponData.WeaponStateData.IsReloadable)
-                    {
-                        MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(actorData.InstanceId);
-                    }
-                }
+                MessageBus.Instance.ActorCommandReloadWeapon.Broadcast(actorData.InstanceId);
             }
 
             return ActorAIState.Fight;

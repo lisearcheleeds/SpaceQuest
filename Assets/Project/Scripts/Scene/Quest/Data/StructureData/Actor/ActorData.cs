@@ -65,6 +65,10 @@ namespace AloneSpace
             WeaponDataGroup[0].AddRange(WeaponData.Keys);
 
             ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
+            ActorStateData.EnduranceValueMax = ActorSpecVO.EnduranceValue;
+
+            ActorStateData.ShieldValue = ActorSpecVO.ShieldValue;
+            ActorStateData.ShieldValueMax = ActorSpecVO.ShieldValue;
 
             MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);

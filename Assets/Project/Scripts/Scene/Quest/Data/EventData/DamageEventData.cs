@@ -1,36 +1,30 @@
 ﻿namespace AloneSpace
 {
     /// <summary>
-    /// ダメージ発生時のデータ
-    /// TODO: InstanceIdで管理したい気持ちある
+    /// TODO: InstanceIdで管理したい
     /// </summary>
     public class DamageEventData
     {
-        // Damageを与えた側
+        // Damageを与える側
         public WeaponData WeaponData { get; }
         public WeaponEffectData WeaponEffectData { get; }
 
-        // Damageを受けた側
+        // Damageを受ける側
         public ActorData DamagedActorData { get; }
 
-        // 実際に受けたダメージ量
-        public float DamageValue { get; }
-
-        // 減衰したダメージ量
-        public float DecayDamageValue { get; }
+        // 要求するダメージ量
+        public float EffectedDamageValue { get; }
 
         public DamageEventData(
             WeaponData weaponData,
             WeaponEffectData weaponEffectData,
             ActorData damagedActorData,
-            float damageValue,
-            float decayDamageValue)
+            float effectedDamageValue)
         {
             WeaponData = weaponData;
             WeaponEffectData = weaponEffectData;
             DamagedActorData = damagedActorData;
-            DamageValue = damageValue;
-            DecayDamageValue = decayDamageValue;
+            EffectedDamageValue = effectedDamageValue;
         }
     }
 }

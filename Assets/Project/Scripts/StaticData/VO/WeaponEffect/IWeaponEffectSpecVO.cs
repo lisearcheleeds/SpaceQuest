@@ -6,7 +6,11 @@
     /// </summary>
     public interface IWeaponEffectSpecVO
     {
+        int Id { get; }
+
         CacheableGameObjectPath Path { get; }
+
+        WeaponEffectType WeaponEffectType { get; }
 
         float BaseDamage { get; }
     }

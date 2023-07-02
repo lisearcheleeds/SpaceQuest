@@ -5,15 +5,42 @@ namespace AloneSpace
 {
     public class TransformPositionData : IPositionData
     {
+        public Guid InstanceId { get; }
+
+        public int? AreaId => areaId.HasValue ? areaId.Value : original.AreaId;
+
+        public Vector3 Position
+        {
+            get
+            {
+                if (transform != null)
+                {
+                    position = transform.position;
+                }
+
+                return position;
+            }
+        }
+
+        public Quaternion Rotation
+        {
+            get
+            {
+                if (transform != null)
+                {
+                    rotation = transform.rotation;
+                }
+
+                return rotation;
+            }
+        }
+
         int? areaId;
         IPositionData original;
         Transform transform;
 
-        public Guid InstanceId { get; }
-
-        public int? AreaId => areaId.HasValue ? areaId.Value : original.AreaId;
-        public Vector3 Position => transform.position;
-        public Quaternion Rotation => transform.rotation;
+        Vector3 position;
+        Quaternion rotation;
 
         public TransformPositionData(int? areaId, Transform transform)
         {

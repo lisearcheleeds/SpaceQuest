@@ -51,7 +51,7 @@ namespace AloneSpace
 
         void ActorCommandSetMainTarget(Guid instanceId, IPositionData target)
         {
-            if (userControlActor?.InstanceId == instanceId)
+            if (userControlActor == null || userControlActor?.InstanceId == instanceId)
             {
                 isDirty = true;
             }
@@ -59,7 +59,7 @@ namespace AloneSpace
 
         void ActorCommandSetAroundTargets(Guid instanceId, IPositionData[] targets)
         {
-            if (userControlActor?.InstanceId == instanceId)
+            if (userControlActor == null || userControlActor?.InstanceId == instanceId)
             {
                 isDirty = true;
             }

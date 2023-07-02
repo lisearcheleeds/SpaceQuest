@@ -47,7 +47,11 @@ namespace AloneSpace
             {
                 actorData.DeactivateModules();
                 questData.RemoveActorData(actorData);
-                questData.PlayerData[actorData.PlayerInstanceId].RemoveActorData(actorData);
+
+                if (questData.PlayerData.ContainsKey(actorData.PlayerInstanceId))
+                {
+                    questData.PlayerData[actorData.PlayerInstanceId].RemoveActorData(actorData);
+                }
 
                 MessageBus.Instance.ReleasedActorData.Broadcast(actorData);
             }
@@ -58,7 +62,11 @@ namespace AloneSpace
             {
                 weaponEffectData.DeactivateModules();
                 questData.RemoveWeaponEffectData(weaponEffectData);
-                questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
+
+                if (questData.ActorData.ContainsKey(weaponEffectData.WeaponData.WeaponHolder.InstanceId))
+                {
+                    questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
+                }
 
                 MessageBus.Instance.ReleasedWeaponEffectData.Broadcast(weaponEffectData);
             }

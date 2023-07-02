@@ -7,7 +7,7 @@ namespace AloneSpace
     public class UIManager : MonoBehaviour
     {
         [Header("Instruments")]
-        [SerializeField] WeaponDataListView weaponDataListView;
+        [SerializeField] ActorView actorView;
         [SerializeField] TargetView targetView;
         // [SerializeField] CockpitView cockpitView;
 
@@ -19,7 +19,7 @@ namespace AloneSpace
 
         public void Initialize(QuestData questData)
         {
-            weaponDataListView.Initialize();
+            actorView.Initialize();
             targetView.Initialize();
 
             mapPanelView.Initialize(questData);
@@ -30,7 +30,7 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            weaponDataListView.Finalize();
+            actorView.Finalize();
             targetView.Finalize();
 
             mapPanelView.Finalize();
@@ -41,7 +41,7 @@ namespace AloneSpace
 
         public void OnUpdate()
         {
-            weaponDataListView.OnUpdate();
+            actorView.OnUpdate();
             targetView.OnUpdate();
         }
     }

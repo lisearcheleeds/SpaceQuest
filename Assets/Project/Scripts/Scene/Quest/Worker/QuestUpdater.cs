@@ -21,7 +21,7 @@ namespace AloneSpace
             MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, userDic, 1);
 
             // 他のPlayerを登録
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(5, null, 1);
+            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, null, 1);
             var otherPlayerCount = Random.Range(1, 3);
             for (var i = 0; i < otherPlayerCount; i++)
             {

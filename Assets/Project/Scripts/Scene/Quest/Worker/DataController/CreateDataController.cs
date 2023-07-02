@@ -63,7 +63,12 @@ namespace AloneSpace
             {
                 actorData.ActivateModules();
                 questData.AddActorData(actorData);
-                questData.PlayerData[actorData.PlayerInstanceId].AddActorData(actorData);
+
+                // ありえないと思うけど一応合わせる
+                if (questData.PlayerData.ContainsKey(actorData.PlayerInstanceId))
+                {
+                    questData.PlayerData[actorData.PlayerInstanceId].AddActorData(actorData);
+                }
 
                 MessageBus.Instance.CreatedActorData.Broadcast(actorData);
             }
@@ -74,7 +79,12 @@ namespace AloneSpace
             {
                 weaponEffectData.ActivateModules();
                 questData.AddWeaponEffectData(weaponEffectData);
-                questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
+
+                // 最後っ屁
+                if (questData.ActorData.ContainsKey(weaponEffectData.WeaponData.WeaponHolder.InstanceId))
+                {
+                    questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
+                }
 
                 MessageBus.Instance.CreatedWeaponEffectData.Broadcast(weaponEffectData);
             }

@@ -275,8 +275,13 @@ namespace AloneSpace
 
             if (questData.UserData.ObserveAreaData?.AreaId != positionData?.AreaId)
             {
-                var nextAreaData = positionData?.AreaId != null ? questData.StarSystemData.GetAreaData(positionData.AreaId.Value) : null;
-                MessageBus.Instance.SetUserObserveArea.Broadcast(nextAreaData);
+                // FIXME: 死んだ時の表示を考える
+                // 今はとりあえずControlActorDataがnullだった場合はエリアそのまま
+                if (questData.UserData.ControlActorData != null)
+                {
+                    var nextAreaData = positionData?.AreaId != null ? questData.StarSystemData.GetAreaData(positionData.AreaId.Value) : null;
+                    MessageBus.Instance.SetUserObserveArea.Broadcast(nextAreaData);
+                }
             }
 
             MessageBus.Instance.UserCommandSetCameraTrackTarget.Broadcast(positionData);
@@ -312,12 +317,9 @@ namespace AloneSpace
 
         void ReleasedActorData(ActorData actorData)
         {
-            if (questData.UserData.PlayerData.ActorDataList.Any(x => x.InstanceId == actorData.InstanceId))
+            if (questData.UserData.ControlActorData?.InstanceId == actorData.InstanceId)
             {
-                if (questData.UserData.ControlActorData?.InstanceId == actorData.InstanceId)
-                {
-                    MessageBus.Instance.SetUserControlActor.Broadcast(null);
-                }
+                MessageBus.Instance.SetUserControlActor.Broadcast(null);
             }
         }
     }

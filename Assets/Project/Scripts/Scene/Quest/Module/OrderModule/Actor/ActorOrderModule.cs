@@ -55,10 +55,30 @@ namespace AloneSpace
             {
                 foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventData)
                 {
-                    actorData.ActorStateData.EnduranceValue -= currentDamageEventData.DamageValue;
-                    actorData.ActorStateData.HistoryDamageEventData.Add(currentDamageEventData);
+                    var decayDamageValue = currentDamageEventData.EffectedDamageValue;
 
-                    if (actorData.ActorStateData.EnduranceValue <= 0)
+                    var shieldExcessDamage = Mathf.Abs(Mathf.Min(0, actorData.ActorStateData.ShieldValue - decayDamageValue));
+                    var shieldDamage = Mathf.Abs(Mathf.Max(actorData.ActorStateData.ShieldValue, decayDamageValue));
+
+                    var afterShieldValue = Mathf.Max(0, actorData.ActorStateData.ShieldValue - decayDamageValue);
+                    var afterEnduranceValue = Mathf.Max(0, actorData.ActorStateData.EnduranceValue - shieldExcessDamage);
+
+                    var overKillDamage = Mathf.Abs(Mathf.Min(0, actorData.ActorStateData.EnduranceValue - shieldExcessDamage));
+
+                    var isLethalDamage = afterEnduranceValue <= 0;
+
+                    actorData.ActorStateData.ShieldValue = afterShieldValue;
+                    actorData.ActorStateData.EnduranceValue = afterEnduranceValue;
+
+                    actorData.ActorStateData.DamageEventHistoryDataList.Add(new DamageEventHistoryData(
+                        currentDamageEventData,
+                        decayDamageValue,
+                        shieldDamage,
+                        shieldExcessDamage,
+                        overKillDamage,
+                        isLethalDamage));
+
+                    if (isLethalDamage)
                     {
                         MessageBus.Instance.NoticeBrokenActorEventData.Broadcast(new BrokenActorEventData(actorData, currentDamageEventData));
                         break;

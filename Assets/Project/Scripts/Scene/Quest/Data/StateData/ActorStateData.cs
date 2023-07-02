@@ -39,8 +39,12 @@ namespace AloneSpace
         public int CurrentWeaponGroupIndex { get; set; }
 
         public List<DamageEventData> CurrentDamageEventData { get; set; } = new List<DamageEventData>();
-        public List<DamageEventData> HistoryDamageEventData { get; set; } = new List<DamageEventData>();
+        public List<DamageEventHistoryData> DamageEventHistoryDataList { get; set; } = new List<DamageEventHistoryData>();
 
         public float EnduranceValue { get; set; }
+        public float EnduranceValueMax { get; set; }
+
+        public float ShieldValue { get; set; }
+        public float ShieldValueMax { get; set; }
     }
 }

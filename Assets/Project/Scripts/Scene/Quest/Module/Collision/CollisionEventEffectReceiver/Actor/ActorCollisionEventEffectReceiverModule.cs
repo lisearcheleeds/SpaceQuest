@@ -30,8 +30,7 @@ namespace AloneSpace
                             damageSender.WeaponData,
                             damageSender.WeaponEffectData,
                             actorData,
-                            damageSender.EffectedDamageValue,
-                            0);
+                            damageSender.EffectedDamageValue);
                         MessageBus.Instance.NoticeDamageEventData.Broadcast(damageEventData);
                     }
                 }

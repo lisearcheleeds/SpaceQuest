@@ -1,7 +1,7 @@
 ﻿namespace AloneSpace
 {
     /// <summary>
-    /// Actorの基本スペックと品質
+    /// 基本スペックと品質
     /// </summary>
     public class ActorSpecVO
     {

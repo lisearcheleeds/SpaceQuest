@@ -1,7 +1,7 @@
 ﻿namespace AloneSpace
 {
     /// <summary>
-    /// TODO: InstanceIdで管理したい気持ちある
+    /// TODO: InstanceIdで管理したい
     /// </summary>
     public class CollisionEventEffectData
     {

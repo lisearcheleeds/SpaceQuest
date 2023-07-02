@@ -166,7 +166,6 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            // TODO: foreachで全部のActorに知らせたい（特殊効果のために）
             questData.ActorData[brokenActorEventData.BrokenActorData.InstanceId].Release();
 
             MessageBus.Instance.SpawnGraphicEffect.Broadcast(

@@ -38,7 +38,7 @@ namespace AloneSpace
         void Refresh()
         {
             var cellData = Array.Empty<InteractionListViewCell.CellData>();
-            if (observeArea != null)
+            if (observeArea != null && userControlActor != null)
             {
                 cellData = observeArea.InteractData
                     .Select(interactData => new InteractionListViewCell.CellData(

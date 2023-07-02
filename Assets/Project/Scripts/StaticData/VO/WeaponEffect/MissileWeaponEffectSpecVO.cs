@@ -1,9 +1,18 @@
 ﻿namespace AloneSpace
 {
+    /// <summary>
+    /// 基本スペックと品質
+    /// </summary>
     public class MissileWeaponEffectSpecVO : IWeaponEffectSpecVO
     {
+        // Id
+        public int Id => row.Id;
+
         // Path
         public CacheableGameObjectPath Path => row.Path;
+
+        // WeaponEffectType
+        public WeaponEffectType WeaponEffectType => WeaponEffectType.Missile;
 
         // BaseDamage
         public float BaseDamage => row.BaseDamage;

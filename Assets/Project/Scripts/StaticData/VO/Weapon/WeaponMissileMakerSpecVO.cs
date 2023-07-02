@@ -1,5 +1,8 @@
 ﻿namespace AloneSpace
 {
+    /// <summary>
+    /// 基本スペックと品質
+    /// </summary>
     public class WeaponMissileMakerSpecVO : IWeaponSpecVO, IExplosionGraphicEffectSpecVOHolder
     {
         // ID

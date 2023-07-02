@@ -124,7 +124,7 @@ namespace AloneSpace
                     id: 1,
                     path: new AssetPath("Prefab/Actor/Krishna"),
                     brokenActorGraphicEffectSpecMasterId: 10001,
-                    enduranceValue: 100,
+                    enduranceValue: 200,
                     shieldValue: 100,
                     shieldTruncateValue: 2,
                     shieldAutoRecoveryResilienceTime: 2,
