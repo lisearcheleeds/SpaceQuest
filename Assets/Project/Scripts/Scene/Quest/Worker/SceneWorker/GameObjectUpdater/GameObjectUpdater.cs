@@ -5,7 +5,6 @@ namespace AloneSpace
     public class GameObjectUpdater : MonoBehaviour
     {
         [SerializeField] Transform variableParent;
-        [SerializeField] Transform cacheParent;
 
         ActorObjectUpdater actorObjectUpdater = new ActorObjectUpdater();
         WeaponEffectObjectUpdater weaponEffectObjectUpdater = new WeaponEffectObjectUpdater();
@@ -21,7 +20,7 @@ namespace AloneSpace
             interactObjectUpdater.Initialize(this);
             graphicEffectObjectUpdater.Initialize();
 
-            gameObjectCache.Initialize(variableParent, cacheParent);
+            gameObjectCache.Initialize(variableParent);
         }
 
         public void Finalize()

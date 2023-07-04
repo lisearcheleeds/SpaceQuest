@@ -7,15 +7,15 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        List<MovingModule> moduleList = new List<MovingModule>();
-        
-        List<MovingModule> registerModuleList = new List<MovingModule>();
-        List<MovingModule> unRegisterModuleList = new List<MovingModule>();
-        
+        LinkedList<MovingModule> moduleList = new LinkedList<MovingModule>();
+
+        LinkedList<MovingModule> registerModuleList = new LinkedList<MovingModule>();
+        LinkedList<MovingModule> unRegisterModuleList = new LinkedList<MovingModule>();
+
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
+
             MessageBus.Instance.RegisterMovingModule.AddListener(RegisterMovingModule);
             MessageBus.Instance.UnRegisterMovingModule.AddListener(UnRegisterMovingModule);
         }
@@ -37,7 +37,7 @@ namespace AloneSpace
             {
                 moduleList.Remove(removeModule);
             }
-            
+
             unRegisterModuleList.Clear();
 
             foreach (var module in moduleList)
@@ -47,20 +47,20 @@ namespace AloneSpace
 
             foreach (var registerModule in registerModuleList)
             {
-                moduleList.Add(registerModule);
+                moduleList.AddLast(registerModule);
             }
-            
+
             registerModuleList.Clear();
         }
 
         void RegisterMovingModule(MovingModule movingModule)
         {
-            registerModuleList.Add(movingModule);
+            registerModuleList.AddLast(movingModule);
         }
-        
+
         void UnRegisterMovingModule(MovingModule movingModule)
         {
-            unRegisterModuleList.Add(movingModule);
+            unRegisterModuleList.AddLast(movingModule);
         }
     }
 }

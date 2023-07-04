@@ -31,7 +31,7 @@ namespace AloneSpace
             }
 
             UpdateDamage();
-            UpdateTarget();
+            UpdateTarget(deltaTime);
             UpdateWeapon();
             UpdateWarp(deltaTime);
             UpdateMove(deltaTime);
@@ -89,26 +89,36 @@ namespace AloneSpace
             actorData.ActorStateData.CurrentDamageEventData.Clear();
         }
 
-        void UpdateTarget()
+        void UpdateTarget(float deltaTime)
         {
-            if (actorData.AreaId.HasValue)
+            if (!actorData.AreaId.HasValue)
             {
-                // なんか1秒に数回までとかにする
-                var aroundActors = MessageBus.Instance.UtilGetAreaActorData.Unicast(actorData.AreaId.Value);
-                if (!aroundActors.SequenceEqual(actorData.ActorStateData.AroundTargets))
-                {
-                    // 一致してなかったら更新
-                    MessageBus.Instance.ActorCommandSetAroundTargets.Broadcast(actorData.InstanceId, aroundActors);
-                }
+                return;
+            }
 
-                // 向いてる方向に一番近いターゲットをメインに
-                var nextMainTarget = actorData.ActorStateData.AroundTargets
-                    .OrderByDescending(target => Vector3.Dot(actorData.ActorStateData.LookAtDirection, (target.Position - actorData.Position).normalized))
-                    .FirstOrDefault(target => target.InstanceId != actorData.InstanceId);
-                if (actorData.ActorStateData.MainTarget?.InstanceId != nextMainTarget?.InstanceId)
-                {
-                    MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, nextMainTarget);
-                }
+            // なんか1秒に数回までとかにしたいだけなので適当でいい
+            actorData.ActorStateData.LastTargetListRefreshTime -= deltaTime;
+            if (0 < actorData.ActorStateData.LastTargetListRefreshTime)
+            {
+                return;
+            }
+
+            actorData.ActorStateData.LastTargetListRefreshTime = 0.5f;
+
+            var aroundActors = MessageBus.Instance.UtilGetAreaActorData.Unicast(actorData.AreaId.Value);
+            if (!aroundActors.SequenceEqual(actorData.ActorStateData.AroundTargets))
+            {
+                // 一致してなかったら更新
+                MessageBus.Instance.ActorCommandSetAroundTargets.Broadcast(actorData.InstanceId, aroundActors);
+            }
+
+            // 向いてる方向に一番近いターゲットをメインに
+            var nextMainTarget = actorData.ActorStateData.AroundTargets
+                .OrderByDescending(target => Vector3.Dot(actorData.ActorStateData.LookAtDirection, (target.Position - actorData.Position).normalized))
+                .FirstOrDefault(target => target.InstanceId != actorData.InstanceId);
+            if (actorData.ActorStateData.MainTarget?.InstanceId != nextMainTarget?.InstanceId)
+            {
+                MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, nextMainTarget);
             }
         }
 

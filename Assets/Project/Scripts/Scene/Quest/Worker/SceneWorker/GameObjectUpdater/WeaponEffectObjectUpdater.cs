@@ -11,8 +11,8 @@ namespace AloneSpace
         AreaData observeArea;
         bool isDirty;
 
-        List<WeaponEffect> currentWeaponEffectList = new List<WeaponEffect>();
-        List<Guid> loadingWeaponEffect = new List<Guid>();
+        LinkedList<WeaponEffect> currentWeaponEffectList = new LinkedList<WeaponEffect>();
+        LinkedList<Guid> loadingWeaponEffect = new LinkedList<Guid>();
 
         public void Initialize(QuestData questData)
         {
@@ -93,12 +93,12 @@ namespace AloneSpace
 
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
-            loadingWeaponEffect.Add(weaponEffectData.InstanceId);
+            loadingWeaponEffect.AddLast(weaponEffectData.InstanceId);
             MessageBus.Instance.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
             {
                 var weaponEffect = (WeaponEffect)c;
                 weaponEffect.Init(weaponEffectData);
-                currentWeaponEffectList.Add(weaponEffect);
+                currentWeaponEffectList.AddLast(weaponEffect);
                 loadingWeaponEffect.Remove(weaponEffectData.InstanceId);
             });
         }

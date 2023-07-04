@@ -8,10 +8,10 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        List<CollisionEventEffectReceiverModule> moduleList = new List<CollisionEventEffectReceiverModule>();
+        LinkedList<CollisionEventEffectReceiverModule> moduleList = new LinkedList<CollisionEventEffectReceiverModule>();
 
-        List<CollisionEventEffectReceiverModule> registerModuleList = new List<CollisionEventEffectReceiverModule>();
-        List<CollisionEventEffectReceiverModule> unRegisterModuleList = new List<CollisionEventEffectReceiverModule>();
+        LinkedList<CollisionEventEffectReceiverModule> registerModuleList = new LinkedList<CollisionEventEffectReceiverModule>();
+        LinkedList<CollisionEventEffectReceiverModule> unRegisterModuleList = new LinkedList<CollisionEventEffectReceiverModule>();
 
         Dictionary<Guid, HashSet<CollisionEventEffectSenderModule>> collideSenderThisFrame = new Dictionary<Guid, HashSet<CollisionEventEffectSenderModule>>();
 
@@ -58,7 +58,7 @@ namespace AloneSpace
 
             foreach (var registerModule in registerModuleList)
             {
-                moduleList.Add(registerModule);
+                moduleList.AddLast(registerModule);
             }
 
             registerModuleList.Clear();
@@ -66,12 +66,12 @@ namespace AloneSpace
 
         void RegisterCollisionEffectReceiverModule(CollisionEventEffectReceiverModule collisionEventEffectReceiverModule)
         {
-            registerModuleList.Add(collisionEventEffectReceiverModule);
+            registerModuleList.AddLast(collisionEventEffectReceiverModule);
         }
 
         void UnRegisterCollisionEffectReceiverModule(CollisionEventEffectReceiverModule collisionEventEffectReceiverModule)
         {
-            unRegisterModuleList.Add(collisionEventEffectReceiverModule);
+            unRegisterModuleList.AddLast(collisionEventEffectReceiverModule);
         }
 
         void NoticeCollisionEventEffectData(CollisionEventEffectData effectData)

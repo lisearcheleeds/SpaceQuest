@@ -21,6 +21,7 @@ namespace AloneSpace
 
         public IPositionData MainTarget { get; set; }
         public IPositionData[] AroundTargets { get; set; } = Array.Empty<IPositionData>();
+        public float LastTargetListRefreshTime { get; set; }
 
         public float ForwardBoosterPowerRatio { get; set; }
         public float BackBoosterPowerRatio { get; set; }

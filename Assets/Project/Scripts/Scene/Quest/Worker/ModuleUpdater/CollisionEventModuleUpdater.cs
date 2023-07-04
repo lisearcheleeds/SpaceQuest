@@ -8,10 +8,10 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        List<CollisionEventModule> moduleList = new List<CollisionEventModule>();
+        LinkedList<CollisionEventModule> moduleList = new LinkedList<CollisionEventModule>();
 
-        List<CollisionEventModule> registerModuleList = new List<CollisionEventModule>();
-        List<CollisionEventModule> unRegisterModuleList = new List<CollisionEventModule>();
+        LinkedList<CollisionEventModule> registerModuleList = new LinkedList<CollisionEventModule>();
+        LinkedList<CollisionEventModule> unRegisterModuleList = new LinkedList<CollisionEventModule>();
 
         Dictionary<Guid, HashSet<CollisionEventModule>> collideCurrentFrame = new Dictionary<Guid, HashSet<CollisionEventModule>>();
 
@@ -60,7 +60,7 @@ namespace AloneSpace
 
             foreach (var registerModule in registerModuleList)
             {
-                moduleList.Add(registerModule);
+                moduleList.AddLast(registerModule);
             }
 
             registerModuleList.Clear();
@@ -68,12 +68,12 @@ namespace AloneSpace
 
         void RegisterCollisionEventModule(CollisionEventModule collisionEventModule)
         {
-            registerModuleList.Add(collisionEventModule);
+            registerModuleList.AddLast(collisionEventModule);
         }
 
         void UnRegisterCollisionEventModule(CollisionEventModule collisionEventModule)
         {
-            unRegisterModuleList.Add(collisionEventModule);
+            unRegisterModuleList.AddLast(collisionEventModule);
         }
 
         void NoticeCollisionEventData(CollisionEventData collisionEventData)

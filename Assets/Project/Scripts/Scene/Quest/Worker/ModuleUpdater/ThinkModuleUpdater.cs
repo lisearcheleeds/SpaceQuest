@@ -13,10 +13,10 @@ namespace AloneSpace
 
         Dictionary<Guid, float> updateTimeStamps = new Dictionary<Guid, float>();
 
-        List<IThinkModule> moduleList = new List<IThinkModule>();
+        LinkedList<IThinkModule> moduleList = new LinkedList<IThinkModule>();
 
-        List<IThinkModule> registerModuleList = new List<IThinkModule>();
-        List<IThinkModule> unRegisterModuleList = new List<IThinkModule>();
+        LinkedList<IThinkModule> registerModuleList = new LinkedList<IThinkModule>();
+        LinkedList<IThinkModule> unRegisterModuleList = new LinkedList<IThinkModule>();
 
         public void Initialize(QuestData questData)
         {
@@ -58,7 +58,7 @@ namespace AloneSpace
 
             foreach (var registerModule in registerModuleList)
             {
-                moduleList.Add(registerModule);
+                moduleList.AddLast(registerModule);
                 updateTimeStamps[registerModule.InstanceId] = Time.time - TickRate - 1.0f;
             }
 
@@ -67,12 +67,12 @@ namespace AloneSpace
 
         void RegisterThinkModule(IThinkModule thinkModule)
         {
-            registerModuleList.Add(thinkModule);
+            registerModuleList.AddLast(thinkModule);
         }
 
         void UnRegisterThinkModule(IThinkModule thinkModule)
         {
-            unRegisterModuleList.Add(thinkModule);
+            unRegisterModuleList.AddLast(thinkModule);
         }
     }
 }

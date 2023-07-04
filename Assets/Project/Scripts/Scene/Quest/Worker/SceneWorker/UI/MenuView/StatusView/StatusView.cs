@@ -7,12 +7,14 @@ namespace AloneSpace
         [SerializeField] ActorList actorList;
         [SerializeField] ActorStatusView actorStatusView;
         [SerializeField] ActorSpecView actorSpecView;
+        [SerializeField] ActorSpecialEffectList actorSpecialEffectList;
 
         public void Initialize(QuestData questData)
         {
             actorList.Initialize(questData);
             actorStatusView.Initialize();
             actorSpecView.Initialize();
+            actorSpecialEffectList.Initialize();
         }
 
         public void Finalize()
@@ -20,6 +22,7 @@ namespace AloneSpace
             actorList.Finalize();
             actorStatusView.Finalize();
             actorSpecView.Finalize();
+            actorSpecialEffectList.Finalize();
         }
 
         public void OnUpdate()
@@ -27,6 +30,7 @@ namespace AloneSpace
             actorList.OnUpdate();
             actorStatusView.OnUpdate();
             actorSpecView.OnUpdate();
+            actorSpecialEffectList.OnUpdate();
         }
     }
 }

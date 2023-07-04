@@ -6,6 +6,7 @@ namespace AloneSpace
     public abstract class GameObjectModel<T> : MonoBehaviour where T : IGameObjectHandler
     {
         public Bounds MeshBounds { get; private set; }
+        protected abstract bool IsUseBounds { get; }
 
         [SerializeField] ModelCollider[] colliders;
         CollisionEventModule collisionEventModule;
@@ -24,7 +25,11 @@ namespace AloneSpace
                 colliders[i].Init(collisionEventModule, i, OnPartsTriggerEnter, OnPartsTriggerStay, OnPartsTriggerExit);
             }
 
-            MeshBounds = CalculateBounds();
+            if (IsUseBounds)
+            {
+                MeshBounds = CalculateBounds();
+            }
+
             return OnInit(positionData);
         }
 

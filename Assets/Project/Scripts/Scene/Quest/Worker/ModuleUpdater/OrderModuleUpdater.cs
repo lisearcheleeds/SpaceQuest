@@ -6,15 +6,15 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        List<IOrderModule> moduleList = new List<IOrderModule>();
-        
-        List<IOrderModule> registerModuleList = new List<IOrderModule>();
-        List<IOrderModule> unRegisterModuleList = new List<IOrderModule>();
-        
+        LinkedList<IOrderModule> moduleList = new LinkedList<IOrderModule>();
+
+        LinkedList<IOrderModule> registerModuleList = new LinkedList<IOrderModule>();
+        LinkedList<IOrderModule> unRegisterModuleList = new LinkedList<IOrderModule>();
+
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            
+
             MessageBus.Instance.RegisterOrderModule.AddListener(RegisterOrderModule);
             MessageBus.Instance.UnRegisterOrderModule.AddListener(UnRegisterOrderModule);
         }
@@ -24,7 +24,7 @@ namespace AloneSpace
             MessageBus.Instance.RegisterOrderModule.RemoveListener(RegisterOrderModule);
             MessageBus.Instance.UnRegisterOrderModule.RemoveListener(UnRegisterOrderModule);
         }
-        
+
         public void UpdateModule(float deltaTime)
         {
             if (questData == null)
@@ -36,30 +36,30 @@ namespace AloneSpace
             {
                 moduleList.Remove(removeModule);
             }
-            
+
             unRegisterModuleList.Clear();
 
             foreach (var module in moduleList)
             {
                 module.OnUpdateModule(deltaTime);
             }
-            
+
             foreach (var registerModule in registerModuleList)
             {
-                moduleList.Add(registerModule);
+                moduleList.AddLast(registerModule);
             }
-            
+
             registerModuleList.Clear();
         }
 
         void RegisterOrderModule(IOrderModule orderModule)
         {
-            registerModuleList.Add(orderModule);
+            registerModuleList.AddLast(orderModule);
         }
-        
+
         void UnRegisterOrderModule(IOrderModule orderModule)
         {
-            unRegisterModuleList.Add(orderModule);
+            unRegisterModuleList.AddLast(orderModule);
         }
     }
 }

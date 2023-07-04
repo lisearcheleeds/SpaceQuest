@@ -4,10 +4,11 @@ namespace AloneSpace
 {
     public abstract class CacheableGameObject : MonoBehaviour
     {
-        public bool IsUse
+        public string CacheKey { get; private set; }
+
+        public void SetCacheKey(string cacheKey)
         {
-            get => gameObject.activeSelf;
-            set => gameObject.SetActive(value);
+            CacheKey = cacheKey;
         }
 
         public void Release()

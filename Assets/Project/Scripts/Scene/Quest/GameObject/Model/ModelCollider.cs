@@ -30,7 +30,7 @@ namespace AloneSpace
         }
 
         void OnTriggerEnter(Collider other) => onTriggerEnter?.Invoke(Index, other);
-        void OnTriggerStay(Collider other) => onTriggerStay?.Invoke(Index, other);
-        void OnTriggerExit(Collider other) => onTriggerExit?.Invoke(Index, other);
+        // void OnTriggerStay(Collider other) => onTriggerStay?.Invoke(Index, other);
+        // void OnTriggerExit(Collider other) => onTriggerExit?.Invoke(Index, other);
     }
 }

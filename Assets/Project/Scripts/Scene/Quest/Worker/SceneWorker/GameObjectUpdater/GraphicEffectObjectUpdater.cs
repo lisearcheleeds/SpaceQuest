@@ -8,7 +8,8 @@ namespace AloneSpace
         AreaData observeArea;
         bool isReset;
 
-        List<GraphicEffect> graphicEffectList = new List<GraphicEffect>();
+        LinkedList<GraphicEffect> graphicEffectList = new LinkedList<GraphicEffect>();
+        LinkedList<GraphicEffect> removeList = new LinkedList<GraphicEffect>();
 
         public void Initialize()
         {
@@ -24,18 +25,24 @@ namespace AloneSpace
 
         public void OnUpdate(float deltaTime)
         {
-            // TODO: ToArray辞めたいが
-            foreach (var graphicEffect in graphicEffectList.ToArray())
+            foreach (var graphicEffect in graphicEffectList)
             {
                 if (graphicEffect.IsCompleted || isReset)
                 {
-                    graphicEffect.Release();
-                    graphicEffectList.Remove(graphicEffect);
+                    removeList.AddLast(graphicEffect);
                     continue;
                 }
 
                 graphicEffect.OnLateUpdate(deltaTime);
             }
+
+            foreach (var removeTarget in removeList)
+            {
+                removeTarget.Release();
+                graphicEffectList.Remove(removeTarget);
+            }
+
+            removeList.Clear();
 
             isReset = false;
         }
@@ -62,7 +69,7 @@ namespace AloneSpace
             {
                 var graphicEffect = (GraphicEffect)c;
                 graphicEffect.Init(graphicEffectSpecVO, graphicEffectHandler);
-                graphicEffectList.Add(graphicEffect);
+                graphicEffectList.AddLast(graphicEffect);
             });
         }
     }

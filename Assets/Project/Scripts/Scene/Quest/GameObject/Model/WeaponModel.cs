@@ -6,6 +6,8 @@ namespace AloneSpace
 {
     public class WeaponModel : GameObjectModel<WeaponGameObjectHandler>
     {
+        protected override bool IsUseBounds => false;
+
         [SerializeField] Transform[] outputPoint;
 
         protected override WeaponGameObjectHandler OnInit(IPositionData positionData)
