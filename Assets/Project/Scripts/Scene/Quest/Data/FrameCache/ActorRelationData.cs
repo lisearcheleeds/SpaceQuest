@@ -2,19 +2,19 @@
 
 namespace AloneSpace
 {
-    public class ActorRelationData
+    public struct ActorRelationData
     {
-        public ActorData OtherActorData { get; }
+        public ActorData OtherActorData { get; private set; }
 
-        public Vector3 RelativePosition { get; }
-        public float Distance { get; }
+        public Vector3 RelativePosition { get; private set; }
+        public float SqrDistance { get; private set; }
 
-        public ActorRelationData(ActorData from, ActorData other)
+        public void Update(ActorData from, ActorData other)
         {
             OtherActorData = other;
 
             RelativePosition = other.Position - from.Position;
-            Distance = RelativePosition.magnitude;
+            SqrDistance = RelativePosition.sqrMagnitude;
         }
     }
 }

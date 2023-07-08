@@ -26,15 +26,33 @@ namespace AloneSpace
 
         public void OnUpdate(float deltaTime)
         {
-            var actorDataDividedArea = questData.ActorData.GroupBy(actorData => actorData.Value.AreaId, actorData => actorData.Value);
+            // FIXME: 重いしGC走る
+            var actorDataDividedArea = questData.ActorData.GroupBy(actorData => actorData.Value.AreaId).Select(x => x.Select(y => y.Value));
+
             foreach (var currentAreaActorDataList in actorDataDividedArea)
             {
+                var count = currentAreaActorDataList.Count() - 1;
                 foreach (var fromActor in currentAreaActorDataList)
                 {
-                    // FIXME: 明らかにキャッシュしたほうがGC的に優しい気がするがめっちゃ遅くなる
-                    actorRelationDataCache[fromActor.InstanceId] = currentAreaActorDataList
-                        .Where(otherActor => otherActor.InstanceId != fromActor.InstanceId)
-                        .Select(otherActor => new ActorRelationData(fromActor, otherActor)).ToArray();
+                    var fromActorInstanceId = fromActor.InstanceId;
+
+                    // 自身を除いた個数
+                    if (!actorRelationDataCache.ContainsKey(fromActorInstanceId) || actorRelationDataCache[fromActorInstanceId].Length != count)
+                    {
+                        actorRelationDataCache[fromActorInstanceId] = new ActorRelationData[count];
+                    }
+
+                    var currentCache = actorRelationDataCache[fromActorInstanceId];
+
+                    var t = 0;
+                    foreach (var t1 in currentAreaActorDataList)
+                    {
+                        if (fromActorInstanceId != t1.InstanceId)
+                        {
+                            currentCache[t].Update(fromActor, t1);
+                            t++;
+                        }
+                    }
                 }
             }
         }

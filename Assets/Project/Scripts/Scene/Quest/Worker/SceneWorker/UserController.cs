@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace AloneSpace
 {
@@ -26,13 +25,16 @@ namespace AloneSpace
 
             // 向いてる方向に一番近いターゲットをメインに
             var aroundActorRelationDataList = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(userData.ControlActorData.InstanceId);
-            var nextMainTarget = aroundActorRelationDataList
-                .OrderByDescending(aroundActorRelationData => Vector3.Dot(userData.ControlActorData.ActorStateData.LookAtDirection, aroundActorRelationData.RelativePosition.normalized))
-                .FirstOrDefault();
-
-            if (userData.ControlActorData.ActorStateData.MainTarget?.InstanceId != nextMainTarget?.OtherActorData.InstanceId)
+            if (aroundActorRelationDataList.Count != 0)
             {
-                MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(userData.ControlActorData.InstanceId, nextMainTarget?.OtherActorData);
+                var nextMainTarget = aroundActorRelationDataList
+                    .OrderByDescending(aroundActorRelationData => Vector3.Dot(userData.ControlActorData.ActorStateData.LookAtDirection, aroundActorRelationData.RelativePosition.normalized))
+                    .First();
+
+                if (userData.ControlActorData.ActorStateData.MainTarget?.InstanceId != nextMainTarget.OtherActorData.InstanceId)
+                {
+                    MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(userData.ControlActorData.InstanceId, nextMainTarget.OtherActorData);
+                }
             }
         }
     }

@@ -15,11 +15,11 @@ namespace AloneSpace
 
         public TacticsType TacticsType { get; private set; }
 
-        public ReadOnlyCollection<ActorData> ActorDataList { get; private set; }
+        public IReadOnlyList<ActorData> ActorDataList => actorDataList;
 
-        public ReadOnlyDictionary<PlayerPropertyKey, IPlayerPropertyValue> PlayerProperty { get; }
+        public IReadOnlyDictionary<PlayerPropertyKey, IPlayerPropertyValue> PlayerProperty => playerProperty;
 
-        List<ActorData> actorDataList;
+        List<ActorData> actorDataList = new List<ActorData>();
         Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty;
 
         public PlayerData(Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty)
@@ -28,11 +28,7 @@ namespace AloneSpace
 
             ThinkModule = new PlayerThinkModule(this);
 
-            actorDataList = new List<ActorData>();
-            ActorDataList = new ReadOnlyCollection<ActorData>(actorDataList);
-
             this.playerProperty = playerProperty ?? new Dictionary<PlayerPropertyKey, IPlayerPropertyValue>();
-            PlayerProperty = new ReadOnlyDictionary<PlayerPropertyKey, IPlayerPropertyValue>(this.playerProperty);
         }
 
         public void ActivateModules()

@@ -14,9 +14,9 @@ namespace AloneSpace
         public StarSystemData StarSystemData { get; }
 
         public UserData UserData { get; }
-        public ReadOnlyDictionary<Guid, PlayerData> PlayerData { get; }
-        public ReadOnlyDictionary<Guid, ActorData> ActorData { get; }
-        public ReadOnlyDictionary<Guid, WeaponEffectData> WeaponEffectData { get; }
+        public IReadOnlyDictionary<Guid, PlayerData> PlayerData => playerData;
+        public IReadOnlyDictionary<Guid, ActorData> ActorData => actorData;
+        public IReadOnlyDictionary<Guid, WeaponEffectData> WeaponEffectData => weaponEffectData;
 
         Dictionary<Guid, PlayerData> playerData;
         Dictionary<Guid, ActorData> actorData;
@@ -30,10 +30,6 @@ namespace AloneSpace
             playerData = new Dictionary<Guid, PlayerData>();
             actorData = new Dictionary<Guid, ActorData>();
             weaponEffectData = new Dictionary<Guid, WeaponEffectData>();
-
-            PlayerData = new ReadOnlyDictionary<Guid, PlayerData>(playerData);
-            ActorData = new ReadOnlyDictionary<Guid, ActorData>(actorData);
-            WeaponEffectData = new ReadOnlyDictionary<Guid, WeaponEffectData>(weaponEffectData);
         }
 
         public void AddPlayerData(PlayerData　data)
