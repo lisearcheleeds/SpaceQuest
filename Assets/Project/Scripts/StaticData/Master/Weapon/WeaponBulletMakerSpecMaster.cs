@@ -111,7 +111,7 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "BulletMaker1", new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 1000.0f, 90.0f, 60, 1, true, true, 150.0f, false),
+                new Row(1, "BulletMaker1", new AssetPath("Prefab/Weapon/BulletMaker1"), 1, 60, 3.0f, 0.05f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
                 new Row(2, "BulletMaker2", new AssetPath("Prefab/Weapon/BulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
             };
         }
