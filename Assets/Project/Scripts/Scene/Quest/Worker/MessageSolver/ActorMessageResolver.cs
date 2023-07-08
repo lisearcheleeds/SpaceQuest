@@ -32,7 +32,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
 
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
-            MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
 
             MessageBus.Instance.NoticeDamageEventData.AddListener(NoticeDamageEventData);
             MessageBus.Instance.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
@@ -61,7 +60,6 @@ namespace AloneSpace
             MessageBus.Instance.ActorCommandSetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
 
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
-            MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
 
             MessageBus.Instance.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
             MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
@@ -153,11 +151,6 @@ namespace AloneSpace
             questData.ActorData[actorId].SetMainTarget(target);
         }
 
-        void ActorCommandSetAroundTargets(Guid actorId, IPositionData[] targets)
-        {
-            questData.ActorData[actorId].SetAroundTargets(targets);
-        }
-
         void NoticeDamageEventData(DamageEventData damageEventData)
         {
             // TODO: foreachで全部のActorに知らせたい（特殊効果のために）
@@ -166,7 +159,7 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            questData.ActorData[brokenActorEventData.BrokenActorData.InstanceId].Release();
+            MessageBus.Instance.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
 
             MessageBus.Instance.SpawnGraphicEffect.Broadcast(
                 brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,

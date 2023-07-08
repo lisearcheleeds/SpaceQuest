@@ -11,6 +11,7 @@ namespace AloneSpace
 
         KeyBindController keyBindController = new KeyBindController();
         MouseBindController mouseBindController = new MouseBindController();
+        UserController userController = new UserController();
 
         QuestData questData;
 
@@ -25,6 +26,7 @@ namespace AloneSpace
 
             keyBindController.Initialize(questData.UserData);
             mouseBindController.Initialize(questData.UserData);
+            userController.Initialize(questData.UserData);
         }
 
         public void Finalize()
@@ -36,6 +38,7 @@ namespace AloneSpace
 
             keyBindController.Finalize();
             mouseBindController.Finalize();
+            userController.Finalize();
         }
 
         public void OnUpdate(float deltaTime)
@@ -47,6 +50,7 @@ namespace AloneSpace
 
             keyBindController.OnUpdate();
             mouseBindController.OnUpdate();
+            userController.OnUpdate();
 
             uiManager.OnUpdate();
             gameObjectUpdater.OnUpdate(deltaTime);

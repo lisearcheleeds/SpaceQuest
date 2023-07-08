@@ -8,11 +8,7 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        LinkedList<CollisionEventEffectReceiverModule> moduleList = new LinkedList<CollisionEventEffectReceiverModule>();
-
-        LinkedList<CollisionEventEffectReceiverModule> registerModuleList = new LinkedList<CollisionEventEffectReceiverModule>();
-        LinkedList<CollisionEventEffectReceiverModule> unRegisterModuleList = new LinkedList<CollisionEventEffectReceiverModule>();
-
+        Dictionary<Guid, CollisionEventEffectReceiverModule> moduleList = new Dictionary<Guid, CollisionEventEffectReceiverModule>();
         Dictionary<Guid, HashSet<CollisionEventEffectSenderModule>> collideSenderThisFrame = new Dictionary<Guid, HashSet<CollisionEventEffectSenderModule>>();
 
         public void Initialize(QuestData questData)
@@ -38,40 +34,23 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var removeModule in unRegisterModuleList)
+            foreach (var kv in collideSenderThisFrame)
             {
-                moduleList.Remove(removeModule);
+                moduleList[kv.Key].OnUpdateModule(deltaTime, kv.Value);
+                kv.Value.Clear();
             }
 
-            unRegisterModuleList.Clear();
-
-            foreach (var module in moduleList)
-            {
-                if (!collideSenderThisFrame.ContainsKey(module.InstanceId) || collideSenderThisFrame[module.InstanceId].Count == 0)
-                {
-                    continue;
-                }
-
-                module.OnUpdateModule(deltaTime, collideSenderThisFrame[module.InstanceId]);
-                collideSenderThisFrame[module.InstanceId].Clear();
-            }
-
-            foreach (var registerModule in registerModuleList)
-            {
-                moduleList.AddLast(registerModule);
-            }
-
-            registerModuleList.Clear();
+            collideSenderThisFrame.Clear();
         }
 
         void RegisterCollisionEffectReceiverModule(CollisionEventEffectReceiverModule collisionEventEffectReceiverModule)
         {
-            registerModuleList.AddLast(collisionEventEffectReceiverModule);
+            moduleList.Add(collisionEventEffectReceiverModule.InstanceId, collisionEventEffectReceiverModule);
         }
 
         void UnRegisterCollisionEffectReceiverModule(CollisionEventEffectReceiverModule collisionEventEffectReceiverModule)
         {
-            unRegisterModuleList.AddLast(collisionEventEffectReceiverModule);
+            moduleList.Remove(collisionEventEffectReceiverModule.InstanceId);
         }
 
         void NoticeCollisionEventEffectData(CollisionEventEffectData effectData)

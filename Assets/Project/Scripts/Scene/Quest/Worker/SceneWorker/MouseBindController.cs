@@ -112,7 +112,7 @@ namespace AloneSpace
             MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
             MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0);
         }
 
         void CheckSpotter()

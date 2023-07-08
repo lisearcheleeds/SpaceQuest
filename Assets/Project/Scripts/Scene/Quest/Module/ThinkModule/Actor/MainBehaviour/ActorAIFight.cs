@@ -20,7 +20,7 @@ namespace AloneSpace
 
             // 武器
             var isExecute = actorData.WeaponData.Values.Any(v => v.WeaponStateData.IsExecutable);
-            MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, isExecute);
+            // MessageBus.Instance.ActorCommandSetWeaponExecute.Broadcast(actorData.InstanceId, isExecute);
 
             var isReloadable = actorData.WeaponData.Values.All(v => !v.WeaponStateData.IsExecutable && v.WeaponStateData.IsReloadable);
             if (isReloadable)

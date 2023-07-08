@@ -10,6 +10,8 @@ namespace AloneSpace
 
         QuestUpdater questUpdater = new QuestUpdater();
 
+        FrameCacheManager frameCacheManager = new FrameCacheManager();
+
         UtilMessageResolver utilMessageResolver = new UtilMessageResolver();
         InteractMessageResolver interactMessageResolver = new InteractMessageResolver();
         PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
@@ -32,7 +34,10 @@ namespace AloneSpace
         {
             createDataController.Initialize(questData);
 
+            frameCacheManager.Initialize(questData);
+
             sceneUpdater.Initialize(questData);
+
             questUpdater.Initialize(questData);
 
             utilMessageResolver.Initialize(questData);
@@ -61,7 +66,10 @@ namespace AloneSpace
         {
             createDataController.Finalize();
 
+            frameCacheManager.Finalize();
+
             sceneUpdater.Finalize();
+
             questUpdater.Finalize();
 
             utilMessageResolver.Finalize();
@@ -85,7 +93,10 @@ namespace AloneSpace
         {
             createDataController.OnUpdate(deltaTime);
 
+            frameCacheManager.OnUpdate(deltaTime);
+
             sceneUpdater.OnUpdate(deltaTime);
+
             questUpdater.OnUpdate(deltaTime);
 
             thinkModuleUpdater.UpdateModule(deltaTime);

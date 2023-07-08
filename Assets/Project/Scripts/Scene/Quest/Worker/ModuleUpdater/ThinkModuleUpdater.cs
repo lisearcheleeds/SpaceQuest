@@ -15,9 +15,6 @@ namespace AloneSpace
 
         LinkedList<IThinkModule> moduleList = new LinkedList<IThinkModule>();
 
-        LinkedList<IThinkModule> registerModuleList = new LinkedList<IThinkModule>();
-        LinkedList<IThinkModule> unRegisterModuleList = new LinkedList<IThinkModule>();
-
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
@@ -39,14 +36,6 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var removeModule in unRegisterModuleList)
-            {
-                moduleList.Remove(removeModule);
-                updateTimeStamps.Remove(removeModule.InstanceId);
-            }
-
-            unRegisterModuleList.Clear();
-
             foreach (var module in moduleList)
             {
                 if (updateTimeStamps[module.InstanceId] + TickRate < Time.time)
@@ -55,24 +44,17 @@ namespace AloneSpace
                     updateTimeStamps[module.InstanceId] += TickRate;
                 }
             }
-
-            foreach (var registerModule in registerModuleList)
-            {
-                moduleList.AddLast(registerModule);
-                updateTimeStamps[registerModule.InstanceId] = Time.time - TickRate - 1.0f;
-            }
-
-            registerModuleList.Clear();
         }
 
         void RegisterThinkModule(IThinkModule thinkModule)
         {
-            registerModuleList.AddLast(thinkModule);
+            updateTimeStamps[thinkModule.InstanceId] = Time.time - TickRate - 1.0f;
+            moduleList.AddLast(thinkModule);
         }
 
         void UnRegisterThinkModule(IThinkModule thinkModule)
         {
-            unRegisterModuleList.AddLast(thinkModule);
+            moduleList.Remove(thinkModule);
         }
     }
 }

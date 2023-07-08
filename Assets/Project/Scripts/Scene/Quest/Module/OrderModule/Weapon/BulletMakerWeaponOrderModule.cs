@@ -78,6 +78,7 @@ namespace AloneSpace
             var targetDirection = weaponData.WeaponStateData.LookAtDirection;
             if (weaponData.WeaponStateData.TargetData != null)
             {
+                // とりあえずまずはターゲットの位置の情報を設定
                 var outputPosition = GetOutputPosition();
                 var targetPosition = weaponData.WeaponStateData.TargetData.Position;
                 var targetRelativePosition = targetPosition - outputPosition.Position;
@@ -85,7 +86,7 @@ namespace AloneSpace
 
                 if (weaponData.VO.IsPredictiveShoot && weaponData.WeaponStateData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
                 {
-                    // ターゲットが移動する場合は移動先に回転
+                    // ターゲットが移動する場合は移動先の位置の情報を設定
                     var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                         targetMovingModuleHolder.MovingModule.MovementVelocity,
                         targetPosition,

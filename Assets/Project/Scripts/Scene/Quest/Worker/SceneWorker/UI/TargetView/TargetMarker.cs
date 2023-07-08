@@ -55,8 +55,8 @@ namespace AloneSpace
 
         void UpdateView()
         {
-            mainTargetMark.SetActive(targetData != null && fromActorData.ActorStateData.MainTarget.InstanceId == targetData.InstanceId);
-            targetMark.SetActive(targetData != null && fromActorData.ActorStateData.AroundTargets.Any(x => x.InstanceId == targetData.InstanceId));
+            mainTargetMark.SetActive(targetData != null && fromActorData.ActorStateData.MainTarget?.InstanceId == targetData.InstanceId);
+            targetMark.SetActive(targetData != null && MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(fromActorData.InstanceId).Any(x => x.OtherActorData.InstanceId == targetData.InstanceId));
         }
     }
 }

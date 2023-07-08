@@ -22,6 +22,5 @@ namespace AloneSpace
         public class ActorCommandSetLookAtDirection : MessageBusBroadcaster<Guid, Vector3>{}
 
         public class ActorCommandSetMainTarget : MessageBusBroadcaster<Guid, IPositionData>{}
-        public class ActorCommandSetAroundTargets : MessageBusBroadcaster<Guid, IPositionData[]>{}
     }
 }

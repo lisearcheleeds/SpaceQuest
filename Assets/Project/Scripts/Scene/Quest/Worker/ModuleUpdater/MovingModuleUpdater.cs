@@ -9,9 +9,6 @@ namespace AloneSpace
 
         LinkedList<MovingModule> moduleList = new LinkedList<MovingModule>();
 
-        LinkedList<MovingModule> registerModuleList = new LinkedList<MovingModule>();
-        LinkedList<MovingModule> unRegisterModuleList = new LinkedList<MovingModule>();
-
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
@@ -33,34 +30,20 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var removeModule in unRegisterModuleList)
-            {
-                moduleList.Remove(removeModule);
-            }
-
-            unRegisterModuleList.Clear();
-
             foreach (var module in moduleList)
             {
                 module.OnUpdateModule(deltaTime);
             }
-
-            foreach (var registerModule in registerModuleList)
-            {
-                moduleList.AddLast(registerModule);
-            }
-
-            registerModuleList.Clear();
         }
 
         void RegisterMovingModule(MovingModule movingModule)
         {
-            registerModuleList.AddLast(movingModule);
+            moduleList.AddLast(movingModule);
         }
 
         void UnRegisterMovingModule(MovingModule movingModule)
         {
-            unRegisterModuleList.AddLast(movingModule);
+            moduleList.Remove(movingModule);
         }
     }
 }

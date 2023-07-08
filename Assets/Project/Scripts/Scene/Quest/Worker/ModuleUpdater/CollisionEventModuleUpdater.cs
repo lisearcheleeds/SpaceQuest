@@ -8,11 +8,7 @@ namespace AloneSpace
     {
         QuestData questData;
 
-        LinkedList<CollisionEventModule> moduleList = new LinkedList<CollisionEventModule>();
-
-        LinkedList<CollisionEventModule> registerModuleList = new LinkedList<CollisionEventModule>();
-        LinkedList<CollisionEventModule> unRegisterModuleList = new LinkedList<CollisionEventModule>();
-
+        Dictionary<Guid, CollisionEventModule> moduleList = new Dictionary<Guid, CollisionEventModule>();
         Dictionary<Guid, HashSet<CollisionEventModule>> collideCurrentFrame = new Dictionary<Guid, HashSet<CollisionEventModule>>();
 
         public void Initialize(QuestData questData)
@@ -40,40 +36,23 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var removeModule in unRegisterModuleList)
+            foreach (var kv in collideCurrentFrame)
             {
-                moduleList.Remove(removeModule);
+                moduleList[kv.Key].OnUpdateModule(deltaTime, kv.Value);
+                kv.Value.Clear();
             }
 
-            unRegisterModuleList.Clear();
-
-            foreach (var module in moduleList)
-            {
-                if (!collideCurrentFrame.ContainsKey(module.InstanceId) || collideCurrentFrame[module.InstanceId].Count == 0)
-                {
-                    continue;
-                }
-
-                module.OnUpdateModule(deltaTime, collideCurrentFrame[module.InstanceId]);
-                collideCurrentFrame[module.InstanceId].Clear();
-            }
-
-            foreach (var registerModule in registerModuleList)
-            {
-                moduleList.AddLast(registerModule);
-            }
-
-            registerModuleList.Clear();
+            collideCurrentFrame.Clear();
         }
 
         void RegisterCollisionEventModule(CollisionEventModule collisionEventModule)
         {
-            registerModuleList.AddLast(collisionEventModule);
+            moduleList.Add(collisionEventModule.InstanceId, collisionEventModule);
         }
 
         void UnRegisterCollisionEventModule(CollisionEventModule collisionEventModule)
         {
-            unRegisterModuleList.AddLast(collisionEventModule);
+            moduleList.Remove(collisionEventModule.InstanceId);
         }
 
         void NoticeCollisionEventData(CollisionEventData collisionEventData)

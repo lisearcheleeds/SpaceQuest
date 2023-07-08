@@ -19,14 +19,12 @@ namespace AloneSpace
         {
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
-            MessageBus.Instance.ActorCommandSetAroundTargets.AddListener(ActorCommandSetAroundTargets);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
-            MessageBus.Instance.ActorCommandSetAroundTargets.RemoveListener(ActorCommandSetAroundTargets);
         }
 
         public void OnUpdate()
@@ -57,14 +55,6 @@ namespace AloneSpace
             }
         }
 
-        void ActorCommandSetAroundTargets(Guid instanceId, IPositionData[] targets)
-        {
-            if (userControlActor == null || userControlActor?.InstanceId == instanceId)
-            {
-                isDirty = true;
-            }
-        }
-
         void RefreshWeaponDataView()
         {
             if (userControlActor?.AreaId == null)
@@ -72,8 +62,8 @@ namespace AloneSpace
                 return;
             }
 
-            var aroundTargets = userControlActor.ActorStateData.AroundTargets;
-            var loopMax = Mathf.Max(targetMarkerList.Count, aroundTargets.Length);
+            var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(userControlActor.InstanceId);
+            var loopMax = Mathf.Max(targetMarkerList.Count, aroundTargets.Count);
             for (var i = 0; i < loopMax; i++)
             {
                 if (targetMarkerList.Count <= i)
@@ -82,9 +72,9 @@ namespace AloneSpace
                     targetMarkerList[i].Initialize(GetScreenPositionFromWorldPosition);
                 }
 
-                if (i < aroundTargets.Length && aroundTargets[i].InstanceId != userControlActor.InstanceId)
+                if (i < aroundTargets.Count && aroundTargets[i].OtherActorData.InstanceId != userControlActor.InstanceId)
                 {
-                    targetMarkerList[i].SetTargetData(userControlActor, aroundTargets[i]);
+                    targetMarkerList[i].SetTargetData(userControlActor, aroundTargets[i].OtherActorData);
                 }
                 else
                 {

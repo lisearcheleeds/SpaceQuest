@@ -17,6 +17,8 @@ namespace AloneSpace
         {
             questData = new QuestData(new StarSystemPresetVO(1));
             questManager.Initialize(questData);
+
+            deltaTimeCache.Enqueue(0.016f);
         }
 
         void Start()

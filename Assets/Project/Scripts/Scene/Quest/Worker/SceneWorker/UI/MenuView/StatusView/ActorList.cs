@@ -42,7 +42,13 @@ namespace AloneSpace
                 }
             }
 
-            if (prevAroundTargetsCount != questData.UserData.ControlActorData?.ActorStateData.AroundTargets.Length)
+            var currentAroundTargetsCount = 0;
+            if (questData.UserData.ControlActorData != null)
+            {
+                currentAroundTargetsCount = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId).Count;
+            }
+
+            if (prevAroundTargetsCount != currentAroundTargetsCount)
             {
                 isDirty = true;
             }
@@ -60,19 +66,18 @@ namespace AloneSpace
         {
             if (questData.UserData.ControlActorData != null)
             {
-                actorListViewCellDataList = questData.UserData.ControlActorData.ActorStateData.AroundTargets
-                    .OfType<ActorData>()
-                    .Select(actorData => new ActorListViewCell.CellData(
-                        actorData,
-                        actorData.InstanceId == selectCellData?.ActorData.InstanceId,
+                var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
+                actorListViewCellDataList = aroundTargets
+                    .Select(actorRelationData => new ActorListViewCell.CellData(
+                        actorRelationData.OtherActorData,
+                        actorRelationData.OtherActorData.InstanceId == selectCellData?.ActorData.InstanceId,
                         GetDistanceText)).ToArray();
 
-                prevAroundTargetsCount = questData.UserData.ControlActorData.ActorStateData.AroundTargets.Length;
+                prevAroundTargetsCount = aroundTargets.Count;
             }
             else
             {
                 actorListViewCellDataList = Array.Empty<ActorListViewCell.CellData>();
-
                 prevAroundTargetsCount = 0;
             }
 

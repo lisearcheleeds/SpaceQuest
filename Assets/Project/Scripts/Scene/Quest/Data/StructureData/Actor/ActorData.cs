@@ -247,11 +247,6 @@ namespace AloneSpace
             ActorStateData.MainTarget = target;
         }
 
-        public void SetAroundTargets(IPositionData[] targets)
-        {
-            ActorStateData.AroundTargets = targets;
-        }
-
         public void SetActorGameObjectHandler(ActorGameObjectHandler actorGameObjectHandler)
         {
             ActorGameObjectHandler = actorGameObjectHandler;
