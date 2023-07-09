@@ -50,8 +50,10 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(actorPresetId: 1, weaponIndex: 0, weaponType: WeaponType.BulletMaker, weaponSpecId: 1),
-                new Row(actorPresetId: 1, weaponIndex: 1, weaponType: WeaponType.BulletMaker, weaponSpecId: 1),
+                // new Row(actorPresetId: 1, weaponIndex: 0, weaponType: WeaponType.BulletMaker, weaponSpecId: 1),
+                // new Row(actorPresetId: 1, weaponIndex: 1, weaponType: WeaponType.BulletMaker, weaponSpecId: 1),
+                new Row(actorPresetId: 1, weaponIndex: 0, weaponType: WeaponType.ParticleBulletMaker, weaponSpecId: 1),
+                new Row(actorPresetId: 1, weaponIndex: 1, weaponType: WeaponType.ParticleBulletMaker, weaponSpecId: 1),
                 new Row(actorPresetId: 1, weaponIndex: 2, weaponType: WeaponType.MissileMaker, weaponSpecId: 1),
                 new Row(actorPresetId: 1, weaponIndex: 3, weaponType: WeaponType.MissileMaker, weaponSpecId: 1),
 

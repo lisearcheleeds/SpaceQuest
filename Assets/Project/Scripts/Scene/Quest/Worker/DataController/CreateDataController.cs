@@ -137,6 +137,7 @@ namespace AloneSpace
             WeaponEffectData weaponEffectData = weaponEffectSpecVO switch
             {
                 BulletWeaponEffectSpecVO specVO => new BulletWeaponEffectData(specVO, (BulletWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
+                ParticleBulletWeaponEffectSpecVO specVO => new ParticleBulletWeaponEffectData(specVO, (ParticleBulletWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
                 MissileWeaponEffectSpecVO specVO => new MissileWeaponEffectData(specVO, (MissileWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
                 ExplosionWeaponEffectSpecVO specVO => new ExplosionWeaponEffectData(specVO, (ExplosionWeaponEffectCreateOptionData)weaponEffectCreateOptionData),
                 _ => throw new NotImplementedException(),

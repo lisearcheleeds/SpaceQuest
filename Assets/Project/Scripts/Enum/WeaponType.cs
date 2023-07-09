@@ -3,6 +3,7 @@
     public enum WeaponType
     {
         BulletMaker,
+        ParticleBulletMaker,
         MissileMaker,
     }
 }

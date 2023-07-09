@@ -19,6 +19,7 @@ namespace AloneSpace
                 switch (x.WeaponType)
                 {
                     case WeaponType.BulletMaker: return (IWeaponSpecVO) new WeaponBulletMakerSpecVO(x.WeaponSpecId);
+                    case WeaponType.ParticleBulletMaker: return (IWeaponSpecVO) new WeaponParticleBulletMakerSpecVO(x.WeaponSpecId);
                     case WeaponType.MissileMaker: return new WeaponMissileMakerSpecVO(x.WeaponSpecId);
                     default: throw new ArgumentException();
                 }

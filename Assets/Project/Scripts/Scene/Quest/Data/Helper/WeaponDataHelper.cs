@@ -10,6 +10,8 @@ namespace AloneSpace
             {
                 case WeaponBulletMakerSpecVO rifleVO:
                     return new BulletMakerWeaponData(rifleVO, actorData, weaponIndex);
+                case WeaponParticleBulletMakerSpecVO rifleVO:
+                    return new ParticleBulletMakerWeaponData(rifleVO, actorData, weaponIndex);
                 case WeaponMissileMakerSpecVO missileVO:
                     return new MissileMakerWeaponData(missileVO, actorData, weaponIndex);
                 default:
