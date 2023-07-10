@@ -83,7 +83,7 @@ namespace AloneSpace
             weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.TargetData != null
                 && weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.MagazineSize
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.VO.MagazineSize
                 && weaponData.MissileMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
         }
 
@@ -115,7 +115,6 @@ namespace AloneSpace
                         new MissileWeaponEffectCreateOptionData(
                             weaponData,
                             outputPosition,
-                            outputPosition.Rotation,
                             weaponData.WeaponStateData.TargetData,
                             launchDirection * weaponData.VO.LaunchSpeed));
 

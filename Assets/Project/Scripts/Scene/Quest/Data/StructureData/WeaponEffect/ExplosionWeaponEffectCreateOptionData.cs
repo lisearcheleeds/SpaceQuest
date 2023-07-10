@@ -9,15 +9,12 @@ namespace AloneSpace
         public Vector3 Position { get; }
         public Quaternion Rotation { get; }
 
-        public ExplosionWeaponEffectCreateOptionData(
-            WeaponData weaponData,
-            IPositionData fromPositionData,
-            Quaternion rotation)
+        public ExplosionWeaponEffectCreateOptionData(WeaponData weaponData, IPositionData fromPositionData)
         {
             WeaponData = weaponData;
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;
-            Rotation = rotation;
+            Rotation = fromPositionData.Rotation;
         }
     }
 }

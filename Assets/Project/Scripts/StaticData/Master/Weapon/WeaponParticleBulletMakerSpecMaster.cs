@@ -18,9 +18,6 @@ namespace AloneSpace
             // WeaponEffect
             public int ParticleBulletWeaponEffectSpecMasterId { get; }
 
-            // マガジンサイズ
-            public int MagazineSize { get; }
-
             // リロード時間(s)
             public float ReloadTime { get; }
 
@@ -33,12 +30,6 @@ namespace AloneSpace
             // 射角(0.0f ~ 180.0f)
             public float AngleOfFire { get; }
 
-            // バーストサイズ
-            public int BurstSize { get; }
-
-            // 同時発射数
-            public int ShotCount { get; }
-
             // 予測射撃
             public bool IsPredictiveShoot { get; }
 
@@ -48,41 +39,30 @@ namespace AloneSpace
             // 旋回速度
             public float TurningSpeed { get; }
 
-            // 撃ち切るかどうか
-            public bool ShootUp { get; }
-
             public Row(
                 int id,
                 string name,
                 AssetPath path,
                 int particleBulletWeaponEffectSpecMasterId,
-                int magazineSize,
                 float reloadTime,
                 float fireRate,
                 float accuracy,
                 float angleOfFire,
-                int burstSize,
-                int shotCount,
                 bool isPredictiveShoot,
                 bool hasAutoFireMode,
-                float turningSpeed,
-                bool shootUp)
+                float turningSpeed)
             {
                 Id = id;
                 Name = name;
                 Path = path;
                 ParticleBulletWeaponEffectSpecMasterId = particleBulletWeaponEffectSpecMasterId;
-                MagazineSize = magazineSize;
                 ReloadTime = reloadTime;
                 FireRate = fireRate;
                 Accuracy = accuracy;
                 AngleOfFire = angleOfFire;
-                BurstSize = burstSize;
-                ShotCount = shotCount;
                 IsPredictiveShoot = isPredictiveShoot;
                 HasAutoFireMode = hasAutoFireMode;
                 TurningSpeed = turningSpeed;
-                ShootUp = shootUp;
             }
         }
 
@@ -111,8 +91,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "ParticleBulletMaker1", new AssetPath("Prefab/Weapon/ParticleBulletMaker1"), 1, 60, 3.0f, 0.05f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
-                new Row(2, "ParticleBulletMaker2", new AssetPath("Prefab/Weapon/ParticleBulletMaker2"), 1, 60, 3.0f, 1.0f, 100.0f, 90.0f, 60, 1, true, true, 150.0f, false),
+                new Row(1, "ParticleBulletMaker1", new AssetPath("Prefab/Weapon/ParticleBulletMaker1"), 1, 3.0f, 0.05f, 100.0f, 90.0f, true, true, 150.0f),
+                new Row(2, "ParticleBulletMaker2", new AssetPath("Prefab/Weapon/ParticleBulletMaker2"), 1, 3.0f, 1.0f, 100.0f, 90.0f, true, true, 150.0f),
             };
         }
     }

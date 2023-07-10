@@ -4,19 +4,21 @@ namespace AloneSpace
 {
     public class BulletWeaponEffectCreateOptionData : IWeaponEffectCreateOptionData
     {
-        public WeaponData WeaponData { get; }
+        public WeaponData WeaponData => BulletMakerWeaponData;
+
+        public BulletMakerWeaponData BulletMakerWeaponData { get; }
         public int? AreaId { get; }
         public Vector3 Position { get; }
         public Quaternion Rotation { get; }
         public IPositionData TargetData { get; }
 
         public BulletWeaponEffectCreateOptionData(
-            WeaponData weaponData,
+            BulletMakerWeaponData bulletMakerWeaponData,
             IPositionData fromPositionData,
             Quaternion rotation,
             IPositionData targetData)
         {
-            WeaponData = weaponData;
+            BulletMakerWeaponData = bulletMakerWeaponData;
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;
             Rotation = rotation;

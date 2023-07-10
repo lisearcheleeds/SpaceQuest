@@ -39,7 +39,7 @@ namespace AloneSpace
 
                 MessageBus.Instance.CreateWeaponEffectData.Broadcast(
                     ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
-                    new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData, effectData.Rotation));
+                    new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData));
 
                 MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;

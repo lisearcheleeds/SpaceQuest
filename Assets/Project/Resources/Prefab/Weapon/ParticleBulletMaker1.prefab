@@ -44,5 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df4889ef3be2408184eb91574d8805b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colliders: []
   outputPoint:
   - {fileID: 4100648110715202968}

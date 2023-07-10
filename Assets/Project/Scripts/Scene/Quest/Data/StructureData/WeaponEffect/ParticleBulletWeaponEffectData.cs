@@ -9,11 +9,14 @@ namespace AloneSpace
         public override CollisionEventEffectSenderModule CollisionEventEffectSenderModule { get; protected set; }
 
         public override IWeaponEffectSpecVO WeaponEffectSpecVO => SpecVO;
+
+        public override int? AreaId => OptionData.GetFromPositionData().AreaId;
+        public override Vector3 Position => OptionData.GetFromPositionData().Position;
+        public override Quaternion Rotation => OptionData.GetOffsetRotation() * OptionData.GetFromPositionData().Rotation;
+
         public ParticleBulletWeaponEffectSpecVO SpecVO { get; }
 
         public ParticleBulletWeaponEffectCreateOptionData OptionData { get; }
-
-        public float CurrentLifeTime { get; set; }
 
         /// <summary>
         /// 武器の使用
@@ -24,14 +27,8 @@ namespace AloneSpace
             ParticleBulletWeaponEffectSpecVO specVO,
             ParticleBulletWeaponEffectCreateOptionData optionData) : base(optionData)
         {
-            AreaId = optionData.AreaId;
-            Position = optionData.Position;
-            Rotation = optionData.Rotation;
-
             SpecVO = specVO;
             OptionData = optionData;
-
-            CurrentLifeTime = 0;
 
             OrderModule = new ParticleBulletWeaponEffectOrderModule(this);
             CollisionEventModule = new ParticleBulletWeaponEffectCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 1.0f));

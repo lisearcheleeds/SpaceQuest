@@ -25,52 +25,27 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            CheckReload(deltaTime);
-            CheckFireRate(deltaTime);
-            CheckBurst();
+            CreateWeaponEffectData();
 
             AdjustRotate(deltaTime);
-            UpdateState();
-
-            Execute();
         }
 
-        void CheckReload(float deltaTime)
+        void CreateWeaponEffectData()
         {
-            if (0 < weaponData.WeaponStateData.ReloadRemainTime)
+            if (weaponData.WeaponStateData.WeaponEffectDataList.Count != 0)
             {
-                // リロード中
-                weaponData.WeaponStateData.ReloadRemainTime = Math.Max(0, weaponData.WeaponStateData.ReloadRemainTime - deltaTime);
-
-                if (weaponData.WeaponStateData.ReloadRemainTime == 0)
-                {
-                    weaponData.WeaponStateData.ResourceIndex = 0;
-                }
+                return;
             }
-        }
 
-        void CheckFireRate(float deltaTime)
-        {
-            if (0 < weaponData.WeaponStateData.FireTime)
-            {
-                if (weaponData.WeaponStateData.IsExecute)
-                {
-                    // 実行中でなければ0以下にしない
-                    weaponData.WeaponStateData.FireTime = Math.Max(0, weaponData.WeaponStateData.FireTime - deltaTime);
-                }
-                else
-                {
-                    weaponData.WeaponStateData.FireTime -= deltaTime;
-                }
-            }
-        }
-
-        void CheckBurst()
-        {
-            if (!weaponData.WeaponStateData.IsExecute)
-            {
-                weaponData.ParticleBulletMakerWeaponStateData.BurstResourceIndex = 0;
-            }
+            // 存在しなければ1つ作る
+            // WeaponEffectDataListは毎フレーム更新されるはずなので、0だったらとりあえずCreateWeaponEffectDataして良いはず
+            MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                weaponData.VO.ParticleBulletWeaponEffectSpecVO,
+                new ParticleBulletWeaponEffectCreateOptionData(
+                    weaponData,
+                    GetOutputPosition,
+                    () => weaponData.WeaponStateData.OffsetRotation,
+                    weaponData.WeaponStateData.TargetData));
         }
 
         void AdjustRotate(float deltaTime)
@@ -112,58 +87,6 @@ namespace AloneSpace
                 weaponData.WeaponStateData.OffsetRotation,
                 Quaternion.Inverse(weaponData.WeaponHolder.Rotation) * Quaternion.LookRotation(targetDirection),
                 deltaTime * weaponData.VO.TurningSpeed);
-        }
-
-        void UpdateState()
-        {
-            // リロード可能か
-            weaponData.WeaponStateData.IsReloadable =
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex != 0;
-
-            // 実行可能か
-            weaponData.WeaponStateData.IsExecutable =
-                weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.MagazineSize
-                && weaponData.ParticleBulletMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
-        }
-
-        void Execute()
-        {
-            if (!weaponData.WeaponStateData.IsExecutable)
-            {
-                return;
-            }
-
-            if (0 < weaponData.WeaponStateData.FireTime)
-            {
-                return;
-            }
-
-            if (weaponData.WeaponStateData.IsExecute)
-            {
-                for (var i = 0; i < weaponData.VO.ShotCount; i++)
-                {
-                    var outputPosition = GetOutputPosition();
-                    var rotation = outputPosition.Rotation * weaponData.WeaponStateData.OffsetRotation;
-
-                    var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / weaponData.VO.Accuracy);
-                    rotation = rotation * Quaternion.LookRotation(Vector3.forward + accuracyRandomVector);
-
-                    MessageBus.Instance.CreateWeaponEffectData.Broadcast(
-                        weaponData.VO.ParticleBulletWeaponEffectSpecVO,
-                        new ParticleBulletWeaponEffectCreateOptionData(
-                            weaponData,
-                            outputPosition,
-                            rotation,
-                            weaponData.WeaponStateData.TargetData));
-
-                    weaponData.WeaponStateData.ResourceIndex++;
-                    weaponData.ParticleBulletMakerWeaponStateData.BurstResourceIndex++;
-                }
-
-                weaponData.WeaponStateData.FireTime += weaponData.VO.FireRate;
-            }
         }
 
         IPositionData GetOutputPosition()

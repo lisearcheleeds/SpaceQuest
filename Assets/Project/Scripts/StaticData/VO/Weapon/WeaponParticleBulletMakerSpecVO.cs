@@ -18,7 +18,7 @@
         public AssetPath Path => row.Path;
 
         // マガジンサイズ
-        public int MagazineSize => row.MagazineSize;
+        public int MagazineSize => 0;
 
         // リロード時間
         public float ReloadTime => row.ReloadTime;
@@ -31,12 +31,6 @@
 
         // 射角(0.0f ~ 180.0f)
         public float AngleOfFire => row.AngleOfFire;
-
-        // バーストサイズ
-        public int BurstSize => row.BurstSize;
-
-        // 同時発射数
-        public int ShotCount => row.ShotCount;
 
         // 予測射撃
         public bool IsPredictiveShoot => row.IsPredictiveShoot;

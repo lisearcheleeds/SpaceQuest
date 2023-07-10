@@ -1,25 +1,28 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace AloneSpace
 {
     public class ParticleBulletWeaponEffectCreateOptionData : IWeaponEffectCreateOptionData
     {
-        public WeaponData WeaponData { get; }
-        public int? AreaId { get; }
-        public Vector3 Position { get; }
-        public Quaternion Rotation { get; }
+        public WeaponData WeaponData => ParticleBulletMakerWeaponData;
+
+        public ParticleBulletMakerWeaponData ParticleBulletMakerWeaponData { get; }
+        public Func<IPositionData> GetFromPositionData { get; }
+        public Func<Quaternion> GetOffsetRotation { get; }
         public IPositionData TargetData { get; }
 
         public ParticleBulletWeaponEffectCreateOptionData(
-            WeaponData weaponData,
-            IPositionData fromPositionData,
-            Quaternion rotation,
+            ParticleBulletMakerWeaponData particleBulletMakerWeaponData,
+            Func<IPositionData> getFromPositionData,
+            Func<Quaternion> getOffsetRotation,
             IPositionData targetData)
         {
-            WeaponData = weaponData;
-            AreaId = fromPositionData.AreaId;
-            Position = fromPositionData.Position;
-            Rotation = rotation;
+            ParticleBulletMakerWeaponData = particleBulletMakerWeaponData;
+            GetFromPositionData = getFromPositionData;
+
+            // FIXME struct 消す そもそもこのRotation自体いらない
+            GetOffsetRotation = getOffsetRotation;
             TargetData = targetData;
         }
     }

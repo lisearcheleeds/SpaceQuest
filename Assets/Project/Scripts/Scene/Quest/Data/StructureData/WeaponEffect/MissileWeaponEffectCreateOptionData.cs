@@ -4,7 +4,9 @@ namespace AloneSpace
 {
     public class MissileWeaponEffectCreateOptionData : IWeaponEffectCreateOptionData
     {
-        public WeaponData WeaponData { get; }
+        public WeaponData WeaponData => MissileMakerWeaponData;
+
+        public MissileMakerWeaponData MissileMakerWeaponData { get; }
         public int? AreaId { get; }
         public Vector3 Position { get; }
         public Quaternion Rotation { get; }
@@ -13,16 +15,15 @@ namespace AloneSpace
         public Vector3 LaunchMovementVelocity { get; }
 
         public MissileWeaponEffectCreateOptionData(
-            WeaponData weaponData,
+            MissileMakerWeaponData missileMakerWeaponData,
             IPositionData fromPositionData,
-            Quaternion rotation,
             IPositionData targetData,
             Vector3 launchMovementVelocity)
         {
-            WeaponData = weaponData;
+            MissileMakerWeaponData = missileMakerWeaponData;
             AreaId = fromPositionData.AreaId;
             Position = fromPositionData.Position;
-            Rotation = rotation;
+            Rotation = fromPositionData.Rotation;
             TargetData = targetData;
 
             LaunchMovementVelocity = launchMovementVelocity;

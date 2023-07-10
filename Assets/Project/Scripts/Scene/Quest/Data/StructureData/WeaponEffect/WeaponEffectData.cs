@@ -18,9 +18,9 @@ namespace AloneSpace
         public Guid PlayerInstanceId => WeaponData.WeaponHolder.PlayerInstanceId;
 
         // IPositionData
-        public int? AreaId { get; protected set; }
-        public Vector3 Position { get; protected set; }
-        public Quaternion Rotation { get; protected set; }
+        public virtual int? AreaId { get; protected set; }
+        public virtual Vector3 Position { get; protected set; }
+        public virtual Quaternion Rotation { get; protected set; }
 
         // IReleasableData
         public bool IsReleased { get; private set; }

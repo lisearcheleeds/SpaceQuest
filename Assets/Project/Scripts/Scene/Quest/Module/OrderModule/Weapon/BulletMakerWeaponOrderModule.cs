@@ -124,7 +124,7 @@ namespace AloneSpace
             // 実行可能か
             weaponData.WeaponStateData.IsExecutable =
                 weaponData.WeaponStateData.ReloadRemainTime == 0
-                && weaponData.WeaponStateData.ResourceIndex < weaponData.WeaponSpecVO.MagazineSize
+                && weaponData.WeaponStateData.ResourceIndex < weaponData.VO.MagazineSize
                 && weaponData.BulletMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
         }
 
