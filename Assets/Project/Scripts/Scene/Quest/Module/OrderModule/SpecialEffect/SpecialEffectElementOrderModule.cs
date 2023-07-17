@@ -1,10 +1,10 @@
 ﻿namespace AloneSpace
 {
-    public abstract class SpecialEffectOrderModule : IOrderModule
+    public abstract class SpecialEffectElementOrderModule : IOrderModule
     {
         public SpecialEffectElementData SpecialEffectElementData { get; }
 
-        protected SpecialEffectOrderModule(SpecialEffectElementData specialEffectElementData)
+        protected SpecialEffectElementOrderModule(SpecialEffectElementData specialEffectElementData)
         {
             SpecialEffectElementData = specialEffectElementData;
         }

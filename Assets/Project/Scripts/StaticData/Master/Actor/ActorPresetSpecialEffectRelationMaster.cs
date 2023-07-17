@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AloneSpace
 {
@@ -46,10 +47,14 @@ namespace AloneSpace
 
         ActorPresetSpecialEffectRelationMaster()
         {
+            rows = Array.Empty<Row>();
+
+            /*
             rows = new[]
             {
                 new Row(1, 0, 1),
             };
+            */
         }
     }
 }

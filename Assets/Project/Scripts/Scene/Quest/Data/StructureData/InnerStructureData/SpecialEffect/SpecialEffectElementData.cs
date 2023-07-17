@@ -10,22 +10,22 @@ namespace AloneSpace
 
         public SpecialEffectElementSpecVO SpecialEffectElementSpecVO { get; }
 
-        public int Count { get; }
-        public float RemainingTime { get; }
-        public float IntervalTime { get; }
-        public int RemainingCount { get; }
+        public SpecialEffectElementStateData StateData { get; } = new SpecialEffectElementStateData();
 
         public SpecialEffectElementData(SpecialEffectElementSpecVO specialEffectElementSpecVO)
         {
             SpecialEffectElementSpecVO = specialEffectElementSpecVO;
 
+            StateData.RemainingTime = specialEffectElementSpecVO.EffectTime;
+            StateData.RemainingExectureCount = specialEffectElementSpecVO.MaxExecuteCount;
+
             switch (specialEffectElementSpecVO.Category)
             {
                 case SpecialEffectElementCategory.SpecialEffectTrigger:
-                    OrderModule = new SpecialEffectTriggerOrderModule(this);
+                    OrderModule = new SpecialEffectElementTriggerOrderModule(this);
                     break;
                 case SpecialEffectElementCategory.AddWeaponEffect:
-                    OrderModule = new AddWeaponEffectOrderModule(this);
+                    OrderModule = new AddWeaponEffectElementOrderModule(this);
                     break;
                 default:
                     throw new NotImplementedException();

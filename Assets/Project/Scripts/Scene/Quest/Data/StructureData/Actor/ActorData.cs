@@ -31,7 +31,7 @@ namespace AloneSpace
         public bool IsReleased { get; private set; }
 
         // 状態
-        public ActorStateData ActorStateData { get; }
+        public ActorStateData ActorStateData { get; } = new ActorStateData();
 
         // 関連データ
         public ActorSpecVO ActorSpecVO { get; }
@@ -57,7 +57,6 @@ namespace AloneSpace
             WeaponSpecVOs = actorPresetVO.WeaponSpecVOs;
 
             InventoryData = new InventoryData(actorPresetVO.ActorSpecVO.CapacityWidth, actorPresetVO.ActorSpecVO.CapacityHeight);
-            ActorStateData = new ActorStateData();
             WeaponDataGroup = Enumerable.Range(0, ConstantInt.WeaponGroupCount).Select(_ => new List<Guid>()).ToArray();
             WeaponData = actorPresetVO.WeaponSpecVOs
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
@@ -66,25 +65,21 @@ namespace AloneSpace
 
             WeaponDataGroup[0].AddRange(WeaponData.Keys);
 
-            MovingModule = new MovingModule(this);
-            ThinkModule = new ActorThinkModule(this);
-            OrderModule = new ActorOrderModule(this);
-            CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
-            CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
-        }
-
-        public void ResetState()
-        {
             ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
             ActorStateData.EnduranceValueMax = ActorSpecVO.EnduranceValue;
 
             ActorStateData.ShieldValue = ActorSpecVO.ShieldValue;
             ActorStateData.ShieldValueMax = ActorSpecVO.ShieldValue;
 
-            ActorStateData.SpecialEffectDataList.Clear();
             ActorStateData.SpecialEffectDataList.AddRange(ActorSpecVO.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorSpec, InstanceId)));
             ActorStateData.SpecialEffectDataList.AddRange(ActorPresetSpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorPreset, InstanceId)));
             ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfWeapon, InstanceId))));
+
+            MovingModule = new MovingModule(this);
+            ThinkModule = new ActorThinkModule(this);
+            OrderModule = new ActorOrderModule(this);
+            CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
+            CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
         }
 
         public void ActivateModules()

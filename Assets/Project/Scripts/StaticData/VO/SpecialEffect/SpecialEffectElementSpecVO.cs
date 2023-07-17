@@ -7,9 +7,21 @@ namespace AloneSpace
     /// </summary>
     public class SpecialEffectElementSpecVO
     {
+        public SpecialEffectElementCategory Category { get; }
+
         public int Id => row.Id;
 
-        public SpecialEffectElementCategory Category { get; }
+        // 最大スタック数 1でスタックしない nullで無限にスタック
+        public int? MaxStackCount => row.MaxStackCount;
+
+        // 効果時間 nullで無限
+        public float? EffectTime => row.EffectTime;
+
+        // インターバル時間
+        public float IntervalTime => row.IntervalTime;
+
+        // 使用回数 nullで無限
+        public int? MaxExecuteCount => row.MaxExecuteCount;
 
         ISpecialEffectElementSpecMasterRow row;
 

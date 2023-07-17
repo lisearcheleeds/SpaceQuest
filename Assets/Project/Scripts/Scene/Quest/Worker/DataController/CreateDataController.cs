@@ -61,7 +61,6 @@ namespace AloneSpace
 
             foreach (var actorData in createActorDataList)
             {
-                actorData.ResetState();
                 actorData.ActivateModules();
 
                 questData.AddActorData(actorData);

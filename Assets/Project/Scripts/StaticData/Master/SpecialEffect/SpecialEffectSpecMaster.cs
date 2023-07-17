@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace AloneSpace
 {
@@ -46,11 +47,14 @@ namespace AloneSpace
 
         SpecialEffectSpecMaster()
         {
+            rows = Array.Empty<Row>();
+            /*
             rows = new[]
             {
                 new Row(1, "SpecialEffect1", "SpecialEffect1の効果説明"),
                 new Row(2, "SpecialEffect2", "SpecialEffect2の効果説明"),
             };
+            */
         }
     }
 }
