@@ -1,4 +1,6 @@
-﻿namespace AloneSpace
+﻿using System;
+
+namespace AloneSpace
 {
     /// <summary>
     /// 基本スペックと品質
@@ -44,6 +46,9 @@
         public float VisionSensorDistance => row.VisionSensorDistance;
         public float RadarSensorPerformance => row.RadarSensorPerformance;
 
+        // SpecialEffect
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
+
         ActorSpecMaster.Row row;
 
         public ActorSpecVO(int id) : this(id, ActorQualityType.Default, 1.0f)
@@ -55,6 +60,7 @@
             row = ActorSpecMaster.Instance.Get(id);
             BrokenActorGraphicEffectSpecVO = new GraphicEffectSpecVO(row.BrokenActorGraphicEffectSpecMasterId);
             BrokenActorSmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(ConstantId.BrokenActorSmokeGraphicEffectId);
+            SpecialEffectSpecVOs = Array.Empty<SpecialEffectSpecVO>();
         }
     }
 }

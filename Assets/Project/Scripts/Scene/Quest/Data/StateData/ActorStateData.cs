@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using AloneSpace;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace AloneSpace
@@ -37,7 +35,7 @@ namespace AloneSpace
 
         public int CurrentWeaponGroupIndex { get; set; }
 
-        public List<DamageEventData> CurrentDamageEventData { get; set; } = new List<DamageEventData>();
+        public List<DamageEventData> CurrentDamageEventDataList { get; set; } = new List<DamageEventData>();
         public List<DamageEventHistoryData> DamageEventHistoryDataList { get; set; } = new List<DamageEventHistoryData>();
 
         public float EnduranceValue { get; set; }
@@ -45,5 +43,7 @@ namespace AloneSpace
 
         public float ShieldValue { get; set; }
         public float ShieldValueMax { get; set; }
+
+        public List<SpecialEffectData> SpecialEffectDataList = new List<SpecialEffectData>();
     }
 }

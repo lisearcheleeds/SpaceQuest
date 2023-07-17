@@ -1,4 +1,6 @@
-﻿namespace AloneSpace
+﻿using System;
+
+namespace AloneSpace
 {
     /// <summary>
     /// 基本スペックと品質
@@ -47,7 +49,11 @@
         // 旋回速度
         public float TurningSpeed => row.TurningSpeed;
 
+        // WeaponEffect
         public BulletWeaponEffectSpecVO BulletWeaponEffectSpecVO { get; }
+
+        // SpecialEffect
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
 
         WeaponBulletMakerSpecMaster.Row row;
 
@@ -59,6 +65,7 @@
         {
             row = WeaponBulletMakerSpecMaster.Instance.Get(id);
             BulletWeaponEffectSpecVO = new BulletWeaponEffectSpecVO(row.BulletWeaponEffectSpecMasterId);
+            SpecialEffectSpecVOs = Array.Empty<SpecialEffectSpecVO>();
         }
     }
 }

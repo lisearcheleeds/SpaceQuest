@@ -47,7 +47,7 @@ namespace AloneSpace
         {
             if (0 < actorData.ActorStateData.EnduranceValue)
             {
-                foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventData)
+                foreach (var currentDamageEventData in actorData.ActorStateData.CurrentDamageEventDataList)
                 {
                     var decayDamageValue = currentDamageEventData.EffectedDamageValue;
 
@@ -80,7 +80,7 @@ namespace AloneSpace
                 }
             }
 
-            actorData.ActorStateData.CurrentDamageEventData.Clear();
+            actorData.ActorStateData.CurrentDamageEventDataList.Clear();
         }
 
         void UpdateTarget(float deltaTime)

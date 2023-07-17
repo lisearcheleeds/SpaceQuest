@@ -1,4 +1,6 @@
-﻿namespace AloneSpace
+﻿using System;
+
+namespace AloneSpace
 {
     /// <summary>
     /// 基本スペックと品質
@@ -52,6 +54,9 @@
         public GraphicEffectSpecVO SmokeGraphicEffectSpecVO { get; }
         public GraphicEffectSpecVO ExplosionGraphicEffectSpecVO { get; }
 
+        // SpecialEffect
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
+
         WeaponMissileMakerSpecMaster.Row row;
 
         public WeaponMissileMakerSpecVO(int id) : this(id, WeaponMissileMakerQualityType.Default, 1.0f)
@@ -65,6 +70,7 @@
             ExplosionWeaponEffectSpecVO = new ExplosionWeaponEffectSpecVO(row.ExplosionWeaponEffectSpecMasterId);
             SmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(row.SmokeGraphicEffectSpecMasterId);
             ExplosionGraphicEffectSpecVO = new GraphicEffectSpecVO(row.ExplosionGraphicEffectSpecMasterId);
+            SpecialEffectSpecVOs = Array.Empty<SpecialEffectSpecVO>();
         }
     }
 }

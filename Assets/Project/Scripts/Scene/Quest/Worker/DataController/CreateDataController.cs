@@ -61,7 +61,9 @@ namespace AloneSpace
 
             foreach (var actorData in createActorDataList)
             {
+                actorData.ResetState();
                 actorData.ActivateModules();
+
                 questData.AddActorData(actorData);
 
                 // ありえないと思うけど一応合わせる
@@ -80,7 +82,7 @@ namespace AloneSpace
                 weaponEffectData.ActivateModules();
                 questData.AddWeaponEffectData(weaponEffectData);
 
-                // 最後っ屁
+                // 最後っ屁を除く
                 if (questData.ActorData.ContainsKey(weaponEffectData.WeaponData.WeaponHolder.InstanceId))
                 {
                     questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);

@@ -22,5 +22,8 @@
 
         // リロード時間
         float ReloadTime { get; }
+
+        // SpecialEffect
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
     }
 }

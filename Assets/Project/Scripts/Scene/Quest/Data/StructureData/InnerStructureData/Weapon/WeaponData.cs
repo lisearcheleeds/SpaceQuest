@@ -6,6 +6,7 @@ namespace AloneSpace
     /// <summary>
     /// Actorが装備しているWeaponData
     /// （ItemとしてのWeaponDataは存在せずActorに装備する時に生成する）
+    /// FIXME: OrderModule分けていれば abstractの派生クラス全部要らない説
     /// </summary>
     public abstract class WeaponData : IReleasableData, IOrderModuleHolder
     {
@@ -13,6 +14,7 @@ namespace AloneSpace
 
         // Module
         public abstract IOrderModule OrderModule { get; protected set; }
+
         public abstract IWeaponSpecVO WeaponSpecVO { get; }
         public abstract WeaponStateData WeaponStateData { get; }
 

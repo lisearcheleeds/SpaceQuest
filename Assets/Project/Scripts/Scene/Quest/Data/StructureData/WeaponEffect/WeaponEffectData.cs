@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace AloneSpace
 {
+    /// <summary>
+    /// FIXME: OrderModule分けていれば abstractの派生クラス全部要らない説
+    /// </summary>
     public abstract class WeaponEffectData : IPlayer, IPositionData, IReleasableData, IMovingModuleHolder, ICollisionEventEffectSenderModuleHolder, IOrderModuleHolder
     {
         public Guid InstanceId { get; }

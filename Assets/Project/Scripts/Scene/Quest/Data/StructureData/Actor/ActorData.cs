@@ -64,17 +64,24 @@ namespace AloneSpace
 
             WeaponDataGroup[0].AddRange(WeaponData.Keys);
 
+            MovingModule = new MovingModule(this);
+            ThinkModule = new ActorThinkModule(this);
+            OrderModule = new ActorOrderModule(this);
+            CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
+            CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
+        }
+
+        public void ResetState()
+        {
             ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
             ActorStateData.EnduranceValueMax = ActorSpecVO.EnduranceValue;
 
             ActorStateData.ShieldValue = ActorSpecVO.ShieldValue;
             ActorStateData.ShieldValueMax = ActorSpecVO.ShieldValue;
 
-            MovingModule = new MovingModule(this);
-            ThinkModule = new ActorThinkModule(this);
-            OrderModule = new ActorOrderModule(this);
-            CollisionEventModule = new ActorCollisionEventModule(InstanceId, this, new CollisionShapeSphere(this, 3.0f));
-            CollisionEventEffectReceiverModule = new ActorCollisionEventEffectReceiverModule(InstanceId, this);
+            ActorStateData.SpecialEffectDataList.Clear();
+            ActorStateData.SpecialEffectDataList.AddRange(ActorSpecVO.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, InstanceId)));
+            ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, InstanceId))));
         }
 
         public void ActivateModules()
@@ -89,6 +96,11 @@ namespace AloneSpace
             {
                 weaponData.ActivateModules();
             }
+
+            foreach (var specialEffectData in ActorStateData.SpecialEffectDataList)
+            {
+                specialEffectData.ActivateModules();
+            }
         }
 
         public void DeactivateModules()
@@ -102,6 +114,11 @@ namespace AloneSpace
             foreach (var weaponData in WeaponData.Values)
             {
                 weaponData.DeactivateModules();
+            }
+
+            foreach (var specialEffectData in ActorStateData.SpecialEffectDataList)
+            {
+                specialEffectData.DeactivateModules();
             }
 
             // NOTE: 別にnull入れなくても良いがIsReleased見ずにModule見ようとしたらコケてくれるので
@@ -242,6 +259,16 @@ namespace AloneSpace
             WeaponData[weaponEffectData.WeaponData.InstanceId].RemoveWeaponEffectData(weaponEffectData);
         }
 
+        public void AddSpecialEffectData(SpecialEffectData specialEffectData)
+        {
+            ActorStateData.SpecialEffectDataList.Add(specialEffectData);
+        }
+
+        public void RemoveSpecialEffectStateData(SpecialEffectData specialEffectData)
+        {
+            ActorStateData.SpecialEffectDataList.Remove(specialEffectData);
+        }
+
         public void SetMainTarget(IPositionData target)
         {
             ActorStateData.MainTarget = target;
@@ -254,7 +281,7 @@ namespace AloneSpace
 
         public void AddDamageEventData(DamageEventData damageEventData)
         {
-            ActorStateData.CurrentDamageEventData.Add(damageEventData);
+            ActorStateData.CurrentDamageEventDataList.Add(damageEventData);
         }
 
         public void Release()

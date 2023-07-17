@@ -1,4 +1,6 @@
-﻿namespace AloneSpace
+﻿using System;
+
+namespace AloneSpace
 {
     /// <summary>
     /// 基本スペックと品質
@@ -43,6 +45,9 @@
 
         public ParticleBulletWeaponEffectSpecVO ParticleBulletWeaponEffectSpecVO { get; }
 
+        // SpecialEffect
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
+
         WeaponParticleBulletMakerSpecMaster.Row row;
 
         public WeaponParticleBulletMakerSpecVO(int id) : this(id, WeaponBulletMakerQualityType.Default, 1.0f)
@@ -53,6 +58,7 @@
         {
             row = WeaponParticleBulletMakerSpecMaster.Instance.Get(id);
             ParticleBulletWeaponEffectSpecVO = new ParticleBulletWeaponEffectSpecVO(row.ParticleBulletWeaponEffectSpecMasterId);
+            SpecialEffectSpecVOs = Array.Empty<SpecialEffectSpecVO>();
         }
     }
 }
