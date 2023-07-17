@@ -7,6 +7,7 @@ namespace AloneSpace
     {
         public ActorSpecVO ActorSpecVO { get; }
         public IWeaponSpecVO[] WeaponSpecVOs { get; }
+        public SpecialEffectSpecVO[] SpecialEffectSpecVOs { get; }
 
         public ActorPresetVO(int actorPresetId)
         {
@@ -24,6 +25,9 @@ namespace AloneSpace
                     default: throw new ArgumentException();
                 }
             }).ToArray();
+
+            var specialEffectMasterRows = ActorPresetSpecialEffectRelationMaster.Instance.GetRange(actorPresetId);
+            SpecialEffectSpecVOs = specialEffectMasterRows.Select(x => new SpecialEffectSpecVO(x.SpecialEffectId)).ToArray();
         }
     }
 }

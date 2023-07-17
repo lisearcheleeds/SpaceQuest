@@ -1,14 +1,17 @@
-﻿using System;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AloneSpace
 {
     public class ActorSpecialEffectList : MonoBehaviour
     {
-        ActorData actorData;
+        [SerializeField] ActorSpecialEffectListView actorSpecialEffectListView;
 
+        ActorData actorData;
+        int prevSpecialEffectCount;
         bool isDirty;
+
+        ActorSpecialEffectListViewCell.CellData[] actorSpecialEffectListViewCellDataList;
 
         public void Initialize()
         {
@@ -22,6 +25,17 @@ namespace AloneSpace
 
         public void OnUpdate()
         {
+            var currentSpecialEffectCount = 0;
+            if (actorData != null)
+            {
+                currentSpecialEffectCount = actorData.ActorPresetSpecialEffectSpecVOs.Length;
+            }
+
+            if (prevSpecialEffectCount != currentSpecialEffectCount)
+            {
+                isDirty = true;
+            }
+
             if (isDirty)
             {
                 isDirty = false;
@@ -31,6 +45,10 @@ namespace AloneSpace
 
         void Refresh()
         {
+            actorSpecialEffectListViewCellDataList = actorData.ActorStateData.SpecialEffectDataList.Select(x => new ActorSpecialEffectListViewCell.CellData(x)).ToArray();
+
+            prevSpecialEffectCount = 0;
+            actorSpecialEffectListView.Apply(actorSpecialEffectListViewCellDataList);
         }
 
         void UIMenuStatusViewSelectActorData(ActorData actorData)

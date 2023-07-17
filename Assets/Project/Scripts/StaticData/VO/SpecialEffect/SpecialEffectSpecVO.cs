@@ -9,6 +9,7 @@ namespace AloneSpace
     {
         public int Id => row.Id;
         public string Name => row.Name;
+        public string Description => row.Description;
 
         public SpecialEffectElementSpecVO[] SpecialEffectElementSpecVOs { get; }
 

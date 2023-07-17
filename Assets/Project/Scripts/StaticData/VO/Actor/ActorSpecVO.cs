@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace AloneSpace
 {
@@ -60,7 +61,9 @@ namespace AloneSpace
             row = ActorSpecMaster.Instance.Get(id);
             BrokenActorGraphicEffectSpecVO = new GraphicEffectSpecVO(row.BrokenActorGraphicEffectSpecMasterId);
             BrokenActorSmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(ConstantId.BrokenActorSmokeGraphicEffectId);
-            SpecialEffectSpecVOs = Array.Empty<SpecialEffectSpecVO>();
+
+            var specialEffectMasterRows = ActorSpecSpecialEffectRelationMaster.Instance.GetRange(id);
+            SpecialEffectSpecVOs = specialEffectMasterRows.Select(x => new SpecialEffectSpecVO(x.SpecialEffectId)).ToArray();
         }
     }
 }

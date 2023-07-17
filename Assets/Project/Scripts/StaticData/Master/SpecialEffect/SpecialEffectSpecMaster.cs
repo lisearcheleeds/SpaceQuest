@@ -12,10 +12,14 @@ namespace AloneSpace
             // Name
             public string Name { get; }
 
-            public Row(int id, string name)
+            // Description
+            public string Description { get; }
+
+            public Row(int id, string name, string description)
             {
                 Id = id;
                 Name = name;
+                Description = description;
             }
         }
 
@@ -44,8 +48,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "SpecialEffect1"),
-                new Row(2, "SpecialEffect2"),
+                new Row(1, "SpecialEffect1", "SpecialEffect1の効果説明"),
+                new Row(2, "SpecialEffect2", "SpecialEffect2の効果説明"),
             };
         }
     }

@@ -36,6 +36,7 @@ namespace AloneSpace
         // 関連データ
         public ActorSpecVO ActorSpecVO { get; }
         public IWeaponSpecVO[] WeaponSpecVOs { get; }
+        public SpecialEffectSpecVO[] ActorPresetSpecialEffectSpecVOs { get; }
 
         // インベントリ
         public InventoryData InventoryData { get; }
@@ -61,6 +62,7 @@ namespace AloneSpace
             WeaponData = actorPresetVO.WeaponSpecVOs
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
                 .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
+            ActorPresetSpecialEffectSpecVOs = actorPresetVO.SpecialEffectSpecVOs;
 
             WeaponDataGroup[0].AddRange(WeaponData.Keys);
 
@@ -80,8 +82,9 @@ namespace AloneSpace
             ActorStateData.ShieldValueMax = ActorSpecVO.ShieldValue;
 
             ActorStateData.SpecialEffectDataList.Clear();
-            ActorStateData.SpecialEffectDataList.AddRange(ActorSpecVO.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, InstanceId)));
-            ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, InstanceId))));
+            ActorStateData.SpecialEffectDataList.AddRange(ActorSpecVO.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorSpec, InstanceId)));
+            ActorStateData.SpecialEffectDataList.AddRange(ActorPresetSpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorPreset, InstanceId)));
+            ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfWeapon, InstanceId))));
         }
 
         public void ActivateModules()
