@@ -85,7 +85,7 @@ namespace AloneSpace
             // 砲塔回転
             weaponData.WeaponStateData.OffsetRotation = Quaternion.RotateTowards(
                 weaponData.WeaponStateData.OffsetRotation,
-                Quaternion.Inverse(weaponData.WeaponHolder.Rotation) * Quaternion.LookRotation(targetDirection),
+                Quaternion.LookRotation(targetDirection) * Quaternion.Inverse(GetOutputPosition().Rotation),
                 deltaTime * weaponData.VO.TurningSpeed);
         }
 

@@ -71,8 +71,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/ParticleBullet/ParticleBullet"), 2, 300.0f, 8.0f, 1.0f, 0.0f),
-                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/ParticleBullet/ParticleBullet"), 2, 300.0f, 8.0f, 1.0f, 0.0f),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/ParticleBullet/ParticleBullet"), 2, 500.0f, 8.0f, 1.0f, 0.0f),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/ParticleBullet/ParticleBullet"), 2, 500.0f, 8.0f, 1.0f, 0.0f),
             };
         }
     }
