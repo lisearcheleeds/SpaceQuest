@@ -12,7 +12,6 @@ namespace AloneSpace
         [SerializeField] StandardCore inventoryCore;
         [SerializeField] InventoryDataView inventoryDataViewPrefab;
         [SerializeField] Button tabButtonPrefab;
-        [SerializeField] Button closeMapButton;
 
         [SerializeField] GameObject rightInventoryObject;
         [SerializeField] RectTransform rightInventoryTabButtonParent;
@@ -32,31 +31,24 @@ namespace AloneSpace
 
         PlayerData observePlayerData;
 
-        public void Initialize()
+        public void Initialize(QuestData questData)
         {
             MessageBus.Instance.UserCommandUpdateInventory.AddListener(UserCommandUpdateInventory);
-
-            MessageBus.Instance.UserInputSwitchInventory.AddListener(UserInputSwitchInventory);
-            MessageBus.Instance.UserInputOpenInventory.AddListener(UserInputOpenInventory);
-            MessageBus.Instance.UserInputCloseInventory.AddListener(UserInputCloseInventory);
 
             MessageBus.Instance.SetUserPlayer.AddListener(SetUserPlayer);
 
             inventoryCore.Initialize();
-            UserInputCloseInventory();
-
-            closeMapButton.onClick.AddListener(OnClickClose);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.UserCommandUpdateInventory.RemoveListener(UserCommandUpdateInventory);
 
-            MessageBus.Instance.UserInputSwitchInventory.RemoveListener(UserInputSwitchInventory);
-            MessageBus.Instance.UserInputOpenInventory.RemoveListener(UserInputOpenInventory);
-            MessageBus.Instance.UserInputCloseInventory.RemoveListener(UserInputCloseInventory);
-
             MessageBus.Instance.SetUserPlayer.RemoveListener(SetUserPlayer);
+        }
+
+        public void OnUpdate()
+        {
         }
 
         void SetUserPlayer(PlayerData playerData)
@@ -151,37 +143,8 @@ namespace AloneSpace
             UpdateView();
         }
 
-        void OnClickClose()
-        {
-            MessageBus.Instance.UserInputCloseInventory.Broadcast();
-        }
-
         void UserCommandUpdateInventory(Guid[] inventoryInstanceIds)
         {
-            UpdateView();
-        }
-
-        void UserInputSwitchInventory()
-        {
-            if (gameObject.activeSelf)
-            {
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-            }
-            else
-            {
-                MessageBus.Instance.UserInputOpenInventory.Broadcast();
-            }
-        }
-
-        void UserInputOpenInventory()
-        {
-            gameObject.SetActive(true);
-            UpdateView();
-        }
-
-        void UserInputCloseInventory()
-        {
-            gameObject.SetActive(false);
             UpdateView();
         }
     }

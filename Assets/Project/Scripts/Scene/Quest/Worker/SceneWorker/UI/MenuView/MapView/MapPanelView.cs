@@ -18,21 +18,11 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.UserInputSwitchMap.AddListener(UserInputSwitchMap);
-            MessageBus.Instance.UserInputOpenMap.AddListener(UserInputOpenMap);
-            MessageBus.Instance.UserInputCloseMap.AddListener(UserInputCloseMap);
-
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
-
-            UserInputCloseMap();
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserInputSwitchMap.RemoveListener(UserInputSwitchMap);
-            MessageBus.Instance.UserInputOpenMap.RemoveListener(UserInputOpenMap);
-            MessageBus.Instance.UserInputCloseMap.RemoveListener(UserInputCloseMap);
-
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
@@ -89,29 +79,6 @@ namespace AloneSpace
 
         void OnClickCell(AreaData areaData)
         {
-        }
-
-        void UserInputSwitchMap()
-        {
-            if (gameObject.activeSelf)
-            {
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-            }
-            else
-            {
-                MessageBus.Instance.UserInputOpenMap.Broadcast();
-            }
-        }
-
-        void UserInputOpenMap()
-        {
-            gameObject.SetActive(true);
-            UpdateView();
-        }
-
-        void UserInputCloseMap()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

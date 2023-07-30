@@ -36,9 +36,12 @@ namespace AloneSpace
             keyBindMap[KeyBindKey.WeaponGroup4] = Key.Digit4;
             keyBindMap[KeyBindKey.WeaponGroup5] = Key.Digit5;
 
-            keyBindMap[KeyBindKey.Map] = Key.M;
-            keyBindMap[KeyBindKey.InteractList] = Key.Tab;
-            keyBindMap[KeyBindKey.Inventory] = Key.I;
+            keyBindMap[KeyBindKey.Menu] = Key.Tab;
+            keyBindMap[KeyBindKey.MenuStatusView] = Key.F1;
+            keyBindMap[KeyBindKey.MenuInventoryView] = Key.F2;
+            keyBindMap[KeyBindKey.MenuPlayerView] = Key.F3;
+            keyBindMap[KeyBindKey.MenuAreaView] = Key.F4;
+            keyBindMap[KeyBindKey.MenuMapView] = Key.F5;
 
             keyBindMap[KeyBindKey.MouseModeSwitch] = Key.LeftAlt;
 
@@ -59,31 +62,35 @@ namespace AloneSpace
             {
                 case ActorOperationMode.Observe:
                     CheckActorOperationMode();
-                    CheckUI();
+                    CheckMenu();
                     break;
                 case ActorOperationMode.Cockpit:
                     CheckCockpitMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
+                    CheckMenu();
                     break;
                 case ActorOperationMode.CockpitFreeCamera:
                     CheckCockpitMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
+                    CheckMenu();
                     break;
                 case ActorOperationMode.Spotter:
                     CheckSpotterMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
+                    CheckMenu();
                     break;
                 case ActorOperationMode.SpotterFreeCamera:
                     CheckSpotterMoving();
                     CheckWeapon();
                     CheckMouseMode();
                     CheckActorOperationMode();
+                    CheckMenu();
                     break;
             }
         }
@@ -211,33 +218,52 @@ namespace AloneSpace
                 // TODO: ここでやることじゃないのでやること決まったら移動
                 MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
 
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
+                MessageBus.Instance.UserInputCloseMenu.Broadcast();
             }
         }
 
-        void CheckUI()
+        void CheckMenu()
         {
-            if (WasPressedThisFrame(KeyBindKey.Map))
+            if (WasPressedThisFrame(KeyBindKey.Menu))
             {
-                MessageBus.Instance.UserInputSwitchMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
+                // Openのみ
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
             }
 
-            if (WasPressedThisFrame(KeyBindKey.InteractList))
+            if (WasReleasedThisFrame(KeyBindKey.Menu))
             {
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputSwitchInventory.Broadcast();
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
+                // Closeのみ
+                MessageBus.Instance.UserInputCloseMenu.Broadcast();
             }
 
-            if (WasPressedThisFrame(KeyBindKey.Inventory))
+            if (WasPressedThisFrame(KeyBindKey.MenuStatusView))
             {
-                MessageBus.Instance.UserInputCloseMap.Broadcast();
-                MessageBus.Instance.UserInputCloseInventory.Broadcast();
-                MessageBus.Instance.UserInputSwitchInteractList.Broadcast();
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInputSwitchMenuStatusView.Broadcast();
+            }
+
+            if (WasPressedThisFrame(KeyBindKey.MenuInventoryView))
+            {
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInputSwitchMenuInventoryView.Broadcast();
+            }
+
+            if (WasPressedThisFrame(KeyBindKey.MenuPlayerView))
+            {
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInputSwitchMenuPlayerView.Broadcast();
+            }
+
+            if (WasPressedThisFrame(KeyBindKey.MenuAreaView))
+            {
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInputSwitchMenuAreaView.Broadcast();
+            }
+
+            if (WasPressedThisFrame(KeyBindKey.MenuMapView))
+            {
+                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
             }
         }
 

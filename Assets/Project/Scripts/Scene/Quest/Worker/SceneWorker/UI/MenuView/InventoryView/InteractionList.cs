@@ -15,22 +15,12 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.UserInputSwitchInteractList.AddListener(UserInputSwitchInteractList);
-            MessageBus.Instance.UserInputOpenInteractList.AddListener(UserInputOpenInteractList);
-            MessageBus.Instance.UserInputCloseInteractList.AddListener(UserInputCloseInteractList);
-
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
-
-            UserInputCloseInteractList();
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserInputSwitchInteractList.RemoveListener(UserInputSwitchInteractList);
-            MessageBus.Instance.UserInputOpenInteractList.RemoveListener(UserInputOpenInteractList);
-            MessageBus.Instance.UserInputCloseInteractList.RemoveListener(UserInputCloseInteractList);
-
             MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
@@ -101,30 +91,6 @@ namespace AloneSpace
         void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
         {
             MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
-        }
-
-        void UserInputSwitchInteractList()
-        {
-            if (gameObject.activeSelf)
-            {
-                MessageBus.Instance.UserInputCloseInteractList.Broadcast();
-            }
-            else
-            {
-                MessageBus.Instance.UserInputOpenInteractList.Broadcast();
-            }
-        }
-
-        void UserInputOpenInteractList()
-        {
-            gameObject.SetActive(true);
-
-            Refresh();
-        }
-
-        void UserInputCloseInteractList()
-        {
-            gameObject.SetActive(false);
         }
     }
 }

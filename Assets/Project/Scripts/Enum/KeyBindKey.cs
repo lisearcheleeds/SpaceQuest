@@ -31,9 +31,12 @@
         WeaponGroup5,
 
         // UI
-        Map,
-        InteractList,
-        Inventory,
+        Menu,
+        MenuStatusView,
+        MenuInventoryView,
+        MenuPlayerView,
+        MenuAreaView,
+        MenuMapView,
 
         // System,
         MouseModeSwitch,

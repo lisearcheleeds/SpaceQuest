@@ -3,15 +3,13 @@
     public partial class MessageBus
     {
         // UI
-        public MessageBusDefine.UserInputSwitchMap UserInputSwitchMap { get; } = new MessageBusDefine.UserInputSwitchMap();
-        public MessageBusDefine.UserInputOpenMap UserInputOpenMap { get; } = new MessageBusDefine.UserInputOpenMap();
-        public MessageBusDefine.UserInputCloseMap UserInputCloseMap { get; } = new MessageBusDefine.UserInputCloseMap();
-        public MessageBusDefine.UserInputSwitchInteractList UserInputSwitchInteractList { get; } = new MessageBusDefine.UserInputSwitchInteractList();
-        public MessageBusDefine.UserInputOpenInteractList UserInputOpenInteractList { get; } = new MessageBusDefine.UserInputOpenInteractList();
-        public MessageBusDefine.UserInputCloseInteractList UserInputCloseInteractList { get; } = new MessageBusDefine.UserInputCloseInteractList();
-        public MessageBusDefine.UserInputSwitchInventory UserInputSwitchInventory { get; } = new MessageBusDefine.UserInputSwitchInventory();
-        public MessageBusDefine.UserInputOpenInventory UserInputOpenInventory { get; } = new MessageBusDefine.UserInputOpenInventory();
-        public MessageBusDefine.UserInputCloseInventory UserInputCloseInventory { get; } = new MessageBusDefine.UserInputCloseInventory();
+        public MessageBusDefine.UserInputOpenMenu UserInputOpenMenu { get; } = new MessageBusDefine.UserInputOpenMenu();
+        public MessageBusDefine.UserInputCloseMenu UserInputCloseMenu { get; } = new MessageBusDefine.UserInputCloseMenu();
+        public MessageBusDefine.UserInputSwitchMenuStatusView UserInputSwitchMenuStatusView { get; } = new MessageBusDefine.UserInputSwitchMenuStatusView();
+        public MessageBusDefine.UserInputSwitchMenuInventoryView UserInputSwitchMenuInventoryView { get; } = new MessageBusDefine.UserInputSwitchMenuInventoryView();
+        public MessageBusDefine.UserInputSwitchMenuPlayerView UserInputSwitchMenuPlayerView { get; } = new MessageBusDefine.UserInputSwitchMenuPlayerView();
+        public MessageBusDefine.UserInputSwitchMenuAreaView UserInputSwitchMenuAreaView { get; } = new MessageBusDefine.UserInputSwitchMenuAreaView();
+        public MessageBusDefine.UserInputSwitchMenuMapView UserInputSwitchMenuMapView { get; } = new MessageBusDefine.UserInputSwitchMenuMapView();
 
         public MessageBusDefine.UIMenuStatusViewSelectActorData UIMenuStatusViewSelectActorData { get; } = new MessageBusDefine.UIMenuStatusViewSelectActorData();
 

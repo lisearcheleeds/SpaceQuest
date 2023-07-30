@@ -5,15 +5,13 @@ namespace AloneSpace
 {
     public partial class MessageBusDefine
     {
-        public class UserInputSwitchMap : MessageBusBroadcaster{}
-        public class UserInputOpenMap : MessageBusBroadcaster{}
-        public class UserInputCloseMap : MessageBusBroadcaster{}
-        public class UserInputSwitchInteractList : MessageBusBroadcaster{}
-        public class UserInputOpenInteractList : MessageBusBroadcaster{}
-        public class UserInputCloseInteractList : MessageBusBroadcaster{}
-        public class UserInputSwitchInventory : MessageBusBroadcaster{}
-        public class UserInputOpenInventory : MessageBusBroadcaster{}
-        public class UserInputCloseInventory : MessageBusBroadcaster{}
+        public class UserInputOpenMenu : MessageBusBroadcaster{}
+        public class UserInputCloseMenu : MessageBusBroadcaster{}
+        public class UserInputSwitchMenuStatusView : MessageBusBroadcaster{}
+        public class UserInputSwitchMenuInventoryView : MessageBusBroadcaster{}
+        public class UserInputSwitchMenuPlayerView : MessageBusBroadcaster{}
+        public class UserInputSwitchMenuAreaView : MessageBusBroadcaster{}
+        public class UserInputSwitchMenuMapView : MessageBusBroadcaster{}
 
         public class UIMenuStatusViewSelectActorData : MessageBusBroadcaster<ActorData>{}
 
