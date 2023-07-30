@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using AloneSpace.Common;
+using UnityEngine;
 
 namespace AloneSpace
 {
     public class MenuView : MonoBehaviour
     {
+        [SerializeField] TabController tabController;
+
         [SerializeField] StatusView statusView;
         [SerializeField] InventoryView inventoryView;
         [SerializeField] PlayerView playerView;
@@ -29,6 +32,8 @@ namespace AloneSpace
             areaView.Initialize(questData);
             mapView.Initialize(questData);
 
+            tabController.SetOnChangeIndexFromButton(OnChangeIndexFromButton);
+
             MessageBus.Instance.UserInputOpenMenu.AddListener(UserInputOpenMenu);
             MessageBus.Instance.UserInputCloseMenu.AddListener(UserInputCloseMenu);
             MessageBus.Instance.UserInputSwitchMenuStatusView.AddListener(UserInputSwitchMenuStatusView);
@@ -41,6 +46,8 @@ namespace AloneSpace
         public void Finalize()
         {
             statusView.Finalize();
+
+            tabController.SetOnChangeIndexFromButton(null);
 
             MessageBus.Instance.UserInputOpenMenu.RemoveListener(UserInputOpenMenu);
             MessageBus.Instance.UserInputCloseMenu.RemoveListener(UserInputCloseMenu);
@@ -78,13 +85,31 @@ namespace AloneSpace
             }
         }
 
+        void OnChangeIndexFromButton(int index)
+        {
+            switch (GetMenuElementFromIndex(index))
+            {
+                case MenuElement.StatusView:
+                    MessageBus.Instance.UserInputSwitchMenuStatusView.Broadcast();
+                    break;
+                case MenuElement.InventoryView:
+                    MessageBus.Instance.UserInputSwitchMenuInventoryView.Broadcast();
+                    break;
+                case MenuElement.PlayerView:
+                    MessageBus.Instance.UserInputSwitchMenuPlayerView.Broadcast();
+                    break;
+                case MenuElement.AreaView:
+                    MessageBus.Instance.UserInputSwitchMenuAreaView.Broadcast();
+                    break;
+                case MenuElement.MapView:
+                    MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
+                    break;
+            }
+        }
+
         void UpdateView()
         {
-            statusView.gameObject.SetActive(currentMenuElement == MenuElement.StatusView);
-            inventoryView.gameObject.SetActive(currentMenuElement == MenuElement.InventoryView);
-            playerView.gameObject.SetActive(currentMenuElement == MenuElement.PlayerView);
-            areaView.gameObject.SetActive(currentMenuElement == MenuElement.AreaView);
-            mapView.gameObject.SetActive(currentMenuElement == MenuElement.MapView);
+            tabController.SetIndex(GetIndexFromMenuElement(currentMenuElement));
 
             OnUpdate();
         }
@@ -130,5 +155,14 @@ namespace AloneSpace
             UpdateView();
         }
 
+        int GetIndexFromMenuElement(MenuElement menuElement)
+        {
+            return (int)menuElement;
+        }
+
+        MenuElement GetMenuElementFromIndex(int index)
+        {
+            return (MenuElement) index;
+        }
     }
 }
