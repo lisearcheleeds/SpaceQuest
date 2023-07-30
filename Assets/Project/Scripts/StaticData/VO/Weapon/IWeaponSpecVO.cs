@@ -1,7 +1,7 @@
 ﻿namespace AloneSpace
 {
     /// <summary>
-    /// パーツの武器データ
+    /// 武器データ
     /// </summary>
     public interface IWeaponSpecVO
     {
