@@ -15,14 +15,15 @@ namespace AloneSpace
             var actorPresetWeapons = ActorPresetWeaponMaster.Instance.GetRange(actorPresetId);
 
             ActorSpecVO = new ActorSpecVO(actorPreset.ActorSpecId);
-            WeaponSpecVOs = actorPresetWeapons.Select(x =>
+            WeaponSpecVOs = Enumerable.Range(0, ActorSpecVO.WeaponSlotCount).Select(index =>
             {
-                switch (x.WeaponType)
+                var weapon = actorPresetWeapons.FirstOrDefault(x => x.WeaponIndex == index);
+                switch (weapon?.WeaponType)
                 {
-                    case WeaponType.BulletMaker: return (IWeaponSpecVO) new WeaponBulletMakerSpecVO(x.WeaponSpecId);
-                    case WeaponType.ParticleBulletMaker: return (IWeaponSpecVO) new WeaponParticleBulletMakerSpecVO(x.WeaponSpecId);
-                    case WeaponType.MissileMaker: return new WeaponMissileMakerSpecVO(x.WeaponSpecId);
-                    default: throw new ArgumentException();
+                    case WeaponType.BulletMaker: return (IWeaponSpecVO) new WeaponBulletMakerSpecVO(weapon.WeaponSpecId);
+                    case WeaponType.ParticleBulletMaker: return (IWeaponSpecVO) new WeaponParticleBulletMakerSpecVO(weapon.WeaponSpecId);
+                    case WeaponType.MissileMaker: return new WeaponMissileMakerSpecVO(weapon.WeaponSpecId);
+                    default: return null;
                 }
             }).ToArray();
 

@@ -59,6 +59,7 @@ namespace AloneSpace
             InventoryData = new InventoryData(actorPresetVO.ActorSpecVO.CapacityWidth, actorPresetVO.ActorSpecVO.CapacityHeight);
             WeaponDataGroup = Enumerable.Range(0, ConstantInt.WeaponGroupCount).Select(_ => new List<Guid>()).ToArray();
             WeaponData = actorPresetVO.WeaponSpecVOs
+                .Where(vo => vo != null)
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
                 .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
             ActorPresetSpecialEffectSpecVOs = actorPresetVO.SpecialEffectSpecVOs;
@@ -73,7 +74,7 @@ namespace AloneSpace
 
             ActorStateData.SpecialEffectDataList.AddRange(ActorSpecVO.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorSpec, InstanceId)));
             ActorStateData.SpecialEffectDataList.AddRange(ActorPresetSpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfActorPreset, InstanceId)));
-            ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfWeapon, InstanceId))));
+            ActorStateData.SpecialEffectDataList.AddRange(WeaponSpecVOs.Where(vo => vo != null).SelectMany(x => x.SpecialEffectSpecVOs.Select(x => new SpecialEffectData(x, SpecialEffectSourceType.SelfWeapon, InstanceId))));
 
             MovingModule = new MovingModule(this);
             ThinkModule = new ActorThinkModule(this);

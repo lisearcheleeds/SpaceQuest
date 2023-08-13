@@ -29,7 +29,8 @@ namespace AloneSpace
         public float ElectronicProtectionAutoRecoveryValue => row.ElectronicProtectionAutoRecoveryValue;
 
         // 武器
-        public int WeaponSlotCount => row.WeaponSlotCount;
+        public int WeaponSlotCount => WeaponSlotLayout.Length;
+        public (float, float)[] WeaponSlotLayout { get; }
 
         // ブースター
         public float MainBoosterPower => row.MainBoosterPower;
@@ -61,6 +62,13 @@ namespace AloneSpace
             row = ActorSpecMaster.Instance.Get(id);
             BrokenActorGraphicEffectSpecVO = new GraphicEffectSpecVO(row.BrokenActorGraphicEffectSpecMasterId);
             BrokenActorSmokeGraphicEffectSpecVO = new GraphicEffectSpecVO(ConstantId.BrokenActorSmokeGraphicEffectId);
+
+            var weaponSlotLayouts = ActorWeaponSlotLayoutMaster.Instance.GetRange(id);
+            WeaponSlotLayout = Enumerable.Range(0, weaponSlotLayouts.Length).Select(index =>
+            {
+                var layout = weaponSlotLayouts.FirstOrDefault(l => l.WeaponSlotIndex == index);
+                return (layout.PositionX, layout.PositionY);
+            }).ToArray();
 
             var specialEffectMasterRows = ActorSpecSpecialEffectRelationMaster.Instance.GetRange(id);
             SpecialEffectSpecVOs = specialEffectMasterRows.Select(x => new SpecialEffectSpecVO(x.SpecialEffectId)).ToArray();

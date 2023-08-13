@@ -26,9 +26,6 @@ namespace AloneSpace
             public float ElectronicProtectionAutoRecoveryResilienceTime { get; }
             public float ElectronicProtectionAutoRecoveryValue { get; }
 
-            // 武器
-            public int WeaponSlotCount { get; }
-
             // ブースター
             public float MainBoosterPower { get; }
             public float SubBoosterPower { get; }
@@ -59,7 +56,6 @@ namespace AloneSpace
                 float electronicProtectionTruncateValue,
                 float electronicProtectionAutoRecoveryResilienceTime,
                 float electronicProtectionAutoRecoveryValue,
-                int weaponSlotCount,
                 float mainBoosterPower,
                 float subBoosterPower,
                 float maxSpeed,
@@ -84,7 +80,6 @@ namespace AloneSpace
                 ElectronicProtectionTruncateValue = electronicProtectionTruncateValue;
                 ElectronicProtectionAutoRecoveryResilienceTime = electronicProtectionAutoRecoveryResilienceTime;
                 ElectronicProtectionAutoRecoveryValue = electronicProtectionAutoRecoveryValue;
-                WeaponSlotCount = weaponSlotCount;
                 MainBoosterPower = mainBoosterPower;
                 SubBoosterPower = subBoosterPower;
                 MaxSpeed = maxSpeed;
@@ -137,7 +132,6 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    weaponSlotCount: 6,
                     mainBoosterPower: 2f,
                     subBoosterPower: 2f,
                     maxSpeed: 50.0f,
@@ -162,7 +156,6 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    weaponSlotCount: 5,
                     mainBoosterPower: 0.2f,
                     subBoosterPower: 0.2f,
                     maxSpeed: 50.0f,
@@ -187,7 +180,6 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    weaponSlotCount: 1,
                     mainBoosterPower: 0.2f,
                     subBoosterPower: 0.2f,
                     maxSpeed: 50.0f,
@@ -212,7 +204,6 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    weaponSlotCount: 4,
                     mainBoosterPower: 0.2f,
                     subBoosterPower: 0.2f,
                     maxSpeed: 50.0f,
@@ -237,7 +228,6 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    weaponSlotCount: 10,
                     mainBoosterPower: 0.2f,
                     subBoosterPower: 0.2f,
                     maxSpeed: 25.0f,
