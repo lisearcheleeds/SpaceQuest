@@ -13,6 +13,7 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             standardCore.Initialize();
+            standardCore.AddInventoryView(weaponList);
             standardCore.AddInventoryView(inventoryList.StandardStashView);
 
             weaponList.Initialize(questData);

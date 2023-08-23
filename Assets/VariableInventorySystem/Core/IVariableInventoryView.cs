@@ -7,13 +7,12 @@ namespace VariableInventorySystem
     public interface IVariableInventoryView
     {
         void Initialize(
-            GameObject cellPrefab, 
+            GameObject cellPrefab,
             Action<IVariableInventoryCell> onCellClick,
             Action<IVariableInventoryCell> onCellOptionClick,
             Action<IVariableInventoryCell> onCellEnter,
             Action<IVariableInventoryCell> onCellExit);
 
-        void Apply(VariableInventoryViewData data);
         void ReApply();
 
         void OnPrePick(IVariableInventoryCell stareCell);
