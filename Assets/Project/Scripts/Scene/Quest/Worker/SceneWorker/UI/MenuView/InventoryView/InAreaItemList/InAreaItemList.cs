@@ -4,17 +4,21 @@ using System.Linq;
 
 namespace AloneSpace
 {
-    public class InteractionList : MonoBehaviour
+    public class InAreaItemList : MonoBehaviour
     {
-        [SerializeField] InteractionListView interactionListView;
+        [SerializeField] InAreaItemListView inAreaItemListView;
 
         ActorData userControlActor;
         AreaData observeArea;
 
-        InteractionListViewCell.CellData selectCellData;
+        InAreaItemListViewCell.CellData selectCellData;
 
-        public void Initialize()
+        QuestData questData;
+
+        public void Initialize(QuestData questData)
         {
+            this.questData = questData;
+
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
@@ -27,18 +31,18 @@ namespace AloneSpace
 
         void Refresh()
         {
-            var cellData = Array.Empty<InteractionListViewCell.CellData>();
+            var cellData = Array.Empty<InAreaItemListViewCell.CellData>();
             if (observeArea != null && userControlActor != null)
             {
                 cellData = observeArea.InteractData
-                    .Select(interactData => new InteractionListViewCell.CellData(
+                    .Select(interactData => new InAreaItemListViewCell.CellData(
                         interactData,
                         interactData.InstanceId == selectCellData?.InteractData.InstanceId,
                         GetDistanceText))
                     .ToArray();
             }
 
-            interactionListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
+            inAreaItemListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
             string GetDistanceText(IInteractData targetData)
             {
@@ -82,13 +86,13 @@ namespace AloneSpace
             Refresh();
         }
 
-        void OnClickSelectCell(InteractionListViewCell.CellData cellData)
+        void OnClickSelectCell(InAreaItemListViewCell.CellData cellData)
         {
             selectCellData = cellData;
             Refresh();
         }
 
-        void OnClickConfirmCell(InteractionListViewCell.CellData cellData)
+        void OnClickConfirmCell(InAreaItemListViewCell.CellData cellData)
         {
             MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
         }

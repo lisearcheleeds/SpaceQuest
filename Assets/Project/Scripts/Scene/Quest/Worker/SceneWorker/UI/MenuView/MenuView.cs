@@ -46,6 +46,10 @@ namespace AloneSpace
         public void Finalize()
         {
             statusView.Finalize();
+            inventoryView.Finalize();
+            playerView.Finalize();
+            areaView.Finalize();
+            mapView.Finalize();
 
             tabController.SetOnChangeIndexFromButton(null);
 

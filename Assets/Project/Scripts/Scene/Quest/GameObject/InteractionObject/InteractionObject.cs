@@ -11,19 +11,14 @@ namespace AloneSpace
         public void SetInteractData(IInteractData interactData)
         {
             InteractData = interactData;
-        }
-
-        protected override void OnRelease()
-        {
-            InteractData.SetPosition(transform.position);
+            transform.position = InteractData.Position;
         }
 
         public void OnLateUpdate()
         {
-            if (transform.hasChanged)
+            if (transform.position != InteractData.Position)
             {
-                transform.hasChanged = false;
-                InteractData.SetPosition(transform.position);
+                transform.position = InteractData.Position;
             }
         }
     }

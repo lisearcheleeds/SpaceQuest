@@ -7,17 +7,18 @@ namespace AloneSpace
     {
         [SerializeField] WeaponList weaponList;
         [SerializeField] InventoryList inventoryList;
+        [SerializeField] InAreaItemList inAreaItemList;
 
         [SerializeField] StandardCore standardCore;
 
         public void Initialize(QuestData questData)
         {
             standardCore.Initialize();
-            standardCore.AddInventoryView(weaponList);
             standardCore.AddInventoryView(inventoryList.StandardStashView);
 
             weaponList.Initialize(questData);
             inventoryList.Initialize(questData);
+            inAreaItemList.Initialize(questData);
 
         }
 
@@ -25,6 +26,7 @@ namespace AloneSpace
         {
             weaponList.Finalize();
             inventoryList.Finalize();
+            inAreaItemList.Finalize();
         }
 
         public void OnUpdate()

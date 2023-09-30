@@ -9,7 +9,7 @@ using VariableInventorySystem;
 
 namespace AloneSpace
 {
-    public class WeaponList : MonoBehaviour, IVariableInventoryView
+    public class WeaponList : MonoBehaviour
     {
         [SerializeField] Image actorImage;
         [SerializeField] RectTransform weaponHolderParent;
@@ -110,51 +110,5 @@ namespace AloneSpace
                 weaponListViewCells[weaponData.WeaponIndex].UpdateWeaponData(weaponData);
             }
         }
-
-        void IVariableInventoryView.Initialize(
-            GameObject cellPrefab,
-            Action<IVariableInventoryCell> onCellClick,
-            Action<IVariableInventoryCell> onCellOptionClick,
-            Action<IVariableInventoryCell> onCellEnter,
-            Action<IVariableInventoryCell> onCellExit)
-        {
-        }
-
-        void IVariableInventoryView.ReApply()
-        {
-        }
-
-        void IVariableInventoryView.OnPrePick(IVariableInventoryCell stareCell)
-        {
-        }
-
-        bool IVariableInventoryView.OnPick(IVariableInventoryCell stareCell)
-        {
-        }
-
-        void IVariableInventoryView.OnDrag(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell, PointerEventData cursorPosition)
-        {
-        }
-
-        bool IVariableInventoryView.OnDrop(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
-        {
-        }
-
-        void IVariableInventoryView.OnDroped(bool isDroped)
-        {
-        }
-
-        void IVariableInventoryView.OnCellEnter(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
-        {
-        }
-
-        void IVariableInventoryView.OnCellExit(IVariableInventoryCell stareCell)
-        {
-        }
-
-        void IVariableInventoryView.OnSwitchRotate(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
-        {
-        }
-
     }
 }

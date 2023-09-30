@@ -33,7 +33,7 @@ namespace AloneSpace
                     .Select(i =>
                     {
                         var itemData = new ItemData(new ItemVO(i), 1);
-                        var position = new Vector3(Random.Range(-50.0f, 50.0f), 10, Random.Range(-50.0f, 50.0f));
+                        var position = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
                         return new ItemInteractData(itemData, areaPresetVO.AreaId, position, Quaternion.identity);
                     })
                     .ToList());

@@ -15,11 +15,11 @@ TagManager:
   - 
   - PostProcessing
   - Terrain
-  - Interaction
-  - Actor
+  - 3DItem
+  - 3DActor
   - 
   - 2DUI
-  - 3D
+  - 3DCommon
   - 
   - 3DAmbient
   - 

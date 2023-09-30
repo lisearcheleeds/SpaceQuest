@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class InteractionListView : FancyScrollRect<InteractionListViewCell.CellData, InteractionListViewCell.CellContext>
+    public class InAreaItemListView : FancyScrollRect<InAreaItemListViewCell.CellData, InAreaItemListViewCell.CellContext>
     {
         [SerializeField] GameObject cellPrefab;
         [SerializeField] float cellSize;
@@ -13,9 +13,9 @@ namespace AloneSpace
         protected override GameObject CellPrefab => cellPrefab;
 
         public void Apply(
-            InteractionListViewCell.CellData[] cellData,
-            Action<InteractionListViewCell.CellData> onSelect,
-            Action<InteractionListViewCell.CellData> onConfirm)
+            InAreaItemListViewCell.CellData[] cellData,
+            Action<InAreaItemListViewCell.CellData> onSelect,
+            Action<InAreaItemListViewCell.CellData> onConfirm)
         {
             Context.OnSelect = onSelect;
             Context.OnConfirm = onConfirm;
