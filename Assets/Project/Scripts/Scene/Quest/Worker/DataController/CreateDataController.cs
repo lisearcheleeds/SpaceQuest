@@ -13,6 +13,7 @@ namespace AloneSpace
         List<PlayerData> createPlayerDataList = new List<PlayerData>();
         List<ActorData> createActorDataList = new List<ActorData>();
         List<WeaponEffectData> createWeaponEffectDataList = new List<WeaponEffectData>();
+        List<IInteractData> createInteractDataList = new List<IInteractData>();
 
         public void Initialize(QuestData questData)
         {
@@ -27,6 +28,10 @@ namespace AloneSpace
             MessageBus.Instance.CreateActorDataFromPreset.AddListener(CreateActorDataFromPreset);
 
             MessageBus.Instance.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
+
+            MessageBus.Instance.CreateAreaInteractData.AddListener(CreateAreaInteractData);
+            MessageBus.Instance.CreateInventoryInteractData.AddListener(CreateInventoryInteractData);
+            MessageBus.Instance.CreateItemInteractData.AddListener(CreateItemInteractData);
         }
 
         public void Finalize()
@@ -40,6 +45,10 @@ namespace AloneSpace
             MessageBus.Instance.CreateActorDataFromPreset.RemoveListener(CreateActorDataFromPreset);
 
             MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
+
+            MessageBus.Instance.CreateAreaInteractData.RemoveListener(CreateAreaInteractData);
+            MessageBus.Instance.CreateInventoryInteractData.RemoveListener(CreateInventoryInteractData);
+            MessageBus.Instance.CreateItemInteractData.RemoveListener(CreateItemInteractData);
         }
 
         public void OnUpdate(float deltaTime)
@@ -49,6 +58,7 @@ namespace AloneSpace
                 return;
             }
 
+            // Player
             foreach (var playerData in createPlayerDataList)
             {
                 playerData.ActivateModules();
@@ -59,10 +69,10 @@ namespace AloneSpace
 
             createPlayerDataList.Clear();
 
+            // Actor
             foreach (var actorData in createActorDataList)
             {
                 actorData.ActivateModules();
-
                 questData.AddActorData(actorData);
 
                 // ありえないと思うけど一応合わせる
@@ -76,6 +86,7 @@ namespace AloneSpace
 
             createActorDataList.Clear();
 
+            // WeaponEffect
             foreach (var weaponEffectData in createWeaponEffectDataList)
             {
                 weaponEffectData.ActivateModules();
@@ -91,6 +102,15 @@ namespace AloneSpace
             }
 
             createWeaponEffectDataList.Clear();
+
+            foreach (var createInteractData in createInteractDataList)
+            {
+                createInteractData.ActivateModules();
+                questData.AddInteractData(createInteractData);
+                MessageBus.Instance.CreatedInteractData.Broadcast(createInteractData);
+            }
+
+            createInteractDataList.Clear();
         }
 
         void CreatePlayerDataFromPresetIdAndAreaIdRandomPosition(int playerPresetId, Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty, int areaId)
@@ -111,7 +131,7 @@ namespace AloneSpace
 
         void CreatePlayerDataFromPreset(PlayerPresetVO playerPresetVO, Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty, AreaData areaData, Vector3 position)
         {
-            var (playerData, actorDataList) = QuestDataHelper.CreatePlayerData(playerPresetVO, playerProperty, areaData, position);
+            var (playerData, actorDataList) = CreatePlayerData(playerPresetVO, playerProperty, areaData, position);
             createPlayerDataList.Add(playerData);
 
             foreach (var actorData in actorDataList)
@@ -127,7 +147,7 @@ namespace AloneSpace
 
         void CreateActorDataFromPreset(PlayerData playerData, ActorPresetVO actorPresetVO, AreaData areaData, Vector3 position)
         {
-            var actorData = QuestDataHelper.CreateActorData(playerData, actorPresetVO, areaData, position);
+            var actorData = CreateActorData(playerData, actorPresetVO, areaData, position);
             createActorDataList.Add(actorData);
         }
 
@@ -145,6 +165,36 @@ namespace AloneSpace
             };
 
             createWeaponEffectDataList.Add(weaponEffectData);
+        }
+
+        void CreateAreaInteractData(AreaData areaData, Vector3 fromStaySystemPosition)
+        {
+            createInteractDataList.Add(new AreaInteractData(areaData, fromStaySystemPosition));
+        }
+
+        void CreateInventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position, Quaternion rotation)
+        {
+            createInteractDataList.Add(new InventoryInteractData(inventoryData, areaId, position, rotation));
+        }
+
+        void CreateItemInteractData(ItemData itemData, int areaId, Vector3 position, Quaternion rotation)
+        {
+            createInteractDataList.Add(new ItemInteractData(itemData, areaId, position, rotation));
+        }
+
+        static (PlayerData, ActorData[]) CreatePlayerData(PlayerPresetVO playerPresetVO, Dictionary<PlayerPropertyKey, IPlayerPropertyValue> playerProperty, AreaData areaData, Vector3 position)
+        {
+            var playerData = new PlayerData(playerProperty);
+            var actorData = playerPresetVO.ActorPresetVOs.Select(vo => CreateActorData(playerData, vo, areaData, position)).ToArray();
+            return (playerData, actorData);
+        }
+
+        static ActorData CreateActorData(PlayerData playerData, ActorPresetVO actorPresetVO, AreaData areaData, Vector3 position)
+        {
+            var actorData = new ActorData(actorPresetVO, playerData.InstanceId);
+            actorData.SetAreaId(areaData.AreaId);
+            actorData.SetPosition(areaData.SpawnPosition + position);
+            return actorData;
         }
     }
 }

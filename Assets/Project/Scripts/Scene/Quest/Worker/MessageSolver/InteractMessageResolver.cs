@@ -35,9 +35,7 @@ namespace AloneSpace
                 toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
                 MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId });
 
-                // エリアデータからアイテムを削除
-                var areaData = questData.StarSystemData.AreaData.First(x => x.AreaId == pickItem.AreaId);
-                areaData.RemoveInteractData(pickItem);
+                MessageBus.Instance.ReleaseInteractData.Broadcast(pickItem);
             }
             else
             {

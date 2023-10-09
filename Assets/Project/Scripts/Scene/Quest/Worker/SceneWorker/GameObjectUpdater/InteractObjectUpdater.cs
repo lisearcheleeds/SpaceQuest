@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -14,8 +15,11 @@ namespace AloneSpace
 
         List<InteractionObject> interactionObjectList = new List<InteractionObject>();
 
-        public void Initialize(MonoBehaviour coroutineWorker)
+        QuestData questData;
+
+        public void Initialize(QuestData questData, MonoBehaviour coroutineWorker)
         {
+            this.questData = questData;
             this.coroutineWorker = coroutineWorker;
 
             MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
@@ -71,10 +75,14 @@ namespace AloneSpace
             // 必要なオブジェクトを作る
             var waitCount = 0;
             var waitCounter = 0;
-            foreach (var data in observeArea?.InteractData)
+            if (observeArea != null)
             {
-                waitCount++;
-                CreateInteractObject(data, () => waitCounter++);
+                var observeAreaInteractData = questData.InteractData.Values.Where(x => x.AreaId == observeArea.AreaId);
+                foreach (var data in observeAreaInteractData)
+                {
+                    waitCount++;
+                    CreateInteractObject(data, () => waitCounter++);
+                }
             }
 
             yield return new WaitWhile(() => waitCount != waitCounter);
@@ -85,7 +93,6 @@ namespace AloneSpace
             var assetPathVO = interactData switch
             {
                 ItemInteractData _ => ConstantAssetPath.ItemObjectPathVO,
-                BrokenActorInteractData _ => ConstantAssetPath.BrokenActorObjectPathVO,
                 InventoryInteractData _ => ConstantAssetPath.InventoryObjectPathVO,
                 AreaInteractData _ => null,
                 _ => throw new NotImplementedException(),

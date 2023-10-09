@@ -217,36 +217,57 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var interactOrder in actorData.ActorStateData.InteractOrderDic.Keys)
+            var completeInteractDataList = new List<IInteractData>();
+            foreach (var interactData in actorData.ActorStateData.InteractOrderDic.Keys)
             {
-                var interactOrderState = actorData.ActorStateData.InteractOrderDic[interactOrder];
-                if (interactOrder.IsInteractionRange(actorData))
+                var interactOrderState = actorData.ActorStateData.InteractOrderDic[interactData];
+                if (interactData.IsInteractionRange(actorData))
                 {
+                    if (interactData is ItemInteractData)
+                    {
+                        // アイテムを引き寄せる
+                        interactData.MovingModule.SetMovementVelocity(interactData.MovingModule.MovementVelocity * 0.99f);
+                    }
+
                     interactOrderState.Time += deltaTime;
                     interactOrderState.InProgress = true;
-                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrder.InteractTime);
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactData.InteractTime);
                 }
                 else
                 {
+                    if (interactData is ItemInteractData)
+                    {
+                        interactOrderState.InProgress = true;
+
+                        // アイテムを引き寄せる
+                        var distance = (actorData.Position - interactData.Position).magnitude;
+                        interactData.MovingModule.SetMovementVelocity((actorData.Position - interactData.Position).normalized * Mathf.Min(distance, 100.0f) * deltaTime);
+                    }
+                    else
+                    {
+                        interactOrderState.InProgress = false;
+                    }
+
                     interactOrderState.Time = 0;
-                    interactOrderState.InProgress = false;
-                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrder.InteractTime);
-                    return;
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactData.InteractTime);
                 }
 
-                if (interactOrderState.Time < interactOrder.InteractTime)
+                if (interactOrderState.Time < interactData.InteractTime)
                 {
-                    return;
+                    continue;
                 }
 
                 // インタラクト終了
-                switch (interactOrder)
+                completeInteractDataList.Add(interactData);
+            }
+
+            foreach (var completeInteractData in completeInteractDataList)
+            {
+                switch (completeInteractData)
                 {
                     case ItemInteractData itemInteractData:
                         MessageBus.Instance.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
                         break;
-                    case BrokenActorInteractData brokenActorInteractData:
-                        throw new NotImplementedException();
                     case InventoryInteractData inventoryInteractData:
                         // ユーザー操作待ち 相手のインベントリをUIでOpenする
                         throw new NotImplementedException();
@@ -255,8 +276,7 @@ namespace AloneSpace
                         break;
                 }
 
-                // いけるかわからん
-                actorData.ActorStateData.InteractOrderDic.Remove(interactOrder);
+                actorData.ActorStateData.InteractOrderDic.Remove(completeInteractData);
             }
         }
     }

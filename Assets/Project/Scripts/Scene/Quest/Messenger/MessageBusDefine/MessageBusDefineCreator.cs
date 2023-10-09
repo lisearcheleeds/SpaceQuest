@@ -29,5 +29,13 @@ namespace AloneSpace
         // GraphicEffect
         public class SpawnGraphicEffect : MessageBusBroadcaster<GraphicEffectSpecVO, IGraphicEffectHandler>{}
 
+        // InteractData
+        public class CreateAreaInteractData : MessageBusBroadcaster<AreaData, Vector3>{}
+        public class CreateInventoryInteractData : MessageBusBroadcaster<InventoryData[], int, Vector3, Quaternion>{}
+        public class CreateItemInteractData : MessageBusBroadcaster<ItemData, int, Vector3, Quaternion>{}
+        public class ReleaseInteractData : MessageBusBroadcaster<IInteractData>{}
+        public class CreatedInteractData : MessageBusBroadcaster<IInteractData>{}
+        public class ReleasedInteractData : MessageBusBroadcaster<IInteractData>{}
+
     }
 }

@@ -10,6 +10,7 @@ namespace AloneSpace
         List<PlayerData> releasePlayerDataList = new List<PlayerData>();
         List<ActorData> releaseActorDataList = new List<ActorData>();
         List<WeaponEffectData> releaseWeaponEffectDataList = new List<WeaponEffectData>();
+        List<IInteractData> releaseInteractDataList = new List<IInteractData>();
 
         public void Initialize(QuestData questData)
         {
@@ -18,6 +19,7 @@ namespace AloneSpace
             MessageBus.Instance.ReleasePlayerData.AddListener(ReleasePlayerData);
             MessageBus.Instance.ReleaseActorData.AddListener(ReleaseActorData);
             MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
+            MessageBus.Instance.ReleaseInteractData.RemoveListener(ReleaseInteractData);
         }
 
         public void Finalize()
@@ -25,6 +27,7 @@ namespace AloneSpace
             MessageBus.Instance.ReleasePlayerData.RemoveListener(ReleasePlayerData);
             MessageBus.Instance.ReleaseActorData.RemoveListener(ReleaseActorData);
             MessageBus.Instance.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
+            MessageBus.Instance.ReleaseInteractData.RemoveListener(ReleaseInteractData);
         }
 
         public void OnUpdate(float deltaTime)
@@ -73,6 +76,15 @@ namespace AloneSpace
             }
 
             releaseWeaponEffectDataList.Clear();
+
+            foreach (var releaseInteractData in releaseInteractDataList)
+            {
+                releaseInteractData.DeactivateModules();
+                questData.RemoveInteractData(releaseInteractData);
+                MessageBus.Instance.ReleasedInteractData.Broadcast(releaseInteractData);
+            }
+
+            releaseInteractDataList.Clear();
         }
 
         void ReleasePlayerData(PlayerData playerData)
@@ -93,6 +105,11 @@ namespace AloneSpace
         {
             weaponEffectData.Release();
             releaseWeaponEffectDataList.Add(weaponEffectData);
+        }
+
+        void ReleaseInteractData(IInteractData interactData)
+        {
+            releaseInteractDataList.Add(interactData);
         }
     }
 }

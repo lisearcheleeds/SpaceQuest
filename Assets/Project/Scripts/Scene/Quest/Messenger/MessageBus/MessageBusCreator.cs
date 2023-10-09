@@ -26,5 +26,13 @@
 
         // GraphicEffect
         public MessageBusDefine.SpawnGraphicEffect SpawnGraphicEffect { get; } = new MessageBusDefine.SpawnGraphicEffect();
+
+        // InteractData
+        public MessageBusDefine.CreateAreaInteractData CreateAreaInteractData { get; } = new MessageBusDefine.CreateAreaInteractData();
+        public MessageBusDefine.CreateInventoryInteractData CreateInventoryInteractData { get; } = new MessageBusDefine.CreateInventoryInteractData();
+        public MessageBusDefine.CreateItemInteractData CreateItemInteractData { get; } = new MessageBusDefine.CreateItemInteractData();
+        public MessageBusDefine.ReleaseInteractData ReleaseInteractData { get; } = new MessageBusDefine.ReleaseInteractData();
+        public MessageBusDefine.CreatedInteractData CreatedInteractData { get; } = new MessageBusDefine.CreatedInteractData();
+        public MessageBusDefine.ReleasedInteractData ReleasedInteractData { get; } = new MessageBusDefine.ReleasedInteractData();
     }
 }

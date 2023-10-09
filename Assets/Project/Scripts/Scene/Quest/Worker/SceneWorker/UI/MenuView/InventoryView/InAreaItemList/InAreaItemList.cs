@@ -34,7 +34,8 @@ namespace AloneSpace
             var cellData = Array.Empty<InAreaItemListViewCell.CellData>();
             if (observeArea != null && userControlActor != null)
             {
-                cellData = observeArea.InteractData
+                cellData = questData.InteractData.Values
+                    .Where(x => x.AreaId == observeArea.AreaId)
                     .Where(interactData => interactData is ItemInteractData)
                     .Select(interactData => new InAreaItemListViewCell.CellData(
                         interactData,
@@ -61,7 +62,7 @@ namespace AloneSpace
                 if (userControlActor.AreaId == targetData.AreaId)
                 {
                     // 同一エリア内
-                    return $"{(targetData.Position - userControlActor.Position).magnitude * 10.0f}m";
+                    return $"{(targetData.Position - userControlActor.Position).magnitude :F1}m";
                 }
 
                 if (userControlActor.AreaId.HasValue)
@@ -69,7 +70,7 @@ namespace AloneSpace
                     // 移動中
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
                     var offsetPosition = targetAreaData.StarSystemPosition - userControlActor.Position;
-                    return $"{offsetPosition.magnitude * 10.0f}m";
+                    return $"{offsetPosition.magnitude :F1}m";
                 }
 
                 if (userControlActor.AreaId != targetData.AreaId)
@@ -79,7 +80,7 @@ namespace AloneSpace
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
 
                     var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
-                    return $"{offsetPosition.magnitude * 10.0f}m";
+                    return $"{offsetPosition.magnitude :F1}m";
                 }
 
                 throw new ArgumentException();

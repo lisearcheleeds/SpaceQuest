@@ -16,9 +16,6 @@ namespace AloneSpace
 
         public AreaData[] AreaData { get; }
 
-        // SpaceSize.magnitudeは適当なスケール
-        public float AreaScale;
-
         StarSystemPresetVO starSystemPresetVO;
 
         public StarSystemData(StarSystemPresetVO starSystemPresetVO)
@@ -27,21 +24,6 @@ namespace AloneSpace
             AreaData = starSystemPresetVO.AreaPresetVOs
                 .Select(areaPresetVO => new AreaData(areaPresetVO))
                 .ToArray();
-
-            for (var i = 0; i < AreaData.Length; i++)
-            {
-                for (var t = 0; t < AreaData.Length; t++)
-                {
-                    if (i == t)
-                    {
-                        continue;
-                    }
-
-                    AreaData[i].AddInteractData(new AreaInteractData(AreaData[t], AreaData[i]));
-                }
-            }
-
-            AreaScale = SpaceSize.magnitude;
         }
 
         public AreaData GetAreaData(int areaId)

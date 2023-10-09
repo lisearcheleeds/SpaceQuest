@@ -9,6 +9,7 @@ namespace AloneSpace
 
         public Vector3 SpaceSize { get; }
         public Vector3 Position { get; }
+        public Vector3 SpawnPosition { get; }
 
         AreaMaster.Row areaMaster;
 

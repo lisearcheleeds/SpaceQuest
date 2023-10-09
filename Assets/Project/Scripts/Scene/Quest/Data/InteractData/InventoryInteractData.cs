@@ -8,8 +8,10 @@ namespace AloneSpace
     public class InventoryInteractData : IInteractData
     {
         static readonly float InteractionRange = 2.0f;
-        
+
         public Guid InstanceId { get; }
+
+        public MovingModule MovingModule => null;
 
         public int? AreaId { get; private set; }
         public Vector3 Position { get; private set; }
@@ -17,7 +19,7 @@ namespace AloneSpace
         public string Text => $"Inventory (" + InventoryData.Sum(x => x.VariableInventoryViewData.CellData.Count(y => y != null)) + ")";
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
-        
+
         public InventoryData[] InventoryData { get; }
 
         public InventoryInteractData(InventoryData[] inventoryData, int areaId, Vector3 position, Quaternion rotation)
@@ -29,7 +31,7 @@ namespace AloneSpace
             Position = position;
             Rotation = rotation;
         }
-        
+
         public Vector3 GetClosestPoint(IPositionData positionData)
         {
             return Position;
@@ -44,7 +46,7 @@ namespace AloneSpace
         {
             AreaId = areaId;
         }
-        
+
         public void SetPosition(Vector3 position)
         {
             Position = position;
@@ -53,6 +55,14 @@ namespace AloneSpace
         public void SetRotation(Quaternion rotation)
         {
             Rotation = rotation;
+        }
+
+        public void ActivateModules()
+        {
+        }
+
+        public void DeactivateModules()
+        {
         }
     }
 }

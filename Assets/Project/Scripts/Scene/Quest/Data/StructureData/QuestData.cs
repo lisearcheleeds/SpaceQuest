@@ -14,22 +14,21 @@ namespace AloneSpace
         public StarSystemData StarSystemData { get; }
 
         public UserData UserData { get; }
+
         public IReadOnlyDictionary<Guid, PlayerData> PlayerData => playerData;
         public IReadOnlyDictionary<Guid, ActorData> ActorData => actorData;
         public IReadOnlyDictionary<Guid, WeaponEffectData> WeaponEffectData => weaponEffectData;
+        public IReadOnlyDictionary<Guid, IInteractData> InteractData => interactData;
 
-        Dictionary<Guid, PlayerData> playerData;
-        Dictionary<Guid, ActorData> actorData;
-        Dictionary<Guid, WeaponEffectData> weaponEffectData;
+        Dictionary<Guid, PlayerData> playerData = new Dictionary<Guid, PlayerData>();
+        Dictionary<Guid, ActorData> actorData = new Dictionary<Guid, ActorData>();
+        Dictionary<Guid, WeaponEffectData> weaponEffectData = new Dictionary<Guid, WeaponEffectData>();
+        Dictionary<Guid, IInteractData> interactData = new Dictionary<Guid, IInteractData>();
 
         public QuestData(StarSystemPresetVO starSystemPresetVo)
         {
             StarSystemData = new StarSystemData(starSystemPresetVo);
             UserData = new UserData();
-
-            playerData = new Dictionary<Guid, PlayerData>();
-            actorData = new Dictionary<Guid, ActorData>();
-            weaponEffectData = new Dictionary<Guid, WeaponEffectData>();
         }
 
         public void AddPlayerData(PlayerData　data)
@@ -60,6 +59,16 @@ namespace AloneSpace
         public void RemoveWeaponEffectData(WeaponEffectData　data)
         {
             weaponEffectData.Remove(data.InstanceId);
+        }
+
+        public void AddInteractData(IInteractData data)
+        {
+            interactData[data.InstanceId] = data;
+        }
+
+        public void RemoveInteractData(IInteractData data)
+        {
+            interactData.Remove(data.InstanceId);
         }
     }
 }

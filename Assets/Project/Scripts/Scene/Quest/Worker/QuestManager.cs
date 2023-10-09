@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -57,9 +58,9 @@ namespace AloneSpace
             releaseDataController.Initialize(questData);
         }
 
-        public void OnStart()
+        public IEnumerator OnStart()
         {
-            questUpdater.OnStart();
+            yield return questUpdater.OnStart();
         }
 
         public void Finalize()

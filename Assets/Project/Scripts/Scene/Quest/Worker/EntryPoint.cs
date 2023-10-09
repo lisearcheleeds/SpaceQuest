@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,9 +22,9 @@ namespace AloneSpace
             deltaTimeCache.Enqueue(0.016f);
         }
 
-        void Start()
+        IEnumerator Start()
         {
-            questManager.OnStart();
+            return questManager.OnStart();
         }
 
         void Update()

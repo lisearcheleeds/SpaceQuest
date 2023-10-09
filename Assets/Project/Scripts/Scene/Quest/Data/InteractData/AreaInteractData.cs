@@ -8,37 +8,28 @@ namespace AloneSpace
     {
         public Guid InstanceId { get; }
 
+        public MovingModule MovingModule => null;
+
         public int? AreaId => AreaData.AreaId;
         public Vector3 Position { get; }
         public Quaternion Rotation { get; }
         public string Text { get; }
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
-        
+
         public AreaData AreaData { get; }
 
-        public AreaInteractData(AreaData areaData, AreaData fromAreaData)
+        public AreaInteractData(AreaData areaData, Vector3 currentStarSystemPosition)
         {
             InstanceId = Guid.NewGuid();
             AreaData = areaData;
 
-            if (fromAreaData != null)
-            {
-                Position = (fromAreaData.StarSystemPosition - areaData.StarSystemPosition).normalized * 100.0f;
-            }
-            else
-            {
-                Position = new Vector3(
-                    Random.Range(-areaData.SpaceSize.x, areaData.SpaceSize.x), 
-                    Random.Range(-areaData.SpaceSize.y, areaData.SpaceSize.y),
-                    Random.Range(-areaData.SpaceSize.z, areaData.SpaceSize.z));
-            }
-            
+            Position = currentStarSystemPosition - areaData.StarSystemPosition;
             Rotation = Quaternion.identity;
 
-            Text = $"Load to Area{areaData.AreaId} from {fromAreaData?.AreaId}";
+            Text = $"Area: {AreaId}";
         }
-        
+
         public Vector3 GetClosestPoint(IPositionData positionData)
         {
             throw new NotSupportedException();
@@ -62,6 +53,14 @@ namespace AloneSpace
         public void SetRotation(Quaternion rotation)
         {
             throw new NotSupportedException();
+        }
+
+        public void ActivateModules()
+        {
+        }
+
+        public void DeactivateModules()
+        {
         }
     }
 }
