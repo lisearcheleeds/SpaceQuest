@@ -47,6 +47,11 @@ namespace AloneSpace
             MessageBus.Instance.UIMenuStatusViewSelectActorData.RemoveListener(UIMenuStatusViewSelectActorData);
         }
 
+        public void SetDirty()
+        {
+            isDirty = true;
+        }
+
         public void OnUpdate()
         {
             if (isDirty)
@@ -120,7 +125,7 @@ namespace AloneSpace
         void UIMenuStatusViewSelectActorData(ActorData actorData)
         {
             this.actorData = actorData;
-            isDirty = true;
+            SetDirty();
         }
     }
 }

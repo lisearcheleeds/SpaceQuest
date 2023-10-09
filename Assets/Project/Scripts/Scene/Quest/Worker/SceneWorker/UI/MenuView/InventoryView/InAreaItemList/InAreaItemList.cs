@@ -35,21 +35,33 @@ namespace AloneSpace
             if (observeArea != null && userControlActor != null)
             {
                 cellData = observeArea.InteractData
+                    .Where(interactData => interactData is ItemInteractData)
                     .Select(interactData => new InAreaItemListViewCell.CellData(
                         interactData,
                         interactData.InstanceId == selectCellData?.InteractData.InstanceId,
+                        GetState,
                         GetDistanceText))
                     .ToArray();
             }
 
             inAreaItemListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
+            ActorStateData.InteractOrderState GetState(IInteractData targetData)
+            {
+                if (userControlActor.ActorStateData.InteractOrderDic.ContainsKey(targetData))
+                {
+                    return userControlActor.ActorStateData.InteractOrderDic[targetData];
+                }
+
+                return null;
+            }
+
             string GetDistanceText(IInteractData targetData)
             {
                 if (userControlActor.AreaId == targetData.AreaId)
                 {
                     // 同一エリア内
-                    return $"{(targetData.Position - userControlActor.Position).magnitude * 1000.0f}m";
+                    return $"{(targetData.Position - userControlActor.Position).magnitude * 10.0f}m";
                 }
 
                 if (userControlActor.AreaId.HasValue)
@@ -57,7 +69,7 @@ namespace AloneSpace
                     // 移動中
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
                     var offsetPosition = targetAreaData.StarSystemPosition - userControlActor.Position;
-                    return $"{offsetPosition.magnitude * 1000.0f}m";
+                    return $"{offsetPosition.magnitude * 10.0f}m";
                 }
 
                 if (userControlActor.AreaId != targetData.AreaId)
@@ -67,7 +79,7 @@ namespace AloneSpace
                     var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
 
                     var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
-                    return $"{offsetPosition.magnitude * 1000.0f}m";
+                    return $"{offsetPosition.magnitude * 10.0f}m";
                 }
 
                 throw new ArgumentException();
@@ -94,7 +106,16 @@ namespace AloneSpace
 
         void OnClickConfirmCell(InAreaItemListViewCell.CellData cellData)
         {
-            MessageBus.Instance.PlayerCommandSetInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
+            if (userControlActor.ActorStateData.InteractOrderDic.ContainsKey(cellData.InteractData))
+            {
+                // キャンセル
+                MessageBus.Instance.PlayerCommandRemoveInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
+            }
+            else
+            {
+                // 登録
+                MessageBus.Instance.PlayerCommandAddInteractOrder.Broadcast(userControlActor.InstanceId, cellData.InteractData);
+            }
         }
     }
 }

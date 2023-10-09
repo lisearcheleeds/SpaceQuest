@@ -12,6 +12,10 @@ namespace AloneSpace
         {
         }
 
+        public void SetDirty()
+        {
+        }
+
         public void OnUpdate()
         {
         }

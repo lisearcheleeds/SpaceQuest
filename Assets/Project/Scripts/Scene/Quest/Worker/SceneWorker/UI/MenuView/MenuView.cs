@@ -115,6 +115,25 @@ namespace AloneSpace
         {
             tabController.SetIndex(GetIndexFromMenuElement(currentMenuElement));
 
+            switch (currentMenuElement)
+            {
+                case MenuElement.StatusView:
+                    statusView.SetDirty();
+                    break;
+                case MenuElement.InventoryView:
+                    inventoryView.SetDirty();
+                    break;
+                case MenuElement.PlayerView:
+                    playerView.SetDirty();
+                    break;
+                case MenuElement.AreaView:
+                    areaView.SetDirty();
+                    break;
+                case MenuElement.MapView:
+                    mapView.SetDirty();
+                    break;
+            }
+
             OnUpdate();
         }
 

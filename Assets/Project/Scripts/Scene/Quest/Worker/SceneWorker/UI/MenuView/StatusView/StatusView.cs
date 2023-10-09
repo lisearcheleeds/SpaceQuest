@@ -25,6 +25,14 @@ namespace AloneSpace
             actorSpecialEffectList.Finalize();
         }
 
+        public void SetDirty()
+        {
+            actorList.SetDirty();
+            actorStatusView.SetDirty();
+            actorSpecView.SetDirty();
+            actorSpecialEffectList.SetDirty();
+        }
+
         public void OnUpdate()
         {
             actorList.OnUpdate();

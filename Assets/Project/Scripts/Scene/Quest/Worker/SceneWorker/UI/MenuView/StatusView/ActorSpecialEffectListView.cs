@@ -13,7 +13,7 @@ namespace AloneSpace
         protected override GameObject CellPrefab => cellPrefab;
 
         public void Apply(ActorSpecialEffectListViewCell.CellData[] cellData)
-        {;
+        {
             UpdateContents(cellData);
         }
     }

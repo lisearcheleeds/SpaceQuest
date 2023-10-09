@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,10 +12,9 @@ namespace AloneSpace
         ActorListViewCell.CellData selectCellData;
         QuestData questData;
 
-        int prevAroundTargetsCount;
         bool isDirty;
 
-        ActorListViewCell.CellData[] actorListViewCellDataList;
+        List<ActorListViewCell.CellData> actorListViewCellDataList = new List<ActorListViewCell.CellData>();
 
         public void Initialize(QuestData questData)
         {
@@ -32,27 +32,13 @@ namespace AloneSpace
             MessageBus.Instance.ReleaseActorData.RemoveListener(ReleaseActorData);
         }
 
+        public void SetDirty()
+        {
+            isDirty = true;
+        }
+
         public void OnUpdate()
         {
-            if (selectCellData == null)
-            {
-                if (actorListViewCellDataList?.FirstOrDefault() != null)
-                {
-                    OnClickSelectCell(actorListViewCellDataList?.FirstOrDefault());
-                }
-            }
-
-            var currentAroundTargetsCount = 0;
-            if (questData.UserData.ControlActorData != null)
-            {
-                currentAroundTargetsCount = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId).Count;
-            }
-
-            if (prevAroundTargetsCount != currentAroundTargetsCount)
-            {
-                isDirty = true;
-            }
-
             if (!isDirty || !enabled)
             {
                 return;
@@ -64,21 +50,33 @@ namespace AloneSpace
 
         void Refresh()
         {
+            actorListViewCellDataList.Clear();
+
             if (questData.UserData.ControlActorData != null)
             {
-                var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
-                actorListViewCellDataList = aroundTargets
-                    .Select(actorRelationData => new ActorListViewCell.CellData(
-                        actorRelationData.OtherActorData,
-                        actorRelationData.OtherActorData.InstanceId == selectCellData?.ActorData.InstanceId,
-                        GetDistanceText)).ToArray();
+                // 自機
+                var controlActorDataCellData = new ActorListViewCell.CellData(
+                    questData.UserData.ControlActorData,
+                    selectCellData == null || questData.UserData.ControlActorData.InstanceId == selectCellData.ActorData.InstanceId,
+                    GetDistanceText);
 
-                prevAroundTargetsCount = aroundTargets.Count;
-            }
-            else
-            {
-                actorListViewCellDataList = Array.Empty<ActorListViewCell.CellData>();
-                prevAroundTargetsCount = 0;
+                if (selectCellData == null)
+                {
+                    // TODO: 割りと使い捨て気味なので気が向いたら考える
+                    OnClickSelectCell(controlActorDataCellData);
+                    return;
+                }
+
+                actorListViewCellDataList.Add(controlActorDataCellData);
+
+                // 他
+                var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
+                actorListViewCellDataList.AddRange(
+                    aroundTargets
+                        .Select(actorRelationData => new ActorListViewCell.CellData(
+                            actorRelationData.OtherActorData,
+                            actorRelationData.OtherActorData.InstanceId == selectCellData.ActorData.InstanceId,
+                            GetDistanceText)));
             }
 
             actorListView.Apply(actorListViewCellDataList.ToArray(), OnClickSelectCell);
@@ -112,7 +110,7 @@ namespace AloneSpace
         void OnClickSelectCell(ActorListViewCell.CellData cellData)
         {
             selectCellData = cellData;
-            isDirty = true;
+            SetDirty();
 
             MessageBus.Instance.UIMenuStatusViewSelectActorData.Broadcast(cellData?.ActorData);
         }

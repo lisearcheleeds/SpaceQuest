@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -211,44 +212,52 @@ namespace AloneSpace
 
         void UpdateInteract(float deltaTime)
         {
-            if (actorData.ActorStateData.InteractOrder == null)
-            {
-                actorData.ActorStateData.CurrentInteractingTime = 0;
-                return;
-            }
-
-            if (actorData.ActorStateData.InteractOrder.IsInteractionRange(actorData))
-            {
-                actorData.ActorStateData.CurrentInteractingTime += deltaTime;
-            }
-            else
-            {
-                actorData.ActorStateData.CurrentInteractingTime = 0;
-                return;
-            }
-
-            if (actorData.ActorStateData.CurrentInteractingTime < actorData.ActorStateData.InteractOrder.InteractTime)
+            if (actorData.ActorStateData.InteractOrderDic.Count == 0)
             {
                 return;
             }
 
-            // インタラクト終了
-            switch (actorData.ActorStateData.InteractOrder)
+            foreach (var interactOrder in actorData.ActorStateData.InteractOrderDic.Keys)
             {
-                case ItemInteractData itemInteractData:
-                    MessageBus.Instance.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
-                    break;
-                case BrokenActorInteractData brokenActorInteractData:
-                    throw new NotImplementedException();
-                case InventoryInteractData inventoryInteractData:
-                    // ユーザー操作待ち 相手のインベントリをUIでOpenする
-                    throw new NotImplementedException();
-                case AreaInteractData areaInteractData:
-                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
-                    break;
-            }
+                var interactOrderState = actorData.ActorStateData.InteractOrderDic[interactOrder];
+                if (interactOrder.IsInteractionRange(actorData))
+                {
+                    interactOrderState.Time += deltaTime;
+                    interactOrderState.InProgress = true;
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrder.InteractTime);
+                }
+                else
+                {
+                    interactOrderState.Time = 0;
+                    interactOrderState.InProgress = false;
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrder.InteractTime);
+                    return;
+                }
 
-            actorData.ActorStateData.InteractOrder = null;
+                if (interactOrderState.Time < interactOrder.InteractTime)
+                {
+                    return;
+                }
+
+                // インタラクト終了
+                switch (interactOrder)
+                {
+                    case ItemInteractData itemInteractData:
+                        MessageBus.Instance.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
+                        break;
+                    case BrokenActorInteractData brokenActorInteractData:
+                        throw new NotImplementedException();
+                    case InventoryInteractData inventoryInteractData:
+                        // ユーザー操作待ち 相手のインベントリをUIでOpenする
+                        throw new NotImplementedException();
+                    case AreaInteractData areaInteractData:
+                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
+                        break;
+                }
+
+                // いけるかわからん
+                actorData.ActorStateData.InteractOrderDic.Remove(interactOrder);
+            }
         }
     }
 }

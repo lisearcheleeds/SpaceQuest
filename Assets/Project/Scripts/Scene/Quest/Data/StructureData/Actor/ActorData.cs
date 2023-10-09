@@ -128,9 +128,24 @@ namespace AloneSpace
             CollisionEventEffectReceiverModule = null;
         }
 
-        public void SetInteractOrder(IInteractData interactData)
+        public void AddInteractOrder(IInteractData interactData)
         {
-            ActorStateData.InteractOrder = interactData;
+            if (ActorStateData.InteractOrderDic.ContainsKey(interactData))
+            {
+                return;
+            }
+
+            ActorStateData.InteractOrderDic[interactData] = new ActorStateData.InteractOrderState();
+        }
+
+        public void RemoveInteractOrder(IInteractData interactData)
+        {
+            if (!ActorStateData.InteractOrderDic.ContainsKey(interactData))
+            {
+                return;
+            }
+
+            ActorStateData.InteractOrderDic.Remove(interactData);
         }
 
         public void SetAreaId(int? areaId)

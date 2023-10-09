@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -23,6 +24,11 @@ namespace AloneSpace
             MessageBus.Instance.UIMenuStatusViewSelectActorData.RemoveListener(UIMenuStatusViewSelectActorData);
         }
 
+        public void SetDirty()
+        {
+            isDirty = true;
+        }
+
         public void OnUpdate()
         {
             var currentSpecialEffectCount = 0;
@@ -45,7 +51,7 @@ namespace AloneSpace
 
         void Refresh()
         {
-            actorSpecialEffectListViewCellDataList = actorData.ActorStateData.SpecialEffectDataList.Select(x => new ActorSpecialEffectListViewCell.CellData(x)).ToArray();
+            actorSpecialEffectListViewCellDataList = actorData?.ActorStateData.SpecialEffectDataList.Select(x => new ActorSpecialEffectListViewCell.CellData(x)).ToArray() ?? Array.Empty<ActorSpecialEffectListViewCell.CellData>();
 
             prevSpecialEffectCount = 0;
             actorSpecialEffectListView.Apply(actorSpecialEffectListViewCellDataList);
@@ -54,7 +60,7 @@ namespace AloneSpace
         void UIMenuStatusViewSelectActorData(ActorData actorData)
         {
             this.actorData = actorData;
-            isDirty = true;
+            SetDirty();
         }
     }
 }

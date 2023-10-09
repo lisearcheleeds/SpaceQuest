@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,8 +10,8 @@ namespace AloneSpace
         [SerializeField] Text enduranceText;
         [SerializeField] Text shieldText;
         [SerializeField] Text currentStateText;
-        [SerializeField] GameObject progressGaugeObject;
-        [SerializeField] RectTransform progressGauge;
+
+        [SerializeField] Text interactOrdersText;
 
         ActorData actorData;
 
@@ -21,9 +22,8 @@ namespace AloneSpace
         float? prevShieldValue;
         float? prevShieldValueMax;
         Guid? prevMainTargetId;
-        Guid? prevInteractOrderId;
+        int? prevInteractOrderCount;
         Guid? prevMoveTargetId;
-        float? prevInteractingTime;
 
         public void Initialize()
         {
@@ -33,6 +33,11 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.UIMenuStatusViewSelectActorData.RemoveListener(UIMenuStatusViewSelectActorData);
+        }
+
+        public void SetDirty()
+        {
+            isDirty = true;
         }
 
         public void OnUpdate()
@@ -55,9 +60,6 @@ namespace AloneSpace
                 enduranceText.text = "";
                 shieldText.text = "";
                 currentStateText.text = "";
-
-                progressGaugeObject.SetActive(false);
-                progressGauge.localScale = Vector3.one;
                 return;
             }
 
@@ -75,37 +77,33 @@ namespace AloneSpace
                     currentStateText.text = $"戦闘中";
                 }
 
-                progressGaugeObject.SetActive(false);
-                progressGauge.localScale = Vector3.one;
+                interactOrdersText.text = "";
             }
-            else if (actorData.ActorStateData.InteractOrder != null)
+            else if (actorData.ActorStateData.InteractOrderDic.Count != 0)
             {
-                currentStateText.text = $"{actorData.ActorStateData.InteractOrder.Text}にインタラクト中";
-
-                progressGaugeObject.SetActive(true);
-                var interactProgress = Mathf.Clamp01(actorData.ActorStateData.CurrentInteractingTime / actorData.ActorStateData.InteractOrder.InteractTime);
-                progressGauge.localScale = new Vector3(interactProgress, 1.0f, 1.0f);
+                currentStateText.text = "インタラクト中";
+                interactOrdersText.text = string.Join("\n", actorData.ActorStateData.InteractOrderDic.Select(kv =>
+                {
+                    var (interactOrder, interactOrderState) = kv;
+                    return $"・{interactOrder.Text}\n -> {interactOrderState.ProgressRatio * 100.0f:F1}%";
+                }).ToArray());
             }
             else if (actorData.ActorStateData.MoveTarget != null)
             {
                 currentStateText.text = $"{actorData.ActorStateData.MoveTarget}に移動中";
-
-                progressGaugeObject.SetActive(false);
-                progressGauge.localScale = Vector3.one;
+                interactOrdersText.text = "";
             }
             else
             {
                 currentStateText.text = "";
-
-                progressGaugeObject.SetActive(false);
-                progressGauge.localScale = Vector3.one;
+                interactOrdersText.text = "";
             }
         }
 
         void UIMenuStatusViewSelectActorData(ActorData actorData)
         {
             this.actorData = actorData;
-            isDirty = true;
+            SetDirty();
         }
 
         void SetPrev()
@@ -116,9 +114,8 @@ namespace AloneSpace
             prevShieldValueMax = actorData?.ActorStateData.ShieldValueMax;
 
             prevMainTargetId = actorData?.ActorStateData.MainTarget?.InstanceId;
-            prevInteractOrderId = actorData?.ActorStateData.InteractOrder?.InstanceId;
+            prevInteractOrderCount = actorData?.ActorStateData.InteractOrderDic.Count;
             prevMoveTargetId = actorData?.ActorStateData.MoveTarget?.InstanceId;
-            prevInteractingTime = actorData?.ActorStateData.CurrentInteractingTime;
         }
 
         bool CheckDirty()
@@ -136,17 +133,12 @@ namespace AloneSpace
                 return true;
             }
 
-            if (prevInteractOrderId != actorData?.ActorStateData.InteractOrder?.InstanceId)
+            if (prevInteractOrderCount != actorData?.ActorStateData.InteractOrderDic.Count)
             {
                 return true;
             }
 
             if (prevMoveTargetId != actorData?.ActorStateData.MoveTarget?.InstanceId)
-            {
-                return true;
-            }
-
-            if (prevInteractingTime != actorData?.ActorStateData.CurrentInteractingTime)
             {
                 return true;
             }

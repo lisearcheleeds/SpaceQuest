@@ -29,6 +29,10 @@ namespace AloneSpace
             inAreaItemList.Finalize();
         }
 
+        public void SetDirty()
+        {
+        }
+
         public void OnUpdate()
         {
             weaponList.OnUpdate();

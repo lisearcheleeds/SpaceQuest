@@ -14,8 +14,7 @@ namespace AloneSpace
 
         public bool IsWarping { get; set; }
 
-        public IInteractData InteractOrder { get; set; }
-        public float CurrentInteractingTime { get; set; }
+        public Dictionary<IInteractData, InteractOrderState> InteractOrderDic { get; set; } = new Dictionary<IInteractData, InteractOrderState>();
 
         public IPositionData MainTarget { get; set; }
 
@@ -45,5 +44,12 @@ namespace AloneSpace
         public float ShieldValueMax { get; set; }
 
         public List<SpecialEffectData> SpecialEffectDataList = new List<SpecialEffectData>();
+
+        public class InteractOrderState
+        {
+            public float Time;
+            public bool InProgress;
+            public float ProgressRatio;
+        }
     }
 }

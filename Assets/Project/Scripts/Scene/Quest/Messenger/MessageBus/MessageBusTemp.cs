@@ -22,8 +22,9 @@
         // Playerによるゲームコマンド
         public MessageBusDefine.PlayerCommandSetAreaId PlayerCommandSetAreaId { get; } = new MessageBusDefine.PlayerCommandSetAreaId();
         public MessageBusDefine.PlayerCommandSetMoveTarget PlayerCommandSetMoveTarget { get; } = new MessageBusDefine.PlayerCommandSetMoveTarget();
-        public MessageBusDefine.PlayerCommandSetInteractOrder PlayerCommandSetInteractOrder { get; } = new MessageBusDefine.PlayerCommandSetInteractOrder();
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
+        public MessageBusDefine.PlayerCommandAddInteractOrder PlayerCommandAddInteractOrder { get; } = new MessageBusDefine.PlayerCommandAddInteractOrder();
+        public MessageBusDefine.PlayerCommandRemoveInteractOrder PlayerCommandRemoveInteractOrder { get; } = new MessageBusDefine.PlayerCommandRemoveInteractOrder();
 
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();

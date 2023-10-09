@@ -20,8 +20,9 @@ namespace AloneSpace
 
         public class PlayerCommandSetAreaId : MessageBusBroadcaster<Guid, int?>{}
         public class PlayerCommandSetMoveTarget : MessageBusBroadcaster<Guid, IPositionData>{}
-        public class PlayerCommandSetInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
         public class PlayerCommandSetTacticsType : MessageBusBroadcaster<Guid, TacticsType>{}
+        public class PlayerCommandAddInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
+        public class PlayerCommandRemoveInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
 
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}

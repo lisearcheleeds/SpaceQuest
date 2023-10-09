@@ -11,7 +11,8 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.PlayerCommandSetInteractOrder.AddListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandAddInteractOrder.AddListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.PlayerCommandRemoveInteractOrder.AddListener(PlayerCommandRemoveInteractOrder);
             MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
 
@@ -39,7 +40,8 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            MessageBus.Instance.PlayerCommandSetInteractOrder.RemoveListener(PlayerCommandSetInteractOrder);
+            MessageBus.Instance.PlayerCommandAddInteractOrder.RemoveListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.PlayerCommandRemoveInteractOrder.RemoveListener(PlayerCommandRemoveInteractOrder);
             MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
             MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
 
@@ -65,9 +67,14 @@ namespace AloneSpace
             MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
         }
 
-        void PlayerCommandSetInteractOrder(Guid actorId, IInteractData interactData)
+        void PlayerCommandAddInteractOrder(Guid actorId, IInteractData interactData)
         {
-            questData.ActorData[actorId].SetInteractOrder(interactData);
+            questData.ActorData[actorId].AddInteractOrder(interactData);
+        }
+
+        void PlayerCommandRemoveInteractOrder(Guid actorId, IInteractData interactData)
+        {
+            questData.ActorData[actorId].RemoveInteractOrder(interactData);
         }
 
         void PlayerCommandSetAreaId(Guid actorId, int? areaId)
