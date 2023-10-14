@@ -19,7 +19,7 @@ namespace AloneSpace
             MessageBus.Instance.ReleasePlayerData.AddListener(ReleasePlayerData);
             MessageBus.Instance.ReleaseActorData.AddListener(ReleaseActorData);
             MessageBus.Instance.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
-            MessageBus.Instance.ReleaseInteractData.RemoveListener(ReleaseInteractData);
+            MessageBus.Instance.ReleaseInteractData.AddListener(ReleaseInteractData);
         }
 
         public void Finalize()

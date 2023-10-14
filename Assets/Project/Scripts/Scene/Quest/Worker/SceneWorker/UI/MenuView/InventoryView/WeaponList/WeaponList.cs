@@ -24,27 +24,27 @@ namespace AloneSpace
 
         bool isLayoutDirty;
         bool isWeaponDataDirty;
-        ActorData currentControlActorData;
 
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
+
+            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
         }
 
         public void Finalize()
         {
+            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
+        }
+
+        public void SetDirty()
+        {
+            isLayoutDirty = true;
+            isWeaponDataDirty = true;
         }
 
         public void OnUpdate()
         {
-            if (questData.UserData.ControlActorData?.InstanceId != currentControlActorData?.InstanceId)
-            {
-                currentControlActorData = questData.UserData.ControlActorData;
-
-                isLayoutDirty = true;
-                isWeaponDataDirty = true;
-            }
-
             if (isLayoutDirty && enabled)
             {
                 RefreshLayout();
@@ -62,7 +62,7 @@ namespace AloneSpace
         {
             actorImage.SetNativeSize();
 
-            var layouts = currentControlActorData.ActorSpecVO.WeaponSlotLayout
+            var layouts = questData.UserData.ControlActorData.ActorSpecVO.WeaponSlotLayout
                 .Select((xy, weaponIndex) => (new Vector2(xy.Item1, xy.Item2), weaponIndex))
                 .GroupBy(layout => layout.Item1)
                 .Select(x => x.Select(y => y))
@@ -73,7 +73,7 @@ namespace AloneSpace
                 weaponListGroups.Add(Instantiate(weaponListGroupPrefab, weaponHolderParent, false));
             }
 
-            while (weaponListViewCells.Count < currentControlActorData?.ActorSpecVO.WeaponSlotCount)
+            while (weaponListViewCells.Count < questData.UserData.ControlActorData?.ActorSpecVO.WeaponSlotCount)
             {
                 weaponListViewCells.Add(Instantiate(weaponListGroupCellPrefab, weaponHolderParent, false));
             }
@@ -104,11 +104,16 @@ namespace AloneSpace
 
         void RefreshWeaponData()
         {
-            var weaponDataList = currentControlActorData.WeaponData.Values.ToArray();
+            var weaponDataList = questData.UserData.ControlActorData.WeaponData.Values.ToArray();
             foreach (var weaponData in weaponDataList)
             {
                 weaponListViewCells[weaponData.WeaponIndex].UpdateWeaponData(weaponData);
             }
+        }
+
+        void SetUserControlActor(ActorData userControlActor)
+        {
+            SetDirty();
         }
     }
 }

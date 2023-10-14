@@ -19,7 +19,6 @@ namespace AloneSpace
             weaponList.Initialize(questData);
             inventoryList.Initialize(questData);
             inAreaItemList.Initialize(questData);
-
         }
 
         public void Finalize()
@@ -31,11 +30,16 @@ namespace AloneSpace
 
         public void SetDirty()
         {
+            weaponList.SetDirty();
+            inventoryList.SetDirty();
+            inAreaItemList.SetDirty();
         }
 
         public void OnUpdate()
         {
             weaponList.OnUpdate();
+            inventoryList.OnUpdate();
+            inAreaItemList.OnUpdate();
         }
     }
 }

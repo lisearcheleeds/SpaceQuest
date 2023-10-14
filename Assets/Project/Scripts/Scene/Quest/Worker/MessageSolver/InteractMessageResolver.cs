@@ -33,7 +33,6 @@ namespace AloneSpace
             {
                 // アイテムを格納
                 toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
-                MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId });
 
                 MessageBus.Instance.ReleaseInteractData.Broadcast(pickItem);
             }
@@ -53,8 +52,6 @@ namespace AloneSpace
                 // アイテムを格納
                 toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, itemData);
                 fromInventory.VariableInventoryViewData.RemoveInventoryItem(removableId.Value);
-
-                MessageBus.Instance.UserCommandUpdateInventory.Broadcast(new[] { toInventory.InstanceId, fromInventory.InstanceId });
             }
             else
             {
