@@ -49,6 +49,8 @@ namespace VariableInventorySystem
             this.onCellOptionClick = onCellOptionClick;
             this.onCellEnter = onCellEnter;
             this.onCellExit = onCellExit;
+
+            condition.raycastTarget = false;
         }
 
         public virtual void Apply(VariableInventoryViewData stashData)
@@ -82,7 +84,7 @@ namespace VariableInventorySystem
             }
 
             UpdateSize();
-            
+
             for (var i = 0; i < StashData.CellData.Length; i++)
             {
                 itemViews[i].Apply(StashData.CellData[i]);

@@ -19,7 +19,7 @@ namespace VariableInventorySystem
         [SerializeField] GameObject highlight;
 
         [SerializeField] StandardButton button;
-        
+
         IVariableInventoryAsset currentImageAsset;
 
         public override void SetSelectable(bool value)
