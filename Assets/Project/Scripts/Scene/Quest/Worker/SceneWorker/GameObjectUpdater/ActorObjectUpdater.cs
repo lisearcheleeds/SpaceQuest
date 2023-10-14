@@ -25,7 +25,7 @@ namespace AloneSpace
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.SetDirtyActorObjectList.AddListener(SetDirtyActorObjectList);
+            MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
 
             MessageBus.Instance.CreatedActorData.AddListener(CreatedActorData);
             MessageBus.Instance.ReleasedActorData.AddListener(ReleasedActorData);
@@ -36,7 +36,7 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            MessageBus.Instance.SetDirtyActorObjectList.RemoveListener(SetDirtyActorObjectList);
+            MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
 
             MessageBus.Instance.CreatedActorData.RemoveListener(CreatedActorData);
             MessageBus.Instance.ReleasedActorData.RemoveListener(ReleasedActorData);
@@ -62,13 +62,18 @@ namespace AloneSpace
         void SetUserObserveTarget(IPositionData userObserveTarget)
         {
             this.userObserveTarget = userObserveTarget;
-            SetDirtyActorObjectList();
+            SetDirty();
         }
 
         void SetUserObserveArea(AreaData areaData)
         {
             observeArea = areaData;
-            SetDirtyActorObjectList();
+            SetDirty();
+        }
+
+        void SetDirty()
+        {
+            isDirty = true;
         }
 
         void Refresh()
@@ -134,9 +139,9 @@ namespace AloneSpace
             currentActorList.Remove(target);
         }
 
-        void SetDirtyActorObjectList()
+        void PlayerCommandSetAreaId(Guid actorId, int? areaId)
         {
-            isDirty = true;
+            SetDirty();
         }
 
         void CreatedActorData(ActorData actorData)

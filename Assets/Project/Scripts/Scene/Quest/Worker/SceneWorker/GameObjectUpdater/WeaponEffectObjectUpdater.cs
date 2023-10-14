@@ -17,7 +17,6 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            MessageBus.Instance.SetDirtyWeaponEffectObjectList.AddListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.CreatedWeaponEffectData.AddListener(AddWeaponEffectData);
             MessageBus.Instance.ReleasedWeaponEffectData.AddListener(RemoveWeaponEffectData);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
@@ -25,7 +24,6 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            MessageBus.Instance.SetDirtyWeaponEffectObjectList.RemoveListener(SetDirtyWeaponEffectObjectList);
             MessageBus.Instance.CreatedWeaponEffectData.RemoveListener(AddWeaponEffectData);
             MessageBus.Instance.ReleasedWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
@@ -48,7 +46,7 @@ namespace AloneSpace
         void SetUserObserveArea(AreaData areaData)
         {
             this.observeArea = areaData;
-            SetDirtyWeaponEffectObjectList();
+            isDirty = true;
         }
 
         /// <summary>
@@ -107,11 +105,6 @@ namespace AloneSpace
         {
             weaponEffect.Release();
             currentWeaponEffectList.Remove(weaponEffect);
-        }
-
-        void SetDirtyWeaponEffectObjectList()
-        {
-            isDirty = true;
         }
 
         void AddWeaponEffectData(WeaponEffectData weaponEffectData)

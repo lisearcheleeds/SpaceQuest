@@ -22,13 +22,15 @@ namespace AloneSpace
             this.questData = questData;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.SetDirtyInteractObjectList.AddListener(SetDirtyInteractObjectList);
+            MessageBus.Instance.CreatedInteractData.AddListener(CreatedInteractData);
+            MessageBus.Instance.ReleasedInteractData.AddListener(ReleasedInteractData);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetDirtyInteractObjectList.RemoveListener(SetDirtyInteractObjectList);
+            MessageBus.Instance.CreatedInteractData.RemoveListener(CreatedInteractData);
+            MessageBus.Instance.ReleasedInteractData.RemoveListener(ReleasedInteractData);
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
@@ -63,8 +65,7 @@ namespace AloneSpace
             // 不要なオブジェクトを消す
             foreach (var interactionObject in interactionObjectList.ToArray())
             {
-                interactionObject.Release();
-                interactionObjectList.Remove(interactionObject);
+                ReleaseInteractObject(interactionObject);
             }
 
             if (observeArea == null)
@@ -100,7 +101,7 @@ namespace AloneSpace
 
             if (assetPathVO == null)
             {
-                onComplete();
+                onComplete?.Invoke();
                 return;
             }
 
@@ -109,13 +110,35 @@ namespace AloneSpace
                 var interactionObject = (InteractionObject)c;
                 interactionObject.SetInteractData(interactData);
                 interactionObjectList.Add(interactionObject);
-                onComplete();
+                onComplete?.Invoke();
             });
+        }
+
+        void ReleaseInteractObject(InteractionObject interactionObject)
+        {
+            interactionObject.Release();
+            interactionObjectList.Remove(interactionObject);
         }
 
         void SetDirtyInteractObjectList()
         {
             isDirty = true;
+        }
+
+        void CreatedInteractData(IInteractData interactData)
+        {
+            if (interactData.AreaId == observeArea?.AreaId)
+            {
+                CreateInteractObject(interactData, null);
+            }
+        }
+
+        void ReleasedInteractData(IInteractData interactData)
+        {
+            if (interactData.AreaId == observeArea?.AreaId)
+            {
+                ReleaseInteractObject(interactionObjectList.First(x => x.InteractData.InstanceId == interactData.InstanceId));
+            }
         }
     }
 }

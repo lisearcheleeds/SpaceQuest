@@ -80,7 +80,6 @@ namespace AloneSpace
         void PlayerCommandSetAreaId(Guid actorId, int? areaId)
         {
             questData.ActorData[actorId].SetAreaId(areaId);
-            MessageBus.Instance.SetDirtyActorObjectList.Broadcast();
         }
 
         void PlayerCommandSetMoveTarget(Guid actorId, IPositionData moveTarget)
