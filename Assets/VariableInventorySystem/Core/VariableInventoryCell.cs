@@ -9,7 +9,7 @@ namespace VariableInventorySystem
         public IVariableInventoryCellData CellData { get; private set; }
 
         public abstract Vector2 CellSize { get; }
-        
+
         public Vector2 CellDataSize
         {
             get

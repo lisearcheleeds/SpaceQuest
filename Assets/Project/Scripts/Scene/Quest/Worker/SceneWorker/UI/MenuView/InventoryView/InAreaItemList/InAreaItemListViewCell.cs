@@ -122,7 +122,7 @@ namespace AloneSpace
                 progressGauge.anchorMax = Vector2.one;
             }
 
-            if (Time.time - lastUpdateTime > 1.0f)
+            if (Time.time - lastUpdateTime > 0.25f)
             {
                 lastUpdateTime = Time.time;
                 distanceText.text = cellData.GetDistanceText(cellData.InteractData);

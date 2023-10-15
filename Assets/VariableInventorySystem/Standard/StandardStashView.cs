@@ -91,17 +91,6 @@ namespace VariableInventorySystem
             }
         }
 
-        public virtual void ReApply()
-        {
-            if (!isDirty)
-            {
-                return;
-            }
-
-            Apply(StashData);
-            isDirty = false;
-        }
-
         public virtual void OnPrePick(IVariableInventoryCell stareCell)
         {
             if (stareCell?.CellData == null)
@@ -127,7 +116,7 @@ namespace VariableInventorySystem
                 originalCellData = stareCell.CellData;
 
                 itemViews[id.Value].Apply(null);
-                StashData.InsertInventoryItem(id.Value, null);
+                StashData.RemoveInventoryItem(id.Value);
                 isDirty = true;
                 return true;
             }
@@ -139,6 +128,12 @@ namespace VariableInventorySystem
         {
             if (stareCell == null)
             {
+                return;
+            }
+
+            if (!GetIndex(stareCell).HasValue)
+            {
+                UpdateCondition(stareCell, effectCell);
                 return;
             }
 
@@ -195,12 +190,12 @@ namespace VariableInventorySystem
             return true;
         }
 
-        public virtual void OnDroped(bool isDroped)
+        public virtual void OnDropped(bool isDropped)
         {
             conditionTransform.gameObject.SetActive(false);
             condition.color = defaultColor;
 
-            if (!isDroped && originalId.HasValue)
+            if (!isDropped && originalId.HasValue)
             {
                 // revert
                 itemViews[originalId.Value].Apply(originalCellData);
@@ -215,7 +210,7 @@ namespace VariableInventorySystem
         public virtual void OnCellEnter(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
         {
             conditionTransform.gameObject.SetActive(effectCell?.CellData != null && itemViews.Contains(stareCell));
-            (stareCell as StandardCell).SetHighLight(true);
+            (stareCell as StandardCell)?.SetHighLight(true);
         }
 
         public virtual void OnCellExit(IVariableInventoryCell stareCell)
@@ -225,7 +220,7 @@ namespace VariableInventorySystem
 
             variableInventoryCellCorner = VariableInventoryCellCorner.None;
 
-            (stareCell as StandardCell).SetHighLight(false);
+            (stareCell as StandardCell)?.SetHighLight(false);
         }
 
         public virtual void OnSwitchRotate(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)

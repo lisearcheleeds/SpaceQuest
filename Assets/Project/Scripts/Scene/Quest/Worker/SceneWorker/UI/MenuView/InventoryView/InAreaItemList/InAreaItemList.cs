@@ -1,11 +1,16 @@
 ﻿using System;
 using UnityEngine;
 using System.Linq;
+using VariableInventorySystem;
+using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
     public class InAreaItemList : MonoBehaviour
     {
+        public DropAreaView DropAreaView => dropAreaView;
+
+        [SerializeField] DropAreaView dropAreaView;
         [SerializeField] InAreaItemListView inAreaItemListView;
 
         InAreaItemListViewCell.CellData selectCellData;
@@ -21,6 +26,8 @@ namespace AloneSpace
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
             MessageBus.Instance.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
+
+            dropAreaView.Apply(OnDropAreaDrop, GetDropAreaIsInsertableCondition, GetDropAreaIsInnerCell);
         }
 
         public void Finalize()
@@ -138,6 +145,45 @@ namespace AloneSpace
                 // 登録
                 MessageBus.Instance.PlayerCommandAddInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);
             }
+        }
+
+        bool OnDropAreaDrop(IVariableInventoryCellData cellData)
+        {
+            if (!questData.UserData.ControlActorData.AreaId.HasValue)
+            {
+                return false;
+            }
+
+            // InAreaItemとして生成
+            var itemData = cellData as ItemData;
+            var offsetPosition = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
+            MessageBus.Instance.CreateItemInteractData.Broadcast(
+                itemData,
+                questData.UserData.ControlActorData.AreaId.Value,
+                questData.UserData.ControlActorData.Position + offsetPosition,
+                Quaternion.identity);
+
+            // インベントリから消す
+            // PrePickで消えているので不要・・・なんだけどリファクタしたときに必要になる
+            // var variableInventoryViewData = questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData;
+            // var targetCellData = variableInventoryViewData.CellData.First(x => x?.InstanceId == cellData.InstanceId);
+            // variableInventoryViewData.RemoveInventoryItem(variableInventoryViewData.GetId(targetCellData).Value);
+
+            SetDirty();
+
+            return true;
+        }
+
+        bool GetDropAreaIsInsertableCondition(IVariableInventoryCellData cellData)
+        {
+            // 捨てるだけなので常にtrue
+            return true;
+        }
+
+        bool GetDropAreaIsInnerCell(IVariableInventoryCellData cellData)
+        {
+            // TODOリストにある場合はtrue
+            return false;
         }
     }
 }

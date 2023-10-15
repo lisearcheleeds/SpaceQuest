@@ -6,8 +6,10 @@ namespace AloneSpace
     public class InventoryList : MonoBehaviour
     {
         public StandardStashView StandardStashView => stashView;
+        public DropAreaView DropAreaView => dropAreaView;
 
         [SerializeField] StandardStashView stashView;
+        [SerializeField] DropAreaView dropAreaView;
 
         bool isDirty;
 
@@ -20,6 +22,8 @@ namespace AloneSpace
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
             MessageBus.Instance.ManagerCommandTransferItem.AddListener(ManagerCommandTransferItem);
+
+            dropAreaView.Apply(OnDropAreaDrop, GetDropAreaIsInsertableCondition, GetDropAreaIsInnerCell);
         }
 
         public void Finalize()
@@ -71,6 +75,37 @@ namespace AloneSpace
             {
                 SetDirty();
             }
+        }
+
+        bool OnDropAreaDrop(IVariableInventoryCellData cellData)
+        {
+            if (questData.UserData.ControlActorData == null)
+            {
+                return false;
+            }
+
+            var variableInventoryViewData = questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData;
+            var insertableId = variableInventoryViewData.GetInsertableId(cellData);
+            if (!insertableId.HasValue)
+            {
+                return false;
+            }
+
+            // place
+            variableInventoryViewData.InsertInventoryItem(insertableId.Value, cellData);
+            SetDirty();
+
+            return true;
+        }
+
+        bool GetDropAreaIsInsertableCondition(IVariableInventoryCellData cellData)
+        {
+            return questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData.GetInsertableId(cellData).HasValue;
+        }
+
+        bool GetDropAreaIsInnerCell(IVariableInventoryCellData cellData)
+        {
+            return questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData.GetId(cellData).HasValue;
         }
     }
 }

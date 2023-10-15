@@ -13,13 +13,11 @@ namespace VariableInventorySystem
             Action<IVariableInventoryCell> onCellEnter,
             Action<IVariableInventoryCell> onCellExit);
 
-        void ReApply();
-
         void OnPrePick(IVariableInventoryCell stareCell);
         bool OnPick(IVariableInventoryCell stareCell);
         void OnDrag(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell, PointerEventData cursorPosition);
         bool OnDrop(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell);
-        void OnDroped(bool isDroped);
+        void OnDropped(bool isDropped);
 
         void OnCellEnter(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell);
         void OnCellExit(IVariableInventoryCell stareCell);
