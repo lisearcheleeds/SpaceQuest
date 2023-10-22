@@ -51,12 +51,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd9de4ce23ff46f99c0a417901cadf57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellSize: {x: 72, y: 72}
+  gridCellSize: {x: 72, y: 72}
   sizeRoot: {fileID: 333892252227936746}
-  target: {fileID: 3037046404487365375}
+  content: {fileID: 3037046404487365375}
   background: {fileID: 5188314969499300874}
   cellImage: {fileID: 4547656346677045116}
   highlight: {fileID: 2407310465210912618}
+  raycastTarget: {fileID: 8785209023145000950}
   button: {fileID: 3877367054653657283}
   text: {fileID: 571431673784035904}
 --- !u!1 &1265962930835667773

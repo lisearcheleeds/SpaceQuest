@@ -5,10 +5,10 @@ namespace AloneSpace
 {
     public class InventoryList : MonoBehaviour
     {
-        public StandardStashView StandardStashView => stashView;
+        public StandardGridView StandardGridView => standardGridView;
         public DropAreaView DropAreaView => dropAreaView;
 
-        [SerializeField] StandardStashView stashView;
+        [SerializeField] StandardGridView standardGridView;
         [SerializeField] DropAreaView dropAreaView;
 
         bool isDirty;
@@ -51,7 +51,7 @@ namespace AloneSpace
         {
             if (questData.UserData.ControlActorData != null)
             {
-                stashView.Apply(questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData);
+                standardGridView.Apply(questData.UserData.ControlActorData.InventoryData.Inventory);
             }
         }
 
@@ -77,14 +77,14 @@ namespace AloneSpace
             }
         }
 
-        bool OnDropAreaDrop(IVariableInventoryCellData cellData)
+        bool OnDropAreaDrop(ICellData cellData)
         {
             if (questData.UserData.ControlActorData == null)
             {
                 return false;
             }
 
-            var variableInventoryViewData = questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData;
+            var variableInventoryViewData = questData.UserData.ControlActorData.InventoryData.Inventory;
             var insertableId = variableInventoryViewData.GetInsertableId(cellData);
             if (!insertableId.HasValue)
             {
@@ -98,14 +98,14 @@ namespace AloneSpace
             return true;
         }
 
-        bool GetDropAreaIsInsertableCondition(IVariableInventoryCellData cellData)
+        bool GetDropAreaIsInsertableCondition(ICellData cellData)
         {
-            return questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData.GetInsertableId(cellData).HasValue;
+            return questData.UserData.ControlActorData.InventoryData.Inventory.GetInsertableId(cellData).HasValue;
         }
 
-        bool GetDropAreaIsInnerCell(IVariableInventoryCellData cellData)
+        bool GetDropAreaIsInnerCell(ICellData cellData)
         {
-            return questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData.GetId(cellData).HasValue;
+            return questData.UserData.ControlActorData.InventoryData.Inventory.GetId(cellData).HasValue;
         }
     }
 }

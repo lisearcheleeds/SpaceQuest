@@ -1,16 +1,14 @@
 ﻿using System;
-using AloneSpace.Common;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using VariableInventorySystem;
 
-namespace AloneSpace
+namespace VariableInventorySystem
 {
     /// <summary>
     /// Drag and DropのDrop専用View
     /// </summary>
-    public class DropAreaView : MonoBehaviour, IVariableInventoryView
+    public class DropAreaView : MonoBehaviour, IView
     {
         [SerializeField] DropAreaCell dropAreaCell;
         [SerializeField] Graphic condition;
@@ -20,45 +18,55 @@ namespace AloneSpace
         [SerializeField] Color positiveColor;
         [SerializeField] Color negativeColor;
 
-        Func<IVariableInventoryCellData, bool> onDrop;
-        Func<IVariableInventoryCellData, bool> getIsInsertableCondition;
-        Func<IVariableInventoryCellData, bool> getIsInnerCell;
+        Func<ICellData, bool> onDrop;
+        Func<ICellData, bool> getIsInsertableCondition;
+        Func<ICellData, bool> getIsInnerCell;
+        IView viewImplementation;
 
-        public void Initialize(
-            GameObject cellPrefab,
-            Action<IVariableInventoryCell> onCellClick,
-            Action<IVariableInventoryCell> onCellOptionClick,
-            Action<IVariableInventoryCell> onCellEnter,
-            Action<IVariableInventoryCell> onCellExit)
+        public ICell CreateEffectCell()
+        {
+            throw new NotSupportedException("This method is only used for Drop, so it will not be called if the operation is normal.");
+        }
+
+        public void SetCallbacks(
+            Action<ICell> onCellClick,
+            Action<ICell> onCellOptionClick,
+            Action<ICell> onCellEnter,
+            Action<ICell> onCellExit)
         {
             dropAreaCell.SetCellCallback(onCellClick, onCellOptionClick, onCellEnter, onCellExit);
 
-            dropAreaCell.SetSelectable(false);
+            dropAreaCell.SetClickable(false);
         }
 
         public virtual void Apply(
-            Func<IVariableInventoryCellData, bool> onDrop,
-            Func<IVariableInventoryCellData, bool> getIsInsertableCondition,
-            Func<IVariableInventoryCellData, bool> getIsInnerCell)
+            Func<ICellData, bool> onDrop,
+            Func<ICellData, bool> getIsInsertableCondition,
+            Func<ICellData, bool> getIsInnerCell)
         {
             this.onDrop = onDrop;
             this.getIsInsertableCondition = getIsInsertableCondition;
             this.getIsInnerCell = getIsInnerCell;
         }
 
-        public virtual void OnPrePick(IVariableInventoryCell stareCell)
+        public virtual void OnPrePick(ICell stareCell)
         {
-            dropAreaCell.SetSelectable(!getIsInnerCell(stareCell.CellData));
+            if (stareCell?.CellData == null)
+            {
+                return;
+            }
+
+            dropAreaCell.SetClickable(!getIsInnerCell(stareCell.CellData));
         }
 
-        public virtual bool OnPick(IVariableInventoryCell stareCell)
+        public virtual bool OnPick(ICell stareCell)
         {
             return false;
         }
 
-        public virtual void OnDrag(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell, PointerEventData pointerEventData)
+        public virtual void OnDrag(ICell stareCell, ICell effectCell, PointerEventData pointerEventData)
         {
-            if (stareCell == null)
+            if (stareCell?.CellData == null)
             {
                 return;
             }
@@ -66,7 +74,7 @@ namespace AloneSpace
             UpdateCondition(stareCell, effectCell);
         }
 
-        public virtual bool OnDrop(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
+        public virtual bool OnDrop(ICell stareCell, ICell effectCell)
         {
             if (stareCell != dropAreaCell)
             {
@@ -78,28 +86,28 @@ namespace AloneSpace
 
         public virtual void OnDropped(bool isDropped)
         {
-            dropAreaCell.SetSelectable(false);
+            dropAreaCell.SetClickable(false);
 
             conditionTransform.gameObject.SetActive(false);
             condition.color = defaultColor;
         }
 
-        public virtual void OnCellEnter(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
+        public virtual void OnCellEnter(ICell stareCell, ICell effectCell)
         {
             conditionTransform.gameObject.SetActive(effectCell?.CellData != null && dropAreaCell == stareCell);
         }
 
-        public virtual void OnCellExit(IVariableInventoryCell stareCell)
+        public virtual void OnCellExit(ICell stareCell)
         {
             conditionTransform.gameObject.SetActive(false);
             condition.color = defaultColor;
         }
 
-        public virtual void OnSwitchRotate(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
+        public virtual void OnSwitchRotate(ICell stareCell, ICell effectCell)
         {
         }
 
-        protected virtual void UpdateCondition(IVariableInventoryCell stareCell, IVariableInventoryCell effectCell)
+        protected virtual void UpdateCondition(ICell stareCell, ICell effectCell)
         {
             if (stareCell == dropAreaCell && getIsInsertableCondition(effectCell.CellData))
             {

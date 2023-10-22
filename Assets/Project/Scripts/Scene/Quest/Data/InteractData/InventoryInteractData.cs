@@ -16,7 +16,7 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
-        public string Text => $"Inventory (" + InventoryData.Sum(x => x.VariableInventoryViewData.CellData.Count(y => y != null)) + ")";
+        public string Text => $"Inventory (" + InventoryData.Sum(x => x.Inventory.CellData.Count(y => y != null)) + ")";
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.NearPosition;
 

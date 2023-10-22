@@ -4,7 +4,7 @@ using VariableInventorySystem;
 
 namespace AloneSpace.Common
 {
-    public class InventoryCell : StandardCell
+    public class InventoryCell : StandardGridCell
     {
         [SerializeField] Text text;
 

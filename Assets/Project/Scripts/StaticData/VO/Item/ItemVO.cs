@@ -12,8 +12,7 @@ namespace AloneSpace
         public int Width => itemMaster.Width;
         public int Height => itemMaster.Height;
         public int? MaxAmount => itemMaster.MaxAmount;
-        public IVariableInventoryAsset ImageAsset => null;
-        // public IVariableInventoryAsset ImageAsset => itemMaster.ImageAsset;
+        public Texture2DPathVO ImageAsset => itemMaster.ImageAsset;
 
         public ItemType[] ItemTypes { get; }
         public IItemExclusiveVO[] ItemExclusiveVOs { get; }

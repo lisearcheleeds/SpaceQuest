@@ -28,11 +28,11 @@ namespace AloneSpace
 
         void PickItem(InventoryData toInventory, ItemInteractData pickItem)
         {
-            var insertableId = toInventory.VariableInventoryViewData.GetInsertableId(pickItem.ItemData);
+            var insertableId = toInventory.Inventory.GetInsertableId(pickItem.ItemData);
             if (insertableId.HasValue)
             {
                 // アイテムを格納
-                toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
+                toInventory.Inventory.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
 
                 MessageBus.Instance.ReleaseInteractData.Broadcast(pickItem);
             }
@@ -45,13 +45,13 @@ namespace AloneSpace
 
         void TransferItem(InventoryData fromInventory, InventoryData toInventory, ItemData itemData)
         {
-            var removableId = fromInventory.VariableInventoryViewData.GetId(itemData);
-            var insertableId = toInventory.VariableInventoryViewData.GetInsertableId(itemData);
+            var removableId = fromInventory.Inventory.GetId(itemData);
+            var insertableId = toInventory.Inventory.GetInsertableId(itemData);
             if (removableId.HasValue && insertableId.HasValue)
             {
                 // アイテムを格納
-                toInventory.VariableInventoryViewData.InsertInventoryItem(insertableId.Value, itemData);
-                fromInventory.VariableInventoryViewData.RemoveInventoryItem(removableId.Value);
+                toInventory.Inventory.InsertInventoryItem(insertableId.Value, itemData);
+                fromInventory.Inventory.RemoveInventoryItem(removableId.Value);
             }
             else
             {

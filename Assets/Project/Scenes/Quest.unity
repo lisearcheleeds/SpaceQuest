@@ -6309,7 +6309,7 @@ GameObject:
   m_Component:
   - component: {fileID: 770605915}
   - component: {fileID: 770605918}
-  - component: {fileID: 770605917}
+  - component: {fileID: 770605919}
   m_Layer: 13
   m_Name: InventoryList
   m_TagString: Untagged
@@ -6339,26 +6339,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 580, y: 920}
   m_Pivot: {x: 0.5, y: 1}
---- !u!114 &770605917
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 770605914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bbeac97b4c45374694acabece96af48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridLayoutGroup: {fileID: 734536208}
-  condition: {fileID: 244563358}
-  resizeTarget: {fileID: 456691588}
-  conditionTransform: {fileID: 244563357}
-  background: {fileID: 737797814}
-  defaultColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
-  positiveColor: {r: 0.20334375, g: 1, b: 0, a: 1}
-  negativeColor: {r: 1, g: 0.6084906, b: 0.6084906, a: 1}
 --- !u!114 &770605918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6371,8 +6351,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0359a2b8c864c7b87ffbf9bfa555320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stashView: {fileID: 770605917}
+  standardGridView: {fileID: 770605919}
   dropAreaView: {fileID: 750293968}
+--- !u!114 &770605919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770605914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b32820d174545578145386de23f372e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridLayoutGroup: {fileID: 734536208}
+  resizeTarget: {fileID: 456691588}
+  cellPrefab: {fileID: 8020236219615851756, guid: 8d9f256f778f63a41a047510311c0828,
+    type: 3}
+  background: {fileID: 737797814}
+  condition: {fileID: 244563358}
+  conditionTransform: {fileID: 244563357}
+  defaultColor: {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 1}
+  positiveColor: {r: 0.20392157, g: 1, b: 0, a: 1}
+  negativeColor: {r: 1, g: 0.60784316, b: 0.60784316, a: 1}
 --- !u!1 &776722011
 GameObject:
   m_ObjectHideFlags: 0
@@ -9844,8 +9846,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352b138120c246a4a98961d6cea3e796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellPrefab: {fileID: 684192095712757795, guid: 8d9f256f778f63a41a047510311c0828,
-    type: 3}
   effectCellParent: {fileID: 1344278293}
 --- !u!1 &1218913297
 GameObject:

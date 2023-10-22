@@ -147,7 +147,7 @@ namespace AloneSpace
             }
         }
 
-        bool OnDropAreaDrop(IVariableInventoryCellData cellData)
+        bool OnDropAreaDrop(ICellData cellData)
         {
             if (!questData.UserData.ControlActorData.AreaId.HasValue)
             {
@@ -174,13 +174,13 @@ namespace AloneSpace
             return true;
         }
 
-        bool GetDropAreaIsInsertableCondition(IVariableInventoryCellData cellData)
+        bool GetDropAreaIsInsertableCondition(ICellData cellData)
         {
             // 捨てるだけなので常にtrue
             return true;
         }
 
-        bool GetDropAreaIsInnerCell(IVariableInventoryCellData cellData)
+        bool GetDropAreaIsInnerCell(ICellData cellData)
         {
             // TODOリストにある場合はtrue
             return false;

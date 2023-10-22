@@ -1,6 +1,6 @@
 ﻿namespace VariableInventorySystem
 {
-    public enum VariableInventoryCellCorner
+    public enum CellCornerType
     {
         None = 0,
         Top = 1 << 1,

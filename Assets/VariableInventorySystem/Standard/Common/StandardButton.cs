@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace VariableInventorySystem
 {
-    public class StandardButton : Button, IVariableInventoryCellActions
+    public class StandardButton : Button, ICellActions
     {
         Action onPointerClick;
         Action onPointerOptionClick;

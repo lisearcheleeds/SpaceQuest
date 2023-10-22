@@ -2,21 +2,21 @@
 
 namespace VariableInventorySystem
 {
-    public class VariableInventoryViewData
+    public class InventoryData
     {
-        public IVariableInventoryCellData[] CellData { get; }
+        public ICellData[] CellData { get; }
 
         public int CapacityWidth { get; }
         public int CapacityHeight { get; }
-        
+
         bool[] mask;
 
-        public VariableInventoryViewData(int capacityWidth, int capacityHeight)
-            : this(new IVariableInventoryCellData[capacityWidth * capacityHeight], capacityWidth, capacityHeight)
+        public InventoryData(int capacityWidth, int capacityHeight)
+            : this(new ICellData[capacityWidth * capacityHeight], capacityWidth, capacityHeight)
         {
         }
 
-        public VariableInventoryViewData(IVariableInventoryCellData[] cellData, int capacityWidth, int capacityHeight)
+        public InventoryData(ICellData[] cellData, int capacityWidth, int capacityHeight)
         {
             Debug.Assert(cellData.Length == capacityWidth * capacityHeight);
 
@@ -27,7 +27,7 @@ namespace VariableInventorySystem
             UpdateMask();
         }
 
-        public virtual int? GetId(IVariableInventoryCellData cellData)
+        public virtual int? GetId(ICellData cellData)
         {
             for (var i = 0; i < CellData.Length; i++)
             {
@@ -40,7 +40,7 @@ namespace VariableInventorySystem
             return null;
         }
 
-        public virtual int? GetInsertableId(IVariableInventoryCellData cellData)
+        public virtual int? GetInsertableId(ICellData cellData)
         {
             for (var i = 0; i < mask.Length; i++)
             {
@@ -53,42 +53,42 @@ namespace VariableInventorySystem
             return null;
         }
 
-        public virtual void InsertInventoryItem(int id, IVariableInventoryCellData cellData)
+        public virtual void InsertInventoryItem(int id, ICellData cellData)
         {
             CellData[id] = cellData;
             UpdateMask();
         }
-        
+
         public virtual void RemoveInventoryItem(int id)
         {
             CellData[id] = null;
             UpdateMask();
         }
 
-        public virtual bool CheckInsert(int id, IVariableInventoryCellData cellData)
+        public virtual bool CheckInsert(int id, ICellData cellData)
         {
             if (id < 0)
             {
                 return false;
             }
 
-            var (width, height) = GetRotateSize(cellData);
+            var (widthCount, heightCount) = GridLayoutHelper.GetRotateDataSize(cellData);
 
             // check width
-            if ((id % CapacityWidth) + (width - 1) >= CapacityWidth)
+            if ((id % CapacityWidth) + (widthCount - 1) >= CapacityWidth)
             {
                 return false;
             }
 
             // check height
-            if (id + ((height - 1) * CapacityWidth) >= CellData.Length)
+            if (id + ((heightCount - 1) * CapacityWidth) >= CellData.Length)
             {
                 return false;
             }
 
-            for (var i = 0; i < width; i++)
+            for (var i = 0; i < widthCount; i++)
             {
-                for (var t = 0; t < height; t++)
+                for (var t = 0; t < heightCount; t++)
                 {
                     if (mask[id + i + (t * CapacityWidth)])
                     {
@@ -100,7 +100,7 @@ namespace VariableInventorySystem
             return true;
         }
 
-        protected void UpdateMask()
+        protected virtual void UpdateMask()
         {
             mask = new bool[CapacityWidth * CapacityHeight];
 
@@ -111,12 +111,10 @@ namespace VariableInventorySystem
                     continue;
                 }
 
-                var width = CellData[i].IsRotate ? CellData[i].Height : CellData[i].Width;
-                var height = CellData[i].IsRotate ? CellData[i].Width : CellData[i].Height;
-
-                for (var w = 0; w < width; w++)
+                var (widthCount, heightCount) = GridLayoutHelper.GetRotateDataSize(CellData[i]);
+                for (var w = 0; w < widthCount; w++)
                 {
-                    for (var h = 0; h < height; h++)
+                    for (var h = 0; h < heightCount; h++)
                     {
                         var checkIndex = i + w + (h * CapacityWidth);
                         if (checkIndex < mask.Length)
@@ -126,16 +124,6 @@ namespace VariableInventorySystem
                     }
                 }
             }
-        }
-
-        protected (int, int) GetRotateSize(IVariableInventoryCellData cell)
-        {
-            if (cell == null)
-            {
-                return (1, 1);
-            }
-
-            return (cell.IsRotate ? cell.Height : cell.Width, cell.IsRotate ? cell.Width : cell.Height);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace VariableInventorySystem
 {
-    public interface IVariableInventoryCellActions
+    public interface ICellActions
     {
         bool IsActive { get; set; }
         void SetCallback(

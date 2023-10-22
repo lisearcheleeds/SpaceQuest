@@ -14,7 +14,7 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             standardCore.Initialize();
-            standardCore.AddInventoryView(inventoryList.StandardStashView);
+            standardCore.AddInventoryView(inventoryList.StandardGridView);
             standardCore.AddInventoryView(inventoryList.DropAreaView);
             standardCore.AddInventoryView(inAreaItemList.DropAreaView);
 
