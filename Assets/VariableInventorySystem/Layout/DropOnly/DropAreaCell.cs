@@ -9,7 +9,7 @@ namespace VariableInventorySystem
         protected override RectTransform SizeRoot => null;
         protected override RectTransform RotateRoot => null;
 
-        protected override ICellActions ButtonActions => button;
+        protected override ICellActions CellActions => button;
 
         [SerializeField] StandardButton button;
         [SerializeField] Graphic raycastTarget;

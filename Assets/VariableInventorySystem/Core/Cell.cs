@@ -13,19 +13,15 @@ namespace VariableInventorySystem
 
         protected abstract RectTransform SizeRoot { get; }
         protected abstract RectTransform RotateRoot { get; }
-        protected abstract ICellActions ButtonActions { get; }
+        protected abstract ICellActions CellActions { get; }
 
-        public void SetCellCallback(
-            Action<ICell> onPointerClick,
-            Action<ICell> onPointerOptionClick,
-            Action<ICell> onPointerEnter,
-            Action<ICell> onPointerExit)
+        public void SetCellEventListener(ICellEventListener listener)
         {
-            ButtonActions.SetCallback(
-                () => onPointerClick?.Invoke(this),
-                () => onPointerOptionClick?.Invoke(this),
-                () => onPointerEnter?.Invoke(this),
-                () => onPointerExit?.Invoke(this));
+            CellActions.SetCallback(
+                () => listener?.OnCellClick(this),
+                () => listener?.OnCellOptionClick(this),
+                () => listener?.OnCellEnter(this),
+                () => listener?.OnCellExit(this));
         }
 
         public void Apply(ICellData cellData)

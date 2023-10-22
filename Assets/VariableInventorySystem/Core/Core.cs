@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace VariableInventorySystem
 {
-    public abstract class Core : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+    public abstract class Core : MonoBehaviour, ICellEventListener, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         protected List<IView> InventoryViews { get; } = new List<IView>();
 
@@ -24,12 +24,48 @@ namespace VariableInventorySystem
         public virtual void AddInventoryView(IView view)
         {
             InventoryViews.Add(view);
-            view.SetCallbacks(OnCellClick, OnCellOptionClick, OnCellEnter, OnCellExit);
+            view.SetCellEventListener(this);
         }
 
         public virtual void RemoveInventoryView(IView view)
         {
             InventoryViews.Remove(view);
+        }
+
+        public virtual bool SwitchRotate()
+        {
+            if (effectCell?.CellData == null)
+            {
+                return false;
+            }
+
+            if (!originalEffectCellRotate.HasValue)
+            {
+                originalEffectCellRotate = effectCell.CellData.IsRotate;
+            }
+
+            var isValid = effectCell.SwitchRotate();
+
+            if (!isValid)
+            {
+                originalEffectCellRotate = null;
+                return false;
+            }
+
+            foreach (var inventoryViews in InventoryViews)
+            {
+                inventoryViews.OnSwitchRotate(stareCell, effectCell);
+            }
+
+            return true;
+        }
+
+        protected virtual void OnCellClick(ICell cell)
+        {
+        }
+
+        protected virtual void OnCellOptionClick(ICell cell)
+        {
         }
 
         protected virtual void OnCellEnter(ICell cell)
@@ -121,40 +157,24 @@ namespace VariableInventorySystem
             effectCell = null;
         }
 
-        public virtual bool SwitchRotate()
+        void ICellEventListener.OnCellClick(ICell cell)
         {
-            if (effectCell?.CellData == null)
-            {
-                return false;
-            }
-
-            if (!originalEffectCellRotate.HasValue)
-            {
-                originalEffectCellRotate = effectCell.CellData.IsRotate;
-            }
-
-            var isValid = effectCell.SwitchRotate();
-
-            if (!isValid)
-            {
-                originalEffectCellRotate = null;
-                return false;
-            }
-
-            foreach (var inventoryViews in InventoryViews)
-            {
-                inventoryViews.OnSwitchRotate(stareCell, effectCell);
-            }
-
-            return true;
+            OnCellClick(cell);
         }
 
-        protected virtual void OnCellClick(ICell cell)
+        void ICellEventListener.OnCellOptionClick(ICell cell)
         {
+            OnCellOptionClick(cell);
         }
 
-        protected virtual void OnCellOptionClick(ICell cell)
+        void ICellEventListener.OnCellEnter(ICell cell)
         {
+            OnCellEnter(cell);
+        }
+
+        void ICellEventListener.OnCellExit(ICell cell)
+        {
+            OnCellExit(cell);
         }
 
         void IBeginDragHandler.OnBeginDrag(PointerEventData eventData)

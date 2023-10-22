@@ -7,7 +7,7 @@ namespace VariableInventorySystem
 {
     public class StandardGridCell : GridCell
     {
-        protected override ICellActions ButtonActions => button;
+        protected override ICellActions CellActions => button;
 
         [SerializeField] Graphic background;
         [SerializeField] RawImage cellImage;
@@ -48,7 +48,7 @@ namespace VariableInventorySystem
                 onLoad(loader.asset as Texture2D);
             }
 
-            background.gameObject.SetActive(ButtonActions.IsActive);
+            background.gameObject.SetActive(CellActions.IsActive);
         }
 
         public override void SetClickable(bool clickable)

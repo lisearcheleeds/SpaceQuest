@@ -23,10 +23,7 @@ namespace VariableInventorySystem
         int? originalId;
         ICellData originalCellData;
 
-        Action<ICell> onCellClick;
-        Action<ICell> onCellOptionClick;
-        Action<ICell> onCellEnter;
-        Action<ICell> onCellExit;
+        ICellEventListener listener;
 
         public virtual void Initialize()
         {
@@ -37,16 +34,9 @@ namespace VariableInventorySystem
             return Instantiate(cellPrefab).GetComponent<GridCell>();
         }
 
-        public void SetCallbacks(
-            Action<ICell> onCellClick,
-            Action<ICell> onCellOptionClick,
-            Action<ICell> onCellEnter,
-            Action<ICell> onCellExit)
+        public void SetCellEventListener(ICellEventListener listener)
         {
-            this.onCellClick = onCellClick;
-            this.onCellOptionClick = onCellOptionClick;
-            this.onCellEnter = onCellEnter;
-            this.onCellExit = onCellExit;
+            this.listener = listener;
         }
 
         public virtual void Apply(InventoryData inventoryData)
@@ -63,11 +53,7 @@ namespace VariableInventorySystem
                     itemViews[i] = itemView;
 
                     itemView.transform.SetAsFirstSibling();
-                    itemView.SetCellCallback(
-                        onCellClick,
-                        onCellOptionClick,
-                        onCellEnter,
-                        onCellExit);
+                    itemView.SetCellEventListener(listener);
                     itemView.Apply(null);
                 }
 

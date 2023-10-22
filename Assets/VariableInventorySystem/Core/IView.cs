@@ -8,11 +8,7 @@ namespace VariableInventorySystem
     {
         ICell CreateEffectCell();
 
-        void SetCallbacks(
-            Action<ICell> onCellClick,
-            Action<ICell> onCellOptionClick,
-            Action<ICell> onCellEnter,
-            Action<ICell> onCellExit);
+        void SetCellEventListener(ICellEventListener listener);
 
         void OnPrePick(ICell stareCell);
         bool OnPick(ICell stareCell);

@@ -28,14 +28,9 @@ namespace VariableInventorySystem
             throw new NotSupportedException("This method is only used for Drop, so it will not be called if the operation is normal.");
         }
 
-        public void SetCallbacks(
-            Action<ICell> onCellClick,
-            Action<ICell> onCellOptionClick,
-            Action<ICell> onCellEnter,
-            Action<ICell> onCellExit)
+        public void SetCellEventListener(ICellEventListener listener)
         {
-            dropAreaCell.SetCellCallback(onCellClick, onCellOptionClick, onCellEnter, onCellExit);
-
+            dropAreaCell.SetCellEventListener(listener);
             dropAreaCell.SetClickable(false);
         }
 
