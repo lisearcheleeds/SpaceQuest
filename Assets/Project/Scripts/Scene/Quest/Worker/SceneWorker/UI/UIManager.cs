@@ -10,16 +10,11 @@ namespace AloneSpace
         [SerializeField] TargetView targetView;
         [SerializeField] MenuView menuView;
 
-        [Header("Center")]
-        [SerializeField] ItemDataMenu itemDataMenu;
-
         public void Initialize(QuestData questData)
         {
             actorView.Initialize();
             targetView.Initialize();
             menuView.Initialize(questData);
-
-            itemDataMenu.Initialize();
         }
 
         public void Finalize()
@@ -27,7 +22,6 @@ namespace AloneSpace
             actorView.Finalize();
             targetView.Finalize();
             menuView.Finalize();
-            itemDataMenu.Finalize();
         }
 
         public void OnUpdate()

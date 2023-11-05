@@ -9,8 +9,8 @@ namespace AloneSpace
         [SerializeField] AreaAmbientController areaAmbientController;
         [SerializeField] CameraController cameraController;
 
-        KeyBindController keyBindController = new KeyBindController();
-        MouseBindController mouseBindController = new MouseBindController();
+        SceneInputLayer sceneInputLayer = new SceneInputLayer();
+
         UserController userController = new UserController();
 
         QuestData questData;
@@ -19,25 +19,25 @@ namespace AloneSpace
         {
             this.questData = questData;
 
+            InputLayerController.Instance.PushLayer(sceneInputLayer);
+
             uiManager.Initialize(questData);
             gameObjectUpdater.Initialize(questData);
             areaAmbientController.Initialize(questData);
             cameraController.Initialize(questData);
 
-            keyBindController.Initialize(questData.UserData);
-            mouseBindController.Initialize(questData.UserData);
             userController.Initialize(questData.UserData);
         }
 
         public void Finalize()
         {
+            InputLayerController.Instance.PopLayer(sceneInputLayer);
+
             uiManager.Finalize();
             gameObjectUpdater.Finalize();
             areaAmbientController.Finalize();
             cameraController.Finalize();
 
-            keyBindController.Finalize();
-            mouseBindController.Finalize();
             userController.Finalize();
         }
 
@@ -48,8 +48,6 @@ namespace AloneSpace
                 return;
             }
 
-            keyBindController.OnUpdate();
-            mouseBindController.OnUpdate();
             userController.OnUpdate();
 
             uiManager.OnUpdate();

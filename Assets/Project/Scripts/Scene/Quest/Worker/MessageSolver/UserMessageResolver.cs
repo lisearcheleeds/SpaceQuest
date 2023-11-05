@@ -83,6 +83,27 @@ namespace AloneSpace
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
         {
             questData.UserData.SetActorOperationMode(actorOperationMode);
+
+            MessageBus.Instance.UserInputSetExecuteWeapon.Broadcast(false);
+
+            switch (actorOperationMode)
+            {
+                case ActorOperationMode.Observe:
+                    InputLayerController.Instance.PushLayer(new ActorOperationObserveInputLayer(questData.UserData));
+                    break;
+                case ActorOperationMode.Cockpit:
+                    InputLayerController.Instance.PushLayer(new ActorOperationCockpitInputLayer(questData.UserData));
+                    break;
+                case ActorOperationMode.CockpitFreeCamera:
+                    InputLayerController.Instance.PushLayer(new ActorOperationCockpitFreeCameraInputLayer(questData.UserData));
+                    break;
+                case ActorOperationMode.Spotter:
+                    InputLayerController.Instance.PushLayer(new ActorOperationSpotterInputLayer(questData.UserData));
+                    break;
+                case ActorOperationMode.SpotterFreeCamera:
+                    InputLayerController.Instance.PushLayer(new ActorOperationSpotterFreeCameraInputLayer(questData.UserData));
+                    break;
+            }
         }
 
         void UserCommandLookAtAngle(Vector3 lookAt)

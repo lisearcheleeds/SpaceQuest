@@ -15,7 +15,9 @@ namespace AloneSpace
 
         MenuElement currentMenuElement = MenuElement.StatusView;
 
-        enum MenuElement
+        MenuInputLayer menuInputLayer;
+
+        public enum MenuElement
         {
             StatusView,
             InventoryView,
@@ -26,6 +28,8 @@ namespace AloneSpace
 
         public void Initialize(QuestData questData)
         {
+            menuInputLayer = new MenuInputLayer(() => currentMenuElement);
+
             statusView.Initialize(questData);
             inventoryView.Initialize(questData);
             playerView.Initialize(questData);
@@ -141,11 +145,15 @@ namespace AloneSpace
         {
             gameObject.SetActive(true);
             UpdateView();
+
+            InputLayerController.Instance.PushLayer(menuInputLayer);
         }
 
         void UserInputCloseMenu()
         {
             gameObject.SetActive(false);
+
+            InputLayerController.Instance.PopLayer(menuInputLayer);
         }
 
         void UserInputSwitchMenuStatusView()
