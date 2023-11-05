@@ -6,11 +6,10 @@ namespace AloneSpace
 {
     public class AreaDataCell : MonoBehaviour
     {
-        [SerializeField] ParticleSystem particleSystem;
+        [SerializeField] Image image;
         [SerializeField] Button button;
 
         AreaData areaData;
-        bool isCurrentArea;
         Action<AreaData> onClick;
 
         public void Awake()
@@ -18,36 +17,24 @@ namespace AloneSpace
             button.onClick.AddListener(() => onClick(areaData));
         }
 
-        public void Apply(AreaData areaData, bool isCurrentArea, Action<AreaData> onClick)
+        public void Apply(AreaData areaData, bool isCurrentArea, Vector3 position, Action<AreaData> onClick)
         {
             this.areaData = areaData;
-            this.isCurrentArea = isCurrentArea;
             this.onClick = onClick;
 
-            this.isCurrentArea = false;
-            
             gameObject.name = $"Area {areaData.AreaId}";
+            transform.localPosition = position;
+            image.color = GetColor(isCurrentArea);
         }
 
-        public void UpdatePosition(Vector3? position)
+        static Color GetColor(bool isCurrentArea)
         {
-            gameObject.SetActive(position.HasValue && !isCurrentArea);
-            if (!position.HasValue || isCurrentArea)
+            if (isCurrentArea)
             {
-                return;
+                return new Color(0.4f, 0.6f, 0.4f);
             }
 
-            (transform as RectTransform).localPosition = position.Value;
-        }
-
-        static Color GetColor(int areaId, int observeAreaId)
-        {
-            if (observeAreaId == areaId)
-            {
-                return new Color(0.2f, 0.4f, 0.2f);
-            }
-
-            return new Color(0.5f, 0.5f, 0.5f, 0.1f);
+            return Color.white;
         }
     }
 }
