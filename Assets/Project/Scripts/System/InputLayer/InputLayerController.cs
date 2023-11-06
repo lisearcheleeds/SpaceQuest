@@ -10,8 +10,19 @@ namespace AloneSpace
     {
         public Dictionary<KeyBindKey, Key> KeyBindMap = new Dictionary<KeyBindKey, Key>();
 
-        List<InputLayer> reversedInputLayerStack = new List<InputLayer>();
-        Key[][] keyUseKeyList;
+        List<InputLayerPare> reversedInputLayerStack = new List<InputLayerPare>();
+        bool isDirty;
+
+        class InputLayerPare
+        {
+            public InputLayer InputLayer { get; }
+            public Key[] UsedKeys { get; set; }
+
+            public InputLayerPare(InputLayer inputLayer)
+            {
+                InputLayer = inputLayer;
+            }
+        }
 
         protected override void OnInitialize()
         {
@@ -20,30 +31,32 @@ namespace AloneSpace
 
         public void PushLayer(InputLayer inputLayer)
         {
-            var currentDuplicateGroup = reversedInputLayerStack.FirstOrDefault()?.DuplicateGroup;
+            var currentDuplicateGroup = reversedInputLayerStack.FirstOrDefault()?.InputLayer.DuplicateGroup;
             if (currentDuplicateGroup != InputLayerDuplicateGroup.None && currentDuplicateGroup == inputLayer.DuplicateGroup)
             {
                 PopLayer();
             }
 
-            reversedInputLayerStack.Insert(0, inputLayer);
+            reversedInputLayerStack.Insert(0, new InputLayerPare(inputLayer));
 
             Cursor.lockState = inputLayer.CursorLockMode;
 
             UpdateKeyUseKeyList();
+            Debug.Log("PushLayer:" + string.Join(" -> ", reversedInputLayerStack.Select(x => x.InputLayer.GetType())));
         }
 
         public void PopLayer()
         {
             reversedInputLayerStack.Remove(reversedInputLayerStack.First());
-            Cursor.lockState = reversedInputLayerStack.FirstOrDefault()?.CursorLockMode ?? CursorLockMode.None;
+            Cursor.lockState = reversedInputLayerStack.FirstOrDefault()?.InputLayer.CursorLockMode ?? CursorLockMode.None;
 
             UpdateKeyUseKeyList();
+            Debug.Log("PopLayer:" + string.Join(" -> ", reversedInputLayerStack.Select(x => x.InputLayer.GetType())));
         }
 
         public void PopLayer(InputLayer target)
         {
-            while (reversedInputLayerStack.Contains(target))
+            while (reversedInputLayerStack.Any(x => x.InputLayer == target))
             {
                 PopLayer();
             }
@@ -89,26 +102,28 @@ namespace AloneSpace
             KeyBindMap[KeyBindKey.ActorOperationModeSwitchCockpitFreeCamera] = Key.C;
             KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Key.V;
             KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotterFreeCamera] = Key.B;
+
+            KeyBindMap[KeyBindKey.Escape] = Key.Escape;
         }
 
         void UpdateKeyUseKeyList()
         {
-            keyUseKeyList = new Key[reversedInputLayerStack.Count][];
-
             // 前レイヤーのキーをブロックする
             for (var i = 0; i < reversedInputLayerStack.Count; i++)
             {
-                keyUseKeyList[i] = i == 0
+                reversedInputLayerStack[i].UsedKeys = i == 0
                     ? Array.Empty<Key>()
-                    : keyUseKeyList[i - 1].Concat(reversedInputLayerStack[i - 1].GetUsedKeys()).ToArray();
+                    : reversedInputLayerStack[i - 1].UsedKeys.Concat(reversedInputLayerStack[i - 1].InputLayer.GetUsedKeys()).ToArray();
             }
+
+            isDirty = true;
         }
 
         void Update()
         {
             for (var i = 0; i < reversedInputLayerStack.Count; i++)
             {
-                if (reversedInputLayerStack[i].UpdatePointer())
+                if (reversedInputLayerStack[i].InputLayer.UpdatePointer() || isDirty)
                 {
                     break;
                 }
@@ -116,11 +131,13 @@ namespace AloneSpace
 
             for (var i = 0; i < reversedInputLayerStack.Count; i++)
             {
-                if (reversedInputLayerStack[i].UpdateKey(keyUseKeyList[i]))
+                if (reversedInputLayerStack[i].InputLayer.UpdateKey(reversedInputLayerStack[i].UsedKeys) || isDirty)
                 {
                     break;
                 }
             }
+
+            isDirty = false;
         }
     }
 }

@@ -78,6 +78,11 @@ namespace AloneSpace
 
         void CheckActorOperationMode(Key[] usedKey)
         {
+            if (WasPressedThisFrame(KeyBindKey.Escape, usedKey))
+            {
+                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+            }
+
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchObserve, usedKey))
             {
                 MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);

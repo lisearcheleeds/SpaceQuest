@@ -12,7 +12,7 @@ namespace AloneSpace
         protected override KeyBindKey[] UseBindKeys => new[]
         {
             KeyBindKey.Menu, KeyBindKey.MenuStatusView, KeyBindKey.MenuInventoryView, KeyBindKey.MenuPlayerView,
-            KeyBindKey.MenuAreaView, KeyBindKey.MenuMapView,
+            KeyBindKey.MenuAreaView, KeyBindKey.MenuMapView, KeyBindKey.Backward, KeyBindKey.Escape,
         };
 
         Func<MenuView.MenuElement> getCurrentMenuElement;
@@ -101,6 +101,11 @@ namespace AloneSpace
                 {
                     MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
                 }
+            }
+
+            if (WasPressedThisFrame(KeyBindKey.Escape, usedKey))
+            {
+                MessageBus.Instance.UserInputCloseMenu.Broadcast();
             }
         }
     }
