@@ -9,12 +9,14 @@ namespace AloneSpace
         [SerializeField] ActorView actorView;
         [SerializeField] TargetView targetView;
         [SerializeField] MenuView menuView;
+        [SerializeField] ContentQuickView contentQuickView;
 
         public void Initialize(QuestData questData)
         {
             actorView.Initialize();
             targetView.Initialize();
             menuView.Initialize(questData);
+            contentQuickView.Initialize();
         }
 
         public void Finalize()
@@ -22,6 +24,7 @@ namespace AloneSpace
             actorView.Finalize();
             targetView.Finalize();
             menuView.Finalize();
+            contentQuickView.Finalize();
         }
 
         public void OnUpdate()
@@ -29,6 +32,7 @@ namespace AloneSpace
             actorView.OnUpdate();
             targetView.OnUpdate();
             menuView.OnUpdate();
+            contentQuickView.OnUpdate();
         }
     }
 }

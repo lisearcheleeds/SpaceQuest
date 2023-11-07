@@ -53,7 +53,6 @@ MonoBehaviour:
   typeLabel: {fileID: 2003093863296116253}
   icon: {fileID: 1160915399645395415}
   baseIconSize: 75
-  inProgressIconColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   cellParent: {fileID: 2688855451261105107}
   cellElementPrefab: {fileID: 6639638599077572353}
   cellSize: 15
@@ -61,7 +60,7 @@ MonoBehaviour:
   progressGauge: {fileID: 2473998284432063188}
   text: {fileID: 3453040511337265421}
   distanceText: {fileID: 141346033565807918}
-  button: {fileID: 7288542021349192700}
+  button: {fileID: 5485886950786045824}
 --- !u!1 &2392108571830065403
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3032216317242856528}
   - component: {fileID: 3483343121190076076}
-  - component: {fileID: 7288542021349192700}
+  - component: {fileID: 5485886950786045824}
   m_Layer: 5
   m_Name: Container
   m_TagString: Untagged
@@ -131,7 +130,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7288542021349192700
+--- !u!114 &5485886950786045824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,7 +139,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2392108571830065403}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d915ef2bd5b67b49a0bc7111953cd10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:

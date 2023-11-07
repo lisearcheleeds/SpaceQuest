@@ -15,7 +15,7 @@ namespace AloneSpace
         List<Transform> loadedPlacedObjects = new List<Transform>();
 
         bool isDirty;
-        Coroutine currentCoroutine;
+        List<Coroutine> currentCoroutines = new List<Coroutine>();
         AreaData observeArea;
 
         public void Initialize(QuestData questData)
@@ -42,12 +42,7 @@ namespace AloneSpace
             {
                 isDirty = false;
 
-                if (currentCoroutine != null)
-                {
-                    StopCoroutine(currentCoroutine);
-                }
-
-                currentCoroutine = StartCoroutine(Refresh());
+                Refresh();
             }
         }
 
@@ -57,16 +52,9 @@ namespace AloneSpace
             isDirty = true;
         }
 
-        IEnumerator Refresh()
+        void Refresh()
         {
-            var coroutines = new List<IEnumerator>();
-
-            if (ambientObject == null)
-            {
-                coroutines.Add(AssetLoader.LoadAsync<Transform>(
-                    questData.StarSystemData.AmbientObjectAsset,
-                    target => Instantiate(target, ambientObjectParent)));
-            }
+            currentCoroutines.Clear();
 
             foreach (var loadedPlacedObject in loadedPlacedObjects)
             {
@@ -75,15 +63,22 @@ namespace AloneSpace
 
             loadedPlacedObjects.Clear();
 
+            if (ambientObject == null)
+            {
+                currentCoroutines.Add(
+                    AssetLoader.Instance.LoadAsync<Transform>(
+                        questData.StarSystemData.AmbientObjectAsset,
+                        target => Instantiate(target, ambientObjectParent)));
+            }
+
             var placedObjectAsset = observeArea?.PlacedObjectAsset;
             if (placedObjectAsset != null)
             {
-                coroutines.Add(AssetLoader.LoadAsync<Transform>(
-                    placedObjectAsset,
-                    target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
+                currentCoroutines.Add(
+                    AssetLoader.Instance.LoadAsync<Transform>(
+                        placedObjectAsset,
+                        target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
             }
-
-            yield return new ParallelCoroutine(coroutines);
 
             // エリアの周辺のオブジェクトの位置調整
             foreach (var loadedPlacedObject in loadedPlacedObjects)

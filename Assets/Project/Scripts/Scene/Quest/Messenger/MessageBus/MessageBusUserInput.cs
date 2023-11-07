@@ -29,8 +29,8 @@
 
         public MessageBusDefine.UserCommandSetActorOperationMode UserCommandSetActorOperationMode { get; } = new MessageBusDefine.UserCommandSetActorOperationMode();
 
-        public MessageBusDefine.UserCommandOpenItemDataMenu UserCommandOpenItemDataMenu { get; } = new MessageBusDefine.UserCommandOpenItemDataMenu();
-        public MessageBusDefine.UserCommandCloseItemDataMenu UserCommandCloseItemDataMenu { get; } = new MessageBusDefine.UserCommandCloseItemDataMenu();
+        public MessageBusDefine.UserInputOpenContentQuickView UserInputOpenContentQuickView { get; } = new MessageBusDefine.UserInputOpenContentQuickView();
+        public MessageBusDefine.UserInputCloseContentQuickView UserInputCloseContentQuickView { get; } = new MessageBusDefine.UserInputCloseContentQuickView();
 
         public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();

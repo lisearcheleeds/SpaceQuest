@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public interface IInteractData : IPositionData, IMovingModuleHolder
+    public interface IInteractData : IPositionData, IContentQuickViewData, IMovingModuleHolder
     {
         Guid InstanceId { get; }
 

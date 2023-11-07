@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FancyScrollView;
 using UnityEngine;
 using UnityEngine.UI;
+using VariableInventorySystem;
 
 namespace AloneSpace
 {
@@ -22,7 +23,7 @@ namespace AloneSpace
 
         [SerializeField] Text text;
         [SerializeField] Text distanceText;
-        [SerializeField] Button button;
+        [SerializeField] StandardButton button;
 
         List<RectTransform> cells = new List<RectTransform>();
 
@@ -64,7 +65,7 @@ namespace AloneSpace
         public override void Initialize()
         {
             base.Initialize();
-            button.onClick.AddListener(OnClick);
+            button.SetCallback(OnClick, OnClickOption, OnEnter, OnExit);
         }
 
         public override void UpdateContent(CellData cellData)
@@ -104,7 +105,8 @@ namespace AloneSpace
             cells.Clear();
 
             icon.gameObject.SetActive(false);
-            StartCoroutine(LoadAsync(itemInteractData.ItemData.ImagePath, tex =>
+
+            AssetLoader.Instance.LoadAsyncTextureCache(itemInteractData.ItemData.ImageAsset, tex =>
             {
                 icon.texture = tex;
                 icon.rectTransform.sizeDelta =
@@ -112,14 +114,7 @@ namespace AloneSpace
                         ? new Vector2(baseIconSize * (tex.texelSize.x / tex.texelSize.y), baseIconSize)
                         : new Vector2(baseIconSize, baseIconSize * (tex.texelSize.y / tex.texelSize.x));
                 icon.gameObject.SetActive(true);
-            }));
-
-            IEnumerator LoadAsync(string path, Action<Texture2D> onLoad)
-            {
-                var loader = Resources.LoadAsync<Texture2D>(path);
-                yield return loader;
-                onLoad(loader.asset as Texture2D);
-            }
+            });
 
             var offsetWidth = (itemInteractData.ItemData.ItemVO.Width - 1) * -0.5f * cellSize;
             var offsetHeight = (itemInteractData.ItemData.ItemVO.Height - 1) * -0.5f * cellSize;
@@ -175,6 +170,20 @@ namespace AloneSpace
         void OnClick()
         {
             Context.OnConfirm(cellData);
+        }
+
+        void OnClickOption()
+        {
+        }
+
+        void OnEnter()
+        {
+            MessageBus.Instance.UserInputOpenContentQuickView.Broadcast(cellData.InteractData, () => gameObject != null && gameObject.activeInHierarchy, true);
+        }
+
+        void OnExit()
+        {
+            MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
         }
     }
 }

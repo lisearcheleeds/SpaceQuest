@@ -8,9 +8,6 @@ namespace AloneSpace
 {
     public class GameObjectCache
     {
-        // ロード済みのアセット
-        Dictionary<string, GameObject> loadCache = new Dictionary<string, GameObject>();
-
         // Instanciate済みのアセット
         Dictionary<string, List<CacheableGameObject>> assetCache = new Dictionary<string, List<CacheableGameObject>>();
 
@@ -37,22 +34,10 @@ namespace AloneSpace
 
         void GetCacheAsset(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)
         {
-            // ロード済み
-            if (loadCache.ContainsKey(path.Path))
+            AssetLoader.Instance.LoadAsyncCache(path, loadPrefab =>
             {
-                GetAssetCache(path, onLoad);
-                return;
-            }
-
-            // FIXME: Loadと別にする
-            // まだロードしてない
-            Scheduler.RunCoroutine(AssetLoader.LoadAsync(path, loadAsset =>
-            {
-                loadCache[path.Path] = loadAsset;
-                assetCache[path.Path] = new List<CacheableGameObject>();
-                unUsedAssetCache[path.Path] = new List<CacheableGameObject>();
-                GetAssetCache(path, onLoad);
-            }));
+                GetAssetCache(path, loadPrefab, onLoad);
+            });
         }
 
         void ReleaseCacheAsset(CacheableGameObject usedAsset)
@@ -72,12 +57,18 @@ namespace AloneSpace
             }
         }
 
-        void GetAssetCache(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)
+        void GetAssetCache(CacheableGameObjectPath path, GameObject loadPrefab, Action<CacheableGameObject> onLoad)
         {
+            if (!assetCache.ContainsKey(path.Path))
+            {
+                assetCache.Add(path.Path, new List<CacheableGameObject>());
+                unUsedAssetCache.Add(path.Path, new List<CacheableGameObject>());
+            }
+
             var cache = unUsedAssetCache[path.Path].FirstOrDefault();
             if (cache == null)
             {
-                cache = GameObject.Instantiate(loadCache[path.Path], variableParent, false).GetComponent<CacheableGameObject>();
+                cache = GameObject.Instantiate(loadPrefab, variableParent, false).GetComponent<CacheableGameObject>();
                 cache.SetCacheKey(path.Path);
                 assetCache[path.Path].Add(cache);
             }

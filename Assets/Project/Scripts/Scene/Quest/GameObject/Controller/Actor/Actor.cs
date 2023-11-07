@@ -19,12 +19,7 @@ namespace AloneSpace
         public static IEnumerator CreateActor(ActorData actorData, Transform parent, Action<Actor> onCreated)
         {
             Actor actor = null;
-            yield return AssetLoader.LoadAsync<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
-            {
-                actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation, parent);
-                actor.ActorData = actorData;
-            });
-
+            yield return LoadActor(actorData, parent, LoadActor => actor = LoadActor);
             yield return LoadActorModel(actorData, actor);
             yield return LoadWeaponModel(actorData.WeaponData, actor);
             yield return null;
@@ -44,28 +39,52 @@ namespace AloneSpace
             transform.rotation = ActorData.Rotation;
         }
 
+        static IEnumerator LoadActor(ActorData actorData, Transform parent, Action<Actor> onComplete)
+        {
+            var isComplete = false;
+            AssetLoader.Instance.LoadAsyncCache<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
+            {
+                var actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation, parent);
+                actor.ActorData = actorData;
+
+                onComplete(actor);
+                isComplete = true;
+            });
+
+            yield return new WaitWhile(() => !isComplete);
+        }
+
         static IEnumerator LoadActorModel(ActorData actorData, Actor actor)
         {
-            yield return AssetLoader.LoadAsync<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
+            var isComplete = false;
+            AssetLoader.Instance.LoadAsyncCache<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
             {
                 actor.ActorModel = Instantiate(prefab, actor.transform, false);
                 actorData.SetActorGameObjectHandler(actor.ActorModel.Init(actorData, actorData.CollisionEventModule));
+                isComplete = true;
             });
+
+            yield return new WaitWhile(() => !isComplete);
         }
 
         static IEnumerator LoadWeaponModel(Dictionary<Guid, WeaponData> weaponData, Actor actor)
         {
+            var loadCounter = 0;
             actor.WeaponModels = new WeaponModel[weaponData.Count];
-            yield return new ParallelCoroutine(weaponData.Values.Select(data =>
+
+            foreach (var data in weaponData.Values)
             {
-                return AssetLoader.LoadAsync<WeaponModel>(
+                AssetLoader.Instance.LoadAsyncCache<WeaponModel>(
                     data.WeaponSpecVO.Path,
                     prefab =>
                     {
                         actor.WeaponModels[data.WeaponIndex] = Instantiate(prefab, actor.ActorData.ActorGameObjectHandler.WeaponHolders[data.WeaponIndex], false);
                         data.SetWeaponGameObjectHandler(actor.WeaponModels[data.WeaponIndex].Init(data.WeaponHolder));
+                        loadCounter++;
                     });
-            }).ToArray());
+            }
+
+            yield return new WaitWhile(() => loadCounter != weaponData.Count);
         }
     }
 }

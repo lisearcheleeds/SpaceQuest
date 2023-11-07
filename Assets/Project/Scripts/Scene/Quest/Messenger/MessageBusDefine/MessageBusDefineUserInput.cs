@@ -34,8 +34,8 @@ namespace AloneSpace
 
         public class UserCommandSetActorOperationMode : MessageBusBroadcaster<ActorOperationMode> {}
 
-        public class UserCommandOpenItemDataMenu : MessageBusBroadcaster<ItemData, Action, string, string>{}
-        public class UserCommandCloseItemDataMenu : MessageBusBroadcaster{}
+        public class UserInputOpenContentQuickView : MessageBusBroadcaster<IContentQuickViewData, Func<bool>, bool>{}
+        public class UserInputCloseContentQuickView : MessageBusBroadcaster{}
 
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
         public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraType, Vector3, RectTransform, Vector3?>{}
