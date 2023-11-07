@@ -17,9 +17,7 @@ namespace AloneSpace
         [SerializeField] GameObject optionTextObject;
         [SerializeField] Text optionText;
 
-        [SerializeField] GameObject iconObject;
-        [SerializeField] RawImage icon;
-        [SerializeField] float baseIconSize;
+        [SerializeField] ItemThumbnail itemThumbnail;
 
         [SerializeField] GameObject gridCellObject;
         [SerializeField] RectTransform gridCellParent;
@@ -51,14 +49,21 @@ namespace AloneSpace
                     gameObject.SetActive(true);
                     ApplyTextObject(itemInteractData.Text);
                     ApplyOptionTextObject(null);
-                    ApplyIconObject(itemInteractData.ItemData.ImageAsset);
+                    ApplyThumbnailObject(itemInteractData.ItemData);
                     ApplyGridCellObject(itemInteractData.ItemData.WidthCount, itemInteractData.ItemData.HeightCount);
+                    break;
+                case ItemData itemData:
+                    gameObject.SetActive(true);
+                    ApplyTextObject(itemData.ItemVO.Text);
+                    ApplyOptionTextObject(null);
+                    ApplyThumbnailObject(itemData);
+                    ApplyGridCellObject(itemData.WidthCount, itemData.HeightCount);
                     break;
                 default:
                     gameObject.SetActive(false);
                     ApplyTextObject(null);
                     ApplyOptionTextObject(null);
-                    ApplyIconObject(null);
+                    ApplyThumbnailObject(null);
                     ApplyGridCellObject(0, 0);
                     MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
                     break;
@@ -95,24 +100,9 @@ namespace AloneSpace
             optionText.text = optionTextData;
         }
 
-        void ApplyIconObject(Texture2DPathVO imageAsset)
+        void ApplyThumbnailObject(ItemData itemData)
         {
-            iconObject.gameObject.SetActive(false);
-
-            if (imageAsset == null)
-            {
-                return;
-            }
-
-            AssetLoader.Instance.LoadAsyncTextureCache(imageAsset, tex =>
-            {
-                icon.texture = tex;
-                icon.rectTransform.sizeDelta =
-                    tex.texelSize.x < tex.texelSize.y
-                        ? new Vector2(baseIconSize * (tex.texelSize.x / tex.texelSize.y), baseIconSize)
-                        : new Vector2(baseIconSize, baseIconSize * (tex.texelSize.y / tex.texelSize.x));
-                icon.gameObject.SetActive(true);
-            });
+            itemThumbnail.Apply(itemData, ItemThumbnail.LayoutMode.NoText);
         }
 
         void ApplyGridCellObject(int width, int height)

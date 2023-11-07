@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using FancyScrollView;
 using UnityEngine;
@@ -11,8 +10,9 @@ namespace AloneSpace
     public class InAreaItemListViewCell : FancyScrollRectCell<InAreaItemListViewCell.CellData, InAreaItemListViewCell.CellContext>
     {
         [SerializeField] Image typeLabel;
-        [SerializeField] RawImage icon;
-        [SerializeField] float baseIconSize;
+        [SerializeField] GameObject highLight;
+
+        [SerializeField] ItemThumbnail itemThumbnail;
 
         [SerializeField] RectTransform cellParent;
         [SerializeField] RectTransform cellElementPrefab;
@@ -30,6 +30,7 @@ namespace AloneSpace
         CellData cellData;
         float lastUpdateTime;
         bool prevStateExist;
+        bool isDirty;
 
         public class CellData
         {
@@ -79,7 +80,7 @@ namespace AloneSpace
             progressIcon.gameObject.SetActive(false);
             progressGauge.gameObject.SetActive(false);
             progressGauge.anchorMax = Vector2.one;
-            icon.color = Color.white;
+            itemThumbnail.SetVisualState(ItemThumbnail.VisualStateMode.Default);
 
             // コンテンツ更新
             if (cellData.InteractData is ItemInteractData itemInteractData)
@@ -90,6 +91,8 @@ namespace AloneSpace
             {
                 cellParent.gameObject.SetActive(false);
             }
+
+            isDirty = true;
         }
 
         void UpdateContentItemInteractData(ItemInteractData itemInteractData)
@@ -104,17 +107,7 @@ namespace AloneSpace
 
             cells.Clear();
 
-            icon.gameObject.SetActive(false);
-
-            AssetLoader.Instance.LoadAsyncTextureCache(itemInteractData.ItemData.ImageAsset, tex =>
-            {
-                icon.texture = tex;
-                icon.rectTransform.sizeDelta =
-                    tex.texelSize.x < tex.texelSize.y
-                        ? new Vector2(baseIconSize * (tex.texelSize.x / tex.texelSize.y), baseIconSize)
-                        : new Vector2(baseIconSize, baseIconSize * (tex.texelSize.y / tex.texelSize.x));
-                icon.gameObject.SetActive(true);
-            });
+            itemThumbnail.Apply(itemInteractData.ItemData, visualStateMode: ItemThumbnail.VisualStateMode.Manual);
 
             var offsetWidth = (itemInteractData.ItemData.ItemVO.Width - 1) * -0.5f * cellSize;
             var offsetHeight = (itemInteractData.ItemData.ItemVO.Height - 1) * -0.5f * cellSize;
@@ -134,11 +127,11 @@ namespace AloneSpace
             var state = cellData.GetState(cellData.InteractData);
             if (state != null)
             {
-                if (!prevStateExist)
+                if (!prevStateExist || isDirty)
                 {
                     progressIcon.gameObject.SetActive(true);
                     progressGauge.gameObject.SetActive(true);
-                    icon.color = Color.gray;
+                    itemThumbnail.SetVisualState(ItemThumbnail.VisualStateMode.GrayOut);
                 }
 
                 if (state.InProgress)
@@ -149,16 +142,17 @@ namespace AloneSpace
             }
             else
             {
-                if (prevStateExist)
+                if (prevStateExist || isDirty)
                 {
                     progressIcon.gameObject.SetActive(false);
                     progressGauge.gameObject.SetActive(false);
                     progressGauge.anchorMax = Vector2.one;
-                    icon.color = Color.white;
+                    itemThumbnail.SetVisualState(ItemThumbnail.VisualStateMode.Default);
                 }
             }
 
             prevStateExist = state != null;
+            isDirty = false;
 
             if (Time.time - lastUpdateTime > 0.25f)
             {
@@ -178,12 +172,12 @@ namespace AloneSpace
 
         void OnEnter()
         {
-            MessageBus.Instance.UserInputOpenContentQuickView.Broadcast(cellData.InteractData, () => gameObject != null && gameObject.activeInHierarchy, true);
+            highLight.SetActive(true);
         }
 
         void OnExit()
         {
-            MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
+            highLight.SetActive(false);
         }
     }
 }

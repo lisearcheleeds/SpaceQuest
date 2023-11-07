@@ -4,7 +4,7 @@ using VariableInventorySystem;
 
 namespace AloneSpace
 {
-    public class ItemData : StandardGridCellData
+    public class ItemData : StandardGridCellData, IContentQuickViewData
     {
         public int Id => ItemVO.Id;
         public Guid InstanceId { get; }
