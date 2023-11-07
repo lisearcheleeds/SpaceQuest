@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using FancyScrollView;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,10 +12,7 @@ namespace AloneSpace
         [SerializeField] GameObject highLight;
 
         [SerializeField] ItemThumbnail itemThumbnail;
-
-        [SerializeField] RectTransform cellParent;
-        [SerializeField] RectTransform cellElementPrefab;
-        [SerializeField] float cellSize;
+        [SerializeField] GridCellSizeView gridCellSizeView;
 
         [SerializeField] RectTransform progressIcon;
         [SerializeField] RectTransform progressGauge;
@@ -24,8 +20,6 @@ namespace AloneSpace
         [SerializeField] Text text;
         [SerializeField] Text distanceText;
         [SerializeField] StandardButton button;
-
-        List<RectTransform> cells = new List<RectTransform>();
 
         CellData cellData;
         float lastUpdateTime;
@@ -86,10 +80,11 @@ namespace AloneSpace
             if (cellData.InteractData is ItemInteractData itemInteractData)
             {
                 UpdateContentItemInteractData(itemInteractData);
+                gridCellSizeView.gameObject.SetActive(true);
             }
             else
             {
-                cellParent.gameObject.SetActive(false);
+                gridCellSizeView.gameObject.SetActive(false);
             }
 
             isDirty = true;
@@ -97,29 +92,8 @@ namespace AloneSpace
 
         void UpdateContentItemInteractData(ItemInteractData itemInteractData)
         {
-            // TODO: 気になったらパフォーマンスチューニングする
-            cellParent.gameObject.SetActive(true);
-
-            foreach (var cell in cells)
-            {
-                Destroy(cell.gameObject);
-            }
-
-            cells.Clear();
-
             itemThumbnail.Apply(itemInteractData.ItemData, visualStateMode: ItemThumbnail.VisualStateMode.Manual);
-
-            var offsetWidth = (itemInteractData.ItemData.ItemVO.Width - 1) * -0.5f * cellSize;
-            var offsetHeight = (itemInteractData.ItemData.ItemVO.Height - 1) * -0.5f * cellSize;
-            for (var w = 0; w < itemInteractData.ItemData.ItemVO.Width; w++)
-            {
-                for (var h = 0; h < itemInteractData.ItemData.ItemVO.Height; h++)
-                {
-                    var cell = Instantiate(cellElementPrefab, cellParent, false);
-                    cell.localPosition = new Vector3(offsetWidth + cellSize * w, offsetHeight + cellSize * h, 0);
-                    cells.Add(cell);
-                }
-            }
+            gridCellSizeView.Apply(itemInteractData.ItemData.WidthCount, itemInteractData.ItemData.HeightCount);
         }
 
         void Update()

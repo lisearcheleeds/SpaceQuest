@@ -20,10 +20,7 @@ namespace AloneSpace
         [SerializeField] ItemThumbnail itemThumbnail;
 
         [SerializeField] GameObject gridCellObject;
-        [SerializeField] RectTransform gridCellParent;
-        [SerializeField] RectTransform gridCellElementPrefab;
-        [SerializeField] float gridCellSize;
-        List<RectTransform> gridCells = new List<RectTransform>();
+        [SerializeField] GridCellSizeView gridCellSizeView;
 
         RectTransform rectTransform;
         bool followPointerPosition;
@@ -114,24 +111,7 @@ namespace AloneSpace
                 return;
             }
 
-            foreach (var cell in gridCells)
-            {
-                Destroy(cell.gameObject);
-            }
-
-            gridCells.Clear();
-
-            var offsetWidth = (width - 1) * -0.5f * gridCellSize;
-            var offsetHeight = (height - 1) * -0.5f * gridCellSize;
-            for (var w = 0; w < width; w++)
-            {
-                for (var h = 0; h < height; h++)
-                {
-                    var cell = Instantiate(gridCellElementPrefab, gridCellParent, false);
-                    cell.localPosition = new Vector3(offsetWidth + gridCellSize * w, offsetHeight + gridCellSize * h, 0);
-                    gridCells.Add(cell);
-                }
-            }
+            gridCellSizeView.Apply(width, height);
         }
     }
 }
