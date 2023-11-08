@@ -1,29 +1,22 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 namespace VariableInventorySystem
 {
-    public class GridView : MonoBehaviour, IView
+    public abstract class GridView<TGridCellData> : MonoBehaviour, IView where TGridCellData : ICellData
     {
-        [SerializeField] GridLayoutGroup gridLayoutGroup;
-        [SerializeField] RectTransform resizeTarget;
+        [SerializeField] GridCell<TGridCellData> cellPrefab;
 
-        [SerializeField] GridCell cellPrefab;
+        [SerializeField] Vector2 gridCellSize = new Vector2(72, 72);
+        [SerializeField] RectTransform resizeTarget;
+        [SerializeField] RectTransform cellParent;
 
         public InventoryData InventoryData { get; private set; }
 
-        public int CellCount => InventoryData.CapacityWidth * InventoryData.CapacityHeight;
-
-        protected GridCell[] itemViews;
+        protected List<GridCell<TGridCellData>> gridCells = new List<GridCell<TGridCellData>>();
         protected CellCornerType CellCornerType;
-
-        int? originalId;
-        ICellData originalCellData;
-
-        ICellEventListener listener;
 
         public virtual void Initialize()
         {
@@ -31,115 +24,69 @@ namespace VariableInventorySystem
 
         public ICell CreateEffectCell()
         {
-            return Instantiate(cellPrefab).GetComponent<GridCell>();
-        }
-
-        public void SetCellEventListener(ICellEventListener listener)
-        {
-            this.listener = listener;
+            return Instantiate(cellPrefab).GetComponent<GridCell<TGridCellData>>();
         }
 
         public virtual void Apply(InventoryData inventoryData)
         {
             InventoryData = inventoryData;
 
-            if (itemViews == null || itemViews.Length != CellCount)
+            resizeTarget.sizeDelta = new Vector2(InventoryData.CapacityWidth * gridCellSize.x, InventoryData.CapacityHeight * gridCellSize.y);
+
+            gridCells = InventoryData.CellData.Select(cellData =>
             {
-                itemViews = new GridCell[CellCount];
-
-                for (var i = 0; i < CellCount; i++)
-                {
-                    var itemView = Instantiate(cellPrefab, gridLayoutGroup.transform).GetComponent<GridCell>();
-                    itemViews[i] = itemView;
-
-                    itemView.transform.SetAsFirstSibling();
-                    itemView.SetCellEventListener(listener);
-                    itemView.Apply(null);
-                }
-
-                gridLayoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-                gridLayoutGroup.constraintCount = InventoryData.CapacityWidth;
-                gridLayoutGroup.cellSize = itemViews.First().CellSize;
-                gridLayoutGroup.spacing = Vector2.zero;
-            }
-
-            UpdateSize();
-
-            for (var i = 0; i < InventoryData.CellData.Length; i++)
-            {
-                itemViews[i].Apply(InventoryData.CellData[i]);
-            }
+                var gridCell = Instantiate(cellPrefab, cellParent).GetComponent<GridCell<TGridCellData>>();
+                gridCell.SetLocalPosition();
+                gridCell.Apply(cellData);
+                return gridCell;
+            }).ToList();
         }
 
-        public virtual void OnPrePick(ICell stareCell)
+        public virtual void OnPrePick(ICellData cellData)
         {
         }
 
-        public virtual bool OnPick(ICell stareCell)
+        public virtual bool OnPick(ICellData cellData)
         {
-            if (stareCell?.CellData == null)
+            if (cellData == null)
             {
                 return false;
             }
 
-            var id = InventoryData.GetId(stareCell.CellData);
-            if (id.HasValue)
-            {
-                originalId = id;
-                originalCellData = stareCell.CellData;
-
-                itemViews[id.Value].Apply(null);
-                InventoryData.RemoveInventoryItem(id.Value);
-                return true;
-            }
-
-            return false;
+            var id = InventoryData.GetId(cellData);
+            return id.HasValue;
         }
 
-        public virtual void OnDrag(ICell stareCell, ICell effectCell, PointerEventData pointerEventData)
+        public virtual void OnDrag(ICell effectCell, PointerEventData cursorPosition)
         {
-            if (stareCell == null)
+            var stareId = GetStareId(cursorPosition);
+            if (!stareId.HasValue)
             {
                 return;
             }
 
-            if (!GetIndex(stareCell).HasValue)
-            {
-                return;
-            }
-
-            // depends on anchor
-            var pointerLocalPosition = GetLocalPosition(stareCell.CellRoot, pointerEventData.position, pointerEventData.enterEventCamera);
-            var anchor = new Vector2(stareCell.CellSize.x * 0.5f, -stareCell.CellSize.y * 0.5f);
-            var anchoredPosition = pointerLocalPosition + anchor;
-            CellCornerType = GetCorner((new Vector2(anchoredPosition.x % stareCell.CellSize.x, anchoredPosition.y % stareCell.CellSize.y) - anchor) * 0.5f);
+            CellCornerType = GetCorner(cursorPosition);
         }
 
-        public virtual bool OnDrop(ICell stareCell, ICell effectCell)
+        public virtual bool OnDrop(int? dropTargetId, ICellData cellData)
         {
-            if (!itemViews.Any(item => item == stareCell))
-            {
-                return false;
-            }
-
             // check target;
-            var index = GetIndex(stareCell, effectCell.CellData, CellCornerType);
-            if (!index.HasValue)
+            if (!dropTargetId.HasValue)
             {
                 return false;
             }
 
-            if (!InventoryData.CheckInsert(index.Value, effectCell.CellData))
+            if (!InventoryData.CheckInsert(dropTargetId.Value, cellData))
             {
                 return false;
             }
 
             // place
-            InventoryData.InsertInventoryItem(index.Value, effectCell.CellData);
-            itemViews[index.Value].Apply(effectCell.CellData);
-
-            originalId = null;
-            originalCellData = null;
+            InventoryData.InsertInventoryItem(dropTargetId.Value, cellData);
+            var gridCell = Instantiate(cellPrefab, cellParent).GetComponent<GridCell<TGridCellData>>();
+            gridCell.Apply(cellData);
+            gridCell.SetLocalPosition();
+            gridCells.Add(gridCell);
             return true;
         }
 
@@ -165,22 +112,22 @@ namespace VariableInventorySystem
             CellCornerType = CellCornerType.None;
         }
 
-        public virtual void OnSwitchRotate(ICell stareCell, ICell effectCell)
+        public virtual int? GetStareId(PointerEventData cursorPosition)
         {
-        }
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                cellParent,
+                cursorPosition.position,
+                cursorPosition.enterEventCamera,
+                out var localPosition);
 
-        protected virtual int? GetIndex(ICell stareCell)
-        {
-            var index = (int?)null;
-            for (var i = 0; i < itemViews.Length; i++)
+            var positionX = (int)Mathf.Floor(localPosition.x / gridCellSize.x);
+            var positionY = (int)Mathf.Floor(localPosition.y / gridCellSize.y);
+            if (0 < positionX && positionX <= InventoryData.CapacityWidth && 0 < positionY && positionY <= InventoryData.CapacityHeight)
             {
-                if (itemViews[i] == stareCell)
-                {
-                    index = i;
-                }
+                return positionX + positionY * InventoryData.CapacityWidth;
             }
 
-            return index;
+            return null;
         }
 
         protected virtual int? GetIndex(ICell stareCell, ICellData effectCellData, CellCornerType cellCornerType)
@@ -210,33 +157,34 @@ namespace VariableInventorySystem
             return index;
         }
 
-        protected virtual Vector2 GetLocalPosition(RectTransform parent, Vector2 position, Camera camera)
+        protected virtual CellCornerType GetCorner(PointerEventData cursorPosition)
         {
-            var localPosition = Vector2.zero;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(parent, position, camera, out localPosition);
-            return localPosition;
-        }
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                cellParent,
+                cursorPosition.position,
+                cursorPosition.enterEventCamera,
+                out var viewLocalPosition);
 
-        protected virtual CellCornerType GetCorner(Vector2 localPosition)
-        {
+            var cellLocalPosition = new Vector2(viewLocalPosition.x % gridCellSize.x, viewLocalPosition.y % gridCellSize.y);
+
             // depends on pivot
             var corner = CellCornerType.None;
-            if (localPosition.x < Mathf.Epsilon)
+            if (cellLocalPosition.x < Mathf.Epsilon)
             {
                 corner |= CellCornerType.Left;
             }
 
-            if (localPosition.x > Mathf.Epsilon)
+            if (cellLocalPosition.x > Mathf.Epsilon)
             {
                 corner |= CellCornerType.Right;
             }
 
-            if (localPosition.y > Mathf.Epsilon)
+            if (cellLocalPosition.y > Mathf.Epsilon)
             {
                 corner |= CellCornerType.Top;
             }
 
-            if (localPosition.y < Mathf.Epsilon)
+            if (cellLocalPosition.y < Mathf.Epsilon)
             {
                 corner |= CellCornerType.Bottom;
             }
@@ -275,15 +223,6 @@ namespace VariableInventorySystem
             }
 
             return evenNumberOffset;
-        }
-
-        void UpdateSize()
-        {
-            if (itemViews.Any())
-            {
-                var cellSize = itemViews.First().CellSize;
-                resizeTarget.sizeDelta = new Vector2(InventoryData.CapacityWidth * cellSize.x, InventoryData.CapacityHeight * cellSize.y);
-            }
         }
     }
 }

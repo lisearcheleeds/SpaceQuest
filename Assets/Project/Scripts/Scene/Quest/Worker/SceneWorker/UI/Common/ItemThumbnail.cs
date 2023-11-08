@@ -53,6 +53,8 @@ namespace AloneSpace
             GrayOut,
         }
 
+        public StandardButton StandardButton => button;
+
         public void Apply(
             ItemVO itemVO,
             LayoutMode layoutMode = LayoutMode.Default,

@@ -4,7 +4,7 @@ using VariableInventorySystem;
 
 namespace AloneSpace
 {
-    public class ItemData : StandardGridCellData, IContentQuickViewData
+    public class ItemData : ICellData, IContentQuickViewData
     {
         public int Id => ItemVO.Id;
         public Guid InstanceId { get; }
@@ -14,12 +14,9 @@ namespace AloneSpace
         public bool HasAmount => ItemVO.MaxAmount.HasValue;
         public int? Amount { get; set; }
 
-        public Texture2DPathVO ImageAsset => ItemVO.ImageAsset;
-
-        public override bool IsRotate { get; set; }
-        public override int WidthCount => ItemVO.Width;
-        public override int HeightCount => ItemVO.Height;
-        public override string ImagePath => ItemVO.ImageAsset.Path;
+        public bool IsRotate { get; set; }
+        public int GridCellDataSizeWidth => ItemVO.Width;
+        public int GridCellDataSizeHeight => ItemVO.Height;
 
         public ItemData(ItemVO itemVO, int? amount)
         {

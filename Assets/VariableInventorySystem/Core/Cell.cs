@@ -13,16 +13,6 @@ namespace VariableInventorySystem
 
         protected abstract RectTransform SizeRoot { get; }
         protected abstract RectTransform RotateRoot { get; }
-        protected abstract ICellActions CellActions { get; }
-
-        public void SetCellEventListener(ICellEventListener listener)
-        {
-            CellActions.SetCallback(
-                () => listener?.OnCellClick(this),
-                () => listener?.OnCellOptionClick(this),
-                () => listener?.OnCellEnter(this),
-                () => listener?.OnCellExit(this));
-        }
 
         public void Apply(ICellData cellData)
         {

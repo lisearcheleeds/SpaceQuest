@@ -2,9 +2,9 @@
 
 namespace VariableInventorySystem
 {
-    public abstract class GridCell : Cell
+    public abstract class GridCell<TGridCellData> : Cell where TGridCellData : ICellData
     {
-        public IGridCellData GridCellData => (IGridCellData)CellData;
+        public TGridCellData GridCellData => (TGridCellData)CellData;
         public override Vector2 CellSize => cellDataSize;
         protected override RectTransform SizeRoot => sizeRoot;
         protected override RectTransform RotateRoot => content;
@@ -20,16 +20,16 @@ namespace VariableInventorySystem
             content.gameObject.SetActive(GridCellData != null);
 
             cellDataSize = new Vector2(
-                gridCellSize.x * (GridCellData?.WidthCount ?? 1),
-                gridCellSize.y * (GridCellData?.HeightCount ?? 1));
+                gridCellSize.x * (GridCellData?.GridCellDataSizeWidth ?? 1),
+                gridCellSize.y * (GridCellData?.GridCellDataSizeHeight ?? 1));
         }
 
         protected override Vector2 GetCenterOffset()
         {
             var (rotatedWidthCount, rotatedHeightCount) = GridLayoutHelper.GetRotateDataSize(GridCellData);
             return new Vector2(
-                -(rotatedWidthCount - 1) * GridCellData.WidthCount * 0.5f,
-                (rotatedHeightCount - 1) * GridCellData.HeightCount * 0.5f);
+                -(rotatedWidthCount - 1) * GridCellData.GridCellDataSizeWidth * 0.5f,
+                (rotatedHeightCount - 1) * GridCellData.GridCellDataSizeHeight * 0.5f);
         }
     }
 }

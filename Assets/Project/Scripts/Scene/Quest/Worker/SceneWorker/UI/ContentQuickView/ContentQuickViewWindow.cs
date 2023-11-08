@@ -47,14 +47,14 @@ namespace AloneSpace
                     ApplyTextObject(itemInteractData.Text);
                     ApplyOptionTextObject(null);
                     ApplyThumbnailObject(itemInteractData.ItemData);
-                    ApplyGridCellObject(itemInteractData.ItemData.WidthCount, itemInteractData.ItemData.HeightCount);
+                    ApplyGridCellObject(itemInteractData.ItemData.GridCellDataSizeWidth, itemInteractData.ItemData.GridCellDataSizeHeight);
                     break;
                 case ItemData itemData:
                     gameObject.SetActive(true);
                     ApplyTextObject(itemData.ItemVO.Text);
                     ApplyOptionTextObject(null);
                     ApplyThumbnailObject(itemData);
-                    ApplyGridCellObject(itemData.WidthCount, itemData.HeightCount);
+                    ApplyGridCellObject(itemData.GridCellDataSizeWidth, itemData.GridCellDataSizeHeight);
                     break;
                 default:
                     gameObject.SetActive(false);

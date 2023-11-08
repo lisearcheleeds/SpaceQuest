@@ -5,10 +5,10 @@ namespace AloneSpace
 {
     public class InventoryList : MonoBehaviour
     {
-        public StandardGridView StandardGridView => standardGridView;
+        public InventoryGridView InventoryGridView => inventoryGridView;
         public DropAreaView DropAreaView => dropAreaView;
 
-        [SerializeField] StandardGridView standardGridView;
+        [SerializeField] InventoryGridView inventoryGridView;
         [SerializeField] DropAreaView dropAreaView;
 
         bool isDirty;
@@ -51,7 +51,7 @@ namespace AloneSpace
         {
             if (questData.UserData.ControlActorData != null)
             {
-                standardGridView.Apply(questData.UserData.ControlActorData.InventoryData.Inventory);
+                inventoryGridView.Apply(questData.UserData.ControlActorData.InventoryData.Inventory);
             }
         }
 

@@ -10,8 +10,8 @@ namespace VariableInventorySystem
             {
                 case IGridCellData gridCellData:
                     return cellData.IsRotate
-                        ? (gridCellData.WidthCount, gridCellData.HeightCount)
-                        : (gridCellData.HeightCount, gridCellData.WidthCount);
+                        ? (WidthCount: gridCellData.GridCellDataSizeWidth, HeightCount: gridCellData.GridCellDataSizeHeight)
+                        : (HeightCount: gridCellData.GridCellDataSizeHeight, WidthCount: gridCellData.GridCellDataSizeWidth);
                 default:
                     throw new ArgumentException("Add calculate code for width and height from other ICellData types");
             }

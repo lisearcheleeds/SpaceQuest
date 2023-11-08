@@ -93,7 +93,7 @@ namespace AloneSpace
         void UpdateContentItemInteractData(ItemInteractData itemInteractData)
         {
             itemThumbnail.Apply(itemInteractData.ItemData, visualStateMode: ItemThumbnail.VisualStateMode.Manual);
-            gridCellSizeView.Apply(itemInteractData.ItemData.WidthCount, itemInteractData.ItemData.HeightCount);
+            gridCellSizeView.Apply(itemInteractData.ItemData.GridCellDataSizeWidth, itemInteractData.ItemData.GridCellDataSizeHeight);
         }
 
         void Update()

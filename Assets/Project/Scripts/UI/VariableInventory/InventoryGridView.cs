@@ -2,10 +2,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using VariableInventorySystem;
 
-namespace VariableInventorySystem
+namespace AloneSpace
 {
-    public class StandardGridView : GridView
+    public class InventoryGridView : GridView<ItemData>
     {
         [SerializeField] RectTransform background;
 
@@ -25,7 +26,7 @@ namespace VariableInventorySystem
             condition.raycastTarget = false;
         }
 
-        public override void Apply(InventoryData stashData)
+        public override void Apply(VariableInventorySystem.InventoryData stashData)
         {
             base.Apply(stashData);
 

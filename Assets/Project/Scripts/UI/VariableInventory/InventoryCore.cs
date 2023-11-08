@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using VariableInventorySystem;
 
-namespace VariableInventorySystem
+namespace AloneSpace
 {
-    public class StandardCore : Core
+    public class InventoryCore : Core
     {
         [SerializeField] RectTransform effectCellParent;
 
