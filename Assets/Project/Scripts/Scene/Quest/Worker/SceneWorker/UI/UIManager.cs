@@ -7,14 +7,14 @@ namespace AloneSpace
     public class UIManager : MonoBehaviour
     {
         [SerializeField] ActorView actorView;
-        [SerializeField] TargetView targetView;
+        [SerializeField] FloatingView floatingView;
         [SerializeField] MenuView menuView;
         [SerializeField] ContentQuickView contentQuickView;
 
         public void Initialize(QuestData questData)
         {
             actorView.Initialize();
-            targetView.Initialize();
+            floatingView.Initialize(questData);
             menuView.Initialize(questData);
             contentQuickView.Initialize();
         }
@@ -22,7 +22,7 @@ namespace AloneSpace
         public void Finalize()
         {
             actorView.Finalize();
-            targetView.Finalize();
+            floatingView.Finalize();
             menuView.Finalize();
             contentQuickView.Finalize();
         }
@@ -30,7 +30,7 @@ namespace AloneSpace
         public void OnUpdate()
         {
             actorView.OnUpdate();
-            targetView.OnUpdate();
+            floatingView.OnUpdate();
             menuView.OnUpdate();
             contentQuickView.OnUpdate();
         }
