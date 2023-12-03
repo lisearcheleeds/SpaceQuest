@@ -17,5 +17,7 @@ namespace AloneSpace
         public static int Reset { get; } = Animator.StringToHash("Reset");
         public static int Small { get; } = Animator.StringToHash("Small");
         public static int Large { get; } = Animator.StringToHash("Large");
+        public static int Show { get; } = Animator.StringToHash("Show");
+        public static int Hide { get; } = Animator.StringToHash("Hide");
     }
 }

@@ -12,20 +12,20 @@ namespace AloneSpace
         Dictionary<string, Texture2D> texture2DCache = new Dictionary<string, Texture2D>();
         List<string> loadingResources = new List<string>();
 
-        public Coroutine LoadAsync<T>(AssetPath path, Action<T> onLoad) where T : Component
+        public Coroutine StartLoadAsync<T>(AssetPath path, Action<T> onLoad) where T : Component
         {
             return StartCoroutine(InnerLoadAsync(path.Path, onLoad));
         }
 
-        public Coroutine LoadAsyncCache<T>(AssetPath path, Action<T> onLoad) where T : Component
+        public Coroutine StartLoadAsyncCache<T>(AssetPath path, Action<T> onLoad) where T : Component
         {
-            return LoadAsyncCache(path, asset =>
+            return StartLoadAsyncCache(path, asset =>
             {
                 onLoad(asset.GetComponent<T>());
             });
         }
 
-        public Coroutine LoadAsyncCache(AssetPath path, Action<GameObject> onLoad)
+        public Coroutine StartLoadAsyncCache(AssetPath path, Action<GameObject> onLoad)
         {
             if (gameObjectCache.ContainsKey(path.Path))
             {
@@ -54,7 +54,7 @@ namespace AloneSpace
                 }));
         }
 
-        public Coroutine LoadAsyncTextureCache(Texture2DPathVO path, Action<Texture2D> onLoad)
+        public Coroutine StartLoadAsyncTextureCache(Texture2DPathVO path, Action<Texture2D> onLoad)
         {
             if (texture2DCache.ContainsKey(path.Path))
             {

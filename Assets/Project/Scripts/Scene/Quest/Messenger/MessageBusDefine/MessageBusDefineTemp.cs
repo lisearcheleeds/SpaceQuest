@@ -25,6 +25,9 @@ namespace AloneSpace
         public class PlayerCommandRemoveInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
 
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
+        public class ManagerCommandPickedItem : MessageBusBroadcaster<InventoryData, ItemData>{}
+        public class ManagerCommandDropItem : MessageBusBroadcaster<InventoryData, ItemData>{}
+        public class ManagerCommandDroppedItem : MessageBusBroadcaster<InventoryData, ItemData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
     }
 }

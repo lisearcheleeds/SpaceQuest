@@ -8,8 +8,8 @@ namespace AloneSpace
     {
         [SerializeField] ActorView actorView;
         [SerializeField] FloatingView floatingView;
-        [SerializeField] MenuView menuView;
         [SerializeField] ContentQuickView contentQuickView;
+        [SerializeField] MenuView menuView;
 
         public void Initialize(QuestData questData)
         {

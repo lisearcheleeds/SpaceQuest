@@ -51,7 +51,7 @@ namespace AloneSpace
                     break;
                 case ItemData itemData:
                     gameObject.SetActive(true);
-                    ApplyTextObject(itemData.ItemVO.Text);
+                    ApplyTextObject(itemData.ItemVO.Name);
                     ApplyOptionTextObject(null);
                     ApplyThumbnailObject(itemData);
                     ApplyGridCellObject(itemData.WidthCount, itemData.HeightCount);

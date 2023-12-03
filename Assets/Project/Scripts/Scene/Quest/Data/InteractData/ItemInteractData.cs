@@ -15,7 +15,7 @@ namespace AloneSpace
         public int? AreaId { get; private set; }
         public Vector3 Position { get; private set; }
         public Quaternion Rotation { get; private set; }
-        public string Text => ItemData.ItemVO.Text;
+        public string Text => ItemData.ItemVO.Name;
         public float InteractTime => 3.0f;
         public InteractRestraintType InteractRestraintType => InteractRestraintType.Angle;
 

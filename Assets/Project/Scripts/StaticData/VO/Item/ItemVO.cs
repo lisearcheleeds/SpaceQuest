@@ -7,7 +7,7 @@ namespace AloneSpace
     {
         public int Id => itemMaster.Id;
 
-        public string Text => itemMaster.Text;
+        public string Name => itemMaster.Name;
         public Rarity Rarity => itemMaster.Rarity;
         public int Width => itemMaster.Width;
         public int Height => itemMaster.Height;

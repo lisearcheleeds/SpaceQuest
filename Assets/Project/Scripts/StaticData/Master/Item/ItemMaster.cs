@@ -7,17 +7,17 @@ namespace AloneSpace
         public class Row
         {
             public int Id { get; }
-            public string Text { get; }
+            public string Name { get; }
             public Rarity Rarity { get; }
             public int Width { get; }
             public int Height { get; }
             public int? MaxAmount { get; }
             public Texture2DPathVO ImageAsset { get; }
 
-            public Row(int id, string text, Rarity rarity, int width, int height, int? maxAmount, Texture2DPathVO imageAsset)
+            public Row(int id, string name, Rarity rarity, int width, int height, int? maxAmount, Texture2DPathVO imageAsset)
             {
                 Id = id;
-                Text = text;
+                Name = name;
                 Rarity = rarity;
                 Width = width;
                 Height = height;

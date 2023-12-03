@@ -28,6 +28,9 @@
 
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();
+        public MessageBusDefine.ManagerCommandPickedItem ManagerCommandPickedItem { get; } = new MessageBusDefine.ManagerCommandPickedItem();
+        public MessageBusDefine.ManagerCommandDropItem ManagerCommandDropItem { get; } = new MessageBusDefine.ManagerCommandDropItem();
+        public MessageBusDefine.ManagerCommandDroppedItem ManagerCommandDroppedItem { get; } = new MessageBusDefine.ManagerCommandDroppedItem();
         public MessageBusDefine.ManagerCommandTransferItem ManagerCommandTransferItem { get; } = new MessageBusDefine.ManagerCommandTransferItem();
     }
 }

@@ -66,7 +66,7 @@ namespace AloneSpace
             if (ambientObject == null)
             {
                 currentCoroutines.Add(
-                    AssetLoader.Instance.LoadAsync<Transform>(
+                    AssetLoader.Instance.StartLoadAsync<Transform>(
                         questData.StarSystemData.AmbientObjectAsset,
                         target => Instantiate(target, ambientObjectParent)));
             }
@@ -75,7 +75,7 @@ namespace AloneSpace
             if (placedObjectAsset != null)
             {
                 currentCoroutines.Add(
-                    AssetLoader.Instance.LoadAsync<Transform>(
+                    AssetLoader.Instance.StartLoadAsync<Transform>(
                         placedObjectAsset,
                         target => loadedPlacedObjects.Add(Instantiate(target, placedObjectParent))));
             }

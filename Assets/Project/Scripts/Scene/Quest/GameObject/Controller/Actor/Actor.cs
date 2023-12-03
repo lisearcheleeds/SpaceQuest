@@ -42,7 +42,7 @@ namespace AloneSpace
         static IEnumerator LoadActor(ActorData actorData, Transform parent, Action<Actor> onComplete)
         {
             var isComplete = false;
-            AssetLoader.Instance.LoadAsyncCache<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
+            AssetLoader.Instance.StartLoadAsyncCache<Actor>(ConstantAssetPath.ActorPathVO, actorPrefab =>
             {
                 var actor = Instantiate(actorPrefab, actorData.Position, actorData.Rotation, parent);
                 actor.ActorData = actorData;
@@ -57,7 +57,7 @@ namespace AloneSpace
         static IEnumerator LoadActorModel(ActorData actorData, Actor actor)
         {
             var isComplete = false;
-            AssetLoader.Instance.LoadAsyncCache<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
+            AssetLoader.Instance.StartLoadAsyncCache<ActorModel>(actorData.ActorSpecVO.Path, prefab =>
             {
                 actor.ActorModel = Instantiate(prefab, actor.transform, false);
                 actorData.SetActorGameObjectHandler(actor.ActorModel.Init(actorData, actorData.CollisionEventModule));
@@ -74,7 +74,7 @@ namespace AloneSpace
 
             foreach (var data in weaponData.Values)
             {
-                AssetLoader.Instance.LoadAsyncCache<WeaponModel>(
+                AssetLoader.Instance.StartLoadAsyncCache<WeaponModel>(
                     data.WeaponSpecVO.Path,
                     prefab =>
                     {

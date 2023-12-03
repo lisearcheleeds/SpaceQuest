@@ -85,13 +85,13 @@ namespace AloneSpace
             }
             else
             {
-                text.text = itemData.ItemVO.Text;
+                text.text = itemData.ItemVO.Name;
                 optionText.text = $"x{itemData.Amount}";
                 SetLayout(layoutMode);
                 SetPointerAction(pointerActionMode);
                 SetVisualState(visualStateMode);
 
-                AssetLoader.Instance.LoadAsyncTextureCache(itemData.ItemVO.ImageAsset, tex =>
+                AssetLoader.Instance.StartLoadAsyncTextureCache(itemData.ItemVO.ImageAsset, tex =>
                 {
                     iconImage.gameObject.SetActive(true);
                     iconImage.texture = tex;

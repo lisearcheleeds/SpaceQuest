@@ -15,7 +15,7 @@ namespace AloneSpace.Common
             if (CellData is ItemData cellData)
             {
                 text.gameObject.SetActive(true);
-                text.text = cellData.ItemVO.Text;
+                text.text = cellData.ItemVO.Name;
             }
             else
             {

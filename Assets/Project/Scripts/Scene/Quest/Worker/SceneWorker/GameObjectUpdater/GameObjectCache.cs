@@ -34,7 +34,7 @@ namespace AloneSpace
 
         void GetCacheAsset(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)
         {
-            AssetLoader.Instance.LoadAsyncCache(path, loadPrefab =>
+            AssetLoader.Instance.StartLoadAsyncCache(path, loadPrefab =>
             {
                 GetAssetCache(path, loadPrefab, onLoad);
             });

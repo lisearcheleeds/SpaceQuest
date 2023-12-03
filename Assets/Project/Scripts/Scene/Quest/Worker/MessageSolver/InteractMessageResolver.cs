@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using AloneSpace;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
@@ -14,33 +15,59 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.ManagerCommandPickItem.AddListener(PickItem);
+            MessageBus.Instance.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
+            MessageBus.Instance.ManagerCommandDropItem.AddListener(ManagerCommandDropItem);
             MessageBus.Instance.ManagerCommandTransferItem.AddListener(TransferItem);
             MessageBus.Instance.NoticeCollisionEventEffectData.AddListener(NoticeCollisionEffectData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.ManagerCommandPickItem.RemoveListener(PickItem);
+            MessageBus.Instance.ManagerCommandPickItem.RemoveListener(ManagerCommandPickItem);
+            MessageBus.Instance.ManagerCommandDropItem.RemoveListener(ManagerCommandDropItem);
             MessageBus.Instance.ManagerCommandTransferItem.RemoveListener(TransferItem);
             MessageBus.Instance.NoticeCollisionEventEffectData.RemoveListener(NoticeCollisionEffectData);
         }
 
-        void PickItem(InventoryData toInventory, ItemInteractData pickItem)
+        void ManagerCommandPickItem(InventoryData toInventory, ItemInteractData pickItem)
         {
             var insertableId = toInventory.Inventory.GetInsertableId(pickItem.ItemData);
-            if (insertableId.HasValue)
-            {
-                // アイテムを格納
-                toInventory.Inventory.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
-
-                MessageBus.Instance.ReleaseInteractData.Broadcast(pickItem);
-            }
-            else
+            if (!insertableId.HasValue)
             {
                 // InteractItem.InteractItemを確認
                 throw new ObjectDisposedException("ObjectDisposedException");
             }
+
+            // Areaからアイテムを削除
+            MessageBus.Instance.ReleaseInteractData.Broadcast(pickItem);
+
+            // インベントリにアイテムを追加
+            toInventory.Inventory.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
+            
+            MessageBus.Instance.ManagerCommandPickedItem.Broadcast(toInventory, pickItem.ItemData);
+        }
+
+        void ManagerCommandDropItem(InventoryData fromInventory, ItemData dropItem)
+        {
+            var id = fromInventory.Inventory.GetId(dropItem);
+            if (!id.HasValue)
+            {
+                // FIXME: 本当は必要だけどGridViewのPrePickで削除済みなのでそっちを治すまでは暫定で許す
+                // throw new ArgumentException("DropしようとしたアイテムがInventory内に存在しません");
+            }
+            
+            // インベントリからアイテムを削除
+            fromInventory.Inventory.RemoveInventoryItem(id.Value);
+
+            // Areaにアイテムを追加
+            var offsetPosition = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
+            MessageBus.Instance.CreateItemInteractData.Broadcast(
+                dropItem,
+                questData.UserData.ControlActorData.AreaId.Value,
+                questData.UserData.ControlActorData.Position + offsetPosition,
+                Quaternion.identity);
+            
+            MessageBus.Instance.ManagerCommandDroppedItem.Broadcast(fromInventory, dropItem);
         }
 
         void TransferItem(InventoryData fromInventory, InventoryData toInventory, ItemData itemData)

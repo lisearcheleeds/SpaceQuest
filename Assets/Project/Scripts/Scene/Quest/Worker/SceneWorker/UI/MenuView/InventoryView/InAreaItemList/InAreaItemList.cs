@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Linq;
 using VariableInventorySystem;
-using Random = UnityEngine.Random;
 
 namespace AloneSpace
 {
@@ -25,7 +24,8 @@ namespace AloneSpace
 
             MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
-            MessageBus.Instance.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
+            MessageBus.Instance.ManagerCommandPickedItem.AddListener(ManagerCommandPickedItem);
+            MessageBus.Instance.ManagerCommandDroppedItem.AddListener(ManagerCommandDroppedItem);
 
             dropAreaView.Apply(OnDropAreaDrop, GetDropAreaIsInsertableCondition, GetDropAreaIsInnerCell);
         }
@@ -34,7 +34,8 @@ namespace AloneSpace
         {
             MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
-            MessageBus.Instance.ManagerCommandPickItem.RemoveListener(ManagerCommandPickItem);
+            MessageBus.Instance.ManagerCommandPickedItem.RemoveListener(ManagerCommandPickedItem);
+            MessageBus.Instance.ManagerCommandDroppedItem.RemoveListener(ManagerCommandDroppedItem);
         }
 
         public void SetDirty()
@@ -119,12 +120,14 @@ namespace AloneSpace
             SetDirty();
         }
 
-        void ManagerCommandPickItem(InventoryData inventoryData, ItemInteractData itemInteractData)
+        void ManagerCommandPickedItem(InventoryData inventoryData, ItemData pickedItem)
         {
-            if (questData.UserData.ControlActorData.AreaId == itemInteractData.AreaId)
-            {
-                SetDirty();
-            }
+            SetDirty();
+        }
+        
+        void ManagerCommandDroppedItem(InventoryData inventoryData, ItemData droppedItem)
+        {
+            SetDirty();
         }
 
         void OnClickSelectCell(InAreaItemListViewCell.CellData cellData)
@@ -154,21 +157,8 @@ namespace AloneSpace
                 return false;
             }
 
-            // InAreaItemとして生成
-            var itemData = cellData as ItemData;
-            var offsetPosition = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
-            MessageBus.Instance.CreateItemInteractData.Broadcast(
-                itemData,
-                questData.UserData.ControlActorData.AreaId.Value,
-                questData.UserData.ControlActorData.Position + offsetPosition,
-                Quaternion.identity);
-
-            // インベントリから消す
-            // PrePickで消えているので不要・・・なんだけどリファクタしたときに必要になる
-            // var variableInventoryViewData = questData.UserData.ControlActorData.InventoryData.VariableInventoryViewData;
-            // var targetCellData = variableInventoryViewData.CellData.First(x => x?.InstanceId == cellData.InstanceId);
-            // variableInventoryViewData.RemoveInventoryItem(variableInventoryViewData.GetId(targetCellData).Value);
-
+            MessageBus.Instance.ManagerCommandDropItem.Broadcast(questData.UserData.ControlActorData.InventoryData, cellData as ItemData);
+            
             SetDirty();
 
             return true;
