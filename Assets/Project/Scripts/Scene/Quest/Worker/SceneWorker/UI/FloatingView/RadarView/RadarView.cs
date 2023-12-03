@@ -10,6 +10,8 @@ namespace AloneSpace
         [SerializeField] RadarPointMarker radarPointMarkerPrefab;
         [SerializeField] RectTransform markerParent;
         [SerializeField] float distanceScale;
+        
+        [SerializeField] Transform center3DObject;
 
         List<RadarPointMarker> radarPointMarkerList = new List<RadarPointMarker>();
         bool isDirty;
@@ -50,6 +52,7 @@ namespace AloneSpace
                     radarPointMarker.gameObject.SetActive(false);
                 }
                 
+                // Actorの表示
                 var controlActorData = questData.UserData.ControlActorData;
                 var currentAreaId = controlActorData.AreaId;
                 var currentAreaActors = questData.ActorData.Values.Where(actorData => 
@@ -70,6 +73,7 @@ namespace AloneSpace
                     radarPointMarkerList[i].gameObject.SetActive(true);
                 }
 
+                // Interactの表示
                 var currentAreaInteracts = questData.InteractData.Values.Where(interactData => interactData.AreaId == currentAreaId).ToArray();
                 for (var i = 0; i < currentAreaInteracts.Length; i++)
                 {
@@ -87,15 +91,17 @@ namespace AloneSpace
                 }
             }
 
-            var cameraRotation = Quaternion.Inverse(GetTargetRotation(questData.UserData));
+            var cameraRotation = Quaternion.Inverse(GetCameraRotation(questData.UserData));
             foreach (var radarPointMarker in radarPointMarkerList)
             {
                 var direction = (radarPointMarker.MarkerTarget.Position - questData.UserData.ControlActorData.Position).normalized;
                 radarPointMarker.SetDirection(cameraRotation * direction, distanceScale);
             }
+
+            center3DObject.transform.rotation = questData.UserData.ControlActorData.Rotation;
         }
 
-        Quaternion GetTargetRotation(UserData userData)
+        Quaternion GetCameraRotation(UserData userData)
         {
             return userData.LookAtSpace
                    * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up)

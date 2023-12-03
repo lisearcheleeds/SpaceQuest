@@ -10,6 +10,8 @@ namespace AloneSpace
         [SerializeField] Camera cameraAmbient;
         [SerializeField] Camera cameraArea;
         [SerializeField] Camera camera3d;
+        
+        [SerializeField] Camera cameraUIRadarView;
 
         [SerializeField] Camera cameraUi;
 
@@ -44,15 +46,19 @@ namespace AloneSpace
             cameraAmbient.transform.rotation = currentRotation;
             cameraArea.transform.rotation = currentRotation;
             camera3d.transform.rotation = currentRotation;
+            
+            cameraUIRadarView.transform.rotation = currentRotation;
 
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
             cameraAmbient.transform.position = currentAmbientPosition;
 
             currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.05f);
             var lookAtDistance = Mathf.Abs(questData.UserData.LookAtDistance);
-            var cameraOffsetPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
-            cameraArea.transform.position = cameraOffsetPosition;
-            camera3d.transform.position = cameraOffsetPosition;
+            var cameraPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
+            cameraArea.transform.position = cameraPosition;
+            camera3d.transform.position = cameraPosition;
+            
+            cameraUIRadarView.transform.position = currentRotation * new Vector3(0, 0, -4.0f);
         }
 
         void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)
