@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace AloneSpace
+namespace AloneSpace.UI
 {
     public class GridCellSizeView : MonoBehaviour
     {

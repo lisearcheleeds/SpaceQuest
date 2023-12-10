@@ -15,9 +15,9 @@ namespace AloneSpace
             KeyBindKey.MenuAreaView, KeyBindKey.MenuMapView, KeyBindKey.Backward, KeyBindKey.Escape,
         };
 
-        Func<MenuView.MenuElement> getCurrentMenuElement;
+        Func<UI.MenuView.MenuElement> getCurrentMenuElement;
 
-        public MenuInputLayer(Func<MenuView.MenuElement> getCurrentMenuElement)
+        public MenuInputLayer(Func<UI.MenuView.MenuElement> getCurrentMenuElement)
         {
             this.getCurrentMenuElement = getCurrentMenuElement;
         }
@@ -45,7 +45,7 @@ namespace AloneSpace
 
             if (WasPressedThisFrame(KeyBindKey.MenuStatusView, usedKey))
             {
-                if (getCurrentMenuElement() == MenuView.MenuElement.StatusView)
+                if (getCurrentMenuElement() == UI.MenuView.MenuElement.StatusView)
                 {
                     MessageBus.Instance.UserInputCloseMenu.Broadcast();
                 }
@@ -57,7 +57,7 @@ namespace AloneSpace
 
             if (WasPressedThisFrame(KeyBindKey.MenuInventoryView, usedKey))
             {
-                if (getCurrentMenuElement() == MenuView.MenuElement.InventoryView)
+                if (getCurrentMenuElement() == UI.MenuView.MenuElement.InventoryView)
                 {
                     MessageBus.Instance.UserInputCloseMenu.Broadcast();
                 }
@@ -69,7 +69,7 @@ namespace AloneSpace
 
             if (WasPressedThisFrame(KeyBindKey.MenuPlayerView, usedKey))
             {
-                if (getCurrentMenuElement() == MenuView.MenuElement.PlayerView)
+                if (getCurrentMenuElement() == UI.MenuView.MenuElement.PlayerView)
                 {
                     MessageBus.Instance.UserInputCloseMenu.Broadcast();
                 }
@@ -81,7 +81,7 @@ namespace AloneSpace
 
             if (WasPressedThisFrame(KeyBindKey.MenuAreaView, usedKey))
             {
-                if (getCurrentMenuElement() == MenuView.MenuElement.AreaView)
+                if (getCurrentMenuElement() == UI.MenuView.MenuElement.AreaView)
                 {
                     MessageBus.Instance.UserInputCloseMenu.Broadcast();
                 }
@@ -93,7 +93,7 @@ namespace AloneSpace
 
             if (WasPressedThisFrame(KeyBindKey.MenuMapView, usedKey))
             {
-                if (getCurrentMenuElement() == MenuView.MenuElement.MapView)
+                if (getCurrentMenuElement() == UI.MenuView.MenuElement.MapView)
                 {
                     MessageBus.Instance.UserInputCloseMenu.Broadcast();
                 }

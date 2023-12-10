@@ -1,38 +1,32 @@
 ﻿using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
-namespace AloneSpace
+namespace AloneSpace.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] ActorView actorView;
-        [SerializeField] FloatingView floatingView;
-        [SerializeField] ContentQuickView contentQuickView;
-        [SerializeField] MenuView menuView;
+        [SerializeField] FloatView floatView;
+        [SerializeField] FixedView fixedView;
+        [SerializeField] OverlayView overlayView;
 
         public void Initialize(QuestData questData)
         {
-            actorView.Initialize();
-            floatingView.Initialize(questData);
-            menuView.Initialize(questData);
-            contentQuickView.Initialize();
+            floatView.Initialize(questData);
+            fixedView.Initialize(questData);
+            overlayView.Initialize(questData);
         }
 
         public void Finalize()
         {
-            actorView.Finalize();
-            floatingView.Finalize();
-            menuView.Finalize();
-            contentQuickView.Finalize();
+            floatView.Finalize();
+            fixedView.Finalize();
+            overlayView.Finalize();
         }
 
         public void OnUpdate()
         {
-            actorView.OnUpdate();
-            floatingView.OnUpdate();
-            menuView.OnUpdate();
-            contentQuickView.OnUpdate();
+            floatView.OnUpdate();
+            fixedView.OnUpdate();
+            overlayView.OnUpdate();
         }
     }
 }

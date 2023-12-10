@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VariableInventorySystem;
 
-namespace AloneSpace
+namespace AloneSpace.UI
 {
     public class ItemThumbnail : CacheableGameObject
     {
