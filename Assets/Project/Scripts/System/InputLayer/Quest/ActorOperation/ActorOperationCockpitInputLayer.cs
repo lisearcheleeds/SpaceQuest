@@ -36,17 +36,15 @@ namespace AloneSpace
             }
 
             var mouseDelta = Mouse.current.delta.ReadValue();
+            var mouseDeltaNormal = mouseDelta.normalized;
 
             // 旋回操作
-            // マウスだとroll操作がしたいだけなのにpitchがすごい反応してしまうみたいなのがあるのでちょっと補正を掛ける
             var pitch = userData.ControlActorData.ActorStateData.PitchBoosterPowerRatio;
-            var pitchRate = Mathf.Clamp01(mouseDelta.x == 0 ? 1.0f : Mathf.Abs(mouseDelta.y / mouseDelta.x));
-            var pitchInput = mouseDelta.y * pitchRate * 0.1f;
+            var pitchInput = mouseDelta.y * 0.1f * Mathf.Abs(mouseDeltaNormal.y);
             pitch = Mathf.Clamp(pitch * 0.95f + pitchInput, -1.0f, 1.0f);
 
             var roll = userData.ControlActorData.ActorStateData.RollBoosterPowerRatio;
-            var rollRate = Mathf.Clamp01(mouseDelta.y == 0 ? 1.0f : Mathf.Abs(mouseDelta.x / mouseDelta.y));
-            var rollInput = mouseDelta.x * rollRate * 0.1f;
+            var rollInput = mouseDelta.x * 0.1f * Mathf.Abs(mouseDeltaNormal.x);
             roll = Mathf.Clamp(roll * 0.95f - rollInput, -1.0f, 1.0f);
 
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(pitch);

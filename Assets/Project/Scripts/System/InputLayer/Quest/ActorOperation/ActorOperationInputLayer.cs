@@ -41,7 +41,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Down, usedKey) ? 1.0f : 0.0f);
         }
 
-        protected void CheckWeaponKeys(Key[] usedKey)
+        protected virtual void CheckWeaponKeys(Key[] usedKey)
         {
             if (WasPressedThisFrame(KeyBindKey.Trigger, usedKey))
             {
@@ -83,7 +83,7 @@ namespace AloneSpace
             }
         }
 
-        protected void CheckWeapon()
+        protected virtual void CheckWeapon()
         {
             if (Mouse.current.leftButton.isPressed && Cursor.lockState == CursorLockMode.Locked)
             {
