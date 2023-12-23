@@ -45,7 +45,7 @@ namespace AloneSpace
 
         public void OnUpdateModule(float deltaTime)
         {
-            positionData.SetPosition(positionData.Position + MovementVelocity);
+            positionData.SetPosition(positionData.Position + MovementVelocity * deltaTime);
             positionData.SetRotation(QuaternionVelocityLHS * positionData.Rotation * QuaternionVelocityRHS);
         }
     }

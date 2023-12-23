@@ -5,8 +5,6 @@ namespace AloneSpace
 {
     public class CameraController : MonoBehaviour
     {
-        static readonly float CameraModeSwitchTime = 1.0f;
-
         [SerializeField] Camera cameraAmbient;
         [SerializeField] Camera cameraArea;
         [SerializeField] Camera camera3d;
@@ -52,7 +50,7 @@ namespace AloneSpace
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
             cameraAmbient.transform.position = currentAmbientPosition;
 
-            currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.05f);
+            currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.1f);
             var lookAtDistance = Mathf.Abs(questData.UserData.LookAtDistance);
             var cameraPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
             cameraArea.transform.position = cameraPosition;

@@ -36,9 +36,11 @@ namespace AloneSpace
         public float MainBoosterPower => row.MainBoosterPower;
         public float SubBoosterPower => row.SubBoosterPower;
         public float MaxSpeed => row.MaxSpeed;
+        public float SpeedAttenuation => row.SpeedAttenuation;
         public float PitchRotatePower => row.PitchRotatePower;
         public float YawRotatePower => row.YawRotatePower;
         public float RollRotatePower => row.RollRotatePower;
+        public float RotateAttenuation => row.RotateAttenuation;
 
         // インベントリ
         public int CapacityWidth => row.CapacityWidth;

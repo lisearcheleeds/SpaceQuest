@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace AloneSpace
@@ -41,11 +40,11 @@ namespace AloneSpace
             // 旋回操作
             var pitch = userData.ControlActorData.ActorStateData.PitchBoosterPowerRatio;
             var pitchInput = mouseDelta.y * 0.1f * Mathf.Abs(mouseDeltaNormal.y);
-            pitch = Mathf.Clamp(pitch * 0.95f + pitchInput, -1.0f, 1.0f);
+            pitch = Mathf.Clamp(pitch + pitchInput, -1.0f, 1.0f);
 
             var roll = userData.ControlActorData.ActorStateData.RollBoosterPowerRatio;
             var rollInput = mouseDelta.x * 0.1f * Mathf.Abs(mouseDeltaNormal.x);
-            roll = Mathf.Clamp(roll * 0.95f - rollInput, -1.0f, 1.0f);
+            roll = Mathf.Clamp(roll - rollInput, -1.0f, 1.0f);
 
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(pitch);
             // MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);

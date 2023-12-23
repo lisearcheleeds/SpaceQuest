@@ -74,7 +74,7 @@ namespace AloneSpace
 
                 if (catchUpToDirection.HasValue)
                 {
-                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed * deltaTime);
+                    effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed);
                     effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, targetDirection)));
                 }
                 else
@@ -85,7 +85,7 @@ namespace AloneSpace
             else
             {
                 // ターゲットが移動しない場合はターゲットの位置に回転
-                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed * deltaTime);
+                effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed);
                 effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, targetDirection)));
             }
         }

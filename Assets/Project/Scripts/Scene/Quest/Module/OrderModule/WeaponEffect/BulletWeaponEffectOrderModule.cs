@@ -28,7 +28,7 @@ namespace AloneSpace
             if (isFirstUpdate)
             {
                 isFirstUpdate = false;
-                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed * deltaTime);
+                effectData.MovingModule.SetMovementVelocity(effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed);
             }
 
             effectData.CurrentLifeTime += deltaTime;

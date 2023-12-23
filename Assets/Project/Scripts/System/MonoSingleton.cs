@@ -2,7 +2,7 @@
 
 public abstract class Singleton<T> where T : Singleton<T>, new()
 {
-    private static volatile T instance;
+    static volatile T instance;
 
     public static T Instance
     {
@@ -20,7 +20,7 @@ public abstract class Singleton<T> where T : Singleton<T>, new()
 
 public abstract class MonoSingleton : MonoBehaviour
 {
-    private static volatile GameObject unityObject;
+    static volatile GameObject unityObject;
 
     public static GameObject UnityObject
     {
@@ -39,8 +39,8 @@ public abstract class MonoSingleton : MonoBehaviour
 
 public abstract class MonoSingleton<T> : MonoSingleton where T : MonoSingleton<T>
 {
-    private static volatile T instance;
-    private static object gate = new object();
+    static volatile T instance;
+    static object gate = new object();
 
     protected MonoSingleton()
     {

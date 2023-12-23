@@ -32,7 +32,7 @@ namespace AloneSpace
             }
 
             UpdateDamage();
-            UpdateTarget(deltaTime);
+            UpdateTarget();
             UpdateWeapon();
             UpdateWarp(deltaTime);
             UpdateMove(deltaTime);
@@ -84,7 +84,7 @@ namespace AloneSpace
             actorData.ActorStateData.CurrentDamageEventDataList.Clear();
         }
 
-        void UpdateTarget(float deltaTime)
+        void UpdateTarget()
         {
             if (!actorData.AreaId.HasValue)
             {
@@ -129,7 +129,7 @@ namespace AloneSpace
 
                 // Area内の移動
                 var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
-                actorData.MovingModule.SetMovementVelocity(actorData.MovingModule.MovementVelocity + offset.normalized * deltaTime * 2.0f);
+                actorData.MovingModule.SetMovementVelocity(actorData.MovingModule.MovementVelocity + offset.normalized * 2.0f);
 
                 // 範囲外になったらAreaから脱出 一旦1000.0f
                 if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
@@ -149,7 +149,7 @@ namespace AloneSpace
 
                 // Area外の移動
                 var offset = moveTargetAreaData.StarSystemPosition - actorData.Position;
-                actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+                actorData.MovingModule.SetMovementVelocity(offset.normalized * 2.0f * 30.0f);
 
                 // 目的地に近くなったらAreaに入る
                 if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
@@ -169,7 +169,7 @@ namespace AloneSpace
                 // ワープ終了目的のAreaに居る時は減速
                 // Area内の移動
                 var offset = actorData.ActorStateData.MoveTarget.Position - actorData.Position;
-                actorData.MovingModule.SetMovementVelocity(offset.normalized * deltaTime * 2.0f * 30.0f);
+                actorData.MovingModule.SetMovementVelocity(offset.normalized * 2.0f * 30.0f);
 
                 // 目的地に近くなったらWarp終了
                 if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
@@ -188,9 +188,19 @@ namespace AloneSpace
                 return;
             }
 
+            // 移動
             // ベースにする場合は1秒単位に戻す
-            var prevMovementVelocity = actorData.MovingModule.MovementVelocity / deltaTime;
-            var nextMovementVelocity = prevMovementVelocity + actorData.Rotation
+            var movementVelocityMagnitude = actorData.MovingModule.MovementVelocity.magnitude;
+            var prevMovementVelocityDelta = Vector3.zero;
+            if (movementVelocityMagnitude != 0)
+            {
+                var prevMovementVelocityAttenuationRatio = Mathf.Max(0, movementVelocityMagnitude - actorData.ActorSpecVO.SpeedAttenuation) / movementVelocityMagnitude;
+                var prevMovementVelocity = actorData.MovingModule.MovementVelocity * prevMovementVelocityAttenuationRatio;
+                prevMovementVelocityDelta = prevMovementVelocity;
+            }
+
+            // 入力を反映
+            var nextMovementVelocity = prevMovementVelocityDelta + actorData.Rotation
                 * new Vector3(
                     (actorData.ActorStateData.RightBoosterPowerRatio - actorData.ActorStateData.LeftBoosterPowerRatio) * actorData.ActorSpecVO.SubBoosterPower,
                     (actorData.ActorStateData.TopBoosterPowerRatio - actorData.ActorStateData.BottomBoosterPowerRatio) * actorData.ActorSpecVO.SubBoosterPower,
@@ -199,10 +209,15 @@ namespace AloneSpace
             // 最大速度制限
             if ((actorData.ActorSpecVO.MaxSpeed * actorData.ActorSpecVO.MaxSpeed) < nextMovementVelocity.sqrMagnitude)
             {
-                nextMovementVelocity *= actorData.ActorSpecVO.MaxSpeed / prevMovementVelocity.magnitude;
+                nextMovementVelocity *= actorData.ActorSpecVO.MaxSpeed / nextMovementVelocity.magnitude;
             }
 
-            actorData.MovingModule.SetMovementVelocity(nextMovementVelocity * deltaTime);
+            actorData.MovingModule.SetMovementVelocity(nextMovementVelocity);
+
+            // 回転
+            actorData.ActorStateData.PitchBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.PitchRotatePower);
+            actorData.ActorStateData.YawBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.YawRotatePower);
+            actorData.ActorStateData.RollBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.RollRotatePower);
             actorData.MovingModule.SetQuaternionVelocityRHS(
                 Quaternion.Euler(new Vector3(
                     actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchRotatePower,
@@ -241,7 +256,7 @@ namespace AloneSpace
 
                         // アイテムを引き寄せる
                         var distance = (actorData.Position - interactData.Position).magnitude;
-                        interactData.MovingModule.SetMovementVelocity((actorData.Position - interactData.Position).normalized * Mathf.Min(distance, 100.0f) * deltaTime);
+                        interactData.MovingModule.SetMovementVelocity((actorData.Position - interactData.Position).normalized * Mathf.Min(distance, 100.0f));
                     }
                     else
                     {
