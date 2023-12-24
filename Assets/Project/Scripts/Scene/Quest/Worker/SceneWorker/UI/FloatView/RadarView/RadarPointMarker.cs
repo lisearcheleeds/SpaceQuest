@@ -6,7 +6,7 @@ namespace AloneSpace.UI
 {
     public class RadarPointMarker : MonoBehaviour
     {
-        [SerializeField] Image image;
+        [SerializeField] Graphic image;
 
         [SerializeField] Color friendActorColor;
         [SerializeField] Color neutralActorColor;

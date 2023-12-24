@@ -15,7 +15,26 @@ namespace AloneSpace.Common
         
         [SerializeField] bool isPierced;
         [SerializeField] float innerRadius;
+
+        public float Radius => radius;
+        public int Division => division;
+        public float FillOrigin => fillOrigin;
+        public float FillAmount => fillAmount;
+        public bool IsPierced => isPierced;
+        public float InnerRadius => innerRadius;
         
+        public void Apply(float radius, int division, float fillOrigin, float fillAmount, bool isPierced, float innerRadius)
+        {
+            this.radius = radius;
+            this.division = division;
+            this.fillOrigin = fillOrigin;
+            this.fillAmount = fillAmount;
+            this.isPierced = isPierced;
+            this.innerRadius = innerRadius;
+            
+            SetVerticesDirty();
+        }
+
         protected override void OnPopulateMesh(VertexHelper vh)
         {
             if (!isActiveAndEnabled)
