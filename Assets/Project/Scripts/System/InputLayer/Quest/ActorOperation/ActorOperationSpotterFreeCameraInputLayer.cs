@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
@@ -21,7 +22,7 @@ namespace AloneSpace
             return true;
         }
 
-        public override bool UpdateKey(Key[] usedKey)
+        public override bool UpdateKey(ButtonControl[] usedKey)
         {
             CheckSpotterMoving(usedKey);
             CheckWeaponKeys(usedKey);
@@ -33,20 +34,18 @@ namespace AloneSpace
             var mouseDelta = Mouse.current.delta.ReadValue();
 
             // 視点
-            var localLookAtAngle = Quaternion.AngleAxis(-mouseDelta.y, Vector3.right)
-                                   * Quaternion.AngleAxis(mouseDelta.x, Vector3.up)
-                                   * userData.LookAtAngle;
+            var localLookAtAngle = userData.LookAtAngle;
 
             localLookAtAngle.x = Mathf.Clamp(localLookAtAngle.x + mouseDelta.y * -1.0f, -90.0f, 90.0f);
-            localLookAtAngle.y = localLookAtAngle.y + mouseDelta.x;
+            localLookAtAngle.y = Mathf.Repeat(localLookAtAngle.y + mouseDelta.x + 180, 360) - 180;
             localLookAtAngle.z = 0;
-
-            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.LookAtSpace);
-            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
             MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(0);
             MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
             MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(0);
+
+            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(Quaternion.identity);
+            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
             MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }

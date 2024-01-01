@@ -91,6 +91,9 @@ namespace AloneSpace
                 case ActorOperationMode.Observe:
                     InputLayerController.Instance.PushLayer(new ActorOperationObserveInputLayer(questData.UserData));
                     break;
+                case ActorOperationMode.ObserveFreeCamera:
+                    InputLayerController.Instance.PushLayer(new ActorOperationObserveFreeCameraInputLayer(questData.UserData));
+                    break;
                 case ActorOperationMode.Cockpit:
                     InputLayerController.Instance.PushLayer(new ActorOperationCockpitInputLayer(questData.UserData));
                     break;

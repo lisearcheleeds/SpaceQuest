@@ -10,7 +10,7 @@ namespace AloneSpace
         [SerializeField] AreaAmbientController areaAmbientController;
         [SerializeField] CameraController cameraController;
 
-        SceneInputLayer sceneInputLayer = new SceneInputLayer();
+        SceneInputLayer sceneInputLayer;
 
         UserController userController = new UserController();
 
@@ -20,6 +20,7 @@ namespace AloneSpace
         {
             this.questData = questData;
 
+            sceneInputLayer = new SceneInputLayer(questData.UserData);
             InputLayerController.Instance.PushLayer(sceneInputLayer);
 
             uiManager.Initialize(questData);

@@ -1,13 +1,14 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace AloneSpace
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] Camera cameraAmbient;
-        [SerializeField] Camera cameraArea;
-        [SerializeField] Camera camera3d;
+        [SerializeField] Camera ambientCamera;
+        [SerializeField] Camera far3DCamera;
+        [SerializeField] Camera near3DCamera;
         
         [SerializeField] Camera cameraUIRadarView;
 
@@ -26,35 +27,39 @@ namespace AloneSpace
 
             MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
+            MessageBus.Instance.UserCommandGetCameraRotation.SetListener(GetCameraRotation);
+            MessageBus.Instance.UserCommandGetCameraFieldOfView.SetListener(GetCameraFieldOfView);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
             MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
+            MessageBus.Instance.UserCommandGetCameraRotation.SetListener(null);
+            MessageBus.Instance.UserCommandGetCameraFieldOfView.SetListener(null);
         }
 
         public void OnUpdate()
         {
             var targetPosition = trackingTarget?.Position ?? Vector3.zero;
             var targetAmbientPosition = GetTargetAmbientPosition(trackingTarget);
-            var targetRotation = GetTargetRotation(questData.UserData);
+            var lookAtRotation = GetLookAtRotation(questData.UserData);
 
-            currentRotation = Quaternion.Lerp(currentRotation, targetRotation, 0.4f);
-            cameraAmbient.transform.rotation = currentRotation;
-            cameraArea.transform.rotation = currentRotation;
-            camera3d.transform.rotation = currentRotation;
+            currentRotation = Quaternion.Lerp(currentRotation, lookAtRotation, 0.4f);
+            ambientCamera.transform.rotation = currentRotation;
+            far3DCamera.transform.rotation = currentRotation;
+            near3DCamera.transform.rotation = currentRotation;
             
             cameraUIRadarView.transform.rotation = currentRotation;
 
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
-            cameraAmbient.transform.position = currentAmbientPosition;
+            ambientCamera.transform.position = currentAmbientPosition;
 
             currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.1f);
             var lookAtDistance = Mathf.Abs(questData.UserData.LookAtDistance);
             var cameraPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
-            cameraArea.transform.position = cameraPosition;
-            camera3d.transform.position = cameraPosition;
+            far3DCamera.transform.position = cameraPosition;
+            near3DCamera.transform.position = cameraPosition;
             
             cameraUIRadarView.transform.position = currentRotation * new Vector3(0, 0, -4.0f);
         }
@@ -68,8 +73,9 @@ namespace AloneSpace
         {
             var camera = cameraType switch
             {
-                CameraType.Camera3d => camera3d,
-                CameraType.CameraAmbient => cameraAmbient,
+                CameraType.Near3DCamera => near3DCamera,
+                CameraType.Far3DCamera => far3DCamera,
+                CameraType.AmbientCamera => ambientCamera,
                 _ => throw new ArgumentException(),
             };
 
@@ -87,6 +93,28 @@ namespace AloneSpace
 
             return localPoint;
         }
+        
+        Quaternion GetCameraRotation(CameraType cameraType)
+        {
+            return cameraType switch
+            {
+                CameraType.Near3DCamera => near3DCamera.transform.rotation,
+                CameraType.Far3DCamera => far3DCamera.transform.rotation,
+                CameraType.AmbientCamera => ambientCamera.transform.rotation,
+                _ => throw new ArgumentException(),
+            };
+        }
+        
+        float GetCameraFieldOfView(CameraType cameraType)
+        {
+            return cameraType switch
+            {
+                CameraType.Near3DCamera => near3DCamera.fieldOfView,
+                CameraType.Far3DCamera => far3DCamera.fieldOfView,
+                CameraType.AmbientCamera => ambientCamera.fieldOfView,
+                _ => throw new ArgumentException(),
+            };
+        }
 
         static Vector3 GetTargetAmbientPosition(IPositionData trackingTarget)
         {
@@ -103,7 +131,7 @@ namespace AloneSpace
             return trackingTarget.Position;
         }
 
-        static Quaternion GetTargetRotation(UserData userData)
+        static Quaternion GetLookAtRotation(UserData userData)
         {
             return userData.LookAtSpace
                    * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up)

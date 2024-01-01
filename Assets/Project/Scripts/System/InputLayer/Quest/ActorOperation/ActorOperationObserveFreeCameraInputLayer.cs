@@ -5,37 +5,33 @@ using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
-    public class ActorOperationCockpitFreeCameraInputLayer : ActorOperationInputLayer
+    public class ActorOperationObserveFreeCameraInputLayer : ActorOperationInputLayer
     {
+        public override CursorLockMode CursorLockMode => CursorLockMode.Confined;
+
         UserData userData;
 
-        public ActorOperationCockpitFreeCameraInputLayer(UserData userData)
+        public ActorOperationObserveFreeCameraInputLayer(UserData userData)
         {
             this.userData = userData;
         }
 
         public override bool UpdatePointer()
         {
-            CheckCockpitFreeCamera();
-            CheckWeapon();
+            CheckObserve();
+            CheckLookAtDistance();
 
             return true;
         }
 
         public override bool UpdateKey(ButtonControl[] usedKey)
         {
-            CheckCockpitMoving(usedKey);
-            CheckWeaponKeys(usedKey);
+            CheckObserveMoving(usedKey);
             return false;
         }
 
-        void CheckCockpitFreeCamera()
+        void CheckObserve()
         {
-            if (userData.ControlActorData == null)
-            {
-                return;
-            }
-
             var mouseDelta = Mouse.current.delta.ReadValue();
             var localLookAtAngle = userData.LookAtAngle;
 
@@ -43,14 +39,12 @@ namespace AloneSpace
             localLookAtAngle.y = Mathf.Repeat(localLookAtAngle.y + mouseDelta.x + 180, 360) - 180;
             localLookAtAngle.z = 0;
 
-            MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(0);
-            // MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
-            MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(0);
-
-            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
             MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
+        }
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0);
+        protected void CheckLookAtDistance()
+        {
+            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f);
         }
     }
 }

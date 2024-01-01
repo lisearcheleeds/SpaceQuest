@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
@@ -27,7 +28,7 @@ namespace AloneSpace
             return true;
         }
 
-        public override bool UpdateKey(Key[] usedKey)
+        public override bool UpdateKey(ButtonControl[] usedKey)
         {
             CheckMenu(usedKey);
 
@@ -35,7 +36,7 @@ namespace AloneSpace
             return true;
         }
 
-        void CheckMenu(Key[] usedKey)
+        void CheckMenu(ButtonControl[] usedKey)
         {
             if (WasReleasedThisFrame(KeyBindKey.Menu, usedKey))
             {

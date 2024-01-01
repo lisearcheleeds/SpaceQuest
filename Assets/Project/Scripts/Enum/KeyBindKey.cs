@@ -43,9 +43,8 @@
 
         ActorOperationModeSwitchObserve,
         ActorOperationModeSwitchCockpit,
-        ActorOperationModeSwitchCockpitFreeCamera,
         ActorOperationModeSwitchSpotter,
-        ActorOperationModeSwitchSpotterFreeCamera,
+        ActorOperationModeSwitchFreeCamera,
 
         Escape,
     }

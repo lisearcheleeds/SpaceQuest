@@ -34,6 +34,8 @@
 
         public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
         public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
+        public MessageBusDefine.UserCommandGetCameraRotation UserCommandGetCameraRotation { get; } = new MessageBusDefine.UserCommandGetCameraRotation();
+        public MessageBusDefine.UserCommandGetCameraFieldOfView UserCommandGetCameraFieldOfView { get; } = new MessageBusDefine.UserCommandGetCameraFieldOfView();
 
         public MessageBusDefine.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefine.UserCommandSetLookAtAngle();
         public MessageBusDefine.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefine.UserCommandSetLookAtSpace();

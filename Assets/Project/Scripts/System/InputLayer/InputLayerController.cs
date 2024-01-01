@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
     public class InputLayerController : MonoSingleton<InputLayerController>
     {
-        public Dictionary<KeyBindKey, Key> KeyBindMap = new Dictionary<KeyBindKey, Key>();
+        public Dictionary<KeyBindKey, ButtonControl> KeyBindMap = new Dictionary<KeyBindKey, ButtonControl>();
 
         List<InputLayerPare> reversedInputLayerStack = new List<InputLayerPare>();
         bool isDirty;
@@ -16,7 +17,7 @@ namespace AloneSpace
         class InputLayerPare
         {
             public InputLayer InputLayer { get; }
-            public Key[] UsedKeys { get; set; }
+            public ButtonControl[] UsedKeys { get; set; }
 
             public InputLayerPare(InputLayer inputLayer)
             {
@@ -67,43 +68,43 @@ namespace AloneSpace
             KeyBindMap.Clear();
 
             // FIXME: 設定で変えられるようにする
-            KeyBindMap[KeyBindKey.Forward] = Key.W;
-            KeyBindMap[KeyBindKey.Backward] = Key.S;
-            KeyBindMap[KeyBindKey.Right] = Key.D;
-            KeyBindMap[KeyBindKey.Left] = Key.A;
-            KeyBindMap[KeyBindKey.Up] = Key.Space;
-            KeyBindMap[KeyBindKey.Down] = Key.LeftCtrl;
+            KeyBindMap[KeyBindKey.Forward] = Keyboard.current[Key.W];
+            KeyBindMap[KeyBindKey.Backward] = Keyboard.current[Key.S];
+            KeyBindMap[KeyBindKey.Right] = Keyboard.current[Key.D];
+            KeyBindMap[KeyBindKey.Left] = Keyboard.current[Key.A];
+            KeyBindMap[KeyBindKey.Up] = Keyboard.current[Key.Space];
+            KeyBindMap[KeyBindKey.Down] = Keyboard.current[Key.LeftCtrl];
 
-            KeyBindMap[KeyBindKey.PitchPlus] = Key.UpArrow;
-            KeyBindMap[KeyBindKey.PitchMinus] = Key.DownArrow;
-            KeyBindMap[KeyBindKey.YawPlus] = Key.D;
-            KeyBindMap[KeyBindKey.YawMinus] = Key.A;
-            KeyBindMap[KeyBindKey.RollPlus] = Key.RightArrow;
-            KeyBindMap[KeyBindKey.RollMinus] = Key.LeftArrow;
+            KeyBindMap[KeyBindKey.PitchPlus] = Keyboard.current[Key.UpArrow];
+            KeyBindMap[KeyBindKey.PitchMinus] = Keyboard.current[Key.DownArrow];
+            KeyBindMap[KeyBindKey.YawPlus] = Keyboard.current[Key.D];
+            KeyBindMap[KeyBindKey.YawMinus] = Keyboard.current[Key.A];
+            KeyBindMap[KeyBindKey.RollPlus] = Keyboard.current[Key.RightArrow];
+            KeyBindMap[KeyBindKey.RollMinus] = Keyboard.current[Key.LeftArrow];
 
-            KeyBindMap[KeyBindKey.Reload] = Key.R;
-            KeyBindMap[KeyBindKey.WeaponGroup1] = Key.Digit1;
-            KeyBindMap[KeyBindKey.WeaponGroup2] = Key.Digit2;
-            KeyBindMap[KeyBindKey.WeaponGroup3] = Key.Digit3;
-            KeyBindMap[KeyBindKey.WeaponGroup4] = Key.Digit4;
-            KeyBindMap[KeyBindKey.WeaponGroup5] = Key.Digit5;
+            KeyBindMap[KeyBindKey.Trigger] = Mouse.current.leftButton;
+            KeyBindMap[KeyBindKey.Reload] = Keyboard.current[Key.R];
+            KeyBindMap[KeyBindKey.WeaponGroup1] = Keyboard.current[Key.Digit1];
+            KeyBindMap[KeyBindKey.WeaponGroup2] = Keyboard.current[Key.Digit2];
+            KeyBindMap[KeyBindKey.WeaponGroup3] = Keyboard.current[Key.Digit3];
+            KeyBindMap[KeyBindKey.WeaponGroup4] = Keyboard.current[Key.Digit4];
+            KeyBindMap[KeyBindKey.WeaponGroup5] = Keyboard.current[Key.Digit5];
 
-            KeyBindMap[KeyBindKey.Menu] = Key.Tab;
-            KeyBindMap[KeyBindKey.MenuStatusView] = Key.F1;
-            KeyBindMap[KeyBindKey.MenuInventoryView] = Key.F2;
-            KeyBindMap[KeyBindKey.MenuPlayerView] = Key.F3;
-            KeyBindMap[KeyBindKey.MenuAreaView] = Key.F4;
-            KeyBindMap[KeyBindKey.MenuMapView] = Key.F5;
+            KeyBindMap[KeyBindKey.Menu] = Keyboard.current[Key.Tab];
+            KeyBindMap[KeyBindKey.MenuStatusView] = Keyboard.current[Key.F1];
+            KeyBindMap[KeyBindKey.MenuInventoryView] = Keyboard.current[Key.F2];
+            KeyBindMap[KeyBindKey.MenuPlayerView] = Keyboard.current[Key.F3];
+            KeyBindMap[KeyBindKey.MenuAreaView] = Keyboard.current[Key.F4];
+            KeyBindMap[KeyBindKey.MenuMapView] = Keyboard.current[Key.F5];
 
-            KeyBindMap[KeyBindKey.MouseModeSwitch] = Key.LeftAlt;
+            KeyBindMap[KeyBindKey.MouseModeSwitch] = Keyboard.current[Key.LeftAlt];
 
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchObserve] = Key.Z;
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchCockpit] = Key.X;
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchCockpitFreeCamera] = Key.C;
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Key.V;
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotterFreeCamera] = Key.B;
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchObserve] = Keyboard.current[Key.Z];
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchCockpit] = Keyboard.current[Key.X];
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Keyboard.current[Key.C];
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchFreeCamera] = Mouse.current.middleButton;
 
-            KeyBindMap[KeyBindKey.Escape] = Key.Escape;
+            KeyBindMap[KeyBindKey.Escape] = Keyboard.current[Key.Escape];
         }
 
         void UpdateKeyUseKeyList()
@@ -112,7 +113,7 @@ namespace AloneSpace
             for (var i = 0; i < reversedInputLayerStack.Count; i++)
             {
                 reversedInputLayerStack[i].UsedKeys = i == 0
-                    ? Array.Empty<Key>()
+                    ? Array.Empty<ButtonControl>()
                     : reversedInputLayerStack[i - 1].UsedKeys.Concat(reversedInputLayerStack[i - 1].InputLayer.GetUsedKeys()).ToArray();
             }
 

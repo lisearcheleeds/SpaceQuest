@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
@@ -16,22 +17,32 @@ namespace AloneSpace
                 KeyBindKey.Down, KeyBindKey.YawPlus, KeyBindKey.YawMinus, KeyBindKey.Forward, KeyBindKey.Backward,
                 KeyBindKey.Right, KeyBindKey.Left, KeyBindKey.Up, KeyBindKey.Down, KeyBindKey.Trigger,
                 KeyBindKey.Trigger, KeyBindKey.Reload, KeyBindKey.WeaponGroup1, KeyBindKey.WeaponGroup2,
-                KeyBindKey.WeaponGroup3, KeyBindKey.WeaponGroup4, KeyBindKey.WeaponGroup5,
+                KeyBindKey.WeaponGroup3, KeyBindKey.WeaponGroup4, KeyBindKey.WeaponGroup5
             };
 
-        protected void CheckCockpitMoving(Key[] usedKey)
+        protected void CheckObserveMoving(ButtonControl[] usedKey)
+        {
+            MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(0.0f);
+        }
+
+        protected void CheckCockpitMoving(ButtonControl[] usedKey)
         {
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward, usedKey) ? 1.0f : 0.0f);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward, usedKey) ? 1.0f : 0.0f);
-            // MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Right, usedKey) ? 1.0f : 0.0f);
-            // MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Left, usedKey) ? 1.0f : 0.0f);
-            // MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Up, usedKey) ? 1.0f : 0.0f);
-            // MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Down, usedKey) ? 1.0f : 0.0f);
-
+            MessageBus.Instance.UserInputRightBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputLeftBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputTopBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(0.0f);
+            
             MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast((IsPressed(KeyBindKey.YawPlus, usedKey) ? 1.0f : 0.0f) + (IsPressed(KeyBindKey.YawMinus, usedKey) ? -1.0f : 0.0f));
         }
 
-        protected void CheckSpotterMoving(Key[] usedKey)
+        protected void CheckSpotterMoving(ButtonControl[] usedKey)
         {
             MessageBus.Instance.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward, usedKey) ? 1.0f : 0.0f);
             MessageBus.Instance.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward, usedKey) ? 1.0f : 0.0f);
@@ -41,7 +52,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Down, usedKey) ? 1.0f : 0.0f);
         }
 
-        protected virtual void CheckWeaponKeys(Key[] usedKey)
+        protected virtual void CheckWeaponKeys(ButtonControl[] usedKey)
         {
             if (WasPressedThisFrame(KeyBindKey.Trigger, usedKey))
             {

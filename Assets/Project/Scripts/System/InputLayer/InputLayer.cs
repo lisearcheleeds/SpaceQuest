@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
@@ -11,25 +10,24 @@ namespace AloneSpace
         public abstract InputLayerDuplicateGroup DuplicateGroup { get; }
 
         public abstract bool UpdatePointer();
-        public abstract bool UpdateKey(Key[] usedKey);
+        public abstract bool UpdateKey(ButtonControl[] usedKey);
 
         protected abstract KeyBindKey[] UseBindKeys { get; }
 
-        public Key[] GetUsedKeys()
+        public ButtonControl[] GetUsedKeys()
         {
             return UseBindKeys.Select(keyBindKey =>
             {
                 if (!InputLayerController.Instance.KeyBindMap.TryGetValue(keyBindKey, out var key))
                 {
                     Debug.LogWarning($"Key bind not found :{keyBindKey}");
-                    key = Key.None;
                 }
 
                 return key;
             }).ToArray();
         }
 
-        protected bool IsPressed(KeyBindKey keyBindKey, Key[] usedKey)
+        protected bool IsPressed(KeyBindKey keyBindKey, ButtonControl[] usedKey)
         {
             if (!InputLayerController.Instance.KeyBindMap.TryGetValue(keyBindKey, out var key))
             {
@@ -41,10 +39,10 @@ namespace AloneSpace
                 return false;
             }
 
-            return Keyboard.current[key].isPressed;
+            return key.isPressed;
         }
 
-        protected bool WasPressedThisFrame(KeyBindKey keyBindKey, Key[] usedKey)
+        protected bool WasPressedThisFrame(KeyBindKey keyBindKey, ButtonControl[] usedKey)
         {
             if (!InputLayerController.Instance.KeyBindMap.TryGetValue(keyBindKey, out var key))
             {
@@ -56,10 +54,10 @@ namespace AloneSpace
                 return false;
             }
 
-            return Keyboard.current[key].wasPressedThisFrame;
+            return key.wasPressedThisFrame;
         }
 
-        protected bool WasReleasedThisFrame(KeyBindKey keyBindKey, Key[] usedKey)
+        protected bool WasReleasedThisFrame(KeyBindKey keyBindKey, ButtonControl[] usedKey)
         {
             if (!InputLayerController.Instance.KeyBindMap.TryGetValue(keyBindKey, out var key))
             {
@@ -71,7 +69,7 @@ namespace AloneSpace
                 return false;
             }
 
-            return Keyboard.current[key].wasReleasedThisFrame;
+            return key.wasReleasedThisFrame;
         }
     }
 }

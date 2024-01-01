@@ -42,6 +42,7 @@ namespace AloneSpace.UI
             return actorOperationMode switch
             {
                 ActorOperationMode.Observe => 0,
+                ActorOperationMode.ObserveFreeCamera => 0,
                 ActorOperationMode.Cockpit => 1,
                 ActorOperationMode.CockpitFreeCamera => 2,
                 ActorOperationMode.Spotter => 3,

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
@@ -20,7 +21,7 @@ namespace AloneSpace
             return true;
         }
 
-        public override bool UpdateKey(Key[] usedKey)
+        public override bool UpdateKey(ButtonControl[] usedKey)
         {
             CheckCockpitMoving(usedKey);
             CheckWeaponKeys(usedKey);
