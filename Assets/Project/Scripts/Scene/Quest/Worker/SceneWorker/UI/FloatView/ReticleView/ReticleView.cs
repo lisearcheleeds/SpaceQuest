@@ -10,6 +10,7 @@ namespace AloneSpace.UI
         [SerializeField] RectTransform artificialHorizon;
         
         [SerializeField] GameObject weaponInstruments;
+        [SerializeField] RectTransform weaponBaseReticle;
         [SerializeField] RectTransform bulletReticle;
         [SerializeField] RectTransform rocketReticle;
         [SerializeField] RectTransform missileReticle;
@@ -85,21 +86,30 @@ namespace AloneSpace.UI
             var screenAngle = Quaternion.AngleAxis(axis.z * angle, Vector3.forward);
             artificialHorizon.localPosition = screenPosition;
             artificialHorizon.localRotation = screenAngle;
-            bulletReticle.localPosition = screenPosition;
-            rocketReticle.localPosition = screenPosition;
-            missileReticle.localPosition = screenPosition;
+            
+            weaponBaseReticle.localPosition = screenPosition;
+            weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void CockpitFreeCameraUpdate()
         {
+            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            
+            weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void SpotterUpdate()
         {
+            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            
+            weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void SpotterFreeCameraUpdate()
         {
+            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            
+            weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
@@ -114,9 +124,12 @@ namespace AloneSpace.UI
         {
             artificialHorizon.localPosition = Vector3.zero;
             artificialHorizon.localRotation = Quaternion.identity;
+            
+            weaponBaseReticle.localPosition = Vector3.zero;
             bulletReticle.localPosition = Vector3.zero;
             rocketReticle.localPosition = Vector3.zero;
             missileReticle.localPosition = Vector3.zero;
+            
             dotReticle.localPosition = Vector3.zero;
         }
     }

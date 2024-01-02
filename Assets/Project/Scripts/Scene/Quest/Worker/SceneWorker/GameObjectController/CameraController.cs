@@ -18,6 +18,7 @@ namespace AloneSpace
         Vector3 currentTargetPosition = Vector3.zero;
         Quaternion currentTargetRotation = Quaternion.identity;
         Vector3 currentCameraPosition = Vector3.zero;
+        float currentFoV = 60.0f;
 
         IPositionData trackingTarget;
         QuestData questData;
@@ -56,6 +57,11 @@ namespace AloneSpace
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
             ambientCamera.transform.position = currentAmbientPosition;
 
+            currentFoV = GetFieldOfView(currentFoV, questData.UserData.ActorOperationMode);
+            ambientCamera.fieldOfView = currentFoV;
+            far3DCamera.fieldOfView = currentFoV;
+            near3DCamera.fieldOfView = currentFoV;
+            
             currentTargetPosition = GetLerpedCurrentPosition(currentTargetPosition, targetPosition, questData.UserData.ActorOperationMode);
             
             currentCameraPosition = GetCameraOffsetPosition(currentTargetPosition, currentTargetRotation, currentCameraPosition, questData.UserData);
@@ -139,6 +145,22 @@ namespace AloneSpace
                    * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
         }
 
+        static float GetFieldOfView(float currentFoV, ActorOperationMode actorOperationMode)
+        {
+            var targetFoV = actorOperationMode switch
+            {
+                ActorOperationMode.Observe => 65.0f,
+                ActorOperationMode.ObserveFreeCamera => 65.0f,
+                ActorOperationMode.Cockpit => 60.0f,
+                ActorOperationMode.CockpitFreeCamera => 65.0f,
+                ActorOperationMode.Spotter => 60.0f,
+                ActorOperationMode.SpotterFreeCamera => 65.0f,
+                _ => 60.0f,
+            };
+
+            return Mathf.Lerp(currentFoV, targetFoV, 0.2f);
+        }
+
         static Vector3 GetLerpedCurrentPosition(Vector3 currentPosition, Vector3 targetPosition, ActorOperationMode actorOperationMode)
         {
             var lerpRatio = actorOperationMode switch
@@ -156,8 +178,8 @@ namespace AloneSpace
             var lookAtDistance = Mathf.Abs(userData.LookAtDistance);
             var offset = userData.ActorOperationMode switch
             {
-                ActorOperationMode.Observe => new Vector3(0, 0, lookAtDistance + lookAtDistance * -4.0f),
-                ActorOperationMode.ObserveFreeCamera => new Vector3(0, 0, lookAtDistance + lookAtDistance * -4.0f),
+                ActorOperationMode.Observe => new Vector3(0, 0, -lookAtDistance + lookAtDistance * -4.0f),
+                ActorOperationMode.ObserveFreeCamera => new Vector3(0, 0, -lookAtDistance + lookAtDistance * -4.0f),
                 _ => new Vector3(0, lookAtDistance, lookAtDistance * -4.0f),
             };
             
