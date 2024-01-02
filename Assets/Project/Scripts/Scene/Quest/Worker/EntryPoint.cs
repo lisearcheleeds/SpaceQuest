@@ -31,7 +31,8 @@ namespace AloneSpace
 
         void Update()
         {
-            questManager.OnUpdate(Time.deltaTime);
+            // TODO: Time.delta不安定な原因を調べる
+            questManager.OnUpdate(1.0f / Application.targetFrameRate);
         }
 
         void LateUpdate()
