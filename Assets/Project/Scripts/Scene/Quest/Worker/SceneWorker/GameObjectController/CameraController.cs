@@ -15,8 +15,9 @@ namespace AloneSpace
         [SerializeField] Camera cameraUi;
 
         Vector3 currentAmbientPosition = Vector3.zero;
-        Vector3 currentPosition = Vector3.zero;
-        Quaternion currentRotation = Quaternion.identity;
+        Vector3 currentTargetPosition = Vector3.zero;
+        Quaternion currentTargetRotation = Quaternion.identity;
+        Vector3 currentCameraPosition = Vector3.zero;
 
         IPositionData trackingTarget;
         QuestData questData;
@@ -45,23 +46,23 @@ namespace AloneSpace
             var targetAmbientPosition = GetTargetAmbientPosition(trackingTarget);
             var lookAtRotation = GetLookAtRotation(questData.UserData);
 
-            currentRotation = Quaternion.Lerp(currentRotation, lookAtRotation, 0.4f);
-            ambientCamera.transform.rotation = currentRotation;
-            far3DCamera.transform.rotation = currentRotation;
-            near3DCamera.transform.rotation = currentRotation;
+            currentTargetRotation = Quaternion.Lerp(currentTargetRotation, lookAtRotation, 0.4f);
+            ambientCamera.transform.rotation = currentTargetRotation;
+            far3DCamera.transform.rotation = currentTargetRotation;
+            near3DCamera.transform.rotation = currentTargetRotation;
             
-            cameraUIRadarView.transform.rotation = currentRotation;
+            cameraUIRadarView.transform.rotation = currentTargetRotation;
 
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
             ambientCamera.transform.position = currentAmbientPosition;
 
-            currentPosition = Vector3.Lerp(currentPosition, targetPosition, 0.1f);
-            var lookAtDistance = Mathf.Abs(questData.UserData.LookAtDistance);
-            var cameraPosition = currentPosition + currentRotation * new Vector3(0, lookAtDistance, lookAtDistance * -4.0f);
-            far3DCamera.transform.position = cameraPosition;
-            near3DCamera.transform.position = cameraPosition;
+            currentTargetPosition = GetLerpedCurrentPosition(currentTargetPosition, targetPosition, questData.UserData.ActorOperationMode);
             
-            cameraUIRadarView.transform.position = currentRotation * new Vector3(0, 0, -4.0f);
+            currentCameraPosition = GetCameraOffsetPosition(currentTargetPosition, currentTargetRotation, currentCameraPosition, questData.UserData);
+            far3DCamera.transform.position = currentCameraPosition;
+            near3DCamera.transform.position = currentCameraPosition;
+            
+            cameraUIRadarView.transform.position = currentTargetRotation * new Vector3(0, 0, -4.0f);
         }
 
         void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)
@@ -136,6 +137,39 @@ namespace AloneSpace
             return userData.LookAtSpace
                    * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up)
                    * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
+        }
+
+        static Vector3 GetLerpedCurrentPosition(Vector3 currentPosition, Vector3 targetPosition, ActorOperationMode actorOperationMode)
+        {
+            var lerpRatio = actorOperationMode switch
+            {
+                ActorOperationMode.Observe => 1.0f,
+                ActorOperationMode.ObserveFreeCamera => 1.0f,
+                _ => 0.1f,
+            };
+            
+            return Vector3.Lerp(currentPosition, targetPosition, lerpRatio);
+        }
+
+        static Vector3 GetCameraOffsetPosition(Vector3 currentTargetPosition, Quaternion currentTargetRotation, Vector3 currentCameraPosition, UserData userData)
+        {
+            var lookAtDistance = Mathf.Abs(userData.LookAtDistance);
+            var offset = userData.ActorOperationMode switch
+            {
+                ActorOperationMode.Observe => new Vector3(0, 0, lookAtDistance + lookAtDistance * -4.0f),
+                ActorOperationMode.ObserveFreeCamera => new Vector3(0, 0, lookAtDistance + lookAtDistance * -4.0f),
+                _ => new Vector3(0, lookAtDistance, lookAtDistance * -4.0f),
+            };
+            
+            var target = currentTargetPosition + currentTargetRotation * offset;
+
+            var lerpRatio = userData.ActorOperationMode switch
+            {
+                ActorOperationMode.Observe => 0.3f,
+                ActorOperationMode.ObserveFreeCamera => 1.0f,
+                _ => 1.0f,
+            };
+            return Vector3.Lerp(currentCameraPosition, target, lerpRatio);
         }
     }
 }
