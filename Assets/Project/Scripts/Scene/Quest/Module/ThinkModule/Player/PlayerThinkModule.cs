@@ -44,34 +44,34 @@ namespace AloneSpace
                 case PlayerStance.Scavenger:
                     return;
                 case PlayerStance.Fugitive:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Escape);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Escape);
                     return;
                 case PlayerStance.ScavengerKiller:
                     /*
                     if (isExistScavenger && !isExistOtherPlayer)
                     {
-                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
+                        MessageBus.Instance.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     }
                     else
                     {
-                        MessageBus.Instance.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
+                        MessageBus.Instance.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
                     }
                     */
                     return;
                 case PlayerStance.Collector:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Survey);
                     return;
                 case PlayerStance.Hunter:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.Stalker:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.ConquestUser:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
                 case PlayerStance.FacilityUser:
-                    MessageBus.Instance.Temp.PlayerCommandSetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
+                    MessageBus.Instance.Player.SetTacticsType.Broadcast(playerData.InstanceId, TacticsType.Combat);
                     return;
             }
         }

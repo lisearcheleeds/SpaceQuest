@@ -22,23 +22,23 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
             
-            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.User.SetControlActor.AddListener(SetUserControlActor);
             
-            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
-            MessageBus.Instance.Creator.OnCreateInteractData.AddListener(OnCreateInteractData);
-            MessageBus.Instance.Creator.OnReleaseInteractData.AddListener(OnReleaseInteractData);
+            MessageBus.Instance.Data.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.AddListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreateInteractData.AddListener(OnCreateInteractData);
+            MessageBus.Instance.Data.OnReleaseInteractData.AddListener(OnReleaseInteractData);
                     
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.User.SetControlActor.RemoveListener(SetUserControlActor);
             
-            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
-            MessageBus.Instance.Creator.OnCreateInteractData.RemoveListener(OnCreateInteractData);
-            MessageBus.Instance.Creator.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
+            MessageBus.Instance.Data.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.RemoveListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreateInteractData.RemoveListener(OnCreateInteractData);
+            MessageBus.Instance.Data.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
         }
 
         public void OnUpdate()

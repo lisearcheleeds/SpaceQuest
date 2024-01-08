@@ -16,18 +16,18 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.Creator.ReleasePlayerData.AddListener(ReleasePlayerData);
-            MessageBus.Instance.Creator.ReleaseActorData.AddListener(ReleaseActorData);
-            MessageBus.Instance.Creator.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
-            MessageBus.Instance.Creator.ReleaseInteractData.AddListener(ReleaseInteractData);
+            MessageBus.Instance.Data.ReleasePlayerData.AddListener(ReleasePlayerData);
+            MessageBus.Instance.Data.ReleaseActorData.AddListener(ReleaseActorData);
+            MessageBus.Instance.Data.ReleaseWeaponEffectData.AddListener(ReleaseWeaponEffectData);
+            MessageBus.Instance.Data.ReleaseInteractData.AddListener(ReleaseInteractData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Creator.ReleasePlayerData.RemoveListener(ReleasePlayerData);
-            MessageBus.Instance.Creator.ReleaseActorData.RemoveListener(ReleaseActorData);
-            MessageBus.Instance.Creator.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
-            MessageBus.Instance.Creator.ReleaseInteractData.RemoveListener(ReleaseInteractData);
+            MessageBus.Instance.Data.ReleasePlayerData.RemoveListener(ReleasePlayerData);
+            MessageBus.Instance.Data.ReleaseActorData.RemoveListener(ReleaseActorData);
+            MessageBus.Instance.Data.ReleaseWeaponEffectData.RemoveListener(ReleaseWeaponEffectData);
+            MessageBus.Instance.Data.ReleaseInteractData.RemoveListener(ReleaseInteractData);
         }
 
         public void OnUpdate(float deltaTime)
@@ -42,7 +42,7 @@ namespace AloneSpace
                 playerData.DeactivateModules();
                 questData.RemovePlayerData(playerData);
 
-                MessageBus.Instance.Creator.OnReleasePlayerData.Broadcast(playerData);
+                MessageBus.Instance.Data.OnReleasePlayerData.Broadcast(playerData);
             }
 
             releasePlayerDataList.Clear();
@@ -57,7 +57,7 @@ namespace AloneSpace
                     questData.PlayerData[actorData.PlayerInstanceId].RemoveActorData(actorData);
                 }
 
-                MessageBus.Instance.Creator.OnReleaseActorData.Broadcast(actorData);
+                MessageBus.Instance.Data.OnReleaseActorData.Broadcast(actorData);
             }
 
             releaseActorDataList.Clear();
@@ -72,7 +72,7 @@ namespace AloneSpace
                     questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].RemoveWeaponEffectData(weaponEffectData);
                 }
 
-                MessageBus.Instance.Creator.OnReleaseWeaponEffectData.Broadcast(weaponEffectData);
+                MessageBus.Instance.Data.OnReleaseWeaponEffectData.Broadcast(weaponEffectData);
             }
 
             releaseWeaponEffectDataList.Clear();
@@ -81,7 +81,7 @@ namespace AloneSpace
             {
                 releaseInteractData.DeactivateModules();
                 questData.RemoveInteractData(releaseInteractData);
-                MessageBus.Instance.Creator.OnReleaseInteractData.Broadcast(releaseInteractData);
+                MessageBus.Instance.Data.OnReleaseInteractData.Broadcast(releaseInteractData);
             }
 
             releaseInteractDataList.Clear();

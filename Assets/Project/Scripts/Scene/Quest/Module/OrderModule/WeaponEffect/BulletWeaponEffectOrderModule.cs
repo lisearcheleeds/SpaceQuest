@@ -34,7 +34,7 @@ namespace AloneSpace
             effectData.CurrentLifeTime += deltaTime;
             if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
-                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Data.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
@@ -44,7 +44,7 @@ namespace AloneSpace
 
                 if (effectData.SpecVO.Penetration < Random.value)
                 {
-                    MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
+                    MessageBus.Instance.Data.ReleaseWeaponEffectData.Broadcast(effectData);
                     return;
                 }
             }

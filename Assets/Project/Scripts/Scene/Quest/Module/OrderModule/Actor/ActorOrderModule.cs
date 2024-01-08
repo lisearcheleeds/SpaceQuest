@@ -134,7 +134,7 @@ namespace AloneSpace
                 // 範囲外になったらAreaから脱出 一旦1000.0f
                 if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
                 {
-                    MessageBus.Instance.Temp.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, null);
+                    MessageBus.Instance.Player.SetAreaId.Broadcast(actorData.InstanceId, null);
                     actorData.SetPosition(areaData.StarSystemPosition);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -155,7 +155,7 @@ namespace AloneSpace
                 if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
                 {
                     // FIXME: 移動先ちゃんと考える
-                    MessageBus.Instance.Temp.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, actorData.ActorStateData.MoveTarget.AreaId);
+                    MessageBus.Instance.Player.SetAreaId.Broadcast(actorData.InstanceId, actorData.ActorStateData.MoveTarget.AreaId);
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -176,7 +176,7 @@ namespace AloneSpace
                 {
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                    MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, null);
+                    MessageBus.Instance.Player.SetMoveTarget.Broadcast(actorData.InstanceId, null);
                 }
             }
         }
@@ -281,17 +281,17 @@ namespace AloneSpace
                 switch (completeInteractData)
                 {
                     case ItemInteractData itemInteractData:
-                        MessageBus.Instance.Temp.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
+                        MessageBus.Instance.Inventory.PickItem.Broadcast(actorData.InventoryData, itemInteractData);
                         break;
                     case InventoryInteractData inventoryInteractData:
                         // ユーザー操作待ち 相手のインベントリをUIでOpenする
                         throw new NotImplementedException();
                     case AreaInteractData areaInteractData:
-                        MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
+                        MessageBus.Instance.Player.SetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
                         break;
                 }
 
-                MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.Broadcast(actorData.InstanceId, completeInteractData);
+                MessageBus.Instance.Actor.RemoveInteractOrder.Broadcast(actorData.InstanceId, completeInteractData);
             }
         }
     }

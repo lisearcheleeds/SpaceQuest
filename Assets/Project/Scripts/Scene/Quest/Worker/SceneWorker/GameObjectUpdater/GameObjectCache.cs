@@ -20,16 +20,16 @@ namespace AloneSpace
         {
             this.variableParent = variableParent;
 
-            MessageBus.Instance.GetCacheAsset.AddListener(GetCacheAsset);
-            MessageBus.Instance.ReleaseCacheAsset.AddListener(ReleaseCacheAsset);
-            MessageBus.Instance.ReleaseCacheAssetAll.AddListener(ReleaseCacheAssetAll);
+            MessageBus.Instance.Asset.GetCacheAsset.AddListener(GetCacheAsset);
+            MessageBus.Instance.Asset.ReleaseCacheAsset.AddListener(ReleaseCacheAsset);
+            MessageBus.Instance.Asset.ReleaseCacheAssetAll.AddListener(ReleaseCacheAssetAll);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.GetCacheAsset.RemoveListener(GetCacheAsset);
-            MessageBus.Instance.ReleaseCacheAsset.RemoveListener(ReleaseCacheAsset);
-            MessageBus.Instance.ReleaseCacheAssetAll.RemoveListener(ReleaseCacheAssetAll);
+            MessageBus.Instance.Asset.GetCacheAsset.RemoveListener(GetCacheAsset);
+            MessageBus.Instance.Asset.ReleaseCacheAsset.RemoveListener(ReleaseCacheAsset);
+            MessageBus.Instance.Asset.ReleaseCacheAssetAll.RemoveListener(ReleaseCacheAssetAll);
         }
 
         void GetCacheAsset(CacheableGameObjectPath path, Action<CacheableGameObject> onLoad)

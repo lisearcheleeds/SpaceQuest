@@ -17,13 +17,13 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.User.SetControlActor.AddListener(SetUserControlActor);
             MessageBus.Instance.Actor.SetMainTarget.AddListener(ActorCommandSetMainTarget);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.User.SetControlActor.RemoveListener(SetUserControlActor);
             MessageBus.Instance.Actor.SetMainTarget.RemoveListener(ActorCommandSetMainTarget);
         }
 
@@ -62,7 +62,7 @@ namespace AloneSpace.UI
                 return;
             }
 
-            var aroundTargets = MessageBus.Instance.GetActorRelationData.Unicast(userControlActor.InstanceId);
+            var aroundTargets = MessageBus.Instance.FrameCache.GetActorRelationData.Unicast(userControlActor.InstanceId);
             var loopMax = Mathf.Max(targetMarkerList.Count, aroundTargets.Count);
             for (var i = 0; i < loopMax; i++)
             {
@@ -85,7 +85,7 @@ namespace AloneSpace.UI
 
         Vector3? GetScreenPositionFromWorldPosition(Vector3 worldPosition)
         {
-            return MessageBus.Instance.UserInput.UserCommandGetWorldToCanvasPoint.Unicast(CameraType.Near3DCamera,
+            return MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(CameraType.Near3DCamera,
                 worldPosition, actorMarkerParent);
         }
     }

@@ -13,14 +13,14 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.Creator.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
-            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Data.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
+            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Creator.SpawnGraphicEffect.RemoveListener(SpawnGraphicEffect);
-            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Data.SpawnGraphicEffect.RemoveListener(SpawnGraphicEffect);
+            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate(float deltaTime)
@@ -65,7 +65,7 @@ namespace AloneSpace
                 return;
             }
 
-            MessageBus.Instance.GetCacheAsset.Broadcast(graphicEffectSpecVO.Path, c =>
+            MessageBus.Instance.Asset.GetCacheAsset.Broadcast(graphicEffectSpecVO.Path, c =>
             {
                 var graphicEffect = (GraphicEffect)c;
                 graphicEffect.Init(graphicEffectSpecVO, graphicEffectHandler);

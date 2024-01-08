@@ -11,8 +11,8 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.Temp.OnAddInteractOrder.AddListener(OnAddInteractOrder);
-            MessageBus.Instance.Temp.OnRemoveInteractOrder.AddListener(OnRemoveInteractOrder);
+            MessageBus.Instance.Actor.OnAddInteractOrder.AddListener(OnAddInteractOrder);
+            MessageBus.Instance.Actor.OnRemoveInteractOrder.AddListener(OnRemoveInteractOrder);
             
             MessageBus.Instance.Temp.NoticeDamageEventData.AddListener(NoticeDamageEventData);
             MessageBus.Instance.Temp.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
@@ -20,8 +20,8 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.OnAddInteractOrder.RemoveListener(OnAddInteractOrder);
-            MessageBus.Instance.Temp.OnRemoveInteractOrder.RemoveListener(OnRemoveInteractOrder);
+            MessageBus.Instance.Actor.OnAddInteractOrder.RemoveListener(OnAddInteractOrder);
+            MessageBus.Instance.Actor.OnRemoveInteractOrder.RemoveListener(OnRemoveInteractOrder);
             
             MessageBus.Instance.Temp.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
             MessageBus.Instance.Temp.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
@@ -32,7 +32,7 @@ namespace AloneSpace
             if (interactOrderState.PullItemGraphicEffectHandler == null)
             {
                 interactOrderState.PullItemGraphicEffectHandler = new PullItemGraphicEffectHandler(questData.ActorData[actorId], interactOrderState.InteractData);
-                MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(new GraphicEffectSpecVO(30001), interactOrderState.PullItemGraphicEffectHandler);
+                MessageBus.Instance.Data.SpawnGraphicEffect.Broadcast(new GraphicEffectSpecVO(30001), interactOrderState.PullItemGraphicEffectHandler);
             }
         }
 
@@ -48,7 +48,7 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(
+            MessageBus.Instance.Data.SpawnGraphicEffect.Broadcast(
                 brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
                 new BrokenActorGraphicEffectHandler(
                     brokenActorEventData.BrokenActorData,

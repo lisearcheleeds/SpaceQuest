@@ -20,16 +20,16 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
 
-            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
+            MessageBus.Instance.User.SetControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Data.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.AddListener(OnReleaseActorData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
+            MessageBus.Instance.User.SetControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Data.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.RemoveListener(OnReleaseActorData);
         }
 
         public void SetDirty()
@@ -70,7 +70,7 @@ namespace AloneSpace.UI
                 actorListViewCellDataList.Add(controlActorDataCellData);
 
                 // 他
-                var aroundTargets = MessageBus.Instance.GetActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
+                var aroundTargets = MessageBus.Instance.FrameCache.GetActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
                 actorListViewCellDataList.AddRange(
                     aroundTargets
                         .Select(actorRelationData => new ActorListViewCell.CellData(

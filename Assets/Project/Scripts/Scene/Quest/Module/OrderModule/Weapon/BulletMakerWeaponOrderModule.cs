@@ -150,7 +150,7 @@ namespace AloneSpace
                     var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / weaponData.VO.Accuracy);
                     rotation = rotation * Quaternion.LookRotation(Vector3.forward + accuracyRandomVector);
 
-                    MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
+                    MessageBus.Instance.Data.CreateWeaponEffectData.Broadcast(
                         weaponData.VO.BulletWeaponEffectSpecVO,
                         new BulletWeaponEffectCreateOptionData(
                             weaponData,

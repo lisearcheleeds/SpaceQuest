@@ -17,16 +17,16 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            MessageBus.Instance.Creator.OnCreateWeaponEffectData.AddListener(OnCreateWeaponEffectData);
-            MessageBus.Instance.Creator.OnReleaseWeaponEffectData.AddListener(OnReleaseWeaponEffectData);
-            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Data.OnCreateWeaponEffectData.AddListener(OnCreateWeaponEffectData);
+            MessageBus.Instance.Data.OnReleaseWeaponEffectData.AddListener(OnReleaseWeaponEffectData);
+            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Creator.OnCreateWeaponEffectData.RemoveListener(OnCreateWeaponEffectData);
-            MessageBus.Instance.Creator.OnReleaseWeaponEffectData.RemoveListener(OnReleaseWeaponEffectData);
-            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Data.OnCreateWeaponEffectData.RemoveListener(OnCreateWeaponEffectData);
+            MessageBus.Instance.Data.OnReleaseWeaponEffectData.RemoveListener(OnReleaseWeaponEffectData);
+            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()
@@ -92,7 +92,7 @@ namespace AloneSpace
         void CreateWeaponEffect(WeaponEffectData weaponEffectData)
         {
             loadingWeaponEffect.AddLast(weaponEffectData.InstanceId);
-            MessageBus.Instance.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
+            MessageBus.Instance.Asset.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
             {
                 var weaponEffect = (WeaponEffect)c;
                 weaponEffect.Init(weaponEffectData);

@@ -28,17 +28,17 @@ namespace AloneSpace
             this.questData = questData;
 
             MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserInput.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
-            MessageBus.Instance.UserInput.UserCommandGetCameraRotation.SetListener(GetCameraRotation);
-            MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.SetListener(GetCameraFieldOfView);
+            MessageBus.Instance.Util.GetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
+            MessageBus.Instance.Util.GetCameraRotation.SetListener(GetCameraRotation);
+            MessageBus.Instance.Util.GetCameraFieldOfView.SetListener(GetCameraFieldOfView);
         }
 
         public void Finalize()
         {
             MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserInput.UserCommandGetWorldToCanvasPoint.SetListener(null);
-            MessageBus.Instance.UserInput.UserCommandGetCameraRotation.SetListener(null);
-            MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.SetListener(null);
+            MessageBus.Instance.Util.GetWorldToCanvasPoint.SetListener(null);
+            MessageBus.Instance.Util.GetCameraRotation.SetListener(null);
+            MessageBus.Instance.Util.GetCameraFieldOfView.SetListener(null);
         }
 
         public void OnUpdate()

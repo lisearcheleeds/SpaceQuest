@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class MessageBusDefineUserInput
+    public static class MessageBusDefineUserInput
     {
         public class UserInputOpenMenu : MessageBusBroadcaster{}
         public class UserInputCloseMenu : MessageBusBroadcaster{}
@@ -38,9 +38,6 @@ namespace AloneSpace
         public class UserInputCloseContentQuickView : MessageBusBroadcaster{}
 
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
-        public class UserCommandGetWorldToCanvasPoint : MessageBusUnicaster<CameraType, Vector3, RectTransform, Vector3?>{}
-        public class UserCommandGetCameraRotation : MessageBusUnicaster<CameraType, Quaternion>{}
-        public class UserCommandGetCameraFieldOfView : MessageBusUnicaster<CameraType, float>{}
 
         public class UserCommandSetLookAtAngle : MessageBusBroadcaster<Vector3>{}
         public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}

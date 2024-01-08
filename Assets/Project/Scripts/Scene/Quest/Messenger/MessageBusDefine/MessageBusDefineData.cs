@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public class MessageBusDefineCreator
+    public static class MessageBusDefineData
     {
         public class CreatePlayerDataFromPresetIdAndAreaIdRandomPosition : MessageBusBroadcaster<int, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, int>{}
         public class CreatePlayerDataFromPresetIdAndAreaId : MessageBusBroadcaster<int, Dictionary<PlayerPropertyKey, IPlayerPropertyValue>, int, Vector3>{}

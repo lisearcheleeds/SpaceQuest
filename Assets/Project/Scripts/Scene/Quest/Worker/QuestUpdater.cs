@@ -25,13 +25,13 @@ namespace AloneSpace
                 {
                     var itemData = new ItemData(new ItemVO(itemIndex), 1);
                     var position = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
-                    MessageBus.Instance.Creator.CreateItemInteractData.Broadcast(itemData, areaData[i].AreaId, position, Quaternion.identity);
+                    MessageBus.Instance.Data.CreateItemInteractData.Broadcast(itemData, areaData[i].AreaId, position, Quaternion.identity);
                 }
 
                 // 自分/他エリアへの接続
                 for (var t = 0; t < areaData.Length; t++)
                 {
-                    MessageBus.Instance.Creator.CreateAreaInteractData.Broadcast(areaData[t], areaData[i].StarSystemPosition);
+                    MessageBus.Instance.Data.CreateAreaInteractData.Broadcast(areaData[t], areaData[i].StarSystemPosition);
                 }
             }
 
@@ -40,7 +40,7 @@ namespace AloneSpace
             // UserのPlayerを登録
             var userDic = new Dictionary<PlayerPropertyKey, IPlayerPropertyValue>();
             userDic.Add(PlayerPropertyKey.UserPlayer, EmptyPlayerPropertyValue.Empty);
-            MessageBus.Instance.Creator.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, userDic, 1);
+            MessageBus.Instance.Data.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, userDic, 1);
 
             yield return null;
 

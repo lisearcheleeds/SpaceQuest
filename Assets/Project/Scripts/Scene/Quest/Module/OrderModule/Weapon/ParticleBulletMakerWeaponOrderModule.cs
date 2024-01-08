@@ -39,7 +39,7 @@ namespace AloneSpace
 
             // 存在しなければ1つ作る
             // WeaponEffectDataListは毎フレーム更新されるはずなので、0だったらとりあえずCreateWeaponEffectDataして良いはず
-            MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
+            MessageBus.Instance.Data.CreateWeaponEffectData.Broadcast(
                 weaponData.VO.ParticleBulletWeaponEffectSpecVO,
                 new ParticleBulletWeaponEffectCreateOptionData(
                     weaponData,

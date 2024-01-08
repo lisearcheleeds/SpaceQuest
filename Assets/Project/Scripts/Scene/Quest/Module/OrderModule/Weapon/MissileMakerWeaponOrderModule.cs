@@ -110,7 +110,7 @@ namespace AloneSpace
                         ? outputPosition.Rotation * Vector3.up
                         : outputPosition.Rotation * Vector3.forward;
 
-                    MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
+                    MessageBus.Instance.Data.CreateWeaponEffectData.Broadcast(
                         weaponData.VO.MissileWeaponEffectSpecVO,
                         new MissileWeaponEffectCreateOptionData(
                             weaponData,

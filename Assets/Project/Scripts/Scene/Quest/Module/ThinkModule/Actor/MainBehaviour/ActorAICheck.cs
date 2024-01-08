@@ -6,7 +6,7 @@ namespace AloneSpace
     {
         public ActorAIState Update(ActorData actorData, float deltaTime)
         {
-            var aroundTargets = MessageBus.Instance.GetActorRelationData.Unicast(actorData.InstanceId);
+            var aroundTargets = MessageBus.Instance.FrameCache.GetActorRelationData.Unicast(actorData.InstanceId);
             foreach (var target in aroundTargets)
             {
                 if (target.OtherActorData.PlayerInstanceId != actorData.PlayerInstanceId)

@@ -6,8 +6,7 @@
 
         public class FrameCacheMessage
         {
+            public MessageBusDefineFrameCache.GetActorRelationData GetActorRelationData { get; } = new MessageBusDefineFrameCache.GetActorRelationData();
         }
-
-        public MessageBusDefineFrameCache.GetActorRelationData GetActorRelationData { get; } = new MessageBusDefineFrameCache.GetActorRelationData();
     }
 }

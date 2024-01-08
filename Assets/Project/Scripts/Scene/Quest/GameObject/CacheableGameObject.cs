@@ -13,7 +13,7 @@ namespace AloneSpace
 
         public void Release()
         {
-            MessageBus.Instance.ReleaseCacheAsset.Broadcast(this);
+            MessageBus.Instance.Asset.ReleaseCacheAsset.Broadcast(this);
             OnRelease();
         }
 

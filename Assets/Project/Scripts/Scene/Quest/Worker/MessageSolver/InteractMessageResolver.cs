@@ -15,17 +15,17 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.Temp.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
-            MessageBus.Instance.Temp.ManagerCommandDropItem.AddListener(ManagerCommandDropItem);
-            MessageBus.Instance.Temp.ManagerCommandTransferItem.AddListener(TransferItem);
+            MessageBus.Instance.Inventory.PickItem.AddListener(ManagerCommandPickItem);
+            MessageBus.Instance.Inventory.DropItem.AddListener(ManagerCommandDropItem);
+            MessageBus.Instance.Inventory.TransferItem.AddListener(TransferItem);
             MessageBus.Instance.Temp.NoticeCollisionEventEffectData.AddListener(NoticeCollisionEffectData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.ManagerCommandPickItem.RemoveListener(ManagerCommandPickItem);
-            MessageBus.Instance.Temp.ManagerCommandDropItem.RemoveListener(ManagerCommandDropItem);
-            MessageBus.Instance.Temp.ManagerCommandTransferItem.RemoveListener(TransferItem);
+            MessageBus.Instance.Inventory.PickItem.RemoveListener(ManagerCommandPickItem);
+            MessageBus.Instance.Inventory.DropItem.RemoveListener(ManagerCommandDropItem);
+            MessageBus.Instance.Inventory.TransferItem.RemoveListener(TransferItem);
             MessageBus.Instance.Temp.NoticeCollisionEventEffectData.RemoveListener(NoticeCollisionEffectData);
         }
 
@@ -39,12 +39,12 @@ namespace AloneSpace
             }
 
             // Areaからアイテムを削除
-            MessageBus.Instance.Creator.ReleaseInteractData.Broadcast(pickItem);
+            MessageBus.Instance.Data.ReleaseInteractData.Broadcast(pickItem);
 
             // インベントリにアイテムを追加
             toInventory.Inventory.InsertInventoryItem(insertableId.Value, pickItem.ItemData);
             
-            MessageBus.Instance.Temp.ManagerCommandOnPickItem.Broadcast(toInventory, pickItem.ItemData);
+            MessageBus.Instance.Inventory.OnPickItem.Broadcast(toInventory, pickItem.ItemData);
         }
 
         void ManagerCommandDropItem(InventoryData fromInventory, ItemData dropItem)
@@ -61,13 +61,13 @@ namespace AloneSpace
 
             // Areaにアイテムを追加
             var offsetPosition = new Vector3(Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f), Random.Range(-50.0f, 50.0f));
-            MessageBus.Instance.Creator.CreateItemInteractData.Broadcast(
+            MessageBus.Instance.Data.CreateItemInteractData.Broadcast(
                 dropItem,
                 questData.UserData.ControlActorData.AreaId.Value,
                 questData.UserData.ControlActorData.Position + offsetPosition,
                 Quaternion.identity);
             
-            MessageBus.Instance.Temp.ManagerCommandOnDropItem.Broadcast(fromInventory, dropItem);
+            MessageBus.Instance.Inventory.OnDropItem.Broadcast(fromInventory, dropItem);
         }
 
         void TransferItem(InventoryData fromInventory, InventoryData toInventory, ItemData itemData)

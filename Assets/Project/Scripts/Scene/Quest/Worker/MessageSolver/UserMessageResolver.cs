@@ -32,18 +32,18 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.AddListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.AddListener(UserInputYawBoosterPowerRatio);
 
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetAreaId.AddListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.Temp.SetUserPlayer.AddListener(SetUserPlayer);
-            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.Temp.SetUserObserveTarget.AddListener(SetUserObserveTarget);
+            MessageBus.Instance.User.SetPlayer.AddListener(SetUserPlayer);
+            MessageBus.Instance.User.SetControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.User.SetObserveTarget.AddListener(SetUserObserveTarget);
 
-            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
 
-            MessageBus.Instance.Creator.OnCreatePlayerData.AddListener(OnCreatePlayerData);
-            MessageBus.Instance.Creator.OnReleasePlayerData.AddListener(OnReleasePlayerData);
-            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreatePlayerData.AddListener(OnCreatePlayerData);
+            MessageBus.Instance.Data.OnReleasePlayerData.AddListener(OnReleasePlayerData);
+            MessageBus.Instance.Data.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.AddListener(OnReleaseActorData);
         }
 
         public void Finalize()
@@ -68,18 +68,18 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.RemoveListener(UserInputRollBoosterPowerRatio);
             MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.RemoveListener(UserInputYawBoosterPowerRatio);
 
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetAreaId.RemoveListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.Temp.SetUserPlayer.RemoveListener(SetUserPlayer);
-            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.Temp.SetUserObserveTarget.RemoveListener(SetUserObserveTarget);
+            MessageBus.Instance.User.SetPlayer.RemoveListener(SetUserPlayer);
+            MessageBus.Instance.User.SetControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.User.SetObserveTarget.RemoveListener(SetUserObserveTarget);
 
-            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
 
-            MessageBus.Instance.Creator.OnCreatePlayerData.RemoveListener(OnCreatePlayerData);
-            MessageBus.Instance.Creator.OnReleasePlayerData.RemoveListener(OnReleasePlayerData);
-            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreatePlayerData.RemoveListener(OnCreatePlayerData);
+            MessageBus.Instance.Data.OnReleasePlayerData.RemoveListener(OnReleasePlayerData);
+            MessageBus.Instance.Data.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.RemoveListener(OnReleaseActorData);
         }
 
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
@@ -264,7 +264,7 @@ namespace AloneSpace
             if (areaId != questData.UserData.ObserveAreaData?.AreaId)
             {
                 var nextAreaData = areaId.HasValue ? questData.StarSystemData.GetAreaData(areaId.Value) : null;
-                MessageBus.Instance.Temp.SetUserObserveArea.Broadcast(nextAreaData);
+                MessageBus.Instance.User.SetObserveArea.Broadcast(nextAreaData);
             }
         }
 
@@ -272,7 +272,7 @@ namespace AloneSpace
         {
             questData.UserData.SetPlayerData(userPlayer);
 
-            MessageBus.Instance.Temp.SetUserControlActor.Broadcast(userPlayer.ActorDataList.FirstOrDefault());
+            MessageBus.Instance.User.SetControlActor.Broadcast(userPlayer.ActorDataList.FirstOrDefault());
         }
 
         void SetUserControlActor(ActorData actorData)
@@ -291,7 +291,7 @@ namespace AloneSpace
                 questData.UserData.ControlActorData.ActorStateData.EnableThink = true;
             }
 
-            MessageBus.Instance.Temp.SetUserObserveTarget.Broadcast(actorData);
+            MessageBus.Instance.User.SetObserveTarget.Broadcast(actorData);
         }
 
         void SetUserObserveTarget(IPositionData positionData)
@@ -306,7 +306,7 @@ namespace AloneSpace
                 if (questData.UserData.ControlActorData != null)
                 {
                     var nextAreaData = positionData?.AreaId != null ? questData.StarSystemData.GetAreaData(positionData.AreaId.Value) : null;
-                    MessageBus.Instance.Temp.SetUserObserveArea.Broadcast(nextAreaData);
+                    MessageBus.Instance.User.SetObserveArea.Broadcast(nextAreaData);
                 }
             }
 
@@ -324,7 +324,7 @@ namespace AloneSpace
             Debug.Log($"Created Player\n{playerData.InstanceId}");
             if (playerData.PlayerProperty.ContainsKey(PlayerPropertyKey.UserPlayer))
             {
-                MessageBus.Instance.Temp.SetUserPlayer.Broadcast(playerData);
+                MessageBus.Instance.User.SetPlayer.Broadcast(playerData);
             }
         }
         
@@ -341,7 +341,7 @@ namespace AloneSpace
             {
                 if (questData.UserData.ControlActorData == null)
                 {
-                    MessageBus.Instance.Temp.SetUserControlActor.Broadcast(actorData);
+                    MessageBus.Instance.User.SetControlActor.Broadcast(actorData);
                 }
             }
         }
@@ -350,7 +350,7 @@ namespace AloneSpace
         {
             if (questData.UserData.ControlActorData?.InstanceId == actorData.InstanceId)
             {
-                MessageBus.Instance.Temp.SetUserControlActor.Broadcast(null);
+                MessageBus.Instance.User.SetControlActor.Broadcast(null);
             }
         }
     }

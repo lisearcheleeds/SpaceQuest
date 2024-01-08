@@ -17,16 +17,16 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);   
-            MessageBus.Instance.Temp.ManagerCommandOnPickItem.AddListener(ManagerCommandPickedItem);
-            MessageBus.Instance.Temp.ManagerCommandOnDropItem.AddListener(ManagerCommandDroppedItem);
+            MessageBus.Instance.User.SetControlActor.AddListener(SetUserControlActor);   
+            MessageBus.Instance.Inventory.OnPickItem.AddListener(ManagerCommandPickedItem);
+            MessageBus.Instance.Inventory.OnDropItem.AddListener(ManagerCommandDroppedItem);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.Temp.ManagerCommandOnPickItem.RemoveListener(ManagerCommandPickedItem);
-            MessageBus.Instance.Temp.ManagerCommandOnDropItem.RemoveListener(ManagerCommandDroppedItem);
+            MessageBus.Instance.User.SetControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Inventory.OnPickItem.RemoveListener(ManagerCommandPickedItem);
+            MessageBus.Instance.Inventory.OnDropItem.RemoveListener(ManagerCommandDroppedItem);
         }
 
         public void OnUpdate()

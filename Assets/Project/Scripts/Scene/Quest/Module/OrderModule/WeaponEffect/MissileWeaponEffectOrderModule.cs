@@ -28,7 +28,7 @@ namespace AloneSpace
 
             if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
-                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Data.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
@@ -37,11 +37,11 @@ namespace AloneSpace
                 // TODO: ダメージ与えたときだけAddCollideCountしたい
                 effectData.AddCollideCount();
 
-                MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
+                MessageBus.Instance.Data.CreateWeaponEffectData.Broadcast(
                     ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
                     new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData));
 
-                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Data.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 

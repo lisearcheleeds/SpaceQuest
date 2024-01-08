@@ -25,24 +25,24 @@ namespace AloneSpace
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetAreaId.AddListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.AddListener(OnReleaseActorData);
 
-            MessageBus.Instance.Temp.SetUserObserveTarget.AddListener(SetUserObserveTarget);
-            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.User.SetObserveTarget.AddListener(SetUserObserveTarget);
+            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetAreaId.RemoveListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
-            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
+            MessageBus.Instance.Data.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Data.OnReleaseActorData.RemoveListener(OnReleaseActorData);
 
-            MessageBus.Instance.Temp.SetUserObserveTarget.RemoveListener(SetUserObserveTarget);
-            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.User.SetObserveTarget.RemoveListener(SetUserObserveTarget);
+            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()

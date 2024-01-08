@@ -22,16 +22,16 @@ namespace AloneSpace
             this.questData = questData;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.Creator.OnCreateInteractData.AddListener(OnCreateInteractData);
-            MessageBus.Instance.Creator.OnReleaseInteractData.AddListener(OnReleaseInteractData);
-            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Data.OnCreateInteractData.AddListener(OnCreateInteractData);
+            MessageBus.Instance.Data.OnReleaseInteractData.AddListener(OnReleaseInteractData);
+            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.Creator.OnCreateInteractData.RemoveListener(OnCreateInteractData);
-            MessageBus.Instance.Creator.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
-            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Data.OnCreateInteractData.RemoveListener(OnCreateInteractData);
+            MessageBus.Instance.Data.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
+            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()
@@ -105,7 +105,7 @@ namespace AloneSpace
                 return;
             }
 
-            MessageBus.Instance.GetCacheAsset.Broadcast(assetPathVO, c =>
+            MessageBus.Instance.Asset.GetCacheAsset.Broadcast(assetPathVO, c =>
             {
                 var interactionObject = (InteractionObject)c;
                 interactionObject.SetInteractData(interactData);

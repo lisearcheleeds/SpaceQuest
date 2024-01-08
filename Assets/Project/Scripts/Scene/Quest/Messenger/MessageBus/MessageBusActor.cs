@@ -23,6 +23,12 @@
             public MessageBusDefineActor.SetLookAtDirection SetLookAtDirection { get; } = new MessageBusDefineActor.SetLookAtDirection();
 
             public MessageBusDefineActor.SetMainTarget SetMainTarget { get; } = new MessageBusDefineActor.SetMainTarget();
+            
+            public MessageBusDefineActor.AddInteractOrder AddInteractOrder { get; } = new MessageBusDefineActor.AddInteractOrder();
+            public MessageBusDefineActor.RemoveInteractOrder RemoveInteractOrder { get; } = new MessageBusDefineActor.RemoveInteractOrder();
+            public MessageBusDefineActor.OnAddInteractOrder OnAddInteractOrder { get; } = new MessageBusDefineActor.OnAddInteractOrder();
+            public MessageBusDefineActor.OnRemoveInteractOrder OnRemoveInteractOrder { get; } = new MessageBusDefineActor.OnRemoveInteractOrder();
+
         }
     }
 }

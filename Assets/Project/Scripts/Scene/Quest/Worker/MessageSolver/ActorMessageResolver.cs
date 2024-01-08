@@ -12,11 +12,12 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.Temp.PlayerCommandAddInteractOrder.AddListener(PlayerCommandAddInteractOrder);
-            MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.AddListener(PlayerCommandRemoveInteractOrder);
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
-            MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.Player.SetAreaId.AddListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
 
+            MessageBus.Instance.Actor.AddInteractOrder.AddListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.Actor.RemoveInteractOrder.AddListener(PlayerCommandRemoveInteractOrder);
+            
             MessageBus.Instance.Actor.SetWeaponExecute.AddListener(ActorCommandSetWeaponExecute);
             MessageBus.Instance.Actor.ReloadWeapon.AddListener(ActorCommandReloadWeapon);
             MessageBus.Instance.Actor.SetCurrentWeaponGroupIndex.AddListener(ActorCommandSetCurrentWeaponGroupIndex);
@@ -41,11 +42,12 @@ namespace AloneSpace
 
         public void Finalize()
         {
-            MessageBus.Instance.Temp.PlayerCommandAddInteractOrder.RemoveListener(PlayerCommandAddInteractOrder);
-            MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.RemoveListener(PlayerCommandRemoveInteractOrder);
-            MessageBus.Instance.Temp.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
-            MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.Player.SetAreaId.RemoveListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Player.SetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
 
+            MessageBus.Instance.Actor.AddInteractOrder.RemoveListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.Actor.RemoveInteractOrder.RemoveListener(PlayerCommandRemoveInteractOrder);
+            
             MessageBus.Instance.Actor.SetWeaponExecute.RemoveListener(ActorCommandSetWeaponExecute);
             MessageBus.Instance.Actor.ReloadWeapon.RemoveListener(ActorCommandReloadWeapon);
             MessageBus.Instance.Actor.SetCurrentWeaponGroupIndex.RemoveListener(ActorCommandSetCurrentWeaponGroupIndex);
@@ -79,7 +81,7 @@ namespace AloneSpace
             var state = new InteractOrderState(interactData);
             targetActorData.AddInteractOrder(state);
             
-            MessageBus.Instance.Temp.OnAddInteractOrder.Broadcast(actorId, state);
+            MessageBus.Instance.Actor.OnAddInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandRemoveInteractOrder(Guid actorId, IInteractData interactData)
@@ -92,7 +94,7 @@ namespace AloneSpace
             }
 
             targetActorData.RemoveInteractOrder(state);
-            MessageBus.Instance.Temp.OnRemoveInteractOrder.Broadcast(actorId, state);
+            MessageBus.Instance.Actor.OnRemoveInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandSetAreaId(Guid actorId, int? areaId)
@@ -201,7 +203,7 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            MessageBus.Instance.Creator.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
+            MessageBus.Instance.Data.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
         }
     }
 }

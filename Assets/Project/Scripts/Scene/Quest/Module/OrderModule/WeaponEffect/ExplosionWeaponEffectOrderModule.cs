@@ -32,7 +32,7 @@ namespace AloneSpace
             }
 
             // すぐにRelease
-            MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
+            MessageBus.Instance.Data.ReleaseWeaponEffectData.Broadcast(effectData);
         }
     }
 }

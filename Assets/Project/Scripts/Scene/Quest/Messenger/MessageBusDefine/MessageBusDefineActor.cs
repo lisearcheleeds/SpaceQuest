@@ -22,5 +22,11 @@ namespace AloneSpace
         public class SetLookAtDirection : MessageBusBroadcaster<Guid, Vector3>{}
 
         public class SetMainTarget : MessageBusBroadcaster<Guid, IPositionData>{}
+        
+        public class AddInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
+        public class RemoveInteractOrder : MessageBusBroadcaster<Guid, IInteractData>{}
+        public class OnAddInteractOrder : MessageBusBroadcaster<Guid, InteractOrderState>{}
+        public class OnRemoveInteractOrder : MessageBusBroadcaster<Guid, InteractOrderState>{}
+
     }
 }
