@@ -32,13 +32,13 @@ namespace AloneSpace.UI
             public bool IsSelected { get; }
             public string NameText { get; }
 
-            public Func<IInteractData, ActorStateData.InteractOrderState> GetState { get; }
+            public Func<IInteractData, InteractOrderState> GetState { get; }
             public Func<IInteractData, string> GetDistanceText { get; }
 
             public CellData(
                 IInteractData interactData,
                 bool isSelected,
-                Func<IInteractData, ActorStateData.InteractOrderState> getState,
+                Func<IInteractData, InteractOrderState> getState,
                 Func<IInteractData, string> getDistanceText)
             {
                 InteractData = interactData;

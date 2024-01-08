@@ -128,24 +128,14 @@ namespace AloneSpace
             CollisionEventEffectReceiverModule = null;
         }
 
-        public void AddInteractOrder(IInteractData interactData)
+        public void AddInteractOrder(InteractOrderState interactOrderState)
         {
-            if (ActorStateData.InteractOrderDic.ContainsKey(interactData))
-            {
-                return;
-            }
-
-            ActorStateData.InteractOrderDic[interactData] = new ActorStateData.InteractOrderState();
+            ActorStateData.InteractOrderStateList.Add(interactOrderState);
         }
 
-        public void RemoveInteractOrder(IInteractData interactData)
+        public void RemoveInteractOrder(InteractOrderState interactOrderState)
         {
-            if (!ActorStateData.InteractOrderDic.ContainsKey(interactData))
-            {
-                return;
-            }
-
-            ActorStateData.InteractOrderDic.Remove(interactData);
+            ActorStateData.InteractOrderStateList.Remove(interactOrderState);
         }
 
         public void SetAreaId(int? areaId)
@@ -165,23 +155,6 @@ namespace AloneSpace
 
         public void SetMoveTarget(IPositionData moveTarget)
         {
-            if (moveTarget == null)
-            {
-                ActorStateData.IsWarping = false;
-                ActorStateData.MoveTarget = null;
-                return;
-            }
-
-            // 今どのエリアにも居ない時、もしくは移動先のエリアが違う時ワープ状態とする
-            if (AreaId != moveTarget.AreaId)
-            {
-                ActorStateData.IsWarping = true;
-            }
-            else
-            {
-                ActorStateData.IsWarping = false;
-            }
-
             ActorStateData.MoveTarget = moveTarget;
         }
 

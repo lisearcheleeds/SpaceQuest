@@ -227,36 +227,36 @@ namespace AloneSpace
 
         void UpdateInteract(float deltaTime)
         {
-            if (actorData.ActorStateData.InteractOrderDic.Count == 0)
+            if (actorData.ActorStateData.InteractOrderStateList.Count == 0)
             {
                 return;
             }
 
             var completeInteractDataList = new List<IInteractData>();
-            foreach (var interactData in actorData.ActorStateData.InteractOrderDic.Keys)
+            foreach (var interactOrderState in actorData.ActorStateData.InteractOrderStateList)
             {
-                var interactOrderState = actorData.ActorStateData.InteractOrderDic[interactData];
-                if (interactData.IsInteractionRange(actorData))
+                if (interactOrderState.InteractData.IsInteractionRange(actorData))
                 {
-                    if (interactData is ItemInteractData)
+                    // Interact開始
+                    if (interactOrderState.InteractData is ItemInteractData)
                     {
                         // アイテムを引き寄せる
-                        interactData.MovingModule.SetMovementVelocity(interactData.MovingModule.MovementVelocity * 0.99f);
+                        interactOrderState.InteractData.MovingModule.SetMovementVelocity(interactOrderState.InteractData.MovingModule.MovementVelocity * 0.99f);
                     }
 
                     interactOrderState.Time += deltaTime;
                     interactOrderState.InProgress = true;
-                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactData.InteractTime);
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrderState.InteractData.InteractTime);
                 }
                 else
                 {
-                    if (interactData is ItemInteractData)
+                    if (interactOrderState.InteractData is ItemInteractData)
                     {
                         interactOrderState.InProgress = true;
 
                         // アイテムを引き寄せる
-                        var distance = (actorData.Position - interactData.Position).magnitude;
-                        interactData.MovingModule.SetMovementVelocity((actorData.Position - interactData.Position).normalized * Mathf.Min(distance, 100.0f));
+                        var distance = (actorData.Position - interactOrderState.InteractData.Position).magnitude;
+                        interactOrderState.InteractData.MovingModule.SetMovementVelocity((actorData.Position - interactOrderState.InteractData.Position).normalized * Mathf.Min(distance, 100.0f));
                     }
                     else
                     {
@@ -264,16 +264,16 @@ namespace AloneSpace
                     }
 
                     interactOrderState.Time = 0;
-                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactData.InteractTime);
+                    interactOrderState.ProgressRatio = Mathf.Clamp01(interactOrderState.Time / interactOrderState.InteractData.InteractTime);
                 }
 
-                if (interactOrderState.Time < interactData.InteractTime)
+                if (interactOrderState.Time < interactOrderState.InteractData.InteractTime)
                 {
                     continue;
                 }
 
                 // インタラクト終了
-                completeInteractDataList.Add(interactData);
+                completeInteractDataList.Add(interactOrderState.InteractData);
             }
 
             foreach (var completeInteractData in completeInteractDataList)
@@ -291,7 +291,7 @@ namespace AloneSpace
                         break;
                 }
 
-                actorData.ActorStateData.InteractOrderDic.Remove(completeInteractData);
+                MessageBus.Instance.PlayerCommandRemoveInteractOrder.Broadcast(actorData.InstanceId, completeInteractData);
             }
         }
     }

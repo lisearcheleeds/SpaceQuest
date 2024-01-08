@@ -70,14 +70,10 @@ namespace AloneSpace.UI
 
             inAreaItemListView.Apply(cellData, OnClickSelectCell, OnClickConfirmCell);
 
-            ActorStateData.InteractOrderState GetState(IInteractData targetData)
+            InteractOrderState GetState(IInteractData targetData)
             {
-                if (questData.UserData.ControlActorData.ActorStateData.InteractOrderDic.ContainsKey(targetData))
-                {
-                    return questData.UserData.ControlActorData.ActorStateData.InteractOrderDic[targetData];
-                }
-
-                return null;
+                return questData.UserData.ControlActorData.ActorStateData.InteractOrderStateList
+                    .FirstOrDefault(x => x.InteractData.InstanceId == targetData.InstanceId);
             }
 
             string GetDistanceText(IInteractData targetData)
@@ -138,7 +134,9 @@ namespace AloneSpace.UI
 
         void OnClickConfirmCell(InAreaItemListViewCell.CellData cellData)
         {
-            if (questData.UserData.ControlActorData.ActorStateData.InteractOrderDic.ContainsKey(cellData.InteractData))
+            var isContains = questData.UserData.ControlActorData.ActorStateData.InteractOrderStateList
+                .Any(x => x.InteractData.InstanceId == cellData.InteractData.InstanceId);
+            if (isContains)
             {
                 // キャンセル
                 MessageBus.Instance.PlayerCommandRemoveInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);

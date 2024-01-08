@@ -16,6 +16,7 @@ namespace AloneSpace
         PlayerMessageResolver playerMessageResolver = new PlayerMessageResolver();
         ActorMessageResolver actorMessageResolver = new ActorMessageResolver();
         UserMessageResolver userMessageResolver = new UserMessageResolver();
+        GraphicEffectMessageResolver graphicEffectMessageResolver = new GraphicEffectMessageResolver();
 
         ThinkModuleUpdater thinkModuleUpdater = new ThinkModuleUpdater();
         OrderModuleUpdater orderModuleUpdater = new OrderModuleUpdater();
@@ -44,6 +45,7 @@ namespace AloneSpace
             playerMessageResolver.Initialize(questData);
             actorMessageResolver.Initialize(questData);
             userMessageResolver.Initialize(questData);
+            graphicEffectMessageResolver.Initialize(questData);
 
             thinkModuleUpdater.Initialize(questData);
             orderModuleUpdater.Initialize(questData);
@@ -76,7 +78,8 @@ namespace AloneSpace
             playerMessageResolver.Finalize();
             actorMessageResolver.Finalize();
             userMessageResolver.Finalize();
-
+            graphicEffectMessageResolver.Finalize();
+            
             thinkModuleUpdater.Finalize();
             orderModuleUpdater.Finalize();
             movingModuleUpdater.Finalize();

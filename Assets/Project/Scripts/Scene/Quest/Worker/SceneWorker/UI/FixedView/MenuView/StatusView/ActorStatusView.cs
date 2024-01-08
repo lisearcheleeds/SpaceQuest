@@ -79,14 +79,11 @@ namespace AloneSpace.UI
 
                 interactOrdersText.text = "";
             }
-            else if (actorData.ActorStateData.InteractOrderDic.Count != 0)
+            else if (actorData.ActorStateData.InteractOrderStateList.Count != 0)
             {
                 currentStateText.text = "インタラクト中";
-                interactOrdersText.text = string.Join("\n", actorData.ActorStateData.InteractOrderDic.Select(kv =>
-                {
-                    var (interactOrder, interactOrderState) = kv;
-                    return $"・{interactOrder.Text}\n -> {interactOrderState.ProgressRatio * 100.0f:F1}%";
-                }).ToArray());
+                interactOrdersText.text = string.Join("\n", actorData.ActorStateData.InteractOrderStateList.Select(
+                    state => $"・{state.InteractData.Text}\n -> {state.ProgressRatio * 100.0f:F1}%").ToArray());
             }
             else if (actorData.ActorStateData.MoveTarget != null)
             {
@@ -114,7 +111,7 @@ namespace AloneSpace.UI
             prevShieldValueMax = actorData?.ActorStateData.ShieldValueMax;
 
             prevMainTargetId = actorData?.ActorStateData.MainTarget?.InstanceId;
-            prevInteractOrderCount = actorData?.ActorStateData.InteractOrderDic.Count;
+            prevInteractOrderCount = actorData?.ActorStateData.InteractOrderStateList.Count;
             prevMoveTargetId = actorData?.ActorStateData.MoveTarget?.InstanceId;
         }
 
@@ -133,7 +130,7 @@ namespace AloneSpace.UI
                 return true;
             }
 
-            if (prevInteractOrderCount != actorData?.ActorStateData.InteractOrderDic.Count)
+            if (prevInteractOrderCount != actorData?.ActorStateData.InteractOrderStateList.Count)
             {
                 return true;
             }

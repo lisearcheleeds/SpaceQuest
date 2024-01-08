@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 
 namespace AloneSpace
@@ -69,12 +70,29 @@ namespace AloneSpace
 
         void PlayerCommandAddInteractOrder(Guid actorId, IInteractData interactData)
         {
-            questData.ActorData[actorId].AddInteractOrder(interactData);
+            var targetActorData = questData.ActorData[actorId];
+            if (targetActorData.ActorStateData.InteractOrderStateList.Any(x => x.InteractData.InstanceId == interactData.InstanceId))
+            {
+                return;
+            }
+
+            var state = new InteractOrderState(interactData);
+            targetActorData.AddInteractOrder(state);
+            
+            MessageBus.Instance.OnAddInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandRemoveInteractOrder(Guid actorId, IInteractData interactData)
         {
-            questData.ActorData[actorId].RemoveInteractOrder(interactData);
+            var targetActorData = questData.ActorData[actorId];
+            var state = targetActorData.ActorStateData.InteractOrderStateList.FirstOrDefault(x => x.InteractData.InstanceId == interactData.InstanceId);
+            if (state == null)
+            {
+                return;
+            }
+
+            targetActorData.RemoveInteractOrder(state);
+            MessageBus.Instance.OnRemoveInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandSetAreaId(Guid actorId, int? areaId)
@@ -84,7 +102,25 @@ namespace AloneSpace
 
         void PlayerCommandSetMoveTarget(Guid actorId, IPositionData moveTarget)
         {
-            questData.ActorData[actorId].SetMoveTarget(moveTarget);
+            var targetActorData = questData.ActorData[actorId];
+            if (moveTarget == null)
+            {
+                targetActorData.ActorStateData.IsWarping = false;
+                targetActorData.ActorStateData.MoveTarget = null;
+                return;
+            }
+
+            // 今どのエリアにも居ない時、もしくは移動先のエリアが違う時ワープ状態とする
+            if (targetActorData.AreaId != moveTarget.AreaId)
+            {
+                targetActorData.ActorStateData.IsWarping = true;
+            }
+            else
+            {
+                targetActorData.ActorStateData.IsWarping = false;
+            }
+
+            targetActorData.SetMoveTarget(moveTarget);
         }
 
         void ActorCommandSetWeaponExecute(Guid actorId, bool isExecute)
@@ -166,13 +202,6 @@ namespace AloneSpace
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
             MessageBus.Instance.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
-
-            MessageBus.Instance.SpawnGraphicEffect.Broadcast(
-                brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
-                new BrokenActorGraphicEffectHandler(
-                    brokenActorEventData.BrokenActorData,
-                    brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorSmokeGraphicEffectSpecVO,
-                    brokenActorEventData.BrokenActorData.MovingModule.MovementVelocity));
         }
     }
 }

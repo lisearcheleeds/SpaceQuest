@@ -25,7 +25,10 @@
         public MessageBusDefine.PlayerCommandSetTacticsType PlayerCommandSetTacticsType { get; } = new MessageBusDefine.PlayerCommandSetTacticsType();
         public MessageBusDefine.PlayerCommandAddInteractOrder PlayerCommandAddInteractOrder { get; } = new MessageBusDefine.PlayerCommandAddInteractOrder();
         public MessageBusDefine.PlayerCommandRemoveInteractOrder PlayerCommandRemoveInteractOrder { get; } = new MessageBusDefine.PlayerCommandRemoveInteractOrder();
-
+        
+        public MessageBusDefine.OnAddInteractOrder OnAddInteractOrder { get; } = new MessageBusDefine.OnAddInteractOrder();
+        public MessageBusDefine.OnRemoveInteractOrder OnRemoveInteractOrder { get; } = new MessageBusDefine.OnRemoveInteractOrder();
+        
         // ActorのItem収集
         public MessageBusDefine.ManagerCommandPickItem ManagerCommandPickItem { get; } = new MessageBusDefine.ManagerCommandPickItem();
         public MessageBusDefine.ManagerCommandPickedItem ManagerCommandPickedItem { get; } = new MessageBusDefine.ManagerCommandPickedItem();
