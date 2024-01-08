@@ -18,12 +18,12 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
 
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void SetDirty()

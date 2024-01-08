@@ -11,12 +11,12 @@
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)

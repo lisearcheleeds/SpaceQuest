@@ -15,12 +15,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -39,7 +39,7 @@ namespace AloneSpace
 
             // 存在しなければ1つ作る
             // WeaponEffectDataListは毎フレーム更新されるはずなので、0だったらとりあえずCreateWeaponEffectDataして良いはず
-            MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+            MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
                 weaponData.VO.ParticleBulletWeaponEffectSpecVO,
                 new ParticleBulletWeaponEffectCreateOptionData(
                     weaponData,

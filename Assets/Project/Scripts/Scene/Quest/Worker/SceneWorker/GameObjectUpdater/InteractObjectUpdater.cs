@@ -22,16 +22,16 @@ namespace AloneSpace
             this.questData = questData;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.CreatedInteractData.AddListener(CreatedInteractData);
-            MessageBus.Instance.ReleasedInteractData.AddListener(ReleasedInteractData);
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.OnCreateInteractData.AddListener(OnCreateInteractData);
+            MessageBus.Instance.Creator.OnReleaseInteractData.AddListener(OnReleaseInteractData);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.CreatedInteractData.RemoveListener(CreatedInteractData);
-            MessageBus.Instance.ReleasedInteractData.RemoveListener(ReleasedInteractData);
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.OnCreateInteractData.RemoveListener(OnCreateInteractData);
+            MessageBus.Instance.Creator.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()
@@ -125,7 +125,7 @@ namespace AloneSpace
             isDirty = true;
         }
 
-        void CreatedInteractData(IInteractData interactData)
+        void OnCreateInteractData(IInteractData interactData)
         {
             if (interactData.AreaId == observeArea?.AreaId)
             {
@@ -133,7 +133,7 @@ namespace AloneSpace
             }
         }
 
-        void ReleasedInteractData(IInteractData interactData)
+        void OnReleaseInteractData(IInteractData interactData)
         {
             if (interactData.AreaId == observeArea?.AreaId)
             {

@@ -15,12 +15,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -34,7 +34,7 @@ namespace AloneSpace
             effectData.CurrentLifeTime += deltaTime;
             if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
@@ -44,7 +44,7 @@ namespace AloneSpace
 
                 if (effectData.SpecVO.Penetration < Random.value)
                 {
-                    MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                    MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
                     return;
                 }
             }

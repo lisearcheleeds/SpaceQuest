@@ -14,12 +14,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterCollisionEffectReceiverModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterCollisionEffectReceiverModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterCollisionEffectReceiverModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterCollisionEffectReceiverModule.Broadcast(this);
         }
 
         public abstract void OnUpdateModule(float deltaTime, HashSet<CollisionEventEffectSenderModule> senderList);

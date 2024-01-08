@@ -2,22 +2,27 @@
 {
     public partial class MessageBus
     {
-        public MessageBusDefine.RegisterMovingModule RegisterMovingModule { get; } = new MessageBusDefine.RegisterMovingModule();
-        public MessageBusDefine.UnRegisterMovingModule UnRegisterMovingModule { get; } = new MessageBusDefine.UnRegisterMovingModule();
+        public ModuleMessage Module { get; } = new ModuleMessage();
 
-        public MessageBusDefine.RegisterOrderModule RegisterOrderModule { get; } = new MessageBusDefine.RegisterOrderModule();
-        public MessageBusDefine.UnRegisterOrderModule UnRegisterOrderModule { get; } = new MessageBusDefine.UnRegisterOrderModule();
+        public class ModuleMessage
+        {
+            public MessageBusDefineModule.RegisterMovingModule RegisterMovingModule { get; } = new MessageBusDefineModule.RegisterMovingModule();
+            public MessageBusDefineModule.UnRegisterMovingModule UnRegisterMovingModule { get; } = new MessageBusDefineModule.UnRegisterMovingModule();
 
-        public MessageBusDefine.RegisterThinkModule RegisterThinkModule { get; } = new MessageBusDefine.RegisterThinkModule();
-        public MessageBusDefine.UnRegisterThinkModule UnRegisterThinkModule { get; } = new MessageBusDefine.UnRegisterThinkModule();
+            public MessageBusDefineModule.RegisterOrderModule RegisterOrderModule { get; } = new MessageBusDefineModule.RegisterOrderModule();
+            public MessageBusDefineModule.UnRegisterOrderModule UnRegisterOrderModule { get; } = new MessageBusDefineModule.UnRegisterOrderModule();
 
-        public MessageBusDefine.RegisterCollisionEventModule RegisterCollisionEventModule { get; } = new MessageBusDefine.RegisterCollisionEventModule();
-        public MessageBusDefine.UnRegisterCollisionEventModule UnRegisterCollisionEventModule { get; } = new MessageBusDefine.UnRegisterCollisionEventModule();
+            public MessageBusDefineModule.RegisterThinkModule RegisterThinkModule { get; } = new MessageBusDefineModule.RegisterThinkModule();
+            public MessageBusDefineModule.UnRegisterThinkModule UnRegisterThinkModule { get; } = new MessageBusDefineModule.UnRegisterThinkModule();
 
-        public MessageBusDefine.RegisterCollisionEffectReceiverModuleModule RegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.RegisterCollisionEffectReceiverModuleModule();
-        public MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule UnRegisterCollisionEffectReceiverModule { get; } = new MessageBusDefine.UnRegisterCollisionEffectReceiverModuleModule();
+            public MessageBusDefineModule.RegisterCollisionEventModule RegisterCollisionEventModule { get; } = new MessageBusDefineModule.RegisterCollisionEventModule();
+            public MessageBusDefineModule.UnRegisterCollisionEventModule UnRegisterCollisionEventModule { get; } = new MessageBusDefineModule.UnRegisterCollisionEventModule();
 
-        public MessageBusDefine.RegisterCollisionEffectSenderModuleModule RegisterCollisionEffectSenderModule { get; } = new MessageBusDefine.RegisterCollisionEffectSenderModuleModule();
-        public MessageBusDefine.UnRegisterCollisionEffectSenderModuleModule UnRegisterCollisionEffectSenderModule { get; } = new MessageBusDefine.UnRegisterCollisionEffectSenderModuleModule();
+            public MessageBusDefineModule.RegisterCollisionEffectReceiverModuleModule RegisterCollisionEffectReceiverModule { get; } = new MessageBusDefineModule.RegisterCollisionEffectReceiverModuleModule();
+            public MessageBusDefineModule.UnRegisterCollisionEffectReceiverModuleModule UnRegisterCollisionEffectReceiverModule { get; } = new MessageBusDefineModule.UnRegisterCollisionEffectReceiverModuleModule();
+
+            public MessageBusDefineModule.RegisterCollisionEffectSenderModuleModule RegisterCollisionEffectSenderModule { get; } = new MessageBusDefineModule.RegisterCollisionEffectSenderModuleModule();
+            public MessageBusDefineModule.UnRegisterCollisionEffectSenderModuleModule UnRegisterCollisionEffectSenderModule { get; } = new MessageBusDefineModule.UnRegisterCollisionEffectSenderModuleModule();
+        }
     }
 }

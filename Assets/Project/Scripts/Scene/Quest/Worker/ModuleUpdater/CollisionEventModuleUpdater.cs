@@ -15,18 +15,18 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.RegisterCollisionEventModule.AddListener(RegisterCollisionEventModule);
-            MessageBus.Instance.UnRegisterCollisionEventModule.AddListener(UnRegisterCollisionEventModule);
+            MessageBus.Instance.Module.RegisterCollisionEventModule.AddListener(RegisterCollisionEventModule);
+            MessageBus.Instance.Module.UnRegisterCollisionEventModule.AddListener(UnRegisterCollisionEventModule);
 
-            MessageBus.Instance.NoticeCollisionEventData.AddListener(NoticeCollisionEventData);
+            MessageBus.Instance.Temp.NoticeCollisionEventData.AddListener(NoticeCollisionEventData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.RegisterCollisionEventModule.RemoveListener(RegisterCollisionEventModule);
-            MessageBus.Instance.UnRegisterCollisionEventModule.RemoveListener(UnRegisterCollisionEventModule);
+            MessageBus.Instance.Module.RegisterCollisionEventModule.RemoveListener(RegisterCollisionEventModule);
+            MessageBus.Instance.Module.UnRegisterCollisionEventModule.RemoveListener(UnRegisterCollisionEventModule);
 
-            MessageBus.Instance.NoticeCollisionEventData.RemoveListener(NoticeCollisionEventData);
+            MessageBus.Instance.Temp.NoticeCollisionEventData.RemoveListener(NoticeCollisionEventData);
         }
 
         public void UpdateModule(float deltaTime)

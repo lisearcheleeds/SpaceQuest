@@ -13,8 +13,8 @@ namespace AloneSpace
                 return ActorAIState.Check;
             }
             
-            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.5f);
-            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.1f);
+            MessageBus.Instance.Actor.ForwardBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.5f);
+            MessageBus.Instance.Actor.YawBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.1f);
             
             return ActorAIState.Moving;
         }

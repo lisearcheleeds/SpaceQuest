@@ -2,6 +2,12 @@
 {
     public partial class MessageBus
     {
-        public MessageBusDefine.GetFrameCacheActorRelationData GetFrameCacheActorRelationData { get; } = new MessageBusDefine.GetFrameCacheActorRelationData();
+        public FrameCacheMessage FrameCache { get; } = new FrameCacheMessage();
+
+        public class FrameCacheMessage
+        {
+        }
+
+        public MessageBusDefineFrameCache.GetActorRelationData GetActorRelationData { get; } = new MessageBusDefineFrameCache.GetActorRelationData();
     }
 }

@@ -34,14 +34,14 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.AddListener(UserInputSetCurrentWeaponGroupIndex);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.UserInput.UserInputSetCurrentWeaponGroupIndex.AddListener(UserInputSetCurrentWeaponGroupIndex);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.UserInput.UserInputSetCurrentWeaponGroupIndex.RemoveListener(UserInputSetCurrentWeaponGroupIndex);
         }
 
         public void OnUpdate()

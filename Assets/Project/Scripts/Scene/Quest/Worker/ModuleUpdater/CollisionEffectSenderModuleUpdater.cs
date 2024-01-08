@@ -15,16 +15,16 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.RegisterCollisionEffectSenderModule.AddListener(RegisterCollisionEffectSenderModule);
-            MessageBus.Instance.UnRegisterCollisionEffectSenderModule.AddListener(UnRegisterCollisionEffectSenderModule);
-            MessageBus.Instance.NoticeCollisionEventEffectData.AddListener(NoticeCollisionEventEffectData);
+            MessageBus.Instance.Module.RegisterCollisionEffectSenderModule.AddListener(RegisterCollisionEffectSenderModule);
+            MessageBus.Instance.Module.UnRegisterCollisionEffectSenderModule.AddListener(UnRegisterCollisionEffectSenderModule);
+            MessageBus.Instance.Temp.NoticeCollisionEventEffectData.AddListener(NoticeCollisionEventEffectData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.RegisterCollisionEffectSenderModule.RemoveListener(RegisterCollisionEffectSenderModule);
-            MessageBus.Instance.UnRegisterCollisionEffectSenderModule.RemoveListener(UnRegisterCollisionEffectSenderModule);
-            MessageBus.Instance.NoticeCollisionEventEffectData.RemoveListener(NoticeCollisionEventEffectData);
+            MessageBus.Instance.Module.RegisterCollisionEffectSenderModule.RemoveListener(RegisterCollisionEffectSenderModule);
+            MessageBus.Instance.Module.UnRegisterCollisionEffectSenderModule.RemoveListener(UnRegisterCollisionEffectSenderModule);
+            MessageBus.Instance.Temp.NoticeCollisionEventEffectData.RemoveListener(NoticeCollisionEventEffectData);
         }
 
         public void UpdateModule(float deltaTime)

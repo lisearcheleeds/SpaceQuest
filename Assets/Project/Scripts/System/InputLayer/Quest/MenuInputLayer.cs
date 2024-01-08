@@ -41,18 +41,18 @@ namespace AloneSpace
             if (WasReleasedThisFrame(KeyBindKey.Menu, usedKey))
             {
                 // Closeのみ
-                MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuStatusView, usedKey))
             {
                 if (getCurrentMenuElement() == UI.MenuView.MenuElement.StatusView)
                 {
-                    MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
                 }
                 else
                 {
-                    MessageBus.Instance.UserInputSwitchMenuStatusView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.Broadcast();
                 }
             }
 
@@ -60,11 +60,11 @@ namespace AloneSpace
             {
                 if (getCurrentMenuElement() == UI.MenuView.MenuElement.InventoryView)
                 {
-                    MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
                 }
                 else
                 {
-                    MessageBus.Instance.UserInputSwitchMenuInventoryView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.Broadcast();
                 }
             }
 
@@ -72,11 +72,11 @@ namespace AloneSpace
             {
                 if (getCurrentMenuElement() == UI.MenuView.MenuElement.PlayerView)
                 {
-                    MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
                 }
                 else
                 {
-                    MessageBus.Instance.UserInputSwitchMenuPlayerView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.Broadcast();
                 }
             }
 
@@ -84,11 +84,11 @@ namespace AloneSpace
             {
                 if (getCurrentMenuElement() == UI.MenuView.MenuElement.AreaView)
                 {
-                    MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
                 }
                 else
                 {
-                    MessageBus.Instance.UserInputSwitchMenuAreaView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.Broadcast();
                 }
             }
 
@@ -96,17 +96,17 @@ namespace AloneSpace
             {
                 if (getCurrentMenuElement() == UI.MenuView.MenuElement.MapView)
                 {
-                    MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
                 }
                 else
                 {
-                    MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.Broadcast();
                 }
             }
 
             if (WasPressedThisFrame(KeyBindKey.Escape, usedKey))
             {
-                MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
             }
         }
     }

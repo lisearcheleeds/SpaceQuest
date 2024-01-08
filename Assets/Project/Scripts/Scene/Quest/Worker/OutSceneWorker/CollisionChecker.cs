@@ -9,14 +9,14 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.RegisterCollision.AddListener(RegisterCollision);
-            MessageBus.Instance.UnRegisterCollision.AddListener(UnRegisterCollision);
+            MessageBus.Instance.Temp.RegisterCollision.AddListener(RegisterCollision);
+            MessageBus.Instance.Temp.UnRegisterCollision.AddListener(UnRegisterCollision);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.RegisterCollision.RemoveListener(RegisterCollision);
-            MessageBus.Instance.UnRegisterCollision.RemoveListener(UnRegisterCollision);
+            MessageBus.Instance.Temp.RegisterCollision.RemoveListener(RegisterCollision);
+            MessageBus.Instance.Temp.UnRegisterCollision.RemoveListener(UnRegisterCollision);
         }
 
         public void OnUpdate()

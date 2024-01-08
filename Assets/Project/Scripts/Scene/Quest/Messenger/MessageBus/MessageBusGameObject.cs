@@ -2,9 +2,15 @@
 {
     public partial class MessageBus
     {
+        public GameObjectMessage GameObject { get; } = new GameObjectMessage();
+
+        public class GameObjectMessage
+        {
+        }
+        
         // GameObject
-        public MessageBusDefine.GetCacheAsset GetCacheAsset { get; } = new MessageBusDefine.GetCacheAsset();
-        public MessageBusDefine.ReleaseCacheAssetAll ReleaseCacheAssetAll { get; } = new MessageBusDefine.ReleaseCacheAssetAll();
-        public MessageBusDefine.ReleaseCacheAsset ReleaseCacheAsset { get; } = new MessageBusDefine.ReleaseCacheAsset();
+        public MessageBusDefineGameObject.GetCacheAsset GetCacheAsset { get; } = new MessageBusDefineGameObject.GetCacheAsset();
+        public MessageBusDefineGameObject.ReleaseCacheAssetAll ReleaseCacheAssetAll { get; } = new MessageBusDefineGameObject.ReleaseCacheAssetAll();
+        public MessageBusDefineGameObject.ReleaseCacheAsset ReleaseCacheAsset { get; } = new MessageBusDefineGameObject.ReleaseCacheAsset();
     }
 }

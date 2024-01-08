@@ -24,12 +24,12 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
         }
 
         public void OnUpdate()

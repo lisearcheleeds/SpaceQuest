@@ -19,36 +19,36 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.AddListener(CreatePlayerDataFromPresetIdAndAreaIdRandomPosition);
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaId.AddListener(CreatePlayerDataFromPresetIdAndAreaId);
-            MessageBus.Instance.CreatePlayerDataFromPresetId.AddListener(CreatePlayerDataFromPresetId);
-            MessageBus.Instance.CreatePlayerDataFromPreset.AddListener(CreatePlayerDataFromPreset);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.AddListener(CreatePlayerDataFromPresetIdAndAreaIdRandomPosition);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetIdAndAreaId.AddListener(CreatePlayerDataFromPresetIdAndAreaId);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetId.AddListener(CreatePlayerDataFromPresetId);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPreset.AddListener(CreatePlayerDataFromPreset);
 
-            MessageBus.Instance.CreateActorDataFromPresetId.AddListener(CreateActorDataFromPresetId);
-            MessageBus.Instance.CreateActorDataFromPreset.AddListener(CreateActorDataFromPreset);
+            MessageBus.Instance.Creator.CreateActorDataFromPresetId.AddListener(CreateActorDataFromPresetId);
+            MessageBus.Instance.Creator.CreateActorDataFromPreset.AddListener(CreateActorDataFromPreset);
 
-            MessageBus.Instance.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
+            MessageBus.Instance.Creator.CreateWeaponEffectData.AddListener(CreateWeaponEffectData);
 
-            MessageBus.Instance.CreateAreaInteractData.AddListener(CreateAreaInteractData);
-            MessageBus.Instance.CreateInventoryInteractData.AddListener(CreateInventoryInteractData);
-            MessageBus.Instance.CreateItemInteractData.AddListener(CreateItemInteractData);
+            MessageBus.Instance.Creator.CreateAreaInteractData.AddListener(CreateAreaInteractData);
+            MessageBus.Instance.Creator.CreateInventoryInteractData.AddListener(CreateInventoryInteractData);
+            MessageBus.Instance.Creator.CreateItemInteractData.AddListener(CreateItemInteractData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.RemoveListener(CreatePlayerDataFromPresetIdAndAreaIdRandomPosition);
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaId.RemoveListener(CreatePlayerDataFromPresetIdAndAreaId);
-            MessageBus.Instance.CreatePlayerDataFromPresetId.RemoveListener(CreatePlayerDataFromPresetId);
-            MessageBus.Instance.CreatePlayerDataFromPreset.RemoveListener(CreatePlayerDataFromPreset);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.RemoveListener(CreatePlayerDataFromPresetIdAndAreaIdRandomPosition);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetIdAndAreaId.RemoveListener(CreatePlayerDataFromPresetIdAndAreaId);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPresetId.RemoveListener(CreatePlayerDataFromPresetId);
+            MessageBus.Instance.Creator.CreatePlayerDataFromPreset.RemoveListener(CreatePlayerDataFromPreset);
 
-            MessageBus.Instance.CreateActorDataFromPresetId.RemoveListener(CreateActorDataFromPresetId);
-            MessageBus.Instance.CreateActorDataFromPreset.RemoveListener(CreateActorDataFromPreset);
+            MessageBus.Instance.Creator.CreateActorDataFromPresetId.RemoveListener(CreateActorDataFromPresetId);
+            MessageBus.Instance.Creator.CreateActorDataFromPreset.RemoveListener(CreateActorDataFromPreset);
 
-            MessageBus.Instance.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
+            MessageBus.Instance.Creator.CreateWeaponEffectData.RemoveListener(CreateWeaponEffectData);
 
-            MessageBus.Instance.CreateAreaInteractData.RemoveListener(CreateAreaInteractData);
-            MessageBus.Instance.CreateInventoryInteractData.RemoveListener(CreateInventoryInteractData);
-            MessageBus.Instance.CreateItemInteractData.RemoveListener(CreateItemInteractData);
+            MessageBus.Instance.Creator.CreateAreaInteractData.RemoveListener(CreateAreaInteractData);
+            MessageBus.Instance.Creator.CreateInventoryInteractData.RemoveListener(CreateInventoryInteractData);
+            MessageBus.Instance.Creator.CreateItemInteractData.RemoveListener(CreateItemInteractData);
         }
 
         public void OnUpdate(float deltaTime)
@@ -64,7 +64,7 @@ namespace AloneSpace
                 playerData.ActivateModules();
                 questData.AddPlayerData(playerData);
 
-                MessageBus.Instance.CreatedPlayerData.Broadcast(playerData);
+                MessageBus.Instance.Creator.OnCreatePlayerData.Broadcast(playerData);
             }
 
             createPlayerDataList.Clear();
@@ -81,7 +81,7 @@ namespace AloneSpace
                     questData.PlayerData[actorData.PlayerInstanceId].AddActorData(actorData);
                 }
 
-                MessageBus.Instance.CreatedActorData.Broadcast(actorData);
+                MessageBus.Instance.Creator.OnCreateActorData.Broadcast(actorData);
             }
 
             createActorDataList.Clear();
@@ -98,7 +98,7 @@ namespace AloneSpace
                     questData.ActorData[weaponEffectData.WeaponData.WeaponHolder.InstanceId].AddWeaponEffectData(weaponEffectData);
                 }
 
-                MessageBus.Instance.CreatedWeaponEffectData.Broadcast(weaponEffectData);
+                MessageBus.Instance.Creator.OnCreateWeaponEffectData.Broadcast(weaponEffectData);
             }
 
             createWeaponEffectDataList.Clear();
@@ -107,7 +107,7 @@ namespace AloneSpace
             {
                 createInteractData.ActivateModules();
                 questData.AddInteractData(createInteractData);
-                MessageBus.Instance.CreatedInteractData.Broadcast(createInteractData);
+                MessageBus.Instance.Creator.OnCreateInteractData.Broadcast(createInteractData);
             }
 
             createInteractDataList.Clear();

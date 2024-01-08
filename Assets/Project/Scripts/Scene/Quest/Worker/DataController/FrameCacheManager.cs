@@ -16,12 +16,12 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.GetFrameCacheActorRelationData.SetListener(GetFrameCacheActorRelationData);
+            MessageBus.Instance.GetActorRelationData.SetListener(GetFrameCacheActorRelationData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.GetFrameCacheActorRelationData.Clear();
+            MessageBus.Instance.GetActorRelationData.Clear();
         }
 
         public void OnUpdate(float deltaTime)

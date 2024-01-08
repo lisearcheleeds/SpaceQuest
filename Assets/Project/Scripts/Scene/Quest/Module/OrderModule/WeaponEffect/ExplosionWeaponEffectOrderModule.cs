@@ -15,12 +15,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -32,7 +32,7 @@ namespace AloneSpace
             }
 
             // すぐにRelease
-            MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+            MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
         }
     }
 }

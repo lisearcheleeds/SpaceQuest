@@ -11,20 +11,20 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.OnAddInteractOrder.AddListener(OnAddInteractOrder);
-            MessageBus.Instance.OnRemoveInteractOrder.AddListener(OnRemoveInteractOrder);
+            MessageBus.Instance.Temp.OnAddInteractOrder.AddListener(OnAddInteractOrder);
+            MessageBus.Instance.Temp.OnRemoveInteractOrder.AddListener(OnRemoveInteractOrder);
             
-            MessageBus.Instance.NoticeDamageEventData.AddListener(NoticeDamageEventData);
-            MessageBus.Instance.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
+            MessageBus.Instance.Temp.NoticeDamageEventData.AddListener(NoticeDamageEventData);
+            MessageBus.Instance.Temp.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.OnAddInteractOrder.RemoveListener(OnAddInteractOrder);
-            MessageBus.Instance.OnRemoveInteractOrder.RemoveListener(OnRemoveInteractOrder);
+            MessageBus.Instance.Temp.OnAddInteractOrder.RemoveListener(OnAddInteractOrder);
+            MessageBus.Instance.Temp.OnRemoveInteractOrder.RemoveListener(OnRemoveInteractOrder);
             
-            MessageBus.Instance.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
-            MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
+            MessageBus.Instance.Temp.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
+            MessageBus.Instance.Temp.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
         }
 
         void OnAddInteractOrder(Guid actorId, InteractOrderState interactOrderState)
@@ -32,7 +32,7 @@ namespace AloneSpace
             if (interactOrderState.PullItemGraphicEffectHandler == null)
             {
                 interactOrderState.PullItemGraphicEffectHandler = new PullItemGraphicEffectHandler(questData.ActorData[actorId], interactOrderState.InteractData);
-                MessageBus.Instance.SpawnGraphicEffect.Broadcast(new GraphicEffectSpecVO(30001), interactOrderState.PullItemGraphicEffectHandler);
+                MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(new GraphicEffectSpecVO(30001), interactOrderState.PullItemGraphicEffectHandler);
             }
         }
 
@@ -48,7 +48,7 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            MessageBus.Instance.SpawnGraphicEffect.Broadcast(
+            MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(
                 brokenActorEventData.BrokenActorData.ActorSpecVO.BrokenActorGraphicEffectSpecVO,
                 new BrokenActorGraphicEffectHandler(
                     brokenActorEventData.BrokenActorData,

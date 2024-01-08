@@ -14,7 +14,7 @@
             transform.rotation = explosionData.Rotation;
 
             var weaponSpecVO = (IExplosionGraphicEffectSpecVOHolder)explosionData.WeaponData.WeaponSpecVO;
-            MessageBus.Instance.SpawnGraphicEffect.Broadcast(weaponSpecVO.ExplosionGraphicEffectSpecVO, new ExplosionGraphicEffectHandler(explosionData));
+            MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(weaponSpecVO.ExplosionGraphicEffectSpecVO, new ExplosionGraphicEffectHandler(explosionData));
         }
 
         public override void OnLateUpdate()

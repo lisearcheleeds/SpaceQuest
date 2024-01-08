@@ -16,12 +16,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -75,7 +75,7 @@ namespace AloneSpace
 
                     if (isLethalDamage)
                     {
-                        MessageBus.Instance.NoticeBrokenActorEventData.Broadcast(new BrokenActorEventData(actorData, currentDamageEventData));
+                        MessageBus.Instance.Temp.NoticeBrokenActorEventData.Broadcast(new BrokenActorEventData(actorData, currentDamageEventData));
                         break;
                     }
                 }
@@ -100,7 +100,7 @@ namespace AloneSpace
             {
                 if (otherActorData.IsReleased)
                 {
-                    MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, null);
+                    MessageBus.Instance.Actor.SetMainTarget.Broadcast(actorData.InstanceId, null);
                 }
             }
         }
@@ -124,8 +124,8 @@ namespace AloneSpace
             // ワープ開始直後まだAreaに居る時は加速
             if (actorData.AreaId.HasValue && actorData.AreaId != actorData.ActorStateData.MoveTarget.AreaId)
             {
-                var areaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.AreaId.Value);
-                var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+                var areaData = MessageBus.Instance.Util.GetAreaData.Unicast(actorData.AreaId.Value);
+                var moveTargetAreaData = MessageBus.Instance.Util.GetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
 
                 // Area内の移動
                 var offset = moveTargetAreaData.StarSystemPosition - areaData.StarSystemPosition;
@@ -134,7 +134,7 @@ namespace AloneSpace
                 // 範囲外になったらAreaから脱出 一旦1000.0f
                 if (actorData.Position.sqrMagnitude > 1000.0f * 1000.0f)
                 {
-                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, null);
+                    MessageBus.Instance.Temp.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, null);
                     actorData.SetPosition(areaData.StarSystemPosition);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -145,7 +145,7 @@ namespace AloneSpace
             if (!actorData.AreaId.HasValue)
             {
                 // ワープ中Areaの外に居る時の座標
-                var moveTargetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
+                var moveTargetAreaData = MessageBus.Instance.Util.GetAreaData.Unicast(actorData.ActorStateData.MoveTarget.AreaId.Value);
 
                 // Area外の移動
                 var offset = moveTargetAreaData.StarSystemPosition - actorData.Position;
@@ -155,7 +155,7 @@ namespace AloneSpace
                 if (offset.sqrMagnitude < actorData.MovingModule.MovementVelocity.sqrMagnitude)
                 {
                     // FIXME: 移動先ちゃんと考える
-                    MessageBus.Instance.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, actorData.ActorStateData.MoveTarget.AreaId);
+                    MessageBus.Instance.Temp.PlayerCommandSetAreaId.Broadcast(actorData.InstanceId, actorData.ActorStateData.MoveTarget.AreaId);
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position + actorData.ActorStateData.MoveTarget.Position.normalized * 1000.0f);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
                 }
@@ -176,7 +176,7 @@ namespace AloneSpace
                 {
                     actorData.SetPosition(actorData.ActorStateData.MoveTarget.Position);
                     actorData.MovingModule.SetMovementVelocity(Vector3.zero);
-                    MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, null);
+                    MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, null);
                 }
             }
         }
@@ -281,17 +281,17 @@ namespace AloneSpace
                 switch (completeInteractData)
                 {
                     case ItemInteractData itemInteractData:
-                        MessageBus.Instance.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
+                        MessageBus.Instance.Temp.ManagerCommandPickItem.Broadcast(actorData.InventoryData, itemInteractData);
                         break;
                     case InventoryInteractData inventoryInteractData:
                         // ユーザー操作待ち 相手のインベントリをUIでOpenする
                         throw new NotImplementedException();
                     case AreaInteractData areaInteractData:
-                        MessageBus.Instance.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
+                        MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.Broadcast(actorData.InstanceId, areaInteractData);
                         break;
                 }
 
-                MessageBus.Instance.PlayerCommandRemoveInteractOrder.Broadcast(actorData.InstanceId, completeInteractData);
+                MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.Broadcast(actorData.InstanceId, completeInteractData);
             }
         }
     }

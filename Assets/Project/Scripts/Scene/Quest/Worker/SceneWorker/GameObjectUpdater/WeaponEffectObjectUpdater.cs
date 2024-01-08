@@ -17,16 +17,16 @@ namespace AloneSpace
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
-            MessageBus.Instance.CreatedWeaponEffectData.AddListener(AddWeaponEffectData);
-            MessageBus.Instance.ReleasedWeaponEffectData.AddListener(RemoveWeaponEffectData);
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.OnCreateWeaponEffectData.AddListener(OnCreateWeaponEffectData);
+            MessageBus.Instance.Creator.OnReleaseWeaponEffectData.AddListener(OnReleaseWeaponEffectData);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.CreatedWeaponEffectData.RemoveListener(AddWeaponEffectData);
-            MessageBus.Instance.ReleasedWeaponEffectData.RemoveListener(RemoveWeaponEffectData);
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.OnCreateWeaponEffectData.RemoveListener(OnCreateWeaponEffectData);
+            MessageBus.Instance.Creator.OnReleaseWeaponEffectData.RemoveListener(OnReleaseWeaponEffectData);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()
@@ -107,7 +107,7 @@ namespace AloneSpace
             currentWeaponEffectList.Remove(weaponEffect);
         }
 
-        void AddWeaponEffectData(WeaponEffectData weaponEffectData)
+        void OnCreateWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             if (weaponEffectData.AreaId == observeArea?.AreaId)
             {
@@ -115,7 +115,7 @@ namespace AloneSpace
             }
         }
 
-        void RemoveWeaponEffectData(WeaponEffectData weaponEffectData)
+        void OnReleaseWeaponEffectData(WeaponEffectData weaponEffectData)
         {
             if (weaponEffectData.AreaId == observeArea?.AreaId)
             {

@@ -10,12 +10,12 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.PlayerCommandSetTacticsType.AddListener(PlayerCommandSetTacticsType);
+            MessageBus.Instance.Temp.PlayerCommandSetTacticsType.AddListener(PlayerCommandSetTacticsType);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
+            MessageBus.Instance.Temp.PlayerCommandSetTacticsType.RemoveListener(PlayerCommandSetTacticsType);
         }
 
         void PlayerCommandSetTacticsType(Guid playerInstanceId, TacticsType tacticsType)

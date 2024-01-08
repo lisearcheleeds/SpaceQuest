@@ -24,7 +24,7 @@ namespace AloneSpace
             }
 
             // 向いてる方向に一番近いターゲットをメインに
-            var aroundActorRelationDataList = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(userData.ControlActorData.InstanceId);
+            var aroundActorRelationDataList = MessageBus.Instance.GetActorRelationData.Unicast(userData.ControlActorData.InstanceId);
             if (aroundActorRelationDataList.Count != 0)
             {
                 var nextMainTarget = aroundActorRelationDataList
@@ -33,7 +33,7 @@ namespace AloneSpace
 
                 if (userData.ControlActorData.ActorStateData.MainTarget?.InstanceId != nextMainTarget.OtherActorData.InstanceId)
                 {
-                    MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(userData.ControlActorData.InstanceId, nextMainTarget.OtherActorData);
+                    MessageBus.Instance.Actor.SetMainTarget.Broadcast(userData.ControlActorData.InstanceId, nextMainTarget.OtherActorData);
                 }
             }
         }

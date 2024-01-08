@@ -28,12 +28,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterThinkModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterThinkModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterThinkModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterThinkModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)

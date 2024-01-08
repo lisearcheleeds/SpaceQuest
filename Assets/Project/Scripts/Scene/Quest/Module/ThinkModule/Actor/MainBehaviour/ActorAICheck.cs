@@ -6,12 +6,12 @@ namespace AloneSpace
     {
         public ActorAIState Update(ActorData actorData, float deltaTime)
         {
-            var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(actorData.InstanceId);
+            var aroundTargets = MessageBus.Instance.GetActorRelationData.Unicast(actorData.InstanceId);
             foreach (var target in aroundTargets)
             {
                 if (target.OtherActorData.PlayerInstanceId != actorData.PlayerInstanceId)
                 {
-                    MessageBus.Instance.ActorCommandSetMainTarget.Broadcast(actorData.InstanceId, target.OtherActorData);
+                    MessageBus.Instance.Actor.SetMainTarget.Broadcast(actorData.InstanceId, target.OtherActorData);
                     return ActorAIState.Fight;
                 }
             }

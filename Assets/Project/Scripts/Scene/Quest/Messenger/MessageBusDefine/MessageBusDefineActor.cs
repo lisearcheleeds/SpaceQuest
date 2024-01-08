@@ -3,24 +3,24 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public partial class MessageBusDefine
+    public static class MessageBusDefineActor
     {
-        public class ActorCommandSetWeaponExecute : MessageBusBroadcaster<Guid, bool>{}
-        public class ActorCommandReloadWeapon : MessageBusBroadcaster<Guid>{}
-        public class ActorCommandSetCurrentWeaponGroupIndex : MessageBusBroadcaster<Guid, int>{}
+        public class SetWeaponExecute : MessageBusBroadcaster<Guid, bool>{}
+        public class ReloadWeapon : MessageBusBroadcaster<Guid>{}
+        public class SetCurrentWeaponGroupIndex : MessageBusBroadcaster<Guid, int>{}
 
-        public class ActorCommandForwardBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandBackBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandRightBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandLeftBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandTopBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandBottomBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandPitchBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandRollBoosterPower : MessageBusBroadcaster<Guid, float>{}
-        public class ActorCommandYawBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class ForwardBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class BackBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class RightBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class LeftBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class TopBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class BottomBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class PitchBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class RollBoosterPower : MessageBusBroadcaster<Guid, float>{}
+        public class YawBoosterPower : MessageBusBroadcaster<Guid, float>{}
 
-        public class ActorCommandSetLookAtDirection : MessageBusBroadcaster<Guid, Vector3>{}
+        public class SetLookAtDirection : MessageBusBroadcaster<Guid, Vector3>{}
 
-        public class ActorCommandSetMainTarget : MessageBusBroadcaster<Guid, IPositionData>{}
+        public class SetMainTarget : MessageBusBroadcaster<Guid, IPositionData>{}
     }
 }

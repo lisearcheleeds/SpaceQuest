@@ -47,14 +47,14 @@ namespace AloneSpace
             var rollInput = mouseDelta.x * 0.1f * Mathf.Abs(mouseDeltaNormal.x);
             roll = Mathf.Clamp(roll - rollInput, -1.0f, 1.0f);
 
-            MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(pitch);
-            // MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
-            MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(roll);
+            MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(pitch);
+            // MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast(0);
+            MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.Broadcast(roll);
 
-            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
-            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(userData.ControlActorData.Rotation * Vector3.forward);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(userData.ControlActorData.Rotation * Vector3.forward);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
         }
     }
 }

@@ -29,12 +29,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterCollisionEventModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterCollisionEventModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterCollisionEventModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterCollisionEventModule.Broadcast(this);
         }
 
         public abstract void OnUpdateModule(float deltaTime, HashSet<CollisionEventModule> theirCollisions);

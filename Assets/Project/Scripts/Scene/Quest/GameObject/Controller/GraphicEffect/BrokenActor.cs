@@ -63,7 +63,7 @@ namespace AloneSpace
                     brokenActorGraphicEffectHandler.ActorData.AreaId,
                     pieces[Random.Range(0, pieces.Length)].transform));
 
-                MessageBus.Instance.SpawnGraphicEffect.Broadcast(brokenActorGraphicEffectHandler.BrokenActorSmokeGraphicEffectSpecVO, smoke);
+                MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(brokenActorGraphicEffectHandler.BrokenActorSmokeGraphicEffectSpecVO, smoke);
                 return smoke;
             }).ToArray();
         }

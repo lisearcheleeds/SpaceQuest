@@ -24,12 +24,12 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
             
-            MessageBus.Instance.UserCommandSetActorOperationMode.AddListener(UserCommandSetActorOperationMode);
+            MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.AddListener(UserCommandSetActorOperationMode);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserCommandSetActorOperationMode.RemoveListener(UserCommandSetActorOperationMode);
+            MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.RemoveListener(UserCommandSetActorOperationMode);
         }
 
         public void OnUpdate()
@@ -67,12 +67,12 @@ namespace AloneSpace.UI
 
         void CockpitUpdate()
         {
-            var cameraRotation = MessageBus.Instance.UserCommandGetCameraRotation.Unicast(CameraType.Near3DCamera);
+            var cameraRotation = MessageBus.Instance.UserInput.UserCommandGetCameraRotation.Unicast(CameraType.Near3DCamera);
             var controlActorRotation = questData.UserData.ControlActorData.Rotation;
             var diffRotation = Quaternion.Inverse(cameraRotation) * controlActorRotation;
             diffRotation.ToAngleAxis(out var angle, out var axis);
 
-            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            var fov = MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
             var screenScale = (360 / (fov != 0 ? fov : 60)) * 2;
             
             if (angle > 180)
@@ -93,21 +93,21 @@ namespace AloneSpace.UI
 
         void CockpitFreeCameraUpdate()
         {
-            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            var fov = MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
             
             weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void SpotterUpdate()
         {
-            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            var fov = MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
             
             weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }
 
         void SpotterFreeCameraUpdate()
         {
-            var fov = MessageBus.Instance.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
+            var fov = MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.Unicast(CameraType.Near3DCamera);
             
             weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
         }

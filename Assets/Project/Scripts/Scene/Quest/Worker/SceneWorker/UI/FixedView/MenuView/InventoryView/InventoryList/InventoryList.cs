@@ -19,18 +19,18 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
 
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
-            MessageBus.Instance.ManagerCommandTransferItem.AddListener(ManagerCommandTransferItem);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Temp.ManagerCommandPickItem.AddListener(ManagerCommandPickItem);
+            MessageBus.Instance.Temp.ManagerCommandTransferItem.AddListener(ManagerCommandTransferItem);
 
             dropAreaView.Apply(OnDropAreaDrop, GetDropAreaIsInsertableCondition, GetDropAreaIsInnerCell);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.ManagerCommandPickItem.RemoveListener(ManagerCommandPickItem);
-            MessageBus.Instance.ManagerCommandTransferItem.RemoveListener(ManagerCommandTransferItem);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Temp.ManagerCommandPickItem.RemoveListener(ManagerCommandPickItem);
+            MessageBus.Instance.Temp.ManagerCommandTransferItem.RemoveListener(ManagerCommandTransferItem);
         }
 
         public void SetDirty()

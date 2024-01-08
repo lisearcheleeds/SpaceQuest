@@ -12,60 +12,60 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.PlayerCommandAddInteractOrder.AddListener(PlayerCommandAddInteractOrder);
-            MessageBus.Instance.PlayerCommandRemoveInteractOrder.AddListener(PlayerCommandRemoveInteractOrder);
-            MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
-            MessageBus.Instance.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.Temp.PlayerCommandAddInteractOrder.AddListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.AddListener(PlayerCommandRemoveInteractOrder);
+            MessageBus.Instance.Temp.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.AddListener(PlayerCommandSetMoveTarget);
 
-            MessageBus.Instance.ActorCommandSetWeaponExecute.AddListener(ActorCommandSetWeaponExecute);
-            MessageBus.Instance.ActorCommandReloadWeapon.AddListener(ActorCommandReloadWeapon);
-            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.AddListener(ActorCommandSetCurrentWeaponGroupIndex);
+            MessageBus.Instance.Actor.SetWeaponExecute.AddListener(ActorCommandSetWeaponExecute);
+            MessageBus.Instance.Actor.ReloadWeapon.AddListener(ActorCommandReloadWeapon);
+            MessageBus.Instance.Actor.SetCurrentWeaponGroupIndex.AddListener(ActorCommandSetCurrentWeaponGroupIndex);
 
-            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.AddListener(ActorCommandForwardBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.AddListener(ActorCommandRightBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.AddListener(ActorCommandLeftBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.AddListener(ActorCommandTopBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.AddListener(ActorCommandBottomBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.AddListener(ActorCommandPitchBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.AddListener(ActorCommandRollBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.AddListener(ActorCommandYawBoosterPowerRatio);
+            MessageBus.Instance.Actor.ForwardBoosterPowerRatio.AddListener(ActorCommandForwardBoosterPowerRatio);
+            MessageBus.Instance.Actor.BackBoosterPowerRatio.AddListener(ActorCommandBackBoosterPowerRatio);
+            MessageBus.Instance.Actor.RightBoosterPowerRatio.AddListener(ActorCommandRightBoosterPowerRatio);
+            MessageBus.Instance.Actor.LeftBoosterPowerRatio.AddListener(ActorCommandLeftBoosterPowerRatio);
+            MessageBus.Instance.Actor.TopBoosterPowerRatio.AddListener(ActorCommandTopBoosterPowerRatio);
+            MessageBus.Instance.Actor.BottomBoosterPowerRatio.AddListener(ActorCommandBottomBoosterPowerRatio);
+            MessageBus.Instance.Actor.PitchBoosterPowerRatio.AddListener(ActorCommandPitchBoosterPowerRatio);
+            MessageBus.Instance.Actor.RollBoosterPowerRatio.AddListener(ActorCommandRollBoosterPowerRatio);
+            MessageBus.Instance.Actor.YawBoosterPowerRatio.AddListener(ActorCommandYawBoosterPowerRatio);
 
-            MessageBus.Instance.ActorCommandSetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
+            MessageBus.Instance.Actor.SetLookAtDirection.AddListener(ActorCommandSetLookAtDirection);
 
-            MessageBus.Instance.ActorCommandSetMainTarget.AddListener(ActorCommandSetMainTarget);
+            MessageBus.Instance.Actor.SetMainTarget.AddListener(ActorCommandSetMainTarget);
 
-            MessageBus.Instance.NoticeDamageEventData.AddListener(NoticeDamageEventData);
-            MessageBus.Instance.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
+            MessageBus.Instance.Temp.NoticeDamageEventData.AddListener(NoticeDamageEventData);
+            MessageBus.Instance.Temp.NoticeBrokenActorEventData.AddListener(NoticeBrokenActorEventData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.PlayerCommandAddInteractOrder.RemoveListener(PlayerCommandAddInteractOrder);
-            MessageBus.Instance.PlayerCommandRemoveInteractOrder.RemoveListener(PlayerCommandRemoveInteractOrder);
-            MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
-            MessageBus.Instance.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
+            MessageBus.Instance.Temp.PlayerCommandAddInteractOrder.RemoveListener(PlayerCommandAddInteractOrder);
+            MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.RemoveListener(PlayerCommandRemoveInteractOrder);
+            MessageBus.Instance.Temp.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Temp.PlayerCommandSetMoveTarget.RemoveListener(PlayerCommandSetMoveTarget);
 
-            MessageBus.Instance.ActorCommandSetWeaponExecute.RemoveListener(ActorCommandSetWeaponExecute);
-            MessageBus.Instance.ActorCommandReloadWeapon.RemoveListener(ActorCommandReloadWeapon);
-            MessageBus.Instance.ActorCommandSetCurrentWeaponGroupIndex.RemoveListener(ActorCommandSetCurrentWeaponGroupIndex);
+            MessageBus.Instance.Actor.SetWeaponExecute.RemoveListener(ActorCommandSetWeaponExecute);
+            MessageBus.Instance.Actor.ReloadWeapon.RemoveListener(ActorCommandReloadWeapon);
+            MessageBus.Instance.Actor.SetCurrentWeaponGroupIndex.RemoveListener(ActorCommandSetCurrentWeaponGroupIndex);
 
-            MessageBus.Instance.ActorCommandForwardBoosterPowerRatio.RemoveListener(ActorCommandForwardBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandBackBoosterPowerRatio.RemoveListener(ActorCommandBackBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandRightBoosterPowerRatio.RemoveListener(ActorCommandRightBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandLeftBoosterPowerRatio.RemoveListener(ActorCommandLeftBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandTopBoosterPowerRatio.RemoveListener(ActorCommandTopBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandBottomBoosterPowerRatio.RemoveListener(ActorCommandBottomBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandPitchBoosterPowerRatio.RemoveListener(ActorCommandPitchBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandRollBoosterPowerRatio.RemoveListener(ActorCommandRollBoosterPowerRatio);
-            MessageBus.Instance.ActorCommandYawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
+            MessageBus.Instance.Actor.ForwardBoosterPowerRatio.RemoveListener(ActorCommandForwardBoosterPowerRatio);
+            MessageBus.Instance.Actor.BackBoosterPowerRatio.RemoveListener(ActorCommandBackBoosterPowerRatio);
+            MessageBus.Instance.Actor.RightBoosterPowerRatio.RemoveListener(ActorCommandRightBoosterPowerRatio);
+            MessageBus.Instance.Actor.LeftBoosterPowerRatio.RemoveListener(ActorCommandLeftBoosterPowerRatio);
+            MessageBus.Instance.Actor.TopBoosterPowerRatio.RemoveListener(ActorCommandTopBoosterPowerRatio);
+            MessageBus.Instance.Actor.BottomBoosterPowerRatio.RemoveListener(ActorCommandBottomBoosterPowerRatio);
+            MessageBus.Instance.Actor.PitchBoosterPowerRatio.RemoveListener(ActorCommandPitchBoosterPowerRatio);
+            MessageBus.Instance.Actor.RollBoosterPowerRatio.RemoveListener(ActorCommandRollBoosterPowerRatio);
+            MessageBus.Instance.Actor.YawBoosterPowerRatio.RemoveListener(ActorCommandYawBoosterPowerRatio);
 
-            MessageBus.Instance.ActorCommandSetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
+            MessageBus.Instance.Actor.SetLookAtDirection.RemoveListener(ActorCommandSetLookAtDirection);
 
-            MessageBus.Instance.ActorCommandSetMainTarget.RemoveListener(ActorCommandSetMainTarget);
+            MessageBus.Instance.Actor.SetMainTarget.RemoveListener(ActorCommandSetMainTarget);
 
-            MessageBus.Instance.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
-            MessageBus.Instance.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
+            MessageBus.Instance.Temp.NoticeDamageEventData.RemoveListener(NoticeDamageEventData);
+            MessageBus.Instance.Temp.NoticeBrokenActorEventData.RemoveListener(NoticeBrokenActorEventData);
         }
 
         void PlayerCommandAddInteractOrder(Guid actorId, IInteractData interactData)
@@ -79,7 +79,7 @@ namespace AloneSpace
             var state = new InteractOrderState(interactData);
             targetActorData.AddInteractOrder(state);
             
-            MessageBus.Instance.OnAddInteractOrder.Broadcast(actorId, state);
+            MessageBus.Instance.Temp.OnAddInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandRemoveInteractOrder(Guid actorId, IInteractData interactData)
@@ -92,7 +92,7 @@ namespace AloneSpace
             }
 
             targetActorData.RemoveInteractOrder(state);
-            MessageBus.Instance.OnRemoveInteractOrder.Broadcast(actorId, state);
+            MessageBus.Instance.Temp.OnRemoveInteractOrder.Broadcast(actorId, state);
         }
 
         void PlayerCommandSetAreaId(Guid actorId, int? areaId)
@@ -201,7 +201,7 @@ namespace AloneSpace
 
         void NoticeBrokenActorEventData(BrokenActorEventData brokenActorEventData)
         {
-            MessageBus.Instance.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
+            MessageBus.Instance.Creator.ReleaseActorData.Broadcast(brokenActorEventData.BrokenActorData);
         }
     }
 }

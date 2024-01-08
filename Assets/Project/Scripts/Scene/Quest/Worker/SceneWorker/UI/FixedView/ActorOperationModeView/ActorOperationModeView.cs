@@ -11,7 +11,7 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.UserCommandSetActorOperationMode.AddListener(UserCommandSetActorOperationMode);
+            MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.AddListener(UserCommandSetActorOperationMode);
 
             foreach (var actorOperationModeIcon in actorOperationModeIcons)
             {
@@ -21,7 +21,7 @@ namespace AloneSpace.UI
 
         public void Finalize()
         {
-            MessageBus.Instance.UserCommandSetActorOperationMode.RemoveListener(UserCommandSetActorOperationMode);
+            MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.RemoveListener(UserCommandSetActorOperationMode);
         }
 
         public void OnUpdate()

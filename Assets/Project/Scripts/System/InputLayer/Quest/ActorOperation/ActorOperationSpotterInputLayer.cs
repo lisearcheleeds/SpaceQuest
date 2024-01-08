@@ -75,14 +75,14 @@ namespace AloneSpace
                 yawValue = rightDot * 4.0f;
             }
 
-            MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(Mathf.Clamp(pitchValue, -1.0f, 1.0f));
-            MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(yawValue, -1.0f, 1.0f));
-            MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(Mathf.Clamp(rollValue, -1.0f, 1.0f));
+            MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(Mathf.Clamp(pitchValue, -1.0f, 1.0f));
+            MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast(Mathf.Clamp(yawValue, -1.0f, 1.0f));
+            MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.Broadcast(Mathf.Clamp(rollValue, -1.0f, 1.0f));
 
-            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(lookAtSpace);
-            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.Broadcast(lookAtSpace);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData?.ActorGameObjectHandler.BoundingSize ?? 0);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData?.ActorGameObjectHandler.BoundingSize ?? 0);
         }
     }
 }

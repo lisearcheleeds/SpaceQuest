@@ -2,10 +2,10 @@
 
 namespace AloneSpace
 {
-    public partial class MessageBusDefine
+    public class MessageBusDefineUtil
     {
-        public class UtilGetPlayerData : MessageBusUnicaster<Guid, PlayerData>{}
-        public class UtilGetAreaData : MessageBusUnicaster<int, AreaData>{}
-        public class UtilGetAreaActorData : MessageBusUnicaster<int, ActorData[]>{}
+        public class GetPlayerData : MessageBusUnicaster<Guid, PlayerData>{}
+        public class GetAreaData : MessageBusUnicaster<int, AreaData>{}
+        public class GetAreaActorData : MessageBusUnicaster<int, ActorData[]>{}
     }
 }

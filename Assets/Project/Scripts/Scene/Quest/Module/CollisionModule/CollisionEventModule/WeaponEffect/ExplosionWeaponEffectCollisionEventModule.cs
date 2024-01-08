@@ -25,7 +25,7 @@ namespace AloneSpace
 
                 if (theirCollision.Receiver != null)
                 {
-                    MessageBus.Instance.NoticeCollisionEventEffectData.Broadcast(new CollisionEventEffectData(Sender, theirCollision.Receiver));
+                    MessageBus.Instance.Temp.NoticeCollisionEventEffectData.Broadcast(new CollisionEventEffectData(Sender, theirCollision.Receiver));
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace AloneSpace
 {
-    public partial class MessageBusDefine
+    public class MessageBusDefineTemp
     {
         public class RegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
         public class UnRegisterCollision : MessageBusBroadcaster<CollisionEventModule>{}
@@ -10,7 +10,6 @@ namespace AloneSpace
         public class SetUserPlayer : MessageBusBroadcaster<PlayerData>{}
         public class SetUserControlActor : MessageBusBroadcaster<ActorData>{}
         public class SetUserObserveTarget : MessageBusBroadcaster<IPositionData>{}
-
         public class SetUserObserveArea : MessageBusBroadcaster<AreaData>{}
 
         public class NoticeCollisionEventData : MessageBusBroadcaster<CollisionEventData>{}
@@ -28,9 +27,9 @@ namespace AloneSpace
         public class OnRemoveInteractOrder : MessageBusBroadcaster<Guid, InteractOrderState>{}
         
         public class ManagerCommandPickItem : MessageBusBroadcaster<InventoryData, ItemInteractData>{}
-        public class ManagerCommandPickedItem : MessageBusBroadcaster<InventoryData, ItemData>{}
+        public class ManagerCommandOnPickItem : MessageBusBroadcaster<InventoryData, ItemData>{}
         public class ManagerCommandDropItem : MessageBusBroadcaster<InventoryData, ItemData>{}
-        public class ManagerCommandDroppedItem : MessageBusBroadcaster<InventoryData, ItemData>{}
+        public class ManagerCommandOnDropItem : MessageBusBroadcaster<InventoryData, ItemData>{}
         public class ManagerCommandTransferItem : MessageBusBroadcaster<InventoryData, InventoryData, ItemData>{}
     }
 }

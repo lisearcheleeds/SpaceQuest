@@ -43,14 +43,14 @@ namespace AloneSpace
             localLookAtAngle.y = Mathf.Repeat(localLookAtAngle.y + mouseDelta.x + 180, 360) - 180;
             localLookAtAngle.z = 0;
 
-            MessageBus.Instance.UserInputPitchBoosterPowerRatio.Broadcast(0);
-            // MessageBus.Instance.UserInputYawBoosterPowerRatio.Broadcast(0);
-            MessageBus.Instance.UserInputRollBoosterPowerRatio.Broadcast(0);
+            MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(0);
+            // MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast(0);
+            MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.Broadcast(0);
 
-            MessageBus.Instance.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
-            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.Broadcast(userData.ControlActorData.Rotation);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0);
         }
     }
 }

@@ -12,14 +12,14 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.RegisterOrderModule.AddListener(RegisterOrderModule);
-            MessageBus.Instance.UnRegisterOrderModule.AddListener(UnRegisterOrderModule);
+            MessageBus.Instance.Module.RegisterOrderModule.AddListener(RegisterOrderModule);
+            MessageBus.Instance.Module.UnRegisterOrderModule.AddListener(UnRegisterOrderModule);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.RegisterOrderModule.RemoveListener(RegisterOrderModule);
-            MessageBus.Instance.UnRegisterOrderModule.RemoveListener(UnRegisterOrderModule);
+            MessageBus.Instance.Module.RegisterOrderModule.RemoveListener(RegisterOrderModule);
+            MessageBus.Instance.Module.UnRegisterOrderModule.RemoveListener(UnRegisterOrderModule);
         }
 
         public void UpdateModule(float deltaTime)

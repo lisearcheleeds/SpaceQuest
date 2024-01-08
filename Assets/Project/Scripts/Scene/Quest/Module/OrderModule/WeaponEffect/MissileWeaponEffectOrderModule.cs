@@ -14,12 +14,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -28,7 +28,7 @@ namespace AloneSpace
 
             if (effectData.CurrentLifeTime > effectData.SpecVO.LifeTime)
             {
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 
@@ -37,11 +37,11 @@ namespace AloneSpace
                 // TODO: ダメージ与えたときだけAddCollideCountしたい
                 effectData.AddCollideCount();
 
-                MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
                     ((MissileMakerWeaponData)effectData.WeaponData).VO.ExplosionWeaponEffectSpecVO,
                     new ExplosionWeaponEffectCreateOptionData(effectData.WeaponData, effectData));
 
-                MessageBus.Instance.ReleaseWeaponEffectData.Broadcast(effectData);
+                MessageBus.Instance.Creator.ReleaseWeaponEffectData.Broadcast(effectData);
                 return;
             }
 

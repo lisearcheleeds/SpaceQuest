@@ -22,20 +22,20 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
 
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
-            MessageBus.Instance.ManagerCommandPickedItem.AddListener(ManagerCommandPickedItem);
-            MessageBus.Instance.ManagerCommandDroppedItem.AddListener(ManagerCommandDroppedItem);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.ManagerCommandOnPickItem.AddListener(ManagerCommandPickedItem);
+            MessageBus.Instance.Temp.ManagerCommandOnDropItem.AddListener(ManagerCommandDroppedItem);
 
             dropAreaView.Apply(OnDropAreaDrop, GetDropAreaIsInsertableCondition, GetDropAreaIsInnerCell);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
-            MessageBus.Instance.ManagerCommandPickedItem.RemoveListener(ManagerCommandPickedItem);
-            MessageBus.Instance.ManagerCommandDroppedItem.RemoveListener(ManagerCommandDroppedItem);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.ManagerCommandOnPickItem.RemoveListener(ManagerCommandPickedItem);
+            MessageBus.Instance.Temp.ManagerCommandOnDropItem.RemoveListener(ManagerCommandDroppedItem);
         }
 
         public void SetDirty()
@@ -87,7 +87,7 @@ namespace AloneSpace.UI
                 if (questData.UserData.ControlActorData.AreaId.HasValue)
                 {
                     // 移動中
-                    var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
+                    var targetAreaData = MessageBus.Instance.Util.GetAreaData.Unicast(targetData.AreaId.Value);
                     var offsetPosition = targetAreaData.StarSystemPosition - questData.UserData.ControlActorData.Position;
                     return $"{offsetPosition.magnitude :F1}m";
                 }
@@ -95,8 +95,8 @@ namespace AloneSpace.UI
                 if (questData.UserData.ControlActorData.AreaId != targetData.AreaId)
                 {
                     // 違うエリア内
-                    var observeActorStarSystemPosition = MessageBus.Instance.UtilGetAreaData.Unicast(questData.UserData.ControlActorData.AreaId.Value);
-                    var targetAreaData = MessageBus.Instance.UtilGetAreaData.Unicast(targetData.AreaId.Value);
+                    var observeActorStarSystemPosition = MessageBus.Instance.Util.GetAreaData.Unicast(questData.UserData.ControlActorData.AreaId.Value);
+                    var targetAreaData = MessageBus.Instance.Util.GetAreaData.Unicast(targetData.AreaId.Value);
 
                     var offsetPosition = targetAreaData.StarSystemPosition - observeActorStarSystemPosition.StarSystemPosition;
                     return $"{offsetPosition.magnitude :F1}m";
@@ -139,12 +139,12 @@ namespace AloneSpace.UI
             if (isContains)
             {
                 // キャンセル
-                MessageBus.Instance.PlayerCommandRemoveInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);
+                MessageBus.Instance.Temp.PlayerCommandRemoveInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);
             }
             else
             {
                 // 登録
-                MessageBus.Instance.PlayerCommandAddInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);
+                MessageBus.Instance.Temp.PlayerCommandAddInteractOrder.Broadcast(questData.UserData.ControlActorData.InstanceId, cellData.InteractData);
             }
         }
 
@@ -155,7 +155,7 @@ namespace AloneSpace.UI
                 return false;
             }
 
-            MessageBus.Instance.ManagerCommandDropItem.Broadcast(questData.UserData.ControlActorData.InventoryData, cellData as ItemData);
+            MessageBus.Instance.Temp.ManagerCommandDropItem.Broadcast(questData.UserData.ControlActorData.InventoryData, cellData as ItemData);
             
             SetDirty();
 

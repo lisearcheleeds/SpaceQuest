@@ -14,12 +14,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -110,7 +110,7 @@ namespace AloneSpace
                         ? outputPosition.Rotation * Vector3.up
                         : outputPosition.Rotation * Vector3.forward;
 
-                    MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                    MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
                         weaponData.VO.MissileWeaponEffectSpecVO,
                         new MissileWeaponEffectCreateOptionData(
                             weaponData,

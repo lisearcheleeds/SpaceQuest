@@ -43,43 +43,43 @@ namespace AloneSpace
             if (WasPressedThisFrame(KeyBindKey.Menu, usedKey))
             {
                 // Openのみ
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
             }
 
             if (WasReleasedThisFrame(KeyBindKey.Menu, usedKey))
             {
                 // Closeのみ
-                MessageBus.Instance.UserInputCloseMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputCloseMenu.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuStatusView, usedKey))
             {
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInputSwitchMenuStatusView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuInventoryView, usedKey))
             {
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInputSwitchMenuInventoryView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuPlayerView, usedKey))
             {
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInputSwitchMenuPlayerView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuAreaView, usedKey))
             {
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInputSwitchMenuAreaView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.Broadcast();
             }
 
             if (WasPressedThisFrame(KeyBindKey.MenuMapView, usedKey))
             {
-                MessageBus.Instance.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
+                MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.Broadcast();
             }
         }
 
@@ -87,37 +87,37 @@ namespace AloneSpace
         {
             if (WasPressedThisFrame(KeyBindKey.Escape, usedKey))
             {
-                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchObserve, usedKey))
             {
-                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchCockpit, usedKey))
             {
-                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
             }
             
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotter, usedKey))
             {
-                MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
             }
 
             if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchFreeCamera, usedKey))
             {
                 if (userData.ActorOperationMode == ActorOperationMode.Cockpit)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.CockpitFreeCamera);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.CockpitFreeCamera);
                 }
                 else if (userData.ActorOperationMode == ActorOperationMode.Spotter)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotterFreeCamera);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotterFreeCamera);
                 }
                 else if (userData.ActorOperationMode == ActorOperationMode.Observe)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.ObserveFreeCamera);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.ObserveFreeCamera);
                 }
             }
             
@@ -125,15 +125,15 @@ namespace AloneSpace
             {
                 if (userData.ActorOperationMode == ActorOperationMode.CockpitFreeCamera)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
                 }
                 else if (userData.ActorOperationMode == ActorOperationMode.SpotterFreeCamera)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
                 }
                 else if (userData.ActorOperationMode == ActorOperationMode.ObserveFreeCamera)
                 {
-                    MessageBus.Instance.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
                 }
             }
         }

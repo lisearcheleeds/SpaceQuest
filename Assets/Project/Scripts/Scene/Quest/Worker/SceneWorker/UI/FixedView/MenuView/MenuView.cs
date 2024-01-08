@@ -38,13 +38,13 @@ namespace AloneSpace.UI
 
             tabController.SetOnChangeIndexFromButton(OnChangeIndexFromButton);
 
-            MessageBus.Instance.UserInputOpenMenu.AddListener(UserInputOpenMenu);
-            MessageBus.Instance.UserInputCloseMenu.AddListener(UserInputCloseMenu);
-            MessageBus.Instance.UserInputSwitchMenuStatusView.AddListener(UserInputSwitchMenuStatusView);
-            MessageBus.Instance.UserInputSwitchMenuInventoryView.AddListener(UserInputSwitchMenuInventoryView);
-            MessageBus.Instance.UserInputSwitchMenuPlayerView.AddListener(UserInputSwitchMenuPlayerView);
-            MessageBus.Instance.UserInputSwitchMenuAreaView.AddListener(UserInputSwitchMenuAreaView);
-            MessageBus.Instance.UserInputSwitchMenuMapView.AddListener(UserInputSwitchMenuMapView);
+            MessageBus.Instance.UserInput.UserInputOpenMenu.AddListener(UserInputOpenMenu);
+            MessageBus.Instance.UserInput.UserInputCloseMenu.AddListener(UserInputCloseMenu);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.AddListener(UserInputSwitchMenuStatusView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.AddListener(UserInputSwitchMenuInventoryView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.AddListener(UserInputSwitchMenuPlayerView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.AddListener(UserInputSwitchMenuAreaView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.AddListener(UserInputSwitchMenuMapView);
         }
 
         public void Finalize()
@@ -57,13 +57,13 @@ namespace AloneSpace.UI
 
             tabController.SetOnChangeIndexFromButton(null);
 
-            MessageBus.Instance.UserInputOpenMenu.RemoveListener(UserInputOpenMenu);
-            MessageBus.Instance.UserInputCloseMenu.RemoveListener(UserInputCloseMenu);
-            MessageBus.Instance.UserInputSwitchMenuStatusView.RemoveListener(UserInputSwitchMenuStatusView);
-            MessageBus.Instance.UserInputSwitchMenuInventoryView.RemoveListener(UserInputSwitchMenuInventoryView);
-            MessageBus.Instance.UserInputSwitchMenuPlayerView.RemoveListener(UserInputSwitchMenuPlayerView);
-            MessageBus.Instance.UserInputSwitchMenuAreaView.RemoveListener(UserInputSwitchMenuAreaView);
-            MessageBus.Instance.UserInputSwitchMenuMapView.RemoveListener(UserInputSwitchMenuMapView);
+            MessageBus.Instance.UserInput.UserInputOpenMenu.RemoveListener(UserInputOpenMenu);
+            MessageBus.Instance.UserInput.UserInputCloseMenu.RemoveListener(UserInputCloseMenu);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.RemoveListener(UserInputSwitchMenuStatusView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.RemoveListener(UserInputSwitchMenuInventoryView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.RemoveListener(UserInputSwitchMenuPlayerView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.RemoveListener(UserInputSwitchMenuAreaView);
+            MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.RemoveListener(UserInputSwitchMenuMapView);
         }
 
         public void OnUpdate()
@@ -98,19 +98,19 @@ namespace AloneSpace.UI
             switch (GetMenuElementFromIndex(index))
             {
                 case MenuElement.StatusView:
-                    MessageBus.Instance.UserInputSwitchMenuStatusView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.Broadcast();
                     break;
                 case MenuElement.InventoryView:
-                    MessageBus.Instance.UserInputSwitchMenuInventoryView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.Broadcast();
                     break;
                 case MenuElement.PlayerView:
-                    MessageBus.Instance.UserInputSwitchMenuPlayerView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.Broadcast();
                     break;
                 case MenuElement.AreaView:
-                    MessageBus.Instance.UserInputSwitchMenuAreaView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.Broadcast();
                     break;
                 case MenuElement.MapView:
-                    MessageBus.Instance.UserInputSwitchMenuMapView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.Broadcast();
                     break;
             }
         }

@@ -15,12 +15,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterOrderModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterOrderModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterOrderModule.Broadcast(this);
         }
 
         public void OnUpdateModule(float deltaTime)
@@ -150,7 +150,7 @@ namespace AloneSpace
                     var accuracyRandomVector = new Vector3(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)) * (1.0f / weaponData.VO.Accuracy);
                     rotation = rotation * Quaternion.LookRotation(Vector3.forward + accuracyRandomVector);
 
-                    MessageBus.Instance.CreateWeaponEffectData.Broadcast(
+                    MessageBus.Instance.Creator.CreateWeaponEffectData.Broadcast(
                         weaponData.VO.BulletWeaponEffectSpecVO,
                         new BulletWeaponEffectCreateOptionData(
                             weaponData,

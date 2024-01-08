@@ -59,7 +59,7 @@ namespace AloneSpace.UI
                     ApplyOptionTextObject(null);
                     ApplyThumbnailObject(null);
                     ApplyGridCellObject(0, 0);
-                    MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
+                    MessageBus.Instance.UserInput.UserInputCloseContentQuickView.Broadcast();
                     break;
             }
 

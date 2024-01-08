@@ -27,18 +27,18 @@ namespace AloneSpace
         {
             this.questData = questData;
 
-            MessageBus.Instance.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
-            MessageBus.Instance.UserCommandGetCameraRotation.SetListener(GetCameraRotation);
-            MessageBus.Instance.UserCommandGetCameraFieldOfView.SetListener(GetCameraFieldOfView);
+            MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
+            MessageBus.Instance.UserInput.UserCommandGetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
+            MessageBus.Instance.UserInput.UserCommandGetCameraRotation.SetListener(GetCameraRotation);
+            MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.SetListener(GetCameraFieldOfView);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
-            MessageBus.Instance.UserCommandGetWorldToCanvasPoint.SetListener(null);
-            MessageBus.Instance.UserCommandGetCameraRotation.SetListener(null);
-            MessageBus.Instance.UserCommandGetCameraFieldOfView.SetListener(null);
+            MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
+            MessageBus.Instance.UserInput.UserCommandGetWorldToCanvasPoint.SetListener(null);
+            MessageBus.Instance.UserInput.UserCommandGetCameraRotation.SetListener(null);
+            MessageBus.Instance.UserInput.UserCommandGetCameraFieldOfView.SetListener(null);
         }
 
         public void OnUpdate()
@@ -132,7 +132,7 @@ namespace AloneSpace
 
             if (trackingTarget.AreaId.HasValue)
             {
-                return MessageBus.Instance.UtilGetAreaData.Unicast(trackingTarget.AreaId.Value).StarSystemPosition;
+                return MessageBus.Instance.Util.GetAreaData.Unicast(trackingTarget.AreaId.Value).StarSystemPosition;
             }
 
             return trackingTarget.Position;

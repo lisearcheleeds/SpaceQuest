@@ -13,14 +13,14 @@ namespace AloneSpace
 
         public void Initialize()
         {
-            MessageBus.Instance.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.SpawnGraphicEffect.AddListener(SpawnGraphicEffect);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SpawnGraphicEffect.RemoveListener(SpawnGraphicEffect);
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Creator.SpawnGraphicEffect.RemoveListener(SpawnGraphicEffect);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate(float deltaTime)

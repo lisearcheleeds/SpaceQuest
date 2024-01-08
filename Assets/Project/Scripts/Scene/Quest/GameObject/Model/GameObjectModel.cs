@@ -56,7 +56,7 @@ namespace AloneSpace
                 return;
             }
 
-            MessageBus.Instance.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
+            MessageBus.Instance.Temp.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
         }
 
         void OnPartsTriggerStay(int colliderIndex, Collider other)
@@ -67,7 +67,7 @@ namespace AloneSpace
             }
 
             var otherModelCollider = other.gameObject.GetComponent<ModelCollider>();
-            MessageBus.Instance.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
+            MessageBus.Instance.Temp.NoticeCollisionEventData.Broadcast(new CollisionEventData(collisionEventModule, otherModelCollider.CollisionEventModule));
         }
 
         void OnPartsTriggerExit(int colliderIndex, Collider other)

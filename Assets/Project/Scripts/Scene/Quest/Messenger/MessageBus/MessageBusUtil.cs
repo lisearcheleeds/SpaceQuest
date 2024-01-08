@@ -2,9 +2,13 @@
 {
     public partial class MessageBus
     {
-        // Util
-        public MessageBusDefine.UtilGetPlayerData UtilGetPlayerData { get; } = new MessageBusDefine.UtilGetPlayerData();
-        public MessageBusDefine.UtilGetAreaData UtilGetAreaData { get; } = new MessageBusDefine.UtilGetAreaData();
-        public MessageBusDefine.UtilGetAreaActorData UtilGetAreaActorData { get; } = new MessageBusDefine.UtilGetAreaActorData();
+        public UtilMessage Util { get; } = new UtilMessage();
+
+        public class UtilMessage
+        {
+            public MessageBusDefineUtil.GetPlayerData GetPlayerData { get; } = new MessageBusDefineUtil.GetPlayerData();
+            public MessageBusDefineUtil.GetAreaData GetAreaData { get; } = new MessageBusDefineUtil.GetAreaData();
+            public MessageBusDefineUtil.GetAreaActorData GetAreaActorData { get; } = new MessageBusDefineUtil.GetAreaActorData();
+        }
     }
 }

@@ -20,12 +20,12 @@ namespace AloneSpace
 
         public void ActivateModule()
         {
-            MessageBus.Instance.RegisterMovingModule.Broadcast(this);
+            MessageBus.Instance.Module.RegisterMovingModule.Broadcast(this);
         }
 
         public void DeactivateModule()
         {
-            MessageBus.Instance.UnRegisterMovingModule.Broadcast(this);
+            MessageBus.Instance.Module.UnRegisterMovingModule.Broadcast(this);
         }
 
         public void SetMovementVelocity(Vector3 movementVelocity)

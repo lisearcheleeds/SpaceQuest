@@ -22,23 +22,23 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
             
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
             
-            MessageBus.Instance.CreatedActorData.AddListener(CreatedActorData);
-            MessageBus.Instance.ReleasedActorData.AddListener(ReleasedActorData);
-            MessageBus.Instance.CreatedInteractData.AddListener(CreatedInteractData);
-            MessageBus.Instance.ReleasedInteractData.AddListener(ReleasedInteractData);
+            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
+            MessageBus.Instance.Creator.OnCreateInteractData.AddListener(OnCreateInteractData);
+            MessageBus.Instance.Creator.OnReleaseInteractData.AddListener(OnReleaseInteractData);
                     
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
             
-            MessageBus.Instance.CreatedActorData.RemoveListener(CreatedActorData);
-            MessageBus.Instance.ReleasedActorData.RemoveListener(ReleasedActorData);
-            MessageBus.Instance.CreatedInteractData.RemoveListener(CreatedInteractData);
-            MessageBus.Instance.ReleasedInteractData.RemoveListener(ReleasedInteractData);
+            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
+            MessageBus.Instance.Creator.OnCreateInteractData.RemoveListener(OnCreateInteractData);
+            MessageBus.Instance.Creator.OnReleaseInteractData.RemoveListener(OnReleaseInteractData);
         }
 
         public void OnUpdate()
@@ -113,22 +113,22 @@ namespace AloneSpace.UI
             isDirty = true;
         }
         
-        void CreatedActorData(ActorData actorData)
+        void OnCreateActorData(ActorData actorData)
         {
             isDirty = true;
         }
         
-        void ReleasedActorData(ActorData actorData)
+        void OnReleaseActorData(ActorData actorData)
         {
             isDirty = true;
         }
         
-        void CreatedInteractData(IInteractData interactData)
+        void OnCreateInteractData(IInteractData interactData)
         {
             isDirty = true;
         }
         
-        void ReleasedInteractData(IInteractData interactData)
+        void OnReleaseInteractData(IInteractData interactData)
         {
             isDirty = true;
         }

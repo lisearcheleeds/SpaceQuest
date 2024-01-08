@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace AloneSpace
 {
-    public partial class MessageBusDefine
+    public class MessageBusDefineUserInput
     {
         public class UserInputOpenMenu : MessageBusBroadcaster{}
         public class UserInputCloseMenu : MessageBusBroadcaster{}

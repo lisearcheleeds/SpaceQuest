@@ -221,7 +221,7 @@ namespace AloneSpace.UI
         {
             if (showQuickViewOnEnter)
             {
-                MessageBus.Instance.UserInputOpenContentQuickView.Broadcast(itemData, () => gameObject != null && gameObject.activeInHierarchy, true);
+                MessageBus.Instance.UserInput.UserInputOpenContentQuickView.Broadcast(itemData, () => gameObject != null && gameObject.activeInHierarchy, true);
             }
 
             onEnter?.Invoke();
@@ -231,7 +231,7 @@ namespace AloneSpace.UI
         {
             if (showQuickViewOnEnter)
             {
-                MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputCloseContentQuickView.Broadcast();
             }
 
             onExit?.Invoke();

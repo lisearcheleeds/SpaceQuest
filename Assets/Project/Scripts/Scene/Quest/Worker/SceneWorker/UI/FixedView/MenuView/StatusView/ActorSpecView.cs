@@ -39,12 +39,12 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.UIMenuStatusViewSelectActorData.AddListener(UIMenuStatusViewSelectActorData);
+            MessageBus.Instance.UserInput.UIMenuStatusViewSelectActorData.AddListener(UIMenuStatusViewSelectActorData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UIMenuStatusViewSelectActorData.RemoveListener(UIMenuStatusViewSelectActorData);
+            MessageBus.Instance.UserInput.UIMenuStatusViewSelectActorData.RemoveListener(UIMenuStatusViewSelectActorData);
         }
 
         public void SetDirty()

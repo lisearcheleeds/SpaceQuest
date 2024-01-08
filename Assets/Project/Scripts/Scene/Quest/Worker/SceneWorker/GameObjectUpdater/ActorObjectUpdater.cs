@@ -25,24 +25,24 @@ namespace AloneSpace
             this.variableParent = variableParent;
             this.coroutineWorker = coroutineWorker;
 
-            MessageBus.Instance.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Temp.PlayerCommandSetAreaId.AddListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.CreatedActorData.AddListener(CreatedActorData);
-            MessageBus.Instance.ReleasedActorData.AddListener(ReleasedActorData);
+            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
 
-            MessageBus.Instance.SetUserObserveTarget.AddListener(SetUserObserveTarget);
-            MessageBus.Instance.SetUserObserveArea.AddListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.SetUserObserveTarget.AddListener(SetUserObserveTarget);
+            MessageBus.Instance.Temp.SetUserObserveArea.AddListener(SetUserObserveArea);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
+            MessageBus.Instance.Temp.PlayerCommandSetAreaId.RemoveListener(PlayerCommandSetAreaId);
 
-            MessageBus.Instance.CreatedActorData.RemoveListener(CreatedActorData);
-            MessageBus.Instance.ReleasedActorData.RemoveListener(ReleasedActorData);
+            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
 
-            MessageBus.Instance.SetUserObserveTarget.RemoveListener(SetUserObserveTarget);
-            MessageBus.Instance.SetUserObserveArea.RemoveListener(SetUserObserveArea);
+            MessageBus.Instance.Temp.SetUserObserveTarget.RemoveListener(SetUserObserveTarget);
+            MessageBus.Instance.Temp.SetUserObserveArea.RemoveListener(SetUserObserveArea);
         }
 
         public void OnUpdate()
@@ -144,7 +144,7 @@ namespace AloneSpace
             SetDirty();
         }
 
-        void CreatedActorData(ActorData actorData)
+        void OnCreateActorData(ActorData actorData)
         {
             if (actorData.AreaId == observeArea?.AreaId)
             {
@@ -158,7 +158,7 @@ namespace AloneSpace
             }
         }
 
-        void ReleasedActorData(ActorData actorData)
+        void OnReleaseActorData(ActorData actorData)
         {
             if (actorData.AreaId == observeArea?.AreaId)
             {

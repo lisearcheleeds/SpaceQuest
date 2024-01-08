@@ -15,16 +15,16 @@ namespace AloneSpace.UI
 
         public void Initialize()
         {
-            MessageBus.Instance.UserInputOpenContentQuickView.AddListener(UserInputOpenContentQuickView);
-            MessageBus.Instance.UserInputCloseContentQuickView.AddListener(UserInputCloseContentQuickView);
+            MessageBus.Instance.UserInput.UserInputOpenContentQuickView.AddListener(UserInputOpenContentQuickView);
+            MessageBus.Instance.UserInput.UserInputCloseContentQuickView.AddListener(UserInputCloseContentQuickView);
 
             contentQuickViewWindow.Initialize();
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.UserInputOpenContentQuickView.RemoveListener(UserInputOpenContentQuickView);
-            MessageBus.Instance.UserInputCloseContentQuickView.RemoveListener(UserInputCloseContentQuickView);
+            MessageBus.Instance.UserInput.UserInputOpenContentQuickView.RemoveListener(UserInputOpenContentQuickView);
+            MessageBus.Instance.UserInput.UserInputCloseContentQuickView.RemoveListener(UserInputCloseContentQuickView);
 
             contentQuickViewWindow.Finalize();
         }
@@ -39,7 +39,7 @@ namespace AloneSpace.UI
 
             if (contentQuickViewWindow.gameObject.activeInHierarchy && (!lifeCheck?.Invoke() ?? false))
             {
-                MessageBus.Instance.UserInputCloseContentQuickView.Broadcast();
+                MessageBus.Instance.UserInput.UserInputCloseContentQuickView.Broadcast();
                 return;
             }
 

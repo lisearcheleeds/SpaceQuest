@@ -20,7 +20,7 @@ namespace AloneSpace
 
             var weaponSpecVO = (WeaponMissileMakerSpecVO)missileData.WeaponData.WeaponSpecVO;
             missileGraphicEffectHandler = new MissileGraphicEffectHandler(new TransformPositionData(weaponEffectData, smokePos));
-            MessageBus.Instance.SpawnGraphicEffect.Broadcast(weaponSpecVO.SmokeGraphicEffectSpecVO, missileGraphicEffectHandler);
+            MessageBus.Instance.Creator.SpawnGraphicEffect.Broadcast(weaponSpecVO.SmokeGraphicEffectSpecVO, missileGraphicEffectHandler);
         }
 
         public override void OnLateUpdate()

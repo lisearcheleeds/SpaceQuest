@@ -1,6 +1,6 @@
 ﻿namespace AloneSpace
 {
-    public partial class MessageBusDefine
+    public class MessageBusDefineModule
     {
         public class RegisterMovingModule : MessageBusBroadcaster<MovingModule>{}
         public class UnRegisterMovingModule : MessageBusBroadcaster<MovingModule>{}

@@ -39,12 +39,12 @@ namespace AloneSpace
             localLookAtAngle.y = Mathf.Repeat(localLookAtAngle.y + mouseDelta.x + 180, 360) - 180;
             localLookAtAngle.z = 0;
 
-            MessageBus.Instance.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
+            MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
         }
 
         protected void CheckLookAtDistance()
         {
-            MessageBus.Instance.UserCommandSetLookAtDistance.Broadcast(Mathf.Min(
+            MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(Mathf.Min(
                 userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0, 
                 userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f));
         }

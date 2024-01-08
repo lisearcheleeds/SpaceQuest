@@ -20,16 +20,16 @@ namespace AloneSpace.UI
         {
             this.questData = questData;
 
-            MessageBus.Instance.SetUserControlActor.AddListener(SetUserControlActor);
-            MessageBus.Instance.CreatedActorData.AddListener(CreatedActorData);
-            MessageBus.Instance.ReleaseActorData.AddListener(ReleaseActorData);
+            MessageBus.Instance.Temp.SetUserControlActor.AddListener(SetUserControlActor);
+            MessageBus.Instance.Creator.OnCreateActorData.AddListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.AddListener(OnReleaseActorData);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.SetUserControlActor.RemoveListener(SetUserControlActor);
-            MessageBus.Instance.CreatedActorData.RemoveListener(CreatedActorData);
-            MessageBus.Instance.ReleaseActorData.RemoveListener(ReleaseActorData);
+            MessageBus.Instance.Temp.SetUserControlActor.RemoveListener(SetUserControlActor);
+            MessageBus.Instance.Creator.OnCreateActorData.RemoveListener(OnCreateActorData);
+            MessageBus.Instance.Creator.OnReleaseActorData.RemoveListener(OnReleaseActorData);
         }
 
         public void SetDirty()
@@ -70,7 +70,7 @@ namespace AloneSpace.UI
                 actorListViewCellDataList.Add(controlActorDataCellData);
 
                 // 他
-                var aroundTargets = MessageBus.Instance.GetFrameCacheActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
+                var aroundTargets = MessageBus.Instance.GetActorRelationData.Unicast(questData.UserData.ControlActorData.InstanceId);
                 actorListViewCellDataList.AddRange(
                     aroundTargets
                         .Select(actorRelationData => new ActorListViewCell.CellData(
@@ -97,12 +97,12 @@ namespace AloneSpace.UI
             isDirty = true;
         }
 
-        void CreatedActorData(ActorData actorData)
+        void OnCreateActorData(ActorData actorData)
         {
             isDirty = true;
         }
 
-        void ReleaseActorData(ActorData actorData)
+        void OnReleaseActorData(ActorData actorData)
         {
             isDirty = true;
         }
@@ -112,7 +112,7 @@ namespace AloneSpace.UI
             selectCellData = cellData;
             SetDirty();
 
-            MessageBus.Instance.UIMenuStatusViewSelectActorData.Broadcast(cellData?.ActorData);
+            MessageBus.Instance.UserInput.UIMenuStatusViewSelectActorData.Broadcast(cellData?.ActorData);
         }
     }
 }

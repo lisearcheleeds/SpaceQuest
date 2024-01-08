@@ -2,43 +2,48 @@
 {
     public partial class MessageBus
     {
-        // UI
-        public MessageBusDefine.UserInputOpenMenu UserInputOpenMenu { get; } = new MessageBusDefine.UserInputOpenMenu();
-        public MessageBusDefine.UserInputCloseMenu UserInputCloseMenu { get; } = new MessageBusDefine.UserInputCloseMenu();
-        public MessageBusDefine.UserInputSwitchMenuStatusView UserInputSwitchMenuStatusView { get; } = new MessageBusDefine.UserInputSwitchMenuStatusView();
-        public MessageBusDefine.UserInputSwitchMenuInventoryView UserInputSwitchMenuInventoryView { get; } = new MessageBusDefine.UserInputSwitchMenuInventoryView();
-        public MessageBusDefine.UserInputSwitchMenuPlayerView UserInputSwitchMenuPlayerView { get; } = new MessageBusDefine.UserInputSwitchMenuPlayerView();
-        public MessageBusDefine.UserInputSwitchMenuAreaView UserInputSwitchMenuAreaView { get; } = new MessageBusDefine.UserInputSwitchMenuAreaView();
-        public MessageBusDefine.UserInputSwitchMenuMapView UserInputSwitchMenuMapView { get; } = new MessageBusDefine.UserInputSwitchMenuMapView();
+        public UserInputMessage UserInput { get; } = new UserInputMessage();
 
-        public MessageBusDefine.UIMenuStatusViewSelectActorData UIMenuStatusViewSelectActorData { get; } = new MessageBusDefine.UIMenuStatusViewSelectActorData();
+        public class UserInputMessage
+        {
+            // UI
+            public MessageBusDefineUserInput.UserInputOpenMenu UserInputOpenMenu { get; } = new MessageBusDefineUserInput.UserInputOpenMenu();
+            public MessageBusDefineUserInput.UserInputCloseMenu UserInputCloseMenu { get; } = new MessageBusDefineUserInput.UserInputCloseMenu();
+            public MessageBusDefineUserInput.UserInputSwitchMenuStatusView UserInputSwitchMenuStatusView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuStatusView();
+            public MessageBusDefineUserInput.UserInputSwitchMenuInventoryView UserInputSwitchMenuInventoryView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuInventoryView();
+            public MessageBusDefineUserInput.UserInputSwitchMenuPlayerView UserInputSwitchMenuPlayerView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuPlayerView();
+            public MessageBusDefineUserInput.UserInputSwitchMenuAreaView UserInputSwitchMenuAreaView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuAreaView();
+            public MessageBusDefineUserInput.UserInputSwitchMenuMapView UserInputSwitchMenuMapView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuMapView();
 
-        public MessageBusDefine.UserInputExecuteWeapon UserInputSetExecuteWeapon { get; } = new MessageBusDefine.UserInputExecuteWeapon();
-        public MessageBusDefine.UserInputReloadWeapon UserInputReloadWeapon { get; } = new MessageBusDefine.UserInputReloadWeapon();
-        public MessageBusDefine.UserInputSetCurrentWeaponGroupIndex UserInputSetCurrentWeaponGroupIndex { get; } = new MessageBusDefine.UserInputSetCurrentWeaponGroupIndex();
+            public MessageBusDefineUserInput.UIMenuStatusViewSelectActorData UIMenuStatusViewSelectActorData { get; } = new MessageBusDefineUserInput.UIMenuStatusViewSelectActorData();
 
-        public MessageBusDefine.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefine.UserInputFrontBoosterPower();
-        public MessageBusDefine.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBackBoosterPower();
-        public MessageBusDefine.UserInputRightBoosterPower UserInputRightBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRightBoosterPower();
-        public MessageBusDefine.UserInputLeftBoosterPower UserInputLeftBoosterPowerRatio { get; } = new MessageBusDefine.UserInputLeftBoosterPower();
-        public MessageBusDefine.UserInputTopBoosterPower UserInputTopBoosterPowerRatio { get; } = new MessageBusDefine.UserInputTopBoosterPower();
-        public MessageBusDefine.UserInputBottomBoosterPower UserInputBottomBoosterPowerRatio { get; } = new MessageBusDefine.UserInputBottomBoosterPower();
-        public MessageBusDefine.UserInputPitchBoosterPower UserInputPitchBoosterPowerRatio { get; } = new MessageBusDefine.UserInputPitchBoosterPower();
-        public MessageBusDefine.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefine.UserInputRollBoosterPower();
-        public MessageBusDefine.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefine.UserInputYawBoosterPower();
+            public MessageBusDefineUserInput.UserInputExecuteWeapon UserInputSetExecuteWeapon { get; } = new MessageBusDefineUserInput.UserInputExecuteWeapon();
+            public MessageBusDefineUserInput.UserInputReloadWeapon UserInputReloadWeapon { get; } = new MessageBusDefineUserInput.UserInputReloadWeapon();
+            public MessageBusDefineUserInput.UserInputSetCurrentWeaponGroupIndex UserInputSetCurrentWeaponGroupIndex { get; } = new MessageBusDefineUserInput.UserInputSetCurrentWeaponGroupIndex();
 
-        public MessageBusDefine.UserCommandSetActorOperationMode UserCommandSetActorOperationMode { get; } = new MessageBusDefine.UserCommandSetActorOperationMode();
+            public MessageBusDefineUserInput.UserInputFrontBoosterPower UserInputForwardBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputFrontBoosterPower();
+            public MessageBusDefineUserInput.UserInputBackBoosterPower UserInputBackBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputBackBoosterPower();
+            public MessageBusDefineUserInput.UserInputRightBoosterPower UserInputRightBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputRightBoosterPower();
+            public MessageBusDefineUserInput.UserInputLeftBoosterPower UserInputLeftBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputLeftBoosterPower();
+            public MessageBusDefineUserInput.UserInputTopBoosterPower UserInputTopBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputTopBoosterPower();
+            public MessageBusDefineUserInput.UserInputBottomBoosterPower UserInputBottomBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputBottomBoosterPower();
+            public MessageBusDefineUserInput.UserInputPitchBoosterPower UserInputPitchBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputPitchBoosterPower();
+            public MessageBusDefineUserInput.UserInputRollBoosterPower UserInputRollBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputRollBoosterPower();
+            public MessageBusDefineUserInput.UserInputYawBoosterPower UserInputYawBoosterPowerRatio { get; } = new MessageBusDefineUserInput.UserInputYawBoosterPower();
 
-        public MessageBusDefine.UserInputOpenContentQuickView UserInputOpenContentQuickView { get; } = new MessageBusDefine.UserInputOpenContentQuickView();
-        public MessageBusDefine.UserInputCloseContentQuickView UserInputCloseContentQuickView { get; } = new MessageBusDefine.UserInputCloseContentQuickView();
+            public MessageBusDefineUserInput.UserCommandSetActorOperationMode UserCommandSetActorOperationMode { get; } = new MessageBusDefineUserInput.UserCommandSetActorOperationMode();
 
-        public MessageBusDefine.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefine.UserCommandSetCameraTrackTarget();
-        public MessageBusDefine.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefine.UserCommandGetWorldToCanvasPoint();
-        public MessageBusDefine.UserCommandGetCameraRotation UserCommandGetCameraRotation { get; } = new MessageBusDefine.UserCommandGetCameraRotation();
-        public MessageBusDefine.UserCommandGetCameraFieldOfView UserCommandGetCameraFieldOfView { get; } = new MessageBusDefine.UserCommandGetCameraFieldOfView();
+            public MessageBusDefineUserInput.UserInputOpenContentQuickView UserInputOpenContentQuickView { get; } = new MessageBusDefineUserInput.UserInputOpenContentQuickView();
+            public MessageBusDefineUserInput.UserInputCloseContentQuickView UserInputCloseContentQuickView { get; } = new MessageBusDefineUserInput.UserInputCloseContentQuickView();
 
-        public MessageBusDefine.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefine.UserCommandSetLookAtAngle();
-        public MessageBusDefine.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefine.UserCommandSetLookAtSpace();
-        public MessageBusDefine.UserCommandSetLookAtDistance UserCommandSetLookAtDistance { get; } = new MessageBusDefine.UserCommandSetLookAtDistance();
+            public MessageBusDefineUserInput.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefineUserInput.UserCommandSetCameraTrackTarget();
+            public MessageBusDefineUserInput.UserCommandGetWorldToCanvasPoint UserCommandGetWorldToCanvasPoint { get; } = new MessageBusDefineUserInput.UserCommandGetWorldToCanvasPoint();
+            public MessageBusDefineUserInput.UserCommandGetCameraRotation UserCommandGetCameraRotation { get; } = new MessageBusDefineUserInput.UserCommandGetCameraRotation();
+            public MessageBusDefineUserInput.UserCommandGetCameraFieldOfView UserCommandGetCameraFieldOfView { get; } = new MessageBusDefineUserInput.UserCommandGetCameraFieldOfView();
+
+            public MessageBusDefineUserInput.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtAngle();
+            public MessageBusDefineUserInput.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtSpace();
+            public MessageBusDefineUserInput.UserCommandSetLookAtDistance UserCommandSetLookAtDistance { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtDistance();
+        }
     }
 }
