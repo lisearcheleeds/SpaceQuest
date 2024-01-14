@@ -5,12 +5,12 @@ namespace AloneSpace.UI
 {
     public class MapView : MonoBehaviour
     {
-        [SerializeField] AreaDataCell areaDataCellPrefab;
+        [SerializeField] MapViewCell mapViewCellPrefab;
         [SerializeField] RectTransform cellParent;
 
         bool isDirty;
 
-        List<AreaDataCell> areaDataCells = new List<AreaDataCell>();
+        List<MapViewCell> areaDataCells = new List<MapViewCell>();
 
         QuestData questData;
 
@@ -38,13 +38,13 @@ namespace AloneSpace.UI
                 return;
             }
 
-            isDirty = true;
+            isDirty = false;
 
             for (var i = 0; i < Mathf.Max(areaDataCells.Count, questData.StarSystemData.AreaData.Length); i++)
             {
                 if (areaDataCells.Count < i + 1)
                 {
-                    areaDataCells.Add(Instantiate(areaDataCellPrefab, cellParent));
+                    areaDataCells.Add(Instantiate(mapViewCellPrefab, cellParent));
                 }
 
                 areaDataCells[i].gameObject.SetActive(i < questData.StarSystemData.AreaData.Length);

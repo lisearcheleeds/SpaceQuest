@@ -1,12 +1,13 @@
 ﻿using System;
+using AloneSpace.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace AloneSpace.UI
 {
-    public class AreaDataCell : MonoBehaviour
+    public class MapViewCell : MonoBehaviour
     {
-        [SerializeField] Image image;
+        [SerializeField] Circle2D circle2D;
         [SerializeField] Button button;
 
         AreaData areaData;
@@ -24,7 +25,7 @@ namespace AloneSpace.UI
 
             gameObject.name = $"Area {areaData.AreaId}";
             transform.localPosition = position;
-            image.color = GetColor(isCurrentArea);
+            circle2D.color = GetColor(isCurrentArea);
         }
 
         static Color GetColor(bool isCurrentArea)
