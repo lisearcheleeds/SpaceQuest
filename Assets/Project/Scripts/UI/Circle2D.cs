@@ -3,16 +3,14 @@ using UnityEngine.UI;
 
 namespace AloneSpace.Common
 {
-    // バッチング効かないので使い所に注意
     [RequireComponent(typeof(CanvasRenderer))]
     [ExecuteInEditMode]  
     public class Circle2D : Graphic
     {
         [SerializeField] float radius;
-        [SerializeField, Range(2,100)] int division;
+        [SerializeField, Min(2)] int division;
         [SerializeField, Range(0f,1f)] float fillOrigin;
         [SerializeField, Range(0f,1f)] float fillAmount;
-        
         [SerializeField] bool isPierced;
         [SerializeField] float innerRadius;
 
@@ -43,7 +41,6 @@ namespace AloneSpace.Common
             }
             
             vh.Clear();
-            RectCache();
 
             if (isPierced)
             {
@@ -66,6 +63,10 @@ namespace AloneSpace.Common
             var vertex = UIVertex.simpleVert;
             vertex.color = color;
             
+            var pCLeft   = - rectTransform.rect.width  / 2f;
+            var pCBottom = - rectTransform.rect.height / 2f;
+            var pCTop    =   rectTransform.rect.height / 2f;
+            var pCRight  =   rectTransform.rect.width  / 2f;
             var centerPos = new Vector3((pCLeft + pCRight) / 2, (pCTop + pCBottom) / 2);
             var fillRad = Mathf.PI * 2f * fillAmount;
             var divRad = fillRad / (division + 1);
@@ -104,6 +105,10 @@ namespace AloneSpace.Common
             var vertex = UIVertex.simpleVert;
             vertex.color = color;
             
+            var pCLeft   = - rectTransform.rect.width  / 2f;
+            var pCBottom = - rectTransform.rect.height / 2f;
+            var pCTop    =   rectTransform.rect.height / 2f;
+            var pCRight  =   rectTransform.rect.width  / 2f;
             var centerPos = new Vector3((pCLeft + pCRight) / 2, (pCTop + pCBottom) / 2);
             var fillRad = Mathf.PI * 2f * fillAmount;
             var divRad = fillRad / (division + 1);
@@ -140,57 +145,6 @@ namespace AloneSpace.Common
             }
             
             return (division + 1) * 2;
-        }
-        
-        // cache
-        float anchorLeft, anchorBottom, anchorTop, anchorRight;
-        float pivotX, pivotY;
-        float posX, posY, posZ;
-        float width, height;
-        float paddingTop, paddingBottom, paddingLeft, paddingRight;
-        
-        // extensions
-        float pCLeft, pCBottom, pCTop, pCRight;
-        float nRectLeft, nRectBottom, nRectTop, nRectRight;
-        
-        void RectCache()
-        {
-            //Anchors
-            anchorLeft   = rectTransform.anchorMin.x;
-            anchorBottom = rectTransform.anchorMin.y;
-            anchorTop    = rectTransform.anchorMax.y;
-            anchorRight  = rectTransform.anchorMax.x;
-            
-            //pivots
-            pivotX = rectTransform.pivot.x;
-            pivotY = rectTransform.pivot.y;
-            
-            //width & height
-            width = rectTransform.rect.width;
-            height = rectTransform.rect.height;
-            
-            //一致したアンカーとピボットの位置の差
-            posX = rectTransform.position.x;
-            posY = rectTransform.position.y;
-            posZ = rectTransform.position.z;
-            
-            //アンカーから内部方向へのパディング
-            paddingLeft   = rectTransform.offsetMin.x;
-            paddingRight  = rectTransform.offsetMax.x;
-            paddingTop    = rectTransform.offsetMax.y;
-            paddingBottom = rectTransform.offsetMin.y;
-            
-            //ピボット中央に合わせる場合のUIVertex矩形座標
-            pCLeft   = - width  / 2f;
-            pCBottom = - height / 2f;
-            pCTop    =   height / 2f;
-            pCRight  =   width  / 2f;
-            
-            //ピボットに影響されないUIVertex矩形座標
-            nRectLeft   = - pivotX * width;
-            nRectRight  = (1 - pivotX) * width;
-            nRectTop    = (1 - pivotY) * height;
-            nRectBottom = - pivotY * height;
         }
     }
 }
