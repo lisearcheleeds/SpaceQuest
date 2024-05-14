@@ -1,18 +1,21 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Rendering.Universal;
 
 namespace AloneSpace
 {
     public class CameraController : MonoBehaviour
     {
         [SerializeField] Camera ambientCamera;
+        
         [SerializeField] Camera farCamera;
         [SerializeField] Camera nearCamera;
         
-        [SerializeField] Camera cameraUIRadarView;
+        [SerializeField] Camera spaceMapCamera;
+        
+        [SerializeField] Camera radarCamera;
 
-        [SerializeField] Camera cameraUi;
+        [SerializeField] Camera uiCamera;
 
         Vector3 currentAmbientPosition = Vector3.zero;
         Vector3 currentTargetPosition = Vector3.zero;
@@ -21,13 +24,18 @@ namespace AloneSpace
         float currentFoV = 60.0f;
 
         IPositionData trackingTarget;
+        
         QuestData questData;
+
+        CameraGroupType cameraGroupType = CameraGroupType.Space;
 
         public void Initialize(QuestData questData)
         {
             this.questData = questData;
 
             MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.AddListener(UserCommandSetCameraTrackTarget);
+            MessageBus.Instance.UserInput.UserCommandSetCameraGroupType.AddListener(UserCommandSetCameraGroupType);
+            
             MessageBus.Instance.Util.GetWorldToCanvasPoint.SetListener(UserCommandGetWorldToCanvasPoint);
             MessageBus.Instance.Util.GetCameraRotation.SetListener(GetCameraRotation);
             MessageBus.Instance.Util.GetCameraFieldOfView.SetListener(GetCameraFieldOfView);
@@ -36,6 +44,8 @@ namespace AloneSpace
         public void Finalize()
         {
             MessageBus.Instance.UserInput.UserCommandSetCameraTrackTarget.RemoveListener(UserCommandSetCameraTrackTarget);
+            MessageBus.Instance.UserInput.UserCommandSetCameraGroupType.RemoveListener(UserCommandSetCameraGroupType);
+            
             MessageBus.Instance.Util.GetWorldToCanvasPoint.SetListener(null);
             MessageBus.Instance.Util.GetCameraRotation.SetListener(null);
             MessageBus.Instance.Util.GetCameraFieldOfView.SetListener(null);
@@ -43,16 +53,29 @@ namespace AloneSpace
 
         public void OnUpdate()
         {
+            switch (cameraGroupType)
+            {
+                case CameraGroupType.Space:
+                    UpdateSpace();
+                    break;
+                case CameraGroupType.SpaceMap:
+                    UpdateSpaceMap();
+                    break;
+            }
+        }
+
+        void UpdateSpace()
+        {
             var targetPosition = trackingTarget?.Position ?? Vector3.zero;
             var targetAmbientPosition = GetTargetAmbientPosition(trackingTarget);
-            var lookAtRotation = GetLookAtRotation(questData.UserData);
+            var lookAtRotation = GetLookAtRotation(questData.UserData.LookAtSpace, questData.UserData.LookAtAngle);
 
             currentTargetRotation = Quaternion.Lerp(currentTargetRotation, lookAtRotation, 0.4f);
             ambientCamera.transform.rotation = currentTargetRotation;
             farCamera.transform.rotation = currentTargetRotation;
             nearCamera.transform.rotation = currentTargetRotation;
             
-            cameraUIRadarView.transform.rotation = currentTargetRotation;
+            radarCamera.transform.rotation = currentTargetRotation;
 
             currentAmbientPosition = Vector3.Lerp(currentAmbientPosition, targetAmbientPosition, 0.05f);
             ambientCamera.transform.position = currentAmbientPosition;
@@ -68,12 +91,49 @@ namespace AloneSpace
             farCamera.transform.position = currentCameraPosition;
             nearCamera.transform.position = currentCameraPosition;
             
-            cameraUIRadarView.transform.position = currentTargetRotation * new Vector3(0, 0, -4.0f);
+            radarCamera.transform.position = currentTargetRotation * new Vector3(0, 0, -4.0f);
+        }
+
+        void UpdateSpaceMap()
+        {
+            var targetAmbientPosition = GetTargetAmbientPosition(trackingTarget);
+            var spaceMapLookAtRotation = GetLookAtRotation(Quaternion.identity, questData.UserData.SpaceMapLookAtAngle);
+
+            ambientCamera.transform.rotation = spaceMapLookAtRotation;
+            ambientCamera.transform.position = targetAmbientPosition;
+                
+            spaceMapCamera.transform.rotation = spaceMapLookAtRotation;
+            spaceMapCamera.transform.position = Vector3.zero + spaceMapLookAtRotation * new Vector3(0, 0, -2000.0f - questData.UserData.SpaceMapLookAtDistance * 10.0f);
         }
 
         void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)
         {
             trackingTarget = cameraTrackTarget;
+        }
+        
+        void UserCommandSetCameraGroupType(CameraGroupType cameraGroupType)
+        {
+            if (this.cameraGroupType == cameraGroupType)
+            {
+                return;
+            }
+
+            this.cameraGroupType = cameraGroupType;
+            
+            var afterCameras = GetCameras(cameraGroupType);
+            var cameraData = ambientCamera.GetUniversalAdditionalCameraData();
+            cameraData.cameraStack.Clear();
+            cameraData.cameraStack.AddRange(afterCameras);
+
+            Camera[] GetCameras(CameraGroupType group)
+            {
+                return group switch
+                {
+                    CameraGroupType.Space => new[] { farCamera, nearCamera, uiCamera },
+                    CameraGroupType.SpaceMap => new[] { spaceMapCamera, uiCamera },
+                    _ => throw new ArgumentException(),
+                };
+            }
         }
 
         Vector3? UserCommandGetWorldToCanvasPoint(CameraType cameraType, Vector3 worldPos, RectTransform rectTransform)
@@ -95,7 +155,7 @@ namespace AloneSpace
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 rectTransform,
                 screenPoint,
-                cameraUi,
+                uiCamera,
                 out var localPoint);
 
             return localPoint;
@@ -137,12 +197,12 @@ namespace AloneSpace
 
             return trackingTarget.Position;
         }
-
-        static Quaternion GetLookAtRotation(UserData userData)
+        
+        static Quaternion GetLookAtRotation(Quaternion lookAtSpace, Vector3 lookAtAngle)
         {
-            return userData.LookAtSpace
-                   * Quaternion.AngleAxis(userData.LookAtAngle.y, Vector3.up)
-                   * Quaternion.AngleAxis(userData.LookAtAngle.x, Vector3.right);
+            return lookAtSpace
+                   * Quaternion.AngleAxis(lookAtAngle.y, Vector3.up)
+                   * Quaternion.AngleAxis(lookAtAngle.x, Vector3.right);
         }
 
         static float GetFieldOfView(float currentFoV, ActorOperationMode actorOperationMode)

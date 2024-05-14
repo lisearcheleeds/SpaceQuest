@@ -37,6 +37,8 @@
             public MessageBusDefineUserInput.UserInputCloseContentQuickView UserInputCloseContentQuickView { get; } = new MessageBusDefineUserInput.UserInputCloseContentQuickView();
 
             public MessageBusDefineUserInput.UserCommandSetCameraTrackTarget UserCommandSetCameraTrackTarget { get; } = new MessageBusDefineUserInput.UserCommandSetCameraTrackTarget();
+            
+            public MessageBusDefineUserInput.UserCommandSetCameraGroupType UserCommandSetCameraGroupType { get; } = new MessageBusDefineUserInput.UserCommandSetCameraGroupType();
 
             public MessageBusDefineUserInput.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtAngle();
             public MessageBusDefineUserInput.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtSpace();

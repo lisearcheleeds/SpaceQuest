@@ -40,6 +40,8 @@ namespace AloneSpace
 
         public class UserCommandSetCameraTrackTarget : MessageBusBroadcaster<IPositionData>{}
 
+        public class UserCommandSetCameraGroupType : MessageBusBroadcaster<CameraGroupType>{}
+        
         public class UserCommandSetLookAtAngle : MessageBusBroadcaster<Vector3>{}
         public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}
         public class UserCommandSetLookAtDistance : MessageBusBroadcaster<float>{}

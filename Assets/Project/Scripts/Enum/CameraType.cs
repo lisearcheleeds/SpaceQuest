@@ -5,5 +5,6 @@
         AmbientCamera,
         FarCamera,
         NearCamera,
+        SpaceMapCamera,
     }
 }

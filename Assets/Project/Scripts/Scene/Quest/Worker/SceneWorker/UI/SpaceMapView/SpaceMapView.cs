@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace AloneSpace.UI
 {
     public class SpaceMapView : MonoBehaviour
     {
-        [FormerlySerializedAs("areaViewCellPrefab")] [SerializeField] SpaceMapViewCell spaceMapViewCellPrefab;
-        [SerializeField] RectTransform cellParent;
+        [SerializeField] SpaceMapViewCell spaceMapViewCellPrefab;
 
+        [SerializeField] Transform parent;
         [SerializeField] LineRenderer lineTemplate;
-        [SerializeField] Transform lineParent;
         
-        bool isDirty;
-
         SpaceMapInputLayer spaceMapInputLayer;
 
         List<LineRenderer> axisLines = new List<LineRenderer>();
         
-        List<SpaceMapViewCell> actorCells = new List<SpaceMapViewCell>();
-        List<SpaceMapViewCell> interactCells = new List<SpaceMapViewCell>();
+        List<SpaceMapViewCell> cells = new List<SpaceMapViewCell>();
 
         QuestData questData;
 
@@ -30,67 +25,62 @@ namespace AloneSpace.UI
             
             spaceMapInputLayer = new SpaceMapInputLayer(questData.UserData);
             
-            MessageBus.Instance.User.SetObserveArea.AddListener(SetUserObserveArea);
             MessageBus.Instance.UserInput.UserInputOpenSpaceMapView.AddListener(UserInputOpenSpaceMapView);
             MessageBus.Instance.UserInput.UserInputCloseSpaceMapView.AddListener(UserInputCloseSpaceMapView);
         }
 
         public void Finalize()
         {
-            MessageBus.Instance.User.SetObserveArea.RemoveListener(SetUserObserveArea);
             MessageBus.Instance.UserInput.UserInputOpenSpaceMapView.RemoveListener(UserInputOpenSpaceMapView);
             MessageBus.Instance.UserInput.UserInputCloseSpaceMapView.RemoveListener(UserInputCloseSpaceMapView);
         }
 
         public void OnUpdate()
         {
-            if (!isDirty || questData == null)
+            if (questData == null || !gameObject.activeSelf)
             {
                 return;
             }
 
-            isDirty = false;
-
+            // Actorのセルを生成
             var currentAreaActors = questData.ActorData.Values.Where(actor => actor.AreaId == questData.UserData.ObserveAreaData?.AreaId).ToArray();
-            for (var i = 0; i < Mathf.Max(actorCells.Count, currentAreaActors.Length); i++)
+            var needCellCount = Mathf.Max(cells.Count, currentAreaActors.Length);
+            for (var i = 0; i < needCellCount; i++)
             {
-                if (actorCells.Count < i + 1)
+                if (cells.Count < i + 1)
                 {
-                    actorCells.Add(Instantiate(spaceMapViewCellPrefab, cellParent));
+                    cells.Add(Instantiate(spaceMapViewCellPrefab, parent));
                 }
 
-                actorCells[i].gameObject.SetActive(i < currentAreaActors.Length);
+                cells[i].gameObject.SetActive(i < currentAreaActors.Length);
 
                 if (i < currentAreaActors.Length)
                 {
-                    var position = currentAreaActors[i].Position;
-                    actorCells[i].Apply(currentAreaActors[i], position, OnClickActorCell);
+                    cells[i].Apply(currentAreaActors[i], 
+                        questData.UserData.ControlActorData.InstanceId == currentAreaActors[i].InstanceId,
+                        questData.UserData.PlayerData.InstanceId == currentAreaActors[i].PlayerInstanceId);
                 }
             }
             
+            // Interactのセルを生成
             var currentAreaInteracts = questData.InteractData.Values.Where(actor => actor.AreaId == questData.UserData.ObserveAreaData?.AreaId).ToArray();
-            for (var i = 0; i < Mathf.Max(interactCells.Count, currentAreaInteracts.Length); i++)
+            var allNeedCellCount = Mathf.Max(cells.Count, currentAreaActors.Length + currentAreaInteracts.Length);
+            for (var i = needCellCount; i < allNeedCellCount; i++)
             {
-                if (interactCells.Count < i + 1)
+                if (cells.Count < i + 1)
                 {
-                    interactCells.Add(Instantiate(spaceMapViewCellPrefab, cellParent));
+                    cells.Add(Instantiate(spaceMapViewCellPrefab, parent));
                 }
 
-                interactCells[i].gameObject.SetActive(i < currentAreaInteracts.Length);
+                cells[i].gameObject.SetActive(i < currentAreaInteracts.Length);
 
                 if (i < currentAreaInteracts.Length)
                 {
-                    var position = currentAreaInteracts[i].Position;
-                    interactCells[i].Apply(currentAreaInteracts[i], position, OnClickInteractCell);
+                    cells[i].Apply(currentAreaInteracts[i]);
                 }
             }
 
             UpdateAxisLine();
-        }
-        
-        void SetDirty()
-        {
-            isDirty = true;
         }
 
         void UpdateAxisLine()
@@ -102,7 +92,7 @@ namespace AloneSpace.UI
             {
                 if (axisLines.Count <= x)
                 {
-                    axisLines.Add(Instantiate(lineTemplate, lineParent));
+                    axisLines.Add(Instantiate(lineTemplate, parent));
                 }
 
                 axisLines[x].positionCount = 2;
@@ -115,7 +105,7 @@ namespace AloneSpace.UI
             {
                 if (axisLines.Count <= z + lineCount)
                 {
-                    axisLines.Add(Instantiate(lineTemplate, lineParent));
+                    axisLines.Add(Instantiate(lineTemplate, parent));
                 }
 
                 axisLines[z + lineCount].positionCount = 2;
@@ -128,9 +118,9 @@ namespace AloneSpace.UI
         void UserInputOpenSpaceMapView()
         {
             gameObject.SetActive(true);
-            SetDirty();
 
             InputLayerController.Instance.PushLayer(spaceMapInputLayer);
+            MessageBus.Instance.UserInput.UserCommandSetCameraGroupType.Broadcast(CameraGroupType.SpaceMap);
         }
 
         void UserInputCloseSpaceMapView()
@@ -138,19 +128,7 @@ namespace AloneSpace.UI
             gameObject.SetActive(false);
 
             InputLayerController.Instance.PopLayer(spaceMapInputLayer);
-        }
-
-        void SetUserObserveArea(AreaData areaData)
-        {
-            SetDirty();
-        }
-
-        void OnClickActorCell(ActorData actorData)
-        {
-        }
-
-        void OnClickInteractCell(IInteractData interactData)
-        {
+            MessageBus.Instance.UserInput.UserCommandSetCameraGroupType.Broadcast(CameraGroupType.Space);
         }
     }
 }

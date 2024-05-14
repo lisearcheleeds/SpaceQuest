@@ -4,29 +4,102 @@ namespace AloneSpace.UI
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] FloatView floatView;
-        [SerializeField] FixedView fixedView;
-        [SerializeField] OverlayView overlayView;
+        // FLOAT VIEW
+        [SerializeField] TargetView targetView;
+        [SerializeField] RadarView radarView;
+        [SerializeField] ReticleView reticleView;
+        
+        // FIXED VIEW
+        [SerializeField] EnduranceView enduranceView;
+        [SerializeField] WeaponDataListView weaponDataListView;
+        [SerializeField] ActorOperationModeView actorOperationModeView;
+        
+        // FULL SCREEN
+        [SerializeField] MenuView menuView;
+        [SerializeField] SpaceMapView spaceMapView;
+        
+        // OVERLAY VIEW
+        [SerializeField] InventoryLogView inventoryLogView;
+        [SerializeField] ContentQuickView contentQuickView;
 
+        [SerializeField] GameObject spaceViewObject;
+        
         public void Initialize(QuestData questData)
         {
-            floatView.Initialize(questData);
-            fixedView.Initialize(questData);
-            overlayView.Initialize(questData);
+            targetView.Initialize();
+            radarView.Initialize(questData);
+            reticleView.Initialize(questData);
+            
+            menuView.Initialize(questData);
+            enduranceView.Initialize();
+            weaponDataListView.Initialize();
+            actorOperationModeView.Initialize();
+            spaceMapView.Initialize(questData);
+            
+            inventoryLogView.Initialize();
+            contentQuickView.Initialize();
+            
+            MessageBus.Instance.UserInput.UserInputOpenSpaceMapView.AddListener(UserInputOpenSpaceMapView);
+            MessageBus.Instance.UserInput.UserInputCloseSpaceMapView.AddListener(UserInputCloseSpaceMapView);
+            MessageBus.Instance.UserInput.UserInputOpenMenu.AddListener(UserInputOpenMenu);
+            MessageBus.Instance.UserInput.UserInputCloseMenu.AddListener(UserInputCloseMenu);
         }
 
         public void Finalize()
         {
-            floatView.Finalize();
-            fixedView.Finalize();
-            overlayView.Finalize();
+            targetView.Finalize();
+            radarView.Finalize();
+            reticleView.Finalize();
+            
+            menuView.Finalize();
+            enduranceView.Finalize();
+            weaponDataListView.Finalize();
+            actorOperationModeView.Finalize();
+            spaceMapView.Finalize();
+            
+            inventoryLogView.Finalize();
+            contentQuickView.Finalize();
+            
+            MessageBus.Instance.UserInput.UserInputOpenSpaceMapView.RemoveListener(UserInputOpenSpaceMapView);
+            MessageBus.Instance.UserInput.UserInputCloseSpaceMapView.RemoveListener(UserInputCloseSpaceMapView);
+            MessageBus.Instance.UserInput.UserInputOpenMenu.RemoveListener(UserInputOpenMenu);
+            MessageBus.Instance.UserInput.UserInputCloseMenu.RemoveListener(UserInputCloseMenu);
         }
 
         public void OnUpdate()
         {
-            floatView.OnUpdate();
-            fixedView.OnUpdate();
-            overlayView.OnUpdate();
+            targetView.OnUpdate();
+            radarView.OnUpdate();
+            reticleView.OnUpdate();
+            
+            menuView.OnUpdate();
+            enduranceView.OnUpdate();
+            weaponDataListView.OnUpdate();
+            actorOperationModeView.OnUpdate();
+            spaceMapView.OnUpdate();
+            
+            inventoryLogView.OnUpdate();
+            contentQuickView.OnUpdate();
+        }
+        
+        void UserInputOpenSpaceMapView()
+        {
+            spaceViewObject.SetActive(false);
+        }
+
+        void UserInputCloseSpaceMapView()
+        {
+            spaceViewObject.SetActive(true);
+        }
+
+        void UserInputOpenMenu()
+        {
+            spaceViewObject.SetActive(false);
+        }
+
+        void UserInputCloseMenu()
+        {
+            spaceViewObject.SetActive(true);
         }
     }
 }

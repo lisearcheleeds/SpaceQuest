@@ -10,7 +10,6 @@ namespace AloneSpace
         [SerializeField] AreaAmbientController areaAmbientController;
         
         [SerializeField] CameraController cameraController;
-        [SerializeField] SpaceMapCameraController spaceMapCameraController;
 
         SceneInputLayer sceneInputLayer;
 
@@ -29,7 +28,6 @@ namespace AloneSpace
             gameObjectUpdater.Initialize(questData);
             areaAmbientController.Initialize(questData);
             cameraController.Initialize(questData);
-            spaceMapCameraController.Initialize(questData);
 
             userController.Initialize(questData.UserData);
         }
@@ -42,7 +40,6 @@ namespace AloneSpace
             gameObjectUpdater.Finalize();
             areaAmbientController.Finalize();
             cameraController.Finalize();
-            spaceMapCameraController.Finalize();
 
             userController.Finalize();
         }
@@ -60,7 +57,6 @@ namespace AloneSpace
             gameObjectUpdater.OnUpdate(deltaTime);
             areaAmbientController.OnUpdate();
             cameraController.OnUpdate();
-            spaceMapCameraController.OnUpdate();
         }
 
         public void OnLateUpdate()

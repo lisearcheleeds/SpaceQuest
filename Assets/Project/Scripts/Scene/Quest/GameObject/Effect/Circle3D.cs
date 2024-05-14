@@ -24,9 +24,8 @@ namespace AloneSpace.Common
         [SerializeField] Color color = Color.white;
 
         [SerializeField, HideInInspector] Mesh mesh;
-        
-        bool isInit;
-        MeshFilter meshFilter;
+        [SerializeField, HideInInspector] MeshFilter meshFilter;
+        [SerializeField, HideInInspector] MeshRenderer meshRenderer;
 
         public void Apply()
         {
@@ -46,16 +45,22 @@ namespace AloneSpace.Common
             meshFilter.mesh = mesh;
         }
 
+        public void SetColor(Color newColor)
+        {
+            meshRenderer.material.color = newColor;
+        }
+
         void Init()
         {
-            if (isInit)
+            if (meshFilter == null)
             {
-                return;
+                meshFilter = GetComponent<MeshFilter>();
             }
 
-            meshFilter = GetComponent<MeshFilter>();
-
-            isInit = true;
+            if (meshRenderer == null)
+            {
+                meshRenderer = GetComponent<MeshRenderer>();
+            }
         }
 
         void OnValidate()
@@ -127,7 +132,6 @@ namespace AloneSpace.Common
 
             mesh.vertices = vertices.ToArray();
             mesh.uv = uv.ToArray();
-            mesh.colors = uv.Select(_ => color).ToArray();
             mesh.triangles = triangles.ToArray();
             
             return mesh;
