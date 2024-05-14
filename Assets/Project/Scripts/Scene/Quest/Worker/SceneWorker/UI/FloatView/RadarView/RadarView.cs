@@ -27,8 +27,7 @@ namespace AloneSpace.UI
             MessageBus.Instance.Data.OnCreateActorData.AddListener(OnCreateActorData);
             MessageBus.Instance.Data.OnReleaseActorData.AddListener(OnReleaseActorData);
             MessageBus.Instance.Data.OnCreateInteractData.AddListener(OnCreateInteractData);
-            MessageBus.Instance.Data.OnReleaseInteractData.AddListener(OnReleaseInteractData);
-                    
+            MessageBus.Instance.Data.OnReleaseInteractData.AddListener(OnReleaseInteractData);    
         }
 
         public void Finalize()

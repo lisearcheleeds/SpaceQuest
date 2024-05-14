@@ -16,7 +16,7 @@ namespace AloneSpace
             new[]
             {
                 KeyBindKey.Menu, KeyBindKey.Menu, KeyBindKey.MenuStatusView, KeyBindKey.MenuInventoryView,
-                KeyBindKey.MenuPlayerView, KeyBindKey.MenuAreaView, KeyBindKey.MenuMapView,
+                KeyBindKey.MenuPlayerView, KeyBindKey.SpaceMapView,
                 KeyBindKey.ActorOperationModeSwitchObserve, KeyBindKey.ActorOperationModeSwitchCockpit,
                 KeyBindKey.ActorOperationModeSwitchFreeCamera, KeyBindKey.ActorOperationModeSwitchSpotter,
             };
@@ -70,16 +70,16 @@ namespace AloneSpace
                 MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.Broadcast();
             }
 
-            if (WasPressedThisFrame(KeyBindKey.MenuAreaView, usedKey))
+            if (WasPressedThisFrame(KeyBindKey.SpaceMapView, usedKey))
             {
-                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.Broadcast();
+                // Openのみ
+                MessageBus.Instance.UserInput.UserInputOpenSpaceMapView.Broadcast();
             }
 
-            if (WasPressedThisFrame(KeyBindKey.MenuMapView, usedKey))
+            if (WasReleasedThisFrame(KeyBindKey.SpaceMapView, usedKey))
             {
-                MessageBus.Instance.UserInput.UserInputOpenMenu.Broadcast();
-                MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.Broadcast();
+                // Closeのみ
+                MessageBus.Instance.UserInput.UserInputCloseSpaceMapView.Broadcast();
             }
         }
 

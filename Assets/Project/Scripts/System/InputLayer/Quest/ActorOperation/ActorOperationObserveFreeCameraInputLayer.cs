@@ -42,7 +42,7 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
         }
 
-        protected void CheckLookAtDistance()
+        void CheckLookAtDistance()
         {
             MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(Mathf.Min(
                 userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0, 

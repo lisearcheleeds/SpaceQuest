@@ -3,7 +3,7 @@
     public enum CameraType
     {
         AmbientCamera,
-        Far3DCamera,
-        Near3DCamera,
+        FarCamera,
+        NearCamera,
     }
 }

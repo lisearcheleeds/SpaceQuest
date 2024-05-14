@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace AloneSpace.UI
 {
-    public class AreaViewCell : MonoBehaviour
+    public class SpaceMapViewCell : MonoBehaviour
     {
         [SerializeField] Circle2D circle2D;
         [SerializeField] Button button;

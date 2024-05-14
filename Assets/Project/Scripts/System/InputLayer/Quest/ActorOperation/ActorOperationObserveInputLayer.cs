@@ -29,7 +29,7 @@ namespace AloneSpace
             return false;
         }
 
-        protected void CheckLookAtDistance()
+        void CheckLookAtDistance()
         {
             MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(Mathf.Min(
                 userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0, 

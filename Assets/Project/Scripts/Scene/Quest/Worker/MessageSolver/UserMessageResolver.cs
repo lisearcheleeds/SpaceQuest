@@ -17,6 +17,8 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.AddListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.AddListener(UserCommandSetLookAtSpace);
             MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.AddListener(UserCommandSetLookAtDistance);
+            MessageBus.Instance.UserInput.UserCommandSetSpaceMapLookAtAngle.AddListener(UserCommandSetSpaceMapLookAtAngle);
+            MessageBus.Instance.UserInput.UserCommandSetSpaceMapLookAtDistance.AddListener(UserCommandSetSpaceMapLookAtDistance);
 
             MessageBus.Instance.UserInput.UserInputSetExecuteWeapon.AddListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInput.UserInputReloadWeapon.AddListener(UserInputReloadWeapon);
@@ -53,6 +55,8 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.RemoveListener(UserCommandLookAtAngle);
             MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.RemoveListener(UserCommandSetLookAtSpace);
             MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.RemoveListener(UserCommandSetLookAtDistance);
+            MessageBus.Instance.UserInput.UserCommandSetSpaceMapLookAtAngle.RemoveListener(UserCommandSetSpaceMapLookAtAngle);
+            MessageBus.Instance.UserInput.UserCommandSetSpaceMapLookAtDistance.RemoveListener(UserCommandSetSpaceMapLookAtDistance);
 
             MessageBus.Instance.UserInput.UserInputSetExecuteWeapon.RemoveListener(UserInputSetExecuteWeapon);
             MessageBus.Instance.UserInput.UserInputReloadWeapon.RemoveListener(UserInputReloadWeapon);
@@ -131,6 +135,16 @@ namespace AloneSpace
         void UserCommandSetLookAtDistance(float distance)
         {
             questData.UserData.SetLookAtDistance(distance);
+        }
+
+        void UserCommandSetSpaceMapLookAtAngle(Vector3 lookAt)
+        {
+            questData.UserData.SetSpaceMapLookAtAngle(lookAt);
+        }
+
+        void UserCommandSetSpaceMapLookAtDistance(float distance)
+        {
+            questData.UserData.SetSpaceMapLookAtDistance(distance);
         }
 
         void UserInputSetExecuteWeapon(bool isExecute)

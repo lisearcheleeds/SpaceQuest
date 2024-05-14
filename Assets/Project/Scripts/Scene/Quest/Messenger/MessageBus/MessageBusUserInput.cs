@@ -12,8 +12,8 @@
             public MessageBusDefineUserInput.UserInputSwitchMenuStatusView UserInputSwitchMenuStatusView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuStatusView();
             public MessageBusDefineUserInput.UserInputSwitchMenuInventoryView UserInputSwitchMenuInventoryView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuInventoryView();
             public MessageBusDefineUserInput.UserInputSwitchMenuPlayerView UserInputSwitchMenuPlayerView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuPlayerView();
-            public MessageBusDefineUserInput.UserInputSwitchMenuAreaView UserInputSwitchMenuAreaView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuAreaView();
-            public MessageBusDefineUserInput.UserInputSwitchMenuMapView UserInputSwitchMenuMapView { get; } = new MessageBusDefineUserInput.UserInputSwitchMenuMapView();
+            public MessageBusDefineUserInput.UserInputOpenSpaceMapView UserInputOpenSpaceMapView { get; } = new MessageBusDefineUserInput.UserInputOpenSpaceMapView();
+            public MessageBusDefineUserInput.UserInputCloseSpaceMapView UserInputCloseSpaceMapView { get; } = new MessageBusDefineUserInput.UserInputCloseSpaceMapView();
 
             public MessageBusDefineUserInput.UIMenuStatusViewSelectActorData UIMenuStatusViewSelectActorData { get; } = new MessageBusDefineUserInput.UIMenuStatusViewSelectActorData();
 
@@ -41,6 +41,8 @@
             public MessageBusDefineUserInput.UserCommandSetLookAtAngle UserCommandSetLookAtAngle { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtAngle();
             public MessageBusDefineUserInput.UserCommandSetLookAtSpace UserCommandSetLookAtSpace { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtSpace();
             public MessageBusDefineUserInput.UserCommandSetLookAtDistance UserCommandSetLookAtDistance { get; } = new MessageBusDefineUserInput.UserCommandSetLookAtDistance();
+            public MessageBusDefineUserInput.UserCommandSetSpaceMapLookAtAngle UserCommandSetSpaceMapLookAtAngle { get; } = new MessageBusDefineUserInput.UserCommandSetSpaceMapLookAtAngle();
+            public MessageBusDefineUserInput.UserCommandSetSpaceMapLookAtDistance UserCommandSetSpaceMapLookAtDistance { get; } = new MessageBusDefineUserInput.UserCommandSetSpaceMapLookAtDistance();
         }
     }
 }

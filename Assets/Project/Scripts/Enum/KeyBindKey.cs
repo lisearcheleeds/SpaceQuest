@@ -35,8 +35,7 @@
         MenuStatusView,
         MenuInventoryView,
         MenuPlayerView,
-        MenuAreaView,
-        MenuMapView,
+        SpaceMapView,
 
         // System,
         MouseModeSwitch,

@@ -94,8 +94,7 @@ namespace AloneSpace
             KeyBindMap[KeyBindKey.MenuStatusView] = Keyboard.current[Key.F1];
             KeyBindMap[KeyBindKey.MenuInventoryView] = Keyboard.current[Key.F2];
             KeyBindMap[KeyBindKey.MenuPlayerView] = Keyboard.current[Key.F3];
-            KeyBindMap[KeyBindKey.MenuAreaView] = Keyboard.current[Key.F4];
-            KeyBindMap[KeyBindKey.MenuMapView] = Keyboard.current[Key.F5];
+            KeyBindMap[KeyBindKey.SpaceMapView] = Keyboard.current[Key.M];
 
             KeyBindMap[KeyBindKey.MouseModeSwitch] = Keyboard.current[Key.LeftAlt];
 

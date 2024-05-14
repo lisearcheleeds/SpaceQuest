@@ -10,8 +10,9 @@ namespace AloneSpace
         public class UserInputSwitchMenuStatusView : MessageBusBroadcaster{}
         public class UserInputSwitchMenuInventoryView : MessageBusBroadcaster{}
         public class UserInputSwitchMenuPlayerView : MessageBusBroadcaster{}
-        public class UserInputSwitchMenuAreaView : MessageBusBroadcaster{}
-        public class UserInputSwitchMenuMapView : MessageBusBroadcaster{}
+        
+        public class UserInputOpenSpaceMapView : MessageBusBroadcaster{}
+        public class UserInputCloseSpaceMapView : MessageBusBroadcaster{}
 
         public class UIMenuStatusViewSelectActorData : MessageBusBroadcaster<ActorData>{}
 
@@ -42,5 +43,7 @@ namespace AloneSpace
         public class UserCommandSetLookAtAngle : MessageBusBroadcaster<Vector3>{}
         public class UserCommandSetLookAtSpace : MessageBusBroadcaster<Quaternion>{}
         public class UserCommandSetLookAtDistance : MessageBusBroadcaster<float>{}
+        public class UserCommandSetSpaceMapLookAtAngle : MessageBusBroadcaster<Vector3>{}
+        public class UserCommandSetSpaceMapLookAtDistance : MessageBusBroadcaster<float>{}
     }
 }

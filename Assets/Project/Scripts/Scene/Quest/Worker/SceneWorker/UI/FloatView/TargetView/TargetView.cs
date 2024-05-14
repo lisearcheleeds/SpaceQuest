@@ -85,7 +85,7 @@ namespace AloneSpace.UI
 
         Vector3? GetScreenPositionFromWorldPosition(Vector3 worldPosition)
         {
-            return MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(CameraType.Near3DCamera,
+            return MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(CameraType.NearCamera,
                 worldPosition, actorMarkerParent);
         }
     }

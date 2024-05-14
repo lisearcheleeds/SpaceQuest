@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 1889725236443051183}
   - component: {fileID: 3915451089289792779}
   m_Layer: 13
-  m_Name: AreaViewCell
+  m_Name: SpaceMapViewCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

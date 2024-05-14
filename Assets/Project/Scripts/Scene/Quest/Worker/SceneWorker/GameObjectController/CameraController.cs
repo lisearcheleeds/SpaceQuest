@@ -1,14 +1,14 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace AloneSpace
 {
     public class CameraController : MonoBehaviour
     {
         [SerializeField] Camera ambientCamera;
-        [SerializeField] Camera far3DCamera;
-        [SerializeField] Camera near3DCamera;
+        [SerializeField] Camera farCamera;
+        [SerializeField] Camera nearCamera;
         
         [SerializeField] Camera cameraUIRadarView;
 
@@ -49,8 +49,8 @@ namespace AloneSpace
 
             currentTargetRotation = Quaternion.Lerp(currentTargetRotation, lookAtRotation, 0.4f);
             ambientCamera.transform.rotation = currentTargetRotation;
-            far3DCamera.transform.rotation = currentTargetRotation;
-            near3DCamera.transform.rotation = currentTargetRotation;
+            farCamera.transform.rotation = currentTargetRotation;
+            nearCamera.transform.rotation = currentTargetRotation;
             
             cameraUIRadarView.transform.rotation = currentTargetRotation;
 
@@ -59,14 +59,14 @@ namespace AloneSpace
 
             currentFoV = GetFieldOfView(currentFoV, questData.UserData.ActorOperationMode);
             ambientCamera.fieldOfView = currentFoV;
-            far3DCamera.fieldOfView = currentFoV;
-            near3DCamera.fieldOfView = currentFoV;
+            farCamera.fieldOfView = currentFoV;
+            nearCamera.fieldOfView = currentFoV;
             
             currentTargetPosition = GetLerpedCurrentPosition(currentTargetPosition, targetPosition, questData.UserData.ActorOperationMode);
             
             currentCameraPosition = GetCameraOffsetPosition(currentTargetPosition, currentTargetRotation, currentCameraPosition, questData.UserData);
-            far3DCamera.transform.position = currentCameraPosition;
-            near3DCamera.transform.position = currentCameraPosition;
+            farCamera.transform.position = currentCameraPosition;
+            nearCamera.transform.position = currentCameraPosition;
             
             cameraUIRadarView.transform.position = currentTargetRotation * new Vector3(0, 0, -4.0f);
         }
@@ -80,8 +80,8 @@ namespace AloneSpace
         {
             var camera = cameraType switch
             {
-                CameraType.Near3DCamera => near3DCamera,
-                CameraType.Far3DCamera => far3DCamera,
+                CameraType.NearCamera => nearCamera,
+                CameraType.FarCamera => farCamera,
                 CameraType.AmbientCamera => ambientCamera,
                 _ => throw new ArgumentException(),
             };
@@ -105,8 +105,8 @@ namespace AloneSpace
         {
             return cameraType switch
             {
-                CameraType.Near3DCamera => near3DCamera.transform.rotation,
-                CameraType.Far3DCamera => far3DCamera.transform.rotation,
+                CameraType.NearCamera => nearCamera.transform.rotation,
+                CameraType.FarCamera => farCamera.transform.rotation,
                 CameraType.AmbientCamera => ambientCamera.transform.rotation,
                 _ => throw new ArgumentException(),
             };
@@ -116,8 +116,8 @@ namespace AloneSpace
         {
             return cameraType switch
             {
-                CameraType.Near3DCamera => near3DCamera.fieldOfView,
-                CameraType.Far3DCamera => far3DCamera.fieldOfView,
+                CameraType.NearCamera => nearCamera.fieldOfView,
+                CameraType.FarCamera => farCamera.fieldOfView,
                 CameraType.AmbientCamera => ambientCamera.fieldOfView,
                 _ => throw new ArgumentException(),
             };

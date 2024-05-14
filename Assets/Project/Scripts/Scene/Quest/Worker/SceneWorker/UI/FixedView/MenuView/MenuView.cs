@@ -10,8 +10,6 @@ namespace AloneSpace.UI
         [SerializeField] StatusView statusView;
         [SerializeField] InventoryView inventoryView;
         [SerializeField] PlayerView playerView;
-        [SerializeField] AreaView areaView;
-        [SerializeField] MapView mapView;
 
         MenuElement currentMenuElement = MenuElement.StatusView;
 
@@ -22,8 +20,6 @@ namespace AloneSpace.UI
             StatusView,
             InventoryView,
             PlayerView,
-            AreaView,
-            MapView,
         }
 
         public void Initialize(QuestData questData)
@@ -33,8 +29,6 @@ namespace AloneSpace.UI
             statusView.Initialize(questData);
             inventoryView.Initialize(questData);
             playerView.Initialize(questData);
-            areaView.Initialize(questData);
-            mapView.Initialize(questData);
 
             tabController.SetOnChangeIndexFromButton(OnChangeIndexFromButton);
 
@@ -43,8 +37,6 @@ namespace AloneSpace.UI
             MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.AddListener(UserInputSwitchMenuStatusView);
             MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.AddListener(UserInputSwitchMenuInventoryView);
             MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.AddListener(UserInputSwitchMenuPlayerView);
-            MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.AddListener(UserInputSwitchMenuAreaView);
-            MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.AddListener(UserInputSwitchMenuMapView);
         }
 
         public void Finalize()
@@ -52,8 +44,6 @@ namespace AloneSpace.UI
             statusView.Finalize();
             inventoryView.Finalize();
             playerView.Finalize();
-            areaView.Finalize();
-            mapView.Finalize();
 
             tabController.SetOnChangeIndexFromButton(null);
 
@@ -62,8 +52,6 @@ namespace AloneSpace.UI
             MessageBus.Instance.UserInput.UserInputSwitchMenuStatusView.RemoveListener(UserInputSwitchMenuStatusView);
             MessageBus.Instance.UserInput.UserInputSwitchMenuInventoryView.RemoveListener(UserInputSwitchMenuInventoryView);
             MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.RemoveListener(UserInputSwitchMenuPlayerView);
-            MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.RemoveListener(UserInputSwitchMenuAreaView);
-            MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.RemoveListener(UserInputSwitchMenuMapView);
         }
 
         public void OnUpdate()
@@ -84,12 +72,6 @@ namespace AloneSpace.UI
                 case MenuElement.PlayerView:
                     playerView.OnUpdate();
                     break;
-                case MenuElement.AreaView:
-                    areaView.OnUpdate();
-                    break;
-                case MenuElement.MapView:
-                    mapView.OnUpdate();
-                    break;
             }
         }
 
@@ -105,12 +87,6 @@ namespace AloneSpace.UI
                     break;
                 case MenuElement.PlayerView:
                     MessageBus.Instance.UserInput.UserInputSwitchMenuPlayerView.Broadcast();
-                    break;
-                case MenuElement.AreaView:
-                    MessageBus.Instance.UserInput.UserInputSwitchMenuAreaView.Broadcast();
-                    break;
-                case MenuElement.MapView:
-                    MessageBus.Instance.UserInput.UserInputSwitchMenuMapView.Broadcast();
                     break;
             }
         }
@@ -129,12 +105,6 @@ namespace AloneSpace.UI
                     break;
                 case MenuElement.PlayerView:
                     playerView.SetDirty();
-                    break;
-                case MenuElement.AreaView:
-                    areaView.SetDirty();
-                    break;
-                case MenuElement.MapView:
-                    mapView.SetDirty();
                     break;
             }
 
@@ -171,18 +141,6 @@ namespace AloneSpace.UI
         void UserInputSwitchMenuPlayerView()
         {
             currentMenuElement = MenuElement.PlayerView;
-            UpdateView();
-        }
-
-        void UserInputSwitchMenuAreaView()
-        {
-            currentMenuElement = MenuElement.AreaView;
-            UpdateView();
-        }
-
-        void UserInputSwitchMenuMapView()
-        {
-            currentMenuElement = MenuElement.MapView;
             UpdateView();
         }
 

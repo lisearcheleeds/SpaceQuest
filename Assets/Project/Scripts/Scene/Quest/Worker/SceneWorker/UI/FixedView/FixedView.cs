@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace AloneSpace.UI
 {
@@ -9,6 +10,7 @@ namespace AloneSpace.UI
         [SerializeField] EnduranceView enduranceView;
         [SerializeField] WeaponDataListView weaponDataListView;
         [SerializeField] ActorOperationModeView actorOperationModeView;
+        [FormerlySerializedAs("areaView")] [SerializeField] SpaceMapView spaceMapView;
 
         public void Initialize(QuestData questData)
         {
@@ -17,6 +19,7 @@ namespace AloneSpace.UI
             enduranceView.Initialize();
             weaponDataListView.Initialize();
             actorOperationModeView.Initialize();
+            spaceMapView.Initialize(questData);
         }
 
         public void Finalize()
@@ -26,6 +29,7 @@ namespace AloneSpace.UI
             enduranceView.Finalize();
             weaponDataListView.Finalize();
             actorOperationModeView.Finalize();
+            spaceMapView.Finalize();
         }
 
         public void OnUpdate()
@@ -35,6 +39,7 @@ namespace AloneSpace.UI
             enduranceView.OnUpdate();
             weaponDataListView.OnUpdate();
             actorOperationModeView.OnUpdate();
+            spaceMapView.OnUpdate();
         }
     }
 }
