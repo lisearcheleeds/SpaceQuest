@@ -42,10 +42,16 @@ namespace AloneSpace.UI
                 return;
             }
 
+            UpdateCell();
+            UpdateAxisLine();
+        }
+
+        void UpdateCell()
+        {
             // Actorのセルを生成
             var currentAreaActors = questData.ActorData.Values.Where(actor => actor.AreaId == questData.UserData.ObserveAreaData?.AreaId).ToArray();
-            var needCellCount = Mathf.Max(cells.Count, currentAreaActors.Length);
-            for (var i = 0; i < needCellCount; i++)
+            var loopCount = Mathf.Max(cells.Count, currentAreaActors.Length);
+            for (var i = 0; i < loopCount; i++)
             {
                 if (cells.Count < i + 1)
                 {
@@ -64,23 +70,21 @@ namespace AloneSpace.UI
             
             // Interactのセルを生成
             var currentAreaInteracts = questData.InteractData.Values.Where(actor => actor.AreaId == questData.UserData.ObserveAreaData?.AreaId).ToArray();
-            var allNeedCellCount = Mathf.Max(cells.Count, currentAreaActors.Length + currentAreaInteracts.Length);
-            for (var i = needCellCount; i < allNeedCellCount; i++)
+            var allLoopCount = Mathf.Max(cells.Count, currentAreaActors.Length + currentAreaInteracts.Length);
+            for (var i = currentAreaActors.Length; i < allLoopCount; i++)
             {
                 if (cells.Count < i + 1)
                 {
                     cells.Add(Instantiate(spaceMapViewCellPrefab, parent));
                 }
 
-                cells[i].gameObject.SetActive(i < currentAreaInteracts.Length);
+                cells[i].gameObject.SetActive(i < currentAreaActors.Length + currentAreaInteracts.Length);
 
                 if (i < currentAreaInteracts.Length)
                 {
                     cells[i].Apply(currentAreaInteracts[i]);
                 }
             }
-
-            UpdateAxisLine();
         }
 
         void UpdateAxisLine()

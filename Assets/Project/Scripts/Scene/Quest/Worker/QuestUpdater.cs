@@ -45,14 +45,12 @@ namespace AloneSpace
             yield return null;
 
             // 他のPlayerを登録
-            /*
-            MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(5, null, 1);
+            MessageBus.Instance.Data.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(5, null, 1);
             var otherPlayerCount = Random.Range(1, 3);
             for (var i = 0; i < otherPlayerCount; i++)
             {
-                MessageBus.Instance.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, null, 1);
+                MessageBus.Instance.Data.CreatePlayerDataFromPresetIdAndAreaIdRandomPosition.Broadcast(1, null, 1);
             }
-            */
         }
 
         public void Finalize()

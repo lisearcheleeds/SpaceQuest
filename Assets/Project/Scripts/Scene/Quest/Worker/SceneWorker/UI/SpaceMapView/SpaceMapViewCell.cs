@@ -40,6 +40,8 @@ namespace AloneSpace.UI
             var axisPosition = transform.localPosition;
             axisPosition.y = 0;
             leg.positionCount = 2;
+            leg.startColor = transform.localPosition.y < 0 ? Color.red : Color.white;
+            leg.endColor = leg.startColor;
             leg.SetPositions(new[] { transform.localPosition, axisPosition });
         }
 
@@ -55,6 +57,8 @@ namespace AloneSpace.UI
             var axisPosition = transform.localPosition;
             axisPosition.y = 0;
             leg.positionCount = 2;
+            leg.startColor = transform.localPosition.y < 0 ? Color.red : Color.white;
+            leg.endColor = leg.startColor;
             leg.SetPositions(new[] { transform.localPosition, axisPosition });
         }
     }

@@ -103,7 +103,7 @@ namespace AloneSpace
             ambientCamera.transform.position = targetAmbientPosition;
                 
             spaceMapCamera.transform.rotation = spaceMapLookAtRotation;
-            spaceMapCamera.transform.position = Vector3.zero + spaceMapLookAtRotation * new Vector3(0, 0, -2000.0f - questData.UserData.SpaceMapLookAtDistance * 10.0f);
+            spaceMapCamera.transform.position = Vector3.zero + spaceMapLookAtRotation * new Vector3(0, 0, -1000.0f - questData.UserData.SpaceMapLookAtDistance * 10.0f);
         }
 
         void UserCommandSetCameraTrackTarget(IPositionData cameraTrackTarget)

@@ -11,6 +11,7 @@ namespace AloneSpace.UI
 
         [SerializeField] GameObject mainTargetMark;
         [SerializeField] GameObject targetMark;
+        [SerializeField] GameObject objectMark;
 
         Func<Vector3, Vector3?> getScreenPositionFromWorldPosition;
 
@@ -57,6 +58,7 @@ namespace AloneSpace.UI
         {
             mainTargetMark.SetActive(targetData != null && fromActorData.ActorStateData.MainTarget?.InstanceId == targetData.InstanceId);
             targetMark.SetActive(targetData != null && MessageBus.Instance.FrameCache.GetActorRelationData.Unicast(fromActorData.InstanceId).Any(x => x.OtherActorData.InstanceId == targetData.InstanceId));
+            objectMark.SetActive(false);
         }
     }
 }
