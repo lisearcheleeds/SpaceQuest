@@ -85,6 +85,15 @@ namespace AloneSpace
                 && weaponData.WeaponStateData.ReloadRemainTime == 0
                 && weaponData.WeaponStateData.ResourceIndex < weaponData.VO.MagazineSize
                 && weaponData.MissileMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
+            
+            // 有効射程か
+            var targetSqrDistance = Vector3.SqrMagnitude(weaponData.WeaponStateData.TargetData.Position - GetOutputPosition().Position);
+            var effectiveSqrDistance = weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance *
+                                       weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance;
+            weaponData.WeaponStateData.IsTargetInRange =
+                weaponData.WeaponStateData.TargetData != null
+                && targetSqrDistance < effectiveSqrDistance;
+            weaponData.WeaponStateData.IsTargetInAngle = true;
         }
 
         void Execute()

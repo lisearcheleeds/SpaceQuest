@@ -53,6 +53,11 @@ namespace AloneSpace.UI
                 
                 // Actorの表示
                 var controlActorData = questData.UserData.ControlActorData;
+                if (controlActorData == null)
+                {
+                    return;
+                }
+
                 var currentAreaId = controlActorData.AreaId;
                 var currentAreaActors = questData.ActorData.Values.Where(actorData => 
                     actorData.InstanceId != controlActorData.InstanceId && actorData.AreaId == currentAreaId).ToArray();

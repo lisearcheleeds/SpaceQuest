@@ -22,6 +22,9 @@
 
         // 継続時間
         public float LifeTime => row.LifeTime;
+        
+        // 有効射程距離
+        public float EffectiveDistance => row.EffectiveDistance;
 
         // 衝突判定スケール
         public float SizeScale => row.SizeScale;

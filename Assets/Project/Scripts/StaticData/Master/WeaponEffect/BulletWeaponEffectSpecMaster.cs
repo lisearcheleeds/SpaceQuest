@@ -20,6 +20,9 @@ namespace AloneSpace
 
             // 継続時間
             public float LifeTime { get; }
+            
+            // 有効射程距離
+            public float EffectiveDistance { get; }
 
             // 衝突判定スケール
             public float SizeScale { get; }
@@ -33,6 +36,7 @@ namespace AloneSpace
                 float baseDamage,
                 float speed,
                 float lifeTime,
+                float effectiveDistance,
                 float sizeScale,
                 float penetration)
             {
@@ -41,6 +45,7 @@ namespace AloneSpace
                 BaseDamage = baseDamage;
                 Speed = speed;
                 LifeTime = lifeTime;
+                EffectiveDistance = effectiveDistance;
                 SizeScale = sizeScale;
                 Penetration = penetration;
             }
@@ -71,8 +76,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Bullet/Bullet"), 2, 300.0f, 8.0f, 1.0f, 0.0f),
-                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Bullet/Bullet"), 2, 300.0f, 8.0f, 1.0f, 0.0f),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Bullet/Bullet"), 2, 300.0f, 8.0f, 1.0f, 1000.0f, 0.0f),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Bullet/Bullet"), 2, 300.0f, 8.0f, 1.0f, 1000.0f, 0.0f),
             };
         }
     }

@@ -12,6 +12,8 @@ namespace AloneSpace
 
         public virtual bool IsReloadable { get; set; }
         public virtual bool IsExecutable { get; set; }
+        public virtual bool IsTargetInRange { get; set; }
+        public virtual bool IsTargetInAngle { get; set; }
         public bool IsExecute { get; set; }
 
         public virtual float FireTime { get; set; }

@@ -25,6 +25,9 @@
 
         // 速度
         public float Speed => row.Speed;
+        
+        // 有効射程距離
+        public float EffectiveDistance => row.EffectiveDistance;
 
         // 継続時間
         public float LifeTime => row.LifeTime;

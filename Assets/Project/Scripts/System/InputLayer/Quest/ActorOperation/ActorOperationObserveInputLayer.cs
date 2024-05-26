@@ -32,7 +32,7 @@ namespace AloneSpace
         void CheckLookAtDistance()
         {
             MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(Mathf.Min(
-                userData.ControlActorData.ActorGameObjectHandler?.BoundingSize ?? 0, 
+                userData.ControlActorData?.ActorGameObjectHandler?.BoundingSize ?? 0, 
                 userData.LookAtDistance + Mouse.current.scroll.ReadValue().y * 0.1f));
         }
     }

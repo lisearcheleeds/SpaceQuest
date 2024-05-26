@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AloneSpace
 {
@@ -95,6 +96,13 @@ namespace AloneSpace
             MessageBus.Instance.Asset.GetCacheAsset.Broadcast(weaponEffectData.WeaponEffectSpecVO.Path, c =>
             {
                 var weaponEffect = (WeaponEffect)c;
+                if (!loadingWeaponEffect.Contains(weaponEffectData.InstanceId))
+                {
+                    // 既にReleaseされている
+                    weaponEffect.Release();
+                    return;
+                }
+
                 weaponEffect.Init(weaponEffectData);
                 currentWeaponEffectList.AddLast(weaponEffect);
                 loadingWeaponEffect.Remove(weaponEffectData.InstanceId);
@@ -119,6 +127,13 @@ namespace AloneSpace
         {
             if (weaponEffectData.AreaId == observeArea?.AreaId)
             {
+                // ローディング中だったらreturn（ついでにCreateもしないように）
+                if (loadingWeaponEffect.Contains(weaponEffectData.InstanceId))
+                {
+                    loadingWeaponEffect.Remove(weaponEffectData.InstanceId);
+                    return;
+                }
+
                 ReleaseWeaponEffect(currentWeaponEffectList.First(x => x.WeaponEffectData.InstanceId == weaponEffectData.InstanceId));
             }
         }

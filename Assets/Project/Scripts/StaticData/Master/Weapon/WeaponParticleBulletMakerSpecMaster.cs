@@ -36,9 +36,6 @@ namespace AloneSpace
             // 自動射撃
             public bool HasAutoFireMode { get; }
 
-            // 旋回速度
-            public float TurningSpeed { get; }
-
             public Row(
                 int id,
                 string name,
@@ -49,8 +46,7 @@ namespace AloneSpace
                 float accuracy,
                 float angleOfFire,
                 bool isPredictiveShoot,
-                bool hasAutoFireMode,
-                float turningSpeed)
+                bool hasAutoFireMode)
             {
                 Id = id;
                 Name = name;
@@ -62,7 +58,6 @@ namespace AloneSpace
                 AngleOfFire = angleOfFire;
                 IsPredictiveShoot = isPredictiveShoot;
                 HasAutoFireMode = hasAutoFireMode;
-                TurningSpeed = turningSpeed;
             }
         }
 
@@ -91,8 +86,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "ParticleBulletMaker1", new AssetPath("Prefab/Weapon/ParticleBulletMaker1"), 1, 3.0f, 0.08f, 100.0f, 90.0f, true, true, 150.0f),
-                new Row(2, "ParticleBulletMaker2", new AssetPath("Prefab/Weapon/ParticleBulletMaker2"), 1, 3.0f, 1.0f, 100.0f, 90.0f, true, true, 150.0f),
+                new Row(1, "ParticleBulletMaker1", new AssetPath("Prefab/Weapon/ParticleBulletMaker1"), 1, 3.0f, 0.24f, 1000.0f, 15.0f, true, true),
+                new Row(2, "ParticleBulletMaker2", new AssetPath("Prefab/Weapon/ParticleBulletMaker2"), 1, 3.0f, 0.12f, 50.0f, 180.0f, true, true),
             };
         }
     }

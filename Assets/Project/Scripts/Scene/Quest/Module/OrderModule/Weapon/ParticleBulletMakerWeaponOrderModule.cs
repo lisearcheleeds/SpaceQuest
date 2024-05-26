@@ -28,6 +28,7 @@ namespace AloneSpace
             CreateWeaponEffectData();
 
             AdjustRotate(deltaTime);
+            UpdateState();
         }
 
         void CreateWeaponEffectData()
@@ -50,47 +51,79 @@ namespace AloneSpace
 
         void AdjustRotate(float deltaTime)
         {
-            var targetDirection = weaponData.WeaponStateData.LookAtDirection;
-            if (weaponData.WeaponStateData.TargetData != null)
+            // FIXME: すべての銃口に対応していない（撃つたびに銃口がかわり、基準も変わる
+            var currentOutputPosition = GetOutputPosition();
+            var outputDirection = currentOutputPosition.Rotation * Vector3.forward;
+            var targetDirection = outputDirection;
+
+            if (weaponData.WeaponStateData.TargetData != null && weaponData.WeaponStateData.IsTargetInAngle)
             {
-                // とりあえずまずはターゲットの位置の情報を設定
-                var outputPosition = GetOutputPosition();
                 var targetPosition = weaponData.WeaponStateData.TargetData.Position;
-                var targetRelativePosition = targetPosition - outputPosition.Position;
-                targetDirection = targetRelativePosition.normalized;
+                var targetRelativePosition = targetPosition - currentOutputPosition.Position;
+                var targetRelativeDirection = targetRelativePosition.normalized;
 
                 if (weaponData.VO.IsPredictiveShoot && weaponData.WeaponStateData.TargetData is IMovingModuleHolder targetMovingModuleHolder)
                 {
-                    // ターゲットが移動する場合は移動先の位置の情報を設定
+                    // 移動してるなら弾速と合わせて移動先を予測する
+                    // ParticleなのでSpeedにdelta timeは不要
                     var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                         targetMovingModuleHolder.MovingModule.MovementVelocity,
                         targetPosition,
-                        targetDirection * weaponData.VO.ParticleBulletWeaponEffectSpecVO.Speed * deltaTime,
-                        outputPosition.Position);
+                        targetRelativeDirection * weaponData.VO.ParticleBulletWeaponEffectSpecVO.Speed,
+                        currentOutputPosition.Position);
 
                     if (catchUpToDirection.HasValue)
                     {
-                        targetDirection = catchUpToDirection.Value;
+                        targetRelativeDirection = catchUpToDirection.Value;
                     }
                 }
+                
+                targetDirection = targetRelativeDirection;
             }
 
-            // TODO: なんかもっと軽い方法ないか考える
-            // 角度制限
-            targetDirection = Quaternion.RotateTowards(
-                Quaternion.LookRotation(weaponData.WeaponHolder.Rotation * Vector3.forward),
-                Quaternion.LookRotation(targetDirection),
-                weaponData.VO.AngleOfFire) * Vector3.forward;
-
             // 砲塔回転
-            weaponData.WeaponStateData.OffsetRotation = Quaternion.RotateTowards(
-                weaponData.WeaponStateData.OffsetRotation,
-                Quaternion.LookRotation(targetDirection) * Quaternion.Inverse(GetOutputPosition().Rotation),
-                deltaTime * weaponData.VO.TurningSpeed);
+            weaponData.WeaponStateData.OffsetRotation = 
+                Quaternion.LookRotation(targetDirection) * Quaternion.Inverse(currentOutputPosition.Rotation);
+        }
+        
+        void UpdateState()
+        {
+            // リロード可能か
+            weaponData.WeaponStateData.IsReloadable =
+                weaponData.WeaponStateData.ReloadRemainTime == 0
+                && weaponData.WeaponStateData.ResourceIndex != 0;
+
+            // 実行可能か
+            weaponData.WeaponStateData.IsExecutable = true;
+
+            var targetData = weaponData.WeaponStateData.TargetData;
+            var currentOutputPosition = GetOutputPosition();
+            if (targetData != null)
+            {
+                // 有効射程か
+                var targetSqrDistance = Vector3.SqrMagnitude(targetData.Position - currentOutputPosition.Position);
+                var effectiveSqrDistance = weaponData.VO.ParticleBulletWeaponEffectSpecVO.EffectiveDistance *
+                                           weaponData.VO.ParticleBulletWeaponEffectSpecVO.EffectiveDistance;
+                weaponData.WeaponStateData.IsTargetInRange = targetSqrDistance < effectiveSqrDistance;
+             
+                // 有効射角か   
+                var outputDirection = currentOutputPosition.Rotation * Vector3.forward;
+                var targetPosition = weaponData.WeaponStateData.TargetData.Position;
+                var targetRelativePosition = targetPosition - currentOutputPosition.Position;
+                var targetRelativeDirection = targetRelativePosition.normalized;
+                weaponData.WeaponStateData.IsTargetInAngle =
+                    Vector3.Angle(outputDirection, targetRelativeDirection) < weaponData.VO.AngleOfFire;
+            }
+            else
+            {
+                weaponData.WeaponStateData.IsTargetInRange = false;
+                weaponData.WeaponStateData.IsTargetInAngle = false;
+            }
         }
 
         IPositionData GetOutputPosition()
         {
+            // GameObjectが無いデータ上の存在であれば簡略化
             if (weaponData.WeaponGameObjectHandler == null)
             {
                 return weaponData.WeaponHolder;

@@ -40,9 +40,6 @@ namespace AloneSpace
         // 自動射撃
         public bool HasAutoFireMode => row.HasAutoFireMode;
 
-        // 旋回速度
-        public float TurningSpeed => row.TurningSpeed;
-
         public ParticleBulletWeaponEffectSpecVO ParticleBulletWeaponEffectSpecVO { get; }
 
         // SpecialEffect

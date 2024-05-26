@@ -27,6 +27,9 @@ namespace AloneSpace
             // 継続時間
             public float LifeTime { get; }
 
+            // 有効射程距離
+            public float EffectiveDistance { get; }
+
             // 衝突判定スケール
             public float SizeScale { get; }
 
@@ -38,6 +41,7 @@ namespace AloneSpace
                 float homingAngle,
                 float speed,
                 float lifeTime,
+                float effectiveDistance,
                 float sizeScale)
             {
                 Id = id;
@@ -47,6 +51,7 @@ namespace AloneSpace
                 HomingAngle = homingAngle;
                 Speed = speed;
                 LifeTime = lifeTime;
+                EffectiveDistance = effectiveDistance;
                 SizeScale = sizeScale;
             }
         }
@@ -76,8 +81,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1.0f),
-                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1.0f),
+                new Row(1, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/MiddleMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1000.0f, 1.0f),
+                new Row(2, new CacheableGameObjectPath("Prefab/WeaponEffect/Projectile/Missile/ShortMissile"), 1, 0.5f, 150.0f, 150.0f, 8.0f, 1000.0f, 1.0f),
             };
         }
     }

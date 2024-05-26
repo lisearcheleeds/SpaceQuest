@@ -47,7 +47,10 @@ namespace AloneSpace
             MessageBus.Instance.UserInput.UserCommandSetLookAtSpace.Broadcast(Quaternion.identity);
             MessageBus.Instance.UserInput.UserCommandSetLookAtAngle.Broadcast(localLookAtAngle);
 
-            MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
+            if (userData.ControlActorData != null)
+            {
+                MessageBus.Instance.UserInput.UserCommandSetLookAtDistance.Broadcast(userData.ControlActorData.ActorGameObjectHandler.BoundingSize);
+            }
         }
     }
 }
