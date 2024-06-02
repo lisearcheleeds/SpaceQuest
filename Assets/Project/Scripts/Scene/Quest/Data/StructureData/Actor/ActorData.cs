@@ -57,14 +57,15 @@ namespace AloneSpace
             WeaponSpecVOs = actorPresetVO.WeaponSpecVOs;
 
             InventoryData = new InventoryData(actorPresetVO.ActorSpecVO.CapacityWidth, actorPresetVO.ActorSpecVO.CapacityHeight);
-            WeaponDataGroup = Enumerable.Range(0, ConstantInt.WeaponGroupCount).Select(_ => new List<Guid>()).ToArray();
             WeaponData = actorPresetVO.WeaponSpecVOs
                 .Where(vo => vo != null)
                 .Select((vo, weaponIndex) => WeaponDataHelper.GetWeaponData(vo, this, weaponIndex))
                 .ToDictionary(weaponData => weaponData.InstanceId, weaponData => weaponData);
             ActorPresetSpecialEffectSpecVOs = actorPresetVO.SpecialEffectSpecVOs;
 
-            WeaponDataGroup[0].AddRange(WeaponData.Keys);
+            var weaponDataGroup = WeaponData.GroupBy(x => x.Value.WeaponSpecVO.WeaponType).Select(x => x.Select(y => y.Key).ToList()).ToList();
+            weaponDataGroup.AddRange(Enumerable.Range(0, Mathf.Max(0, ConstantInt.WeaponGroupCount - weaponDataGroup.Count)).Select(_ => new List<Guid>()));
+            WeaponDataGroup = weaponDataGroup.ToArray();
 
             ActorStateData.EnduranceValue = ActorSpecVO.EnduranceValue;
             ActorStateData.EnduranceValueMax = ActorSpecVO.EnduranceValue;

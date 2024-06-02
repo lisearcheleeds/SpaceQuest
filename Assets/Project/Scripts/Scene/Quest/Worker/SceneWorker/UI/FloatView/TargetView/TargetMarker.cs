@@ -9,7 +9,6 @@ namespace AloneSpace.UI
         ActorData fromActorData;
         IPositionData targetData;
 
-        [SerializeField] GameObject mainTargetMark;
         [SerializeField] GameObject targetMark;
         [SerializeField] GameObject objectMark;
 
@@ -56,7 +55,6 @@ namespace AloneSpace.UI
 
         void UpdateView()
         {
-            mainTargetMark.SetActive(targetData != null && fromActorData.ActorStateData.MainTarget?.InstanceId == targetData.InstanceId);
             targetMark.SetActive(targetData != null && MessageBus.Instance.FrameCache.GetActorRelationData.Unicast(fromActorData.InstanceId).Any(x => x.OtherActorData.InstanceId == targetData.InstanceId));
             objectMark.SetActive(false);
         }

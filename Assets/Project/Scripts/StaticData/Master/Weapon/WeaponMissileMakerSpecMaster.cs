@@ -55,6 +55,9 @@ namespace AloneSpace
             // ロックオン距離
             public float LockOnDistance { get; }
 
+            // ロックオン角度
+            public float LockOnAngle { get; }
+            
             // 撃ち切るかどうか
             public bool ShootUp { get; }
 
@@ -75,6 +78,7 @@ namespace AloneSpace
                 bool horizontalLaunch,
                 float launchSpeed,
                 float lockOnDistance,
+                float lockOnAngle,
                 bool shootUp)
             {
                 Id = id;
@@ -93,6 +97,7 @@ namespace AloneSpace
                 HorizontalLaunch = horizontalLaunch;
                 LaunchSpeed = launchSpeed;
                 LockOnDistance = lockOnDistance;
+                LockOnAngle = lockOnAngle;
                 ShootUp = shootUp;
             }
         }
@@ -122,8 +127,8 @@ namespace AloneSpace
         {
             rows = new[]
             {
-                new Row(1, "MissileMaker1", new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f, 2, 1, true, true, 0.3f, 1000.0f, false),
-                new Row(2, "MissileMaker2", new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f, 12, 1, true, false, 0.3f, 1000.0f, true),
+                new Row(1, "MissileMaker1", new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f, 2, 1, true, true, 0.3f, 1000.0f, 30.0f, false),
+                new Row(2, "MissileMaker2", new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f, 12, 1, true, false, 0.3f, 1000.0f, 180.0f, true),
             };
         }
     }

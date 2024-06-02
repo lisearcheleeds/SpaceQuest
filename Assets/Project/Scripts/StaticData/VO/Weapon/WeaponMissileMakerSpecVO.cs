@@ -46,6 +46,9 @@ namespace AloneSpace
         // ロックオン距離
         public float LockOnDistance => row.LockOnDistance;
 
+        // ロックオン角度
+        public float LockOnAngle => row.LockOnAngle;
+
         // 撃ち切るかどうか
         public bool ShootUp => row.ShootUp;
 

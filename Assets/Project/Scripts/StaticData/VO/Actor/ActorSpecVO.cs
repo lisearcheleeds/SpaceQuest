@@ -30,7 +30,7 @@ namespace AloneSpace
 
         // 武器
         public int WeaponSlotCount => WeaponSlotLayout.Length;
-        public (float, float)[] WeaponSlotLayout { get; }
+        public (float PositionX, float PositionY)[] WeaponSlotLayout { get; }
 
         // ブースター
         public float MainBoosterPower => row.MainBoosterPower;
@@ -69,7 +69,7 @@ namespace AloneSpace
             WeaponSlotLayout = Enumerable.Range(0, weaponSlotLayouts.Length).Select(index =>
             {
                 var layout = weaponSlotLayouts.FirstOrDefault(l => l.WeaponSlotIndex == index);
-                return (layout.PositionX, layout.PositionY);
+                return layout != default ? (layout.PositionX, layout.PositionY) : default;
             }).ToArray();
 
             var specialEffectMasterRows = ActorSpecSpecialEffectRelationMaster.Instance.GetRange(id);

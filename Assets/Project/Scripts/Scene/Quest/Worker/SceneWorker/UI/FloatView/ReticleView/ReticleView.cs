@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AloneSpace.Common;
 using UnityEngine;
 
 namespace AloneSpace.UI
@@ -12,9 +13,23 @@ namespace AloneSpace.UI
         
         [SerializeField] GameObject weaponInstruments;
         [SerializeField] RectTransform weaponBaseReticle;
+        
+        [Header("Bullet")]
+        [SerializeField] RectTransform bulletBase;
+        [SerializeField] Circle2D bulletAngle;
         [SerializeField] RectTransform bulletReticle;
+        [SerializeField] Circle2D bulletResourceGauge;
+        
+        [Header("Rocket")]
+        [SerializeField] RectTransform rocketBase;
         [SerializeField] RectTransform rocketReticle;
+        [SerializeField] Circle2D rocketResourceGauge;
+        
+        [Header("Missile")]
+        [SerializeField] RectTransform missileBase;
         [SerializeField] RectTransform missileReticle;
+        [SerializeField] Circle2D missileAngle;
+        [SerializeField] Circle2D missileResourceGauge;
         
         [SerializeField] GameObject commonInstruments;
         [SerializeField] RectTransform dotReticle;
@@ -38,54 +53,28 @@ namespace AloneSpace.UI
             switch (questData.UserData.ActorOperationMode)
             {
                 case ActorOperationMode.Observe:
-                    ObserveUpdate();
                     break;
                 case ActorOperationMode.ObserveFreeCamera:
-                    ObserveFreeCamera();
                     break;
                 case ActorOperationMode.Cockpit:
-                    CockpitUpdate();
+                    WeaponBaseReticleUpdate(true);
+                    BulletReticleUpdate();
+                    RocketReticleUpdate();
+                    MissileReticleUpdate();
                     break;
                 case ActorOperationMode.CockpitFreeCamera:
-                    CockpitFreeCameraUpdate();
+                    WeaponBaseReticleUpdate(false);
                     break;
                 case ActorOperationMode.Spotter:
-                    SpotterUpdate();
+                    WeaponBaseReticleUpdate(false);
+                    BulletReticleUpdate();
+                    RocketReticleUpdate();
+                    MissileReticleUpdate();
                     break;
                 case ActorOperationMode.SpotterFreeCamera:
-                    SpotterFreeCameraUpdate();
+                    WeaponBaseReticleUpdate(false);
                     break;
             }
-        }
-
-        void ObserveUpdate()
-        {
-        }
-
-        void ObserveFreeCamera()
-        {
-        }
-
-        void CockpitUpdate()
-        {
-            WeaponBaseReticleUpdate(true);
-            BulletReticleUpdate();
-        }
-
-        void CockpitFreeCameraUpdate()
-        {
-            WeaponBaseReticleUpdate(false);
-        }
-
-        void SpotterUpdate()
-        {
-            WeaponBaseReticleUpdate(false);
-            BulletReticleUpdate();
-        }
-
-        void SpotterFreeCameraUpdate()
-        {
-            WeaponBaseReticleUpdate(false);
         }
 
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
@@ -93,6 +82,7 @@ namespace AloneSpace.UI
             flightInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.Cockpit);
             weaponInstruments.gameObject.SetActive(actorOperationMode != ActorOperationMode.Observe && actorOperationMode != ActorOperationMode.ObserveFreeCamera);
             commonInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.Observe || actorOperationMode == ActorOperationMode.ObserveFreeCamera);
+            
             ResetPositions();
         }
         
@@ -112,8 +102,10 @@ namespace AloneSpace.UI
         void WeaponBaseReticleUpdate(bool withArtificialHorizon)
         {
             var fov = MessageBus.Instance.Util.GetCameraFieldOfView.Unicast(CameraType.NearCamera);
-            fov = fov != 0 ? fov : 60;
-            weaponBaseReticle.localScale = Vector3.one * (60.0f / fov);
+            if (fov == 0)
+            {
+                return;
+            }
 
             if (withArtificialHorizon)
             {
@@ -152,6 +144,8 @@ namespace AloneSpace.UI
                 .FirstOrDefault();
             if (currentBulletMaker != null)
             {
+                bulletBase.gameObject.SetActive(true);
+                
                 if (currentBulletMaker.BulletMakerWeaponStateData.TargetData != null && currentBulletMaker.BulletMakerWeaponStateData.IsTargetInAngle)
                 {
                     var canvasPoint = MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(
@@ -173,6 +167,19 @@ namespace AloneSpace.UI
                     bulletReticle.localPosition = (bulletReticle.localPosition + Vector3.zero) * 0.5f;
                 }
 
+                var fov = MessageBus.Instance.Util.GetCameraFieldOfView.Unicast(CameraType.NearCamera);
+                if (fov != 0)
+                {
+                    var reticleSize = Screen.height * currentBulletMaker.VO.AngleOfFire / fov;
+                    bulletAngle.Apply(
+                        reticleSize, 
+                        bulletAngle.Division, 
+                        bulletAngle.FillOrigin, 
+                        bulletAngle.FillAmount, 
+                        bulletAngle.IsPierced, 
+                        reticleSize - 4.0f);
+                }
+
                 return;
             }
             
@@ -182,6 +189,8 @@ namespace AloneSpace.UI
                 .FirstOrDefault();
             if (currentParticleBulletMaker != null)
             {
+                bulletBase.gameObject.SetActive(true);
+                
                 if (currentParticleBulletMaker.ParticleBulletMakerWeaponStateData.TargetData != null && currentParticleBulletMaker.ParticleBulletMakerWeaponStateData.IsTargetInAngle)
                 {
                     var canvasPoint = MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(
@@ -202,6 +211,89 @@ namespace AloneSpace.UI
                 {
                     bulletReticle.localPosition = (bulletReticle.localPosition + Vector3.zero) * 0.5f;
                 }
+
+                var fov = MessageBus.Instance.Util.GetCameraFieldOfView.Unicast(CameraType.NearCamera);
+                if (fov != 0)
+                {
+                    var reticleSize = Screen.height * (currentParticleBulletMaker.VO.AngleOfFire / fov);
+                    bulletAngle.Apply(
+                        reticleSize, 
+                        bulletAngle.Division, 
+                        bulletAngle.FillOrigin, 
+                        bulletAngle.FillAmount, 
+                        bulletAngle.IsPierced, 
+                        reticleSize - 4.0f);
+                }
+
+                return;
+            }
+            
+            bulletBase.gameObject.SetActive(false);
+        }
+
+        void RocketReticleUpdate()
+        {
+            rocketBase.gameObject.SetActive(false);
+        }
+
+        void MissileReticleUpdate()
+        {
+            var controlActorData = questData.UserData.ControlActorData;
+            var currentWeaponDataGroup = controlActorData.WeaponDataGroup[controlActorData.ActorStateData.CurrentWeaponGroupIndex];
+            
+            var currentMissileMaker = currentWeaponDataGroup
+                .Select(x => controlActorData.WeaponData[x])
+                .OfType<MissileMakerWeaponData>()
+                .FirstOrDefault();
+            if (currentMissileMaker != null)
+            {
+                missileBase.gameObject.SetActive(true);
+                
+                if (currentMissileMaker.MissileMakerWeaponStateData.TargetData != null && currentMissileMaker.MissileMakerWeaponStateData.IsTargetInAngle)
+                {
+                    var canvasPoint = MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(
+                        CameraType.NearCamera,
+                        currentMissileMaker.MissileMakerWeaponStateData.TargetData.Position,
+                        (RectTransform)missileReticle.parent);
+
+                    if (canvasPoint.HasValue)
+                    {
+                        missileReticle.localPosition = (missileReticle.localPosition + canvasPoint.Value) * 0.5f;
+                    }
+                    else
+                    {
+                        missileReticle.localPosition = (missileReticle.localPosition + Vector3.zero) * 0.5f;
+                    }
+                }
+                else
+                {
+                    missileReticle.localPosition = (missileReticle.localPosition + Vector3.zero) * 0.5f;
+                }
+                
+                var fov = MessageBus.Instance.Util.GetCameraFieldOfView.Unicast(CameraType.NearCamera);
+                if (fov != 0)
+                {
+                    var reticleSize = Screen.height * (currentMissileMaker.VO.LockOnAngle / fov);
+                    missileAngle.Apply(
+                        reticleSize, 
+                        missileAngle.Division, 
+                        missileAngle.FillOrigin, 
+                        missileAngle.FillAmount, 
+                        missileAngle.IsPierced, 
+                        reticleSize - 4.0f);
+                    
+                    missileResourceGauge.Apply(
+                        reticleSize - 8.0f, 
+                        missileResourceGauge.Division, 
+                        missileResourceGauge.FillOrigin, 
+                        (currentMissileMaker.VO.MagazineSize - (float)currentMissileMaker.MissileMakerWeaponStateData.ResourceIndex) / currentMissileMaker.VO.MagazineSize, 
+                        missileResourceGauge.IsPierced, 
+                        reticleSize - 28.0f);
+                }
+            }
+            else
+            {
+                missileBase.gameObject.SetActive(false);
             }
         }
     }

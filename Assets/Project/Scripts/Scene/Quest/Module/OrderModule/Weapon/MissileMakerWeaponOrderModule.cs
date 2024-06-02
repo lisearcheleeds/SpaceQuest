@@ -87,13 +87,19 @@ namespace AloneSpace
                 && weaponData.MissileMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
             
             // 有効射程か
-            var targetSqrDistance = Vector3.SqrMagnitude(weaponData.WeaponStateData.TargetData.Position - GetOutputPosition().Position);
-            var effectiveSqrDistance = weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance *
-                                       weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance;
-            weaponData.WeaponStateData.IsTargetInRange =
-                weaponData.WeaponStateData.TargetData != null
-                && targetSqrDistance < effectiveSqrDistance;
-            weaponData.WeaponStateData.IsTargetInAngle = true;
+            if (weaponData.WeaponStateData.TargetData != null)
+            {
+                var targetSqrDistance = Vector3.SqrMagnitude(weaponData.WeaponStateData.TargetData.Position - GetOutputPosition().Position);
+                var effectiveSqrDistance = weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance *
+                                           weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance;
+                weaponData.WeaponStateData.IsTargetInRange = targetSqrDistance < effectiveSqrDistance;
+                weaponData.WeaponStateData.IsTargetInAngle = true;
+            }
+            else
+            {
+                weaponData.WeaponStateData.IsTargetInRange = false;
+                weaponData.WeaponStateData.IsTargetInAngle = false;
+            }
         }
 
         void Execute()
