@@ -4,21 +4,22 @@ namespace AloneSpace.UI
 {
     public class UIManager : MonoBehaviour
     {
-        // FLOAT VIEW
+        [Header("FLOAT VIEW")]
         [SerializeField] TargetView targetView;
         [SerializeField] RadarView radarView;
         [SerializeField] ReticleView reticleView;
+        [SerializeField] DamageView damageView;
         
-        // FIXED VIEW
+        [Header("FIXED VIEW")]
         [SerializeField] EnduranceView enduranceView;
         [SerializeField] WeaponDataListView weaponDataListView;
         [SerializeField] ActorOperationModeView actorOperationModeView;
         
-        // FULL SCREEN
+        [Header("FULL SCREEN")]
         [SerializeField] MenuView menuView;
         [SerializeField] SpaceMapView spaceMapView;
         
-        // OVERLAY VIEW
+        [Header("OVERLAY VIEW")]
         [SerializeField] InventoryLogView inventoryLogView;
         [SerializeField] ContentQuickView contentQuickView;
 
@@ -29,6 +30,7 @@ namespace AloneSpace.UI
             targetView.Initialize();
             radarView.Initialize(questData);
             reticleView.Initialize(questData);
+            damageView.Initialize();
             
             menuView.Initialize(questData);
             enduranceView.Initialize();
@@ -50,6 +52,7 @@ namespace AloneSpace.UI
             targetView.Finalize();
             radarView.Finalize();
             reticleView.Finalize();
+            damageView.Finalize();
             
             menuView.Finalize();
             enduranceView.Finalize();
@@ -71,6 +74,7 @@ namespace AloneSpace.UI
             targetView.OnUpdate();
             radarView.OnUpdate();
             reticleView.OnUpdate();
+            damageView.OnUpdate();
             
             menuView.OnUpdate();
             enduranceView.OnUpdate();
