@@ -124,9 +124,10 @@ namespace AloneSpace
                 && weaponData.BulletMakerWeaponStateData.BurstResourceIndex < weaponData.VO.BurstSize;
 
             var targetData = weaponData.WeaponStateData.TargetData;
-            var currentOutputPosition = GetOutputPosition();
             if (targetData != null)
             {
+                var currentOutputPosition = GetOutputPosition();
+                
                 // 有効射程か
                 var targetSqrDistance = Vector3.SqrMagnitude(targetData.Position - currentOutputPosition.Position);
                 var effectiveSqrDistance = weaponData.VO.BulletWeaponEffectSpecVO.EffectiveDistance *

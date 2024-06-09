@@ -89,11 +89,20 @@ namespace AloneSpace
             // 有効射程か
             if (weaponData.WeaponStateData.TargetData != null)
             {
-                var targetSqrDistance = Vector3.SqrMagnitude(weaponData.WeaponStateData.TargetData.Position - GetOutputPosition().Position);
+                var currentOutputPosition = GetOutputPosition();
+
+                var targetSqrDistance = Vector3.SqrMagnitude(weaponData.WeaponStateData.TargetData.Position - currentOutputPosition.Position);
                 var effectiveSqrDistance = weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance *
                                            weaponData.VO.MissileWeaponEffectSpecVO.EffectiveDistance;
                 weaponData.WeaponStateData.IsTargetInRange = targetSqrDistance < effectiveSqrDistance;
-                weaponData.WeaponStateData.IsTargetInAngle = true;
+                
+                // 有効射角か   
+                var outputDirection = currentOutputPosition.Rotation * Vector3.forward;
+                var targetPosition = weaponData.WeaponStateData.TargetData.Position;
+                var targetRelativePosition = targetPosition - currentOutputPosition.Position;
+                var targetRelativeDirection = targetRelativePosition.normalized;
+                weaponData.WeaponStateData.IsTargetInAngle =
+                    Vector3.Angle(outputDirection, targetRelativeDirection) < weaponData.VO.LockOnAngle;
             }
             else
             {
