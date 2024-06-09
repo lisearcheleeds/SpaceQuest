@@ -9,6 +9,8 @@ namespace AloneSpace
         public override IWeaponSpecVO WeaponSpecVO => VO;
         public override WeaponStateData WeaponStateData => MissileMakerWeaponStateData;
 
+        public override bool IsInfinityResource => false;
+        
         public MissileMakerWeaponStateData MissileMakerWeaponStateData { get; } = new MissileMakerWeaponStateData();
         public WeaponMissileMakerSpecVO VO { get; }
 

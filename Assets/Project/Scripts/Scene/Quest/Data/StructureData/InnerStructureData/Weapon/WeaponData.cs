@@ -25,6 +25,8 @@ namespace AloneSpace
 
         public WeaponGameObjectHandler WeaponGameObjectHandler { get; private set; }
 
+        public abstract bool IsInfinityResource { get; }
+        
         public abstract void ActivateModules();
         public abstract void DeactivateModules();
 

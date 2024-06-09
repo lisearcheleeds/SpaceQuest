@@ -11,6 +11,8 @@ namespace AloneSpace
         public override IWeaponSpecVO WeaponSpecVO => VO;
         public override WeaponStateData WeaponStateData => ParticleBulletMakerWeaponStateData;
 
+        public override bool IsInfinityResource => true;
+        
         public ParticleBulletMakerWeaponStateData ParticleBulletMakerWeaponStateData = new ParticleBulletMakerWeaponStateData();
         public WeaponParticleBulletMakerSpecVO VO { get; }
 

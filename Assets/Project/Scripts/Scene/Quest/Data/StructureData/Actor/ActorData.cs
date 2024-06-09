@@ -167,6 +167,13 @@ namespace AloneSpace
                 var isCurrentWeaponDataGroup = WeaponDataGroup[ActorStateData.CurrentWeaponGroupIndex]
                     .Any(weaponDataInstanceId => weaponDataInstanceId == key);
 
+                if (WeaponData[key].WeaponStateData.IsEmptyResource && WeaponData[key].WeaponStateData.IsReloadable)
+                {
+                    WeaponData[key].Reload();
+                    WeaponData[key].SetExecute(false);
+                    continue;
+                }
+                
                 WeaponData[key].SetExecute(isExecute && isCurrentWeaponDataGroup);
             }
         }

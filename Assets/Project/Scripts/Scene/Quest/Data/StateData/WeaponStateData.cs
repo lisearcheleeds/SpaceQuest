@@ -10,12 +10,13 @@ namespace AloneSpace
 
         public virtual Vector3 LookAtDirection { get; set; } = Vector3.forward;
 
+        public virtual bool IsEmptyResource { get; set; }
         public virtual bool IsReloadable { get; set; }
         public virtual bool IsExecutable { get; set; }
         public virtual bool IsTargetInRange { get; set; }
         public virtual bool IsTargetInAngle { get; set; }
         public bool IsExecute { get; set; }
-
+        
         public virtual float FireTime { get; set; }
         public virtual float ReloadRemainTime { get; set; }
         public virtual int ResourceIndex { get; set; }

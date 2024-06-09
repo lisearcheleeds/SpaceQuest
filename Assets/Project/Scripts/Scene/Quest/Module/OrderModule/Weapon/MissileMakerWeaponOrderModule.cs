@@ -74,6 +74,9 @@ namespace AloneSpace
 
         void UpdateState()
         {
+            // リソースが無いか
+            weaponData.WeaponStateData.IsEmptyResource = weaponData.VO.MagazineSize <= weaponData.WeaponStateData.ResourceIndex;
+            
             // リロード可能か
             weaponData.WeaponStateData.IsReloadable =
                 weaponData.WeaponStateData.ReloadRemainTime == 0

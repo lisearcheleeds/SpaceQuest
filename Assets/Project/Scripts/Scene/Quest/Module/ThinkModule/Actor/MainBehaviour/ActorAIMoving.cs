@@ -14,7 +14,7 @@ namespace AloneSpace
             }
             
             MessageBus.Instance.Actor.ForwardBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.5f);
-            MessageBus.Instance.Actor.YawBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.1f);
+            MessageBus.Instance.Actor.YawBoosterPowerRatio.Broadcast(actorData.InstanceId, 0.5f);
             
             return ActorAIState.Moving;
         }
