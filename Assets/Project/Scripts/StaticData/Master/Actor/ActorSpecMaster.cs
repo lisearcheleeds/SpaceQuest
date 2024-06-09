@@ -34,7 +34,10 @@ namespace AloneSpace
             public float PitchRotatePower { get; }
             public float YawRotatePower { get; }
             public float RollRotatePower { get; }
-            public float RotateAttenuation { get; }
+            public float RotateAttenuationRatio { get; }
+            public float PitchRotateAttenuation { get; }
+            public float YawRotateAttenuation { get; }
+            public float RollRotateAttenuation { get; }
 
             // インベントリ
             public int CapacityWidth { get; }
@@ -65,7 +68,10 @@ namespace AloneSpace
                 float pitchRotatePower,
                 float yawRotatePower,
                 float rollRotatePower,
-                float rotateAttenuation,
+                float rotateAttenuationRatio,
+                float pitchRotateAttenuation,
+                float yawRotateAttenuation,
+                float rollRotateAttenuation,
                 int capacityWidth,
                 int capacityHeight,
                 float visionSensorDistance,
@@ -91,7 +97,10 @@ namespace AloneSpace
                 PitchRotatePower = pitchRotatePower;
                 YawRotatePower = yawRotatePower;
                 RollRotatePower = rollRotatePower;
-                RotateAttenuation = rotateAttenuation;
+                RotateAttenuationRatio = rotateAttenuationRatio;
+                PitchRotateAttenuation = pitchRotateAttenuation;
+                YawRotateAttenuation = yawRotateAttenuation;
+                RollRotateAttenuation = rollRotateAttenuation;
                 CapacityWidth = capacityWidth;
                 CapacityHeight = capacityHeight;
                 VisionSensorDistance = visionSensorDistance;
@@ -144,8 +153,11 @@ namespace AloneSpace
                     speedAttenuation: 0.05f,
                     pitchRotatePower: 60.0f,
                     yawRotatePower: 30.0f,
-                    rollRotatePower: 180.0f,
-                    rotateAttenuation: 20.0f,
+                    rollRotatePower: 140.0f,
+                    rotateAttenuationRatio: 0.2f,
+                    pitchRotateAttenuation: 5.0f,
+                    yawRotateAttenuation: 5.0f,
+                    rollRotateAttenuation: 40.0f,
                     capacityWidth: 8,
                     capacityHeight: 6,
                     visionSensorDistance: 100,
@@ -171,7 +183,10 @@ namespace AloneSpace
                     pitchRotatePower: 60.0f,
                     yawRotatePower: 30.0f,
                     rollRotatePower: 180.0f,
-                    rotateAttenuation: 20.0f,
+                    rotateAttenuationRatio: 0.2f,
+                    pitchRotateAttenuation: 20.0f,
+                    yawRotateAttenuation: 20.0f,
+                    rollRotateAttenuation: 20.0f,
                     capacityWidth: 8,
                     capacityHeight: 6,
                     visionSensorDistance: 100,
@@ -197,7 +212,10 @@ namespace AloneSpace
                     pitchRotatePower: 60.0f,
                     yawRotatePower: 30.0f,
                     rollRotatePower: 180.0f,
-                    rotateAttenuation: 20.0f,
+                    rotateAttenuationRatio: 0.2f,
+                    pitchRotateAttenuation: 20.0f,
+                    yawRotateAttenuation: 20.0f,
+                    rollRotateAttenuation: 20.0f,
                     capacityWidth: 8,
                     capacityHeight: 6,
                     visionSensorDistance: 100,
@@ -223,7 +241,10 @@ namespace AloneSpace
                     pitchRotatePower: 60.0f,
                     yawRotatePower: 30.0f,
                     rollRotatePower: 180.0f,
-                    rotateAttenuation: 20.0f,
+                    rotateAttenuationRatio: 0.2f,
+                    pitchRotateAttenuation: 20.0f,
+                    yawRotateAttenuation: 20.0f,
+                    rollRotateAttenuation: 20.0f,
                     capacityWidth: 8,
                     capacityHeight: 6,
                     visionSensorDistance: 100,
@@ -249,7 +270,10 @@ namespace AloneSpace
                     pitchRotatePower: 5.0f,
                     yawRotatePower: 10.0f,
                     rollRotatePower: 5.0f,
-                    rotateAttenuation: 20.0f,
+                    rotateAttenuationRatio: 0.2f,
+                    pitchRotateAttenuation: 20.0f,
+                    yawRotateAttenuation: 20.0f,
+                    rollRotateAttenuation: 20.0f,
                     capacityWidth: 8,
                     capacityHeight: 6,
                     visionSensorDistance: 100,

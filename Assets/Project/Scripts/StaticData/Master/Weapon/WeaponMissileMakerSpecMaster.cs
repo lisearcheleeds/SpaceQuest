@@ -129,6 +129,7 @@ namespace AloneSpace
             {
                 new Row(1, "MissileMaker1", new AssetPath("Prefab/Weapon/MissileMaker1"), 1, 1, 1, 2, 4, 5.0f, 0.15f, 2, 1, true, true, 0.3f, 1000.0f, 30.0f, false),
                 new Row(2, "MissileMaker2", new AssetPath("Prefab/Weapon/MissileMaker2"), 2, 1, 1, 2, 12, 4.0f, 0.1f, 12, 1, true, false, 0.3f, 1000.0f, 180.0f, true),
+                new Row(3, "MissileMaker3", new AssetPath("Prefab/Weapon/MissileMaker2"), 3, 1, 1, 2, 12, 4.0f, 0.1f, 12, 1, true, false, 0.3f, 1000.0f, 180.0f, true),
             };
         }
     }

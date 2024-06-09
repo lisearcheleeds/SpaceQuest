@@ -52,27 +52,20 @@ namespace AloneSpace
             var rightDot = Vector3.Dot(lookAtDirection, userData.ControlActorData.Rotation * Vector3.right);
             var forwardDot = Vector3.Dot(lookAtDirection, userData.ControlActorData.Rotation * Vector3.forward);
 
-            var upDotAbs = Mathf.Abs(upDot);
-            var rightDotAbs = Mathf.Abs(rightDot);
-
             // ピッチ量
-            var enablePitch =
-                (0.1f < upDotAbs && rightDotAbs < 0.1f) ||
-                (upDotAbs < 0.1f && rightDotAbs < 0.01f);
-            var pitchValue = enablePitch ? upDot * -4.0f : 0;
+            var pitchValue = upDot * -4.0f;
 
             // ロール量
             var rollValue = -0.8f < upDot ? rightDot * -4.0f : rightDot * 4.0f;
 
             // ヨー量
-            var yawValue = 0.0f;
-
+            var yawValue = rightDot * 4.0f;
+            
             if (0.9f < forwardDot)
             {
                 // おおよその方向が合致していたら上方向を合わせるRollに切り替えてロールとヨーだけで調整する
                 var rollRight = Vector3.Dot(lookAtSpace * Vector3.up, userData.ControlActorData.Rotation * Vector3.right);
                 rollValue = rollRight * -4.0f;
-                yawValue = rightDot * 4.0f;
             }
 
             MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(Mathf.Clamp(pitchValue, -1.0f, 1.0f));

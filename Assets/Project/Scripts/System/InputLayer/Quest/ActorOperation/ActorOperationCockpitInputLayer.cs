@@ -38,14 +38,12 @@ namespace AloneSpace
             var mouseDelta = Mouse.current.delta.ReadValue();
             var mouseDeltaNormal = mouseDelta.normalized;
 
-            // 旋回操作
-            var pitch = userData.ControlActorData.ActorStateData.PitchBoosterPowerRatio;
+            // 旋回操作 操作感がいい感じになるのでAbsしたNormalを掛ける
             var pitchInput = mouseDelta.y * 0.1f * Mathf.Abs(mouseDeltaNormal.y);
-            pitch = Mathf.Clamp(pitch + pitchInput, -1.0f, 1.0f);
+            var pitch = Mathf.Clamp(userData.ControlActorData.ActorStateData.PitchBoosterPowerRatio + pitchInput, -1.0f, 1.0f);
 
-            var roll = userData.ControlActorData.ActorStateData.RollBoosterPowerRatio;
             var rollInput = mouseDelta.x * 0.1f * Mathf.Abs(mouseDeltaNormal.x);
-            roll = Mathf.Clamp(roll - rollInput, -1.0f, 1.0f);
+            var roll = Mathf.Clamp(userData.ControlActorData.ActorStateData.RollBoosterPowerRatio - rollInput, -1.0f, 1.0f);
 
             MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(pitch);
             // MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast(0);

@@ -40,7 +40,10 @@ namespace AloneSpace
         public float PitchRotatePower => row.PitchRotatePower;
         public float YawRotatePower => row.YawRotatePower;
         public float RollRotatePower => row.RollRotatePower;
-        public float RotateAttenuation => row.RotateAttenuation;
+        public float RotateAttenuationRatio => row.RotateAttenuationRatio;
+        public float PitchRotateAttenuation => row.PitchRotateAttenuation;
+        public float YawRotateAttenuation => row.YawRotateAttenuation;
+        public float RollRotateAttenuation => row.RollRotateAttenuation;
 
         // インベントリ
         public int CapacityWidth => row.CapacityWidth;

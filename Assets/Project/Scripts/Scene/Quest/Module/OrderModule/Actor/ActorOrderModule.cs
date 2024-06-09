@@ -215,14 +215,17 @@ namespace AloneSpace
             actorData.MovingModule.SetMovementVelocity(nextMovementVelocity);
 
             // 回転
-            actorData.ActorStateData.PitchBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.PitchRotatePower);
-            actorData.ActorStateData.YawBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.YawRotatePower);
-            actorData.ActorStateData.RollBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RotateAttenuation / actorData.ActorSpecVO.RollRotatePower);
+            actorData.ActorStateData.PitchBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.PitchRotateAttenuation / actorData.ActorSpecVO.PitchRotatePower);
+            actorData.ActorStateData.YawBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.YawRotateAttenuation / actorData.ActorSpecVO.YawRotatePower);
+            actorData.ActorStateData.RollBoosterPowerRatio *= 1.0f - (actorData.ActorSpecVO.RollRotateAttenuation / actorData.ActorSpecVO.RollRotatePower);
             actorData.MovingModule.SetQuaternionVelocityRHS(
-                Quaternion.Euler(new Vector3(
-                    actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchRotatePower,
-                    actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecVO.YawRotatePower,
-                    actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecVO.RollRotatePower) * deltaTime));
+                Quaternion.Lerp(
+                    actorData.MovingModule.QuaternionVelocityRHS,
+                    Quaternion.Euler(new Vector3(
+                        actorData.ActorStateData.PitchBoosterPowerRatio * actorData.ActorSpecVO.PitchRotatePower,
+                        actorData.ActorStateData.YawBoosterPowerRatio * actorData.ActorSpecVO.YawRotatePower,
+                        actorData.ActorStateData.RollBoosterPowerRatio * actorData.ActorSpecVO.RollRotatePower) * deltaTime),
+                    actorData.ActorSpecVO.RotateAttenuationRatio));
         }
 
         void UpdateInteract(float deltaTime)

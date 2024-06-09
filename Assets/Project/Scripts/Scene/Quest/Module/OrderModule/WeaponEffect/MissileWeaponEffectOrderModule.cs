@@ -69,13 +69,14 @@ namespace AloneSpace
                 var catchUpToDirection = RotateHelper.GetCatchUpToDirection(
                     targetMovingModuleHolder.MovingModule.MovementVelocity,
                     effectData.TargetData.Position,
-                    effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed * deltaTime,
+                    effectData.Rotation * Vector3.forward * effectData.SpecVO.Speed,
                     effectData.Position);
 
                 if (catchUpToDirection.HasValue)
                 {
                     effectData.MovingModule.SetMovementVelocity(currentDirection * effectData.SpecVO.Speed);
-                    effectData.MovingModule.SetQuaternionVelocityLHS(Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, targetDirection)));
+                    effectData.MovingModule.SetQuaternionVelocityLHS(
+                        Quaternion.AngleAxis(deltaTime * effectData.SpecVO.HomingAngle, Vector3.Cross(currentDirection, catchUpToDirection.Value)));
                 }
                 else
                 {
