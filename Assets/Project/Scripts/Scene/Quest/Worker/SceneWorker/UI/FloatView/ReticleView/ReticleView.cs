@@ -50,6 +50,11 @@ namespace AloneSpace.UI
 
         public void OnUpdate()
         {
+            if (questData.UserData.ControlActorData == null)
+            {
+                return;
+            }
+            
             switch (questData.UserData.ActorOperationMode)
             {
                 case ActorOperationMode.Observe:

@@ -147,7 +147,7 @@ namespace AloneSpace
                     electronicProtectionTruncateValue: 2,
                     electronicProtectionAutoRecoveryResilienceTime:10 ,
                     electronicProtectionAutoRecoveryValue: 2,
-                    mainBoosterPower: 2f,
+                    mainBoosterPower: 20f,
                     subBoosterPower: 2f,
                     maxSpeed: 50.0f,
                     speedAttenuation: 0.05f,

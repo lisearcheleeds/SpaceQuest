@@ -47,6 +47,7 @@ namespace AloneSpace
                 rollValue = rollRight * -4.0f;
             }
 
+            // FIXME: 毎フレーム減衰するのにThinkのタイミングでしかBroadcastしないので旋回性能が低い
             MessageBus.Instance.Actor.PitchBoosterPowerRatio.Broadcast(actorData.InstanceId, Mathf.Clamp(pitchValue, -1.0f, 1.0f));
             MessageBus.Instance.Actor.YawBoosterPowerRatio.Broadcast(actorData.InstanceId, Mathf.Clamp(yawValue, -1.0f, 1.0f));
             MessageBus.Instance.Actor.RollBoosterPowerRatio.Broadcast(actorData.InstanceId, Mathf.Clamp(rollValue, -1.0f, 1.0f));

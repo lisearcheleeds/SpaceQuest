@@ -13,7 +13,7 @@ namespace AloneSpace
             transform.rotation = GraphicEffectHandler.PositionData.Rotation;
 
             currentLifeTime = 0.0f;
-            lifeTime = 1.0f;
+            lifeTime = 4.0f;
         }
 
         public override void OnLateUpdate(float deltaTime)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace AloneSpace.UI
 {
@@ -11,7 +10,7 @@ namespace AloneSpace.UI
         [SerializeField] RectTransform damageViewCellParent;
         [SerializeField] DamageViewCell damageViewCellPrefab;
 
-        List<DamageViewCell> cellCache = new List<DamageViewCell>();
+        List<DamageViewCell> cellCache = new();
 
         Guid userInstanceId;
         
@@ -45,15 +44,8 @@ namespace AloneSpace.UI
                 cell = Instantiate(damageViewCellPrefab, damageViewCellParent);
                 cellCache.Add(cell);
             }
-
-            var canvasPoint = MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(
-                CameraType.NearCamera,
-                damageEventData.DamagedActorData.Position,
-                damageViewCellParent);
-
-            var damagePosition = (canvasPoint ?? Vector3.zero) + Random.insideUnitSphere * 20.0f;
             
-            cell.ApplyDamage(damageEventData.EffectedDamageValue, damagePosition);
+            cell.ApplyDamage(damageEventData.EffectedDamageValue, damageEventData.DamagedActorData.Position, damageViewCellParent);
         }
 
         void SetPlayer(PlayerData playerData)

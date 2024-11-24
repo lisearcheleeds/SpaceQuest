@@ -13,7 +13,7 @@ namespace AloneSpace.UI
         
         [SerializeField] Transform center3DObject;
 
-        List<RadarPointMarker> radarPointMarkerList = new List<RadarPointMarker>();
+        List<RadarPointMarker> radarPointMarkerList = new();
         bool isDirty;
         
         QuestData questData;
@@ -42,67 +42,80 @@ namespace AloneSpace.UI
 
         public void OnUpdate()
         {
-            if (isDirty)
+            // Actorの表示
+            if (questData.UserData.ControlActorData == null)
             {
-                isDirty = false;
-
-                foreach (var radarPointMarker in radarPointMarkerList)
-                {
-                    radarPointMarker.gameObject.SetActive(false);
-                }
-                
-                // Actorの表示
-                var controlActorData = questData.UserData.ControlActorData;
-                if (controlActorData == null)
-                {
-                    return;
-                }
-
-                var currentAreaId = controlActorData.AreaId;
-                var currentAreaActors = questData.ActorData.Values.Where(actorData => 
-                    actorData.InstanceId != controlActorData.InstanceId && actorData.AreaId == currentAreaId).ToArray();
-
-                for (var i = 0; i < currentAreaActors.Length; i++)
-                {
-                    if (radarPointMarkerList.Count <= i)
-                    {
-                        radarPointMarkerList.Add(Instantiate(radarPointMarkerPrefab, markerParent, false));                        
-                    }
-                    
-                    radarPointMarkerList[i].SetMarkerTarget(
-                        questData.UserData.PlayerData.InstanceId == currentAreaActors[i].PlayerInstanceId
-                            ? RadarPointMarker.MarkerType.FriendActor
-                            : RadarPointMarker.MarkerType.EnemyActor,
-                        currentAreaActors[i]);
-                    radarPointMarkerList[i].gameObject.SetActive(true);
-                }
-
-                // Interactの表示
-                var currentAreaInteracts = questData.InteractData.Values.Where(interactData => interactData.AreaId == currentAreaId).ToArray();
-                for (var i = 0; i < currentAreaInteracts.Length; i++)
-                {
-                    var offsetIndex = i + currentAreaActors.Length;
-                    
-                    if (radarPointMarkerList.Count <= offsetIndex)
-                    {
-                        radarPointMarkerList.Add(Instantiate(radarPointMarkerPrefab, markerParent, false));                        
-                    }
-                    
-                    radarPointMarkerList[offsetIndex].SetMarkerTarget(
-                        RadarPointMarker.MarkerType.InteractItem,
-                        currentAreaInteracts[i]);
-                    radarPointMarkerList[i].gameObject.SetActive(true);
-                }
+                return;
             }
 
+            UpdateObjectRotation();
+            
+            if (isDirty)
+            {
+                UpdateMarkerObject();
+                isDirty = false;
+            }
+
+            UpdateMarkerDirection();
+        }
+
+        void UpdateObjectRotation()
+        {
+            center3DObject.transform.rotation = questData.UserData.ControlActorData.Rotation;
+        }
+
+        void UpdateMarkerObject()
+        {
+            foreach (var radarPointMarker in radarPointMarkerList)
+            {
+                radarPointMarker.gameObject.SetActive(false);
+            }
+
+            var currentAreaId = questData.UserData.ControlActorData.AreaId;
+            var currentAreaActors = questData.ActorData.Values.Where(actorData => 
+                actorData.InstanceId != questData.UserData.ControlActorData.InstanceId && actorData.AreaId == currentAreaId).ToArray();
+
+            for (var i = 0; i < currentAreaActors.Length; i++)
+            {
+                if (radarPointMarkerList.Count <= i)
+                {
+                    radarPointMarkerList.Add(Instantiate(radarPointMarkerPrefab, markerParent, false));                        
+                }
+                
+                radarPointMarkerList[i].SetMarkerTarget(
+                    questData.UserData.PlayerData.InstanceId == currentAreaActors[i].PlayerInstanceId
+                        ? RadarPointMarker.MarkerType.FriendActor
+                        : RadarPointMarker.MarkerType.EnemyActor,
+                    currentAreaActors[i]);
+                radarPointMarkerList[i].gameObject.SetActive(true);
+            }
+
+            // Interactの表示
+            var currentAreaInteracts = questData.InteractData.Values.Where(interactData => interactData.AreaId == currentAreaId).ToArray();
+            for (var i = 0; i < currentAreaInteracts.Length; i++)
+            {
+                var offsetIndex = i + currentAreaActors.Length;
+                
+                if (radarPointMarkerList.Count <= offsetIndex)
+                {
+                    radarPointMarkerList.Add(Instantiate(radarPointMarkerPrefab, markerParent, false));                        
+                }
+                
+                radarPointMarkerList[offsetIndex].SetMarkerTarget(
+                    RadarPointMarker.MarkerType.InteractItem,
+                    currentAreaInteracts[i]);
+                radarPointMarkerList[i].gameObject.SetActive(true);
+            }
+        }
+
+        void UpdateMarkerDirection()
+        {
             var cameraRotation = Quaternion.Inverse(GetCameraRotation(questData.UserData));
             foreach (var radarPointMarker in radarPointMarkerList)
             {
                 var direction = (radarPointMarker.MarkerTarget.Position - questData.UserData.ControlActorData.Position).normalized;
                 radarPointMarker.SetDirection(cameraRotation * direction, distanceScale);
             }
-
-            center3DObject.transform.rotation = questData.UserData.ControlActorData.Rotation;
         }
 
         Quaternion GetCameraRotation(UserData userData)

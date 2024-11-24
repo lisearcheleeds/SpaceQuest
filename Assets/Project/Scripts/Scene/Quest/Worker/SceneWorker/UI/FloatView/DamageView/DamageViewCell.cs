@@ -11,14 +11,30 @@ namespace AloneSpace.UI
 
         public bool IsActive => gameObject.activeSelf;
 
-        public void ApplyDamage(float damage, Vector3 screenPosition)
+        Vector3 position;
+        RectTransform canvasParent;
+        Vector3 randomOffset;
+        
+        public void ApplyDamage(float damage, Vector3 position, RectTransform canvasParent)
         {
             text.text = $"{damage:0}";
-            rectTransform.localPosition = screenPosition;
             
             gameObject.SetActive(true);
+            this.position = position;
+            this.canvasParent = canvasParent;
+            randomOffset = Random.insideUnitSphere * 20.0f;
 
             StartCoroutine(ShowDamage());
+        }
+
+        void Update()
+        {
+            var canvasPoint = MessageBus.Instance.Util.GetWorldToCanvasPoint.Unicast(
+                CameraType.NearCamera,
+                position,
+                canvasParent);
+
+            rectTransform.localPosition = (canvasPoint ?? Vector3.zero) + randomOffset;
         }
 
         IEnumerator ShowDamage()
