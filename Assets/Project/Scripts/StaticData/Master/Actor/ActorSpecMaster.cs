@@ -240,7 +240,7 @@ namespace AloneSpace
                     speedAttenuation: 0.01f,
                     pitchRotatePower: 60.0f,
                     yawRotatePower: 30.0f,
-                    rollRotatePower: 140.0f,
+                    rollRotatePower: 30.0f,
                     rotateAttenuationRatio: 0.2f,
                     pitchRotateAttenuation: 5.0f,
                     yawRotateAttenuation: 5.0f,

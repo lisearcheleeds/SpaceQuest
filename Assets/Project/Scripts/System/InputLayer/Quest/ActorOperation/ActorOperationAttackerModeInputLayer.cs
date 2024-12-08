@@ -35,6 +35,11 @@ namespace AloneSpace
 
         void CheckSpotter(ButtonControl[] usedKey)
         {
+            if (userData.ControlActorData == null)
+            {
+                return;
+            }
+
             var mouseDelta = Mouse.current.delta.ReadValue();
 
             // 視点
@@ -59,12 +64,15 @@ namespace AloneSpace
             // 垂直
             if (verticalInput != 0)
             {
-                var targetDirection = verticalInput > 0 ? Vector3.up : Vector3.down;
+                var targetDirection = 0 < verticalInput ? Vector3.up : Vector3.down;
                 var rotationAxis = Vector3.Cross(actorForward, targetDirection).normalized;
 
                 // ピッチとヨーで真上か真下を向く
                 pitchOutput = Mathf.Sign(Vector3.Dot(rotationAxis, actorRight));
                 yawOutput = Mathf.Sign(Vector3.Dot(rotationAxis, actorUp));
+                
+                var upRotationAxis = Vector3.Cross(actorUp, Vector3.up).normalized;
+                rollOutput += Mathf.Sign(Vector3.Dot(upRotationAxis, actorForward)) * verticalInput;
             }
 
             // 水平
@@ -82,7 +90,16 @@ namespace AloneSpace
                 var forwardRotationAxis = Vector3.Cross(actorForward, targetForward).normalized;
                 yawOutput += Mathf.Sign(Vector3.Dot(forwardRotationAxis, actorUp));
             }
-            
+
+            if (verticalInput == 0 && horizontalInput == 0)
+            {
+                // TODO: 長押しとかで反映率を変えたい
+                pitchOutput = Mathf.Sign(actorForward.y);
+                
+                var upRotationAxis = Vector3.Cross(actorUp, Vector3.up).normalized;
+                rollOutput = Mathf.Sign(Vector3.Dot(upRotationAxis, actorForward));
+            }
+
             MessageBus.Instance.UserInput.UserInputPitchBoosterPowerRatio.Broadcast(pitchOutput);
             MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast(yawOutput);
             MessageBus.Instance.UserInput.UserInputRollBoosterPowerRatio.Broadcast(rollOutput);

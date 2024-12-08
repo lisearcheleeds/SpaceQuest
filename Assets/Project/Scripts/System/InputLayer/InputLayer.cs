@@ -37,7 +37,7 @@ namespace AloneSpace
             {
                 return false;
             }
-
+            
             return key.isPressed;
         }
 
