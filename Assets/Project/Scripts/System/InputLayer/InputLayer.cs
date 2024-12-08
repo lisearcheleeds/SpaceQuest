@@ -9,8 +9,7 @@ namespace AloneSpace
         public abstract CursorLockMode CursorLockMode { get; }
         public abstract InputLayerDuplicateGroup DuplicateGroup { get; }
 
-        public abstract bool UpdatePointer();
-        public abstract bool UpdateKey(ButtonControl[] usedKey);
+        public abstract bool UpdateInput(ButtonControl[] usedKey);
 
         protected abstract KeyBindKey[] UseBindKeys { get; }
 

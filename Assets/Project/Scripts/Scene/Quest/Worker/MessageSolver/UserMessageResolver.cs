@@ -94,23 +94,17 @@ namespace AloneSpace
 
             switch (actorOperationMode)
             {
-                case ActorOperationMode.Observe:
-                    InputLayerController.Instance.PushLayer(new ActorOperationObserveInputLayer(questData.UserData));
+                case ActorOperationMode.ObserverMode:
+                    InputLayerController.Instance.PushLayer(new ActorOperationObserverModeInputLayer(questData.UserData));
                     break;
-                case ActorOperationMode.ObserveFreeCamera:
-                    InputLayerController.Instance.PushLayer(new ActorOperationObserveFreeCameraInputLayer(questData.UserData));
+                case ActorOperationMode.FighterMode:
+                    InputLayerController.Instance.PushLayer(new ActorOperationFighterModeInputLayer(questData.UserData));
                     break;
-                case ActorOperationMode.Cockpit:
-                    InputLayerController.Instance.PushLayer(new ActorOperationCockpitInputLayer(questData.UserData));
+                case ActorOperationMode.AttackerMode:
+                    InputLayerController.Instance.PushLayer(new ActorOperationAttackerModeInputLayer(questData.UserData));
                     break;
-                case ActorOperationMode.CockpitFreeCamera:
-                    InputLayerController.Instance.PushLayer(new ActorOperationCockpitFreeCameraInputLayer(questData.UserData));
-                    break;
-                case ActorOperationMode.Spotter:
-                    InputLayerController.Instance.PushLayer(new ActorOperationSpotterInputLayer(questData.UserData));
-                    break;
-                case ActorOperationMode.SpotterFreeCamera:
-                    InputLayerController.Instance.PushLayer(new ActorOperationSpotterFreeCameraInputLayer(questData.UserData));
+                case ActorOperationMode.LockOnMode:
+                    InputLayerController.Instance.PushLayer(new ActorOperationLockOnModeInputLayer(questData.UserData));
                     break;
             }
         }

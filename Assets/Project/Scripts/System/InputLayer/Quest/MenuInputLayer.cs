@@ -12,8 +12,7 @@ namespace AloneSpace
 
         protected override KeyBindKey[] UseBindKeys => new[]
         {
-            KeyBindKey.Menu, KeyBindKey.MenuStatusView, KeyBindKey.MenuInventoryView, KeyBindKey.MenuPlayerView,
-            KeyBindKey.Backward, KeyBindKey.Escape,
+            KeyBindKey.Menu, KeyBindKey.MenuStatusView, KeyBindKey.MenuInventoryView, KeyBindKey.MenuPlayerView, KeyBindKey.Escape,
         };
 
         Func<UI.MenuView.MenuElement> getCurrentMenuElement;
@@ -23,16 +22,9 @@ namespace AloneSpace
             this.getCurrentMenuElement = getCurrentMenuElement;
         }
 
-        public override bool UpdatePointer()
-        {
-            return true;
-        }
-
-        public override bool UpdateKey(ButtonControl[] usedKey)
+        public override bool UpdateInput(ButtonControl[] usedKey)
         {
             CheckMenu(usedKey);
-
-            // 下位レイヤーの入力は全てブロック
             return true;
         }
 

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
@@ -17,8 +15,8 @@ namespace AloneSpace
             {
                 KeyBindKey.Menu, KeyBindKey.Menu, KeyBindKey.MenuStatusView, KeyBindKey.MenuInventoryView,
                 KeyBindKey.MenuPlayerView, KeyBindKey.SpaceMapView,
-                KeyBindKey.ActorOperationModeSwitchObserve, KeyBindKey.ActorOperationModeSwitchCockpit,
-                KeyBindKey.ActorOperationModeSwitchFreeCamera, KeyBindKey.ActorOperationModeSwitchSpotter,
+                KeyBindKey.ActorOperationModeSwitchObserverMode, KeyBindKey.ActorOperationModeSwitchFighterMode,
+                KeyBindKey.ActorOperationModeSwitchAttackerMode, KeyBindKey.FreeCamera
             };
 
         public SceneInputLayer(UserData userData)
@@ -26,15 +24,11 @@ namespace AloneSpace
             this.userData = userData;
         }
 
-        public override bool UpdatePointer()
-        {
-            return true;
-        }
-
-        public override bool UpdateKey(ButtonControl[] usedKey)
+        public override bool UpdateInput(ButtonControl[] usedKey)
         {
             CheckMenu(usedKey);
             CheckActorOperationMode(usedKey);
+            CheckActorControl(usedKey);
             return true;
         }
 
@@ -87,53 +81,32 @@ namespace AloneSpace
         {
             if (WasPressedThisFrame(KeyBindKey.Escape, usedKey))
             {
-                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.ObserverMode);
             }
 
-            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchObserve, usedKey))
+            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchObserverMode, usedKey))
             {
-                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.ObserverMode);
             }
 
-            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchCockpit, usedKey))
+            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchFighterMode, usedKey))
             {
-                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.FighterMode);
             }
             
-            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchSpotter, usedKey))
+            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchAttackerMode, usedKey))
             {
-                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
+                MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.AttackerMode);
             }
+        }
 
-            if (WasPressedThisFrame(KeyBindKey.ActorOperationModeSwitchFreeCamera, usedKey))
+        void CheckActorControl(ButtonControl[] usedKey)
+        {
+            if (WasPressedThisFrame(KeyBindKey.LockOn, usedKey))
             {
-                if (userData.ActorOperationMode == ActorOperationMode.Cockpit)
+                if (userData.ActorOperationMode == ActorOperationMode.AttackerMode)
                 {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.CockpitFreeCamera);
-                }
-                else if (userData.ActorOperationMode == ActorOperationMode.Spotter)
-                {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.SpotterFreeCamera);
-                }
-                else if (userData.ActorOperationMode == ActorOperationMode.Observe)
-                {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.ObserveFreeCamera);
-                }
-            }
-            
-            if (WasReleasedThisFrame(KeyBindKey.ActorOperationModeSwitchFreeCamera, usedKey))
-            {
-                if (userData.ActorOperationMode == ActorOperationMode.CockpitFreeCamera)
-                {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Cockpit);
-                }
-                else if (userData.ActorOperationMode == ActorOperationMode.SpotterFreeCamera)
-                {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Spotter);
-                }
-                else if (userData.ActorOperationMode == ActorOperationMode.ObserveFreeCamera)
-                {
-                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.Observe);
+                    MessageBus.Instance.UserInput.UserCommandSetActorOperationMode.Broadcast(ActorOperationMode.LockOnMode);
                 }
             }
         }

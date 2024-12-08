@@ -1,33 +1,37 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
-    public class ActorOperationObserveFreeCameraInputLayer : ActorOperationInputLayer
+    public class ActorOperationObserverModeInputLayer : ActorOperationInputLayer
     {
         public override CursorLockMode CursorLockMode => CursorLockMode.Confined;
 
         UserData userData;
 
-        public ActorOperationObserveFreeCameraInputLayer(UserData userData)
+        public ActorOperationObserverModeInputLayer(UserData userData)
         {
             this.userData = userData;
         }
 
-        public override bool UpdatePointer()
+        public override bool UpdateInput(ButtonControl[] usedKey)
         {
             CheckObserve();
             CheckLookAtDistance();
+            CheckObserveMoving(usedKey);
 
-            return true;
+            return false;
         }
 
-        public override bool UpdateKey(ButtonControl[] usedKey)
+        void CheckObserveMoving(ButtonControl[] usedKey)
         {
-            CheckObserveMoving(usedKey);
-            return false;
+            MessageBus.Instance.UserInput.UserInputForwardBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInput.UserInputBackBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInput.UserInputRightBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInput.UserInputLeftBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInput.UserInputTopBoosterPowerRatio.Broadcast(0.0f);
+            MessageBus.Instance.UserInput.UserInputBottomBoosterPowerRatio.Broadcast(0.0f);
         }
 
         void CheckObserve()

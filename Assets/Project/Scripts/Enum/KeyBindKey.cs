@@ -2,24 +2,25 @@
 {
     public enum KeyBindKey
     {
-        // 移動1
-        Forward,
-        Backward,
-        Right,
-        Left,
-        Up,
-        Down,
-
-        // 移動2
-        Deceleration,
-
-        // 回転
-        PitchPlus,
-        PitchMinus,
-        RollPlus,
-        RollMinus,
-        YawPlus,
-        YawMinus,
+        // FighterModeの入力キー
+        FighterModeForward,
+        FighterModeBackward,
+        FighterModeYawPlus,
+        FighterModeYawMinus,
+        
+        // AttackerModeの入力キー
+        AttackerModeVerticalPlus,
+        AttackerModeVerticalMinus,
+        AttackerModeHorizontalPlus,
+        AttackerModeHorizontalMinus,
+        
+        // AimModeの入力キー
+        AimModeForward,
+        AimModeBackward,
+        AimModeRight,
+        AimModeLeft,
+        AimModeUp,
+        AimModeDown,
 
         // 武器
         Trigger,
@@ -40,10 +41,12 @@
         // System,
         MouseModeSwitch,
 
-        ActorOperationModeSwitchObserve,
-        ActorOperationModeSwitchCockpit,
-        ActorOperationModeSwitchSpotter,
-        ActorOperationModeSwitchFreeCamera,
+        ActorOperationModeSwitchObserverMode,
+        ActorOperationModeSwitchFighterMode,
+        ActorOperationModeSwitchAttackerMode,
+        
+        LockOn,
+        FreeCamera,
 
         Escape,
     }

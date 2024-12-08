@@ -1,32 +1,39 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 
 namespace AloneSpace
 {
-    public class ActorOperationSpotterInputLayer : ActorOperationInputLayer
+    /// <summary>
+    /// TPSっぽい操作方法
+    /// 使うか未定
+    /// </summary>
+    public class ActorOperationAimModeInputLayer : ActorOperationInputLayer
     {
         UserData userData;
 
-        public ActorOperationSpotterInputLayer(UserData userData)
+        public ActorOperationAimModeInputLayer(UserData userData)
         {
             this.userData = userData;
         }
 
-        public override bool UpdatePointer()
+        public override bool UpdateInput(ButtonControl[] usedKey)
         {
             CheckSpotter();
-            CheckWeapon();
-
-            return true;
-        }
-
-        public override bool UpdateKey(ButtonControl[] usedKey)
-        {
             CheckSpotterMoving(usedKey);
             CheckWeaponKeys(usedKey);
+
             return false;
+        }
+
+        void CheckSpotterMoving(ButtonControl[] usedKey)
+        {
+            MessageBus.Instance.UserInput.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeForward, usedKey) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInput.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeBackward, usedKey) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInput.UserInputRightBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeRight, usedKey) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInput.UserInputLeftBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeLeft, usedKey) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInput.UserInputTopBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeUp, usedKey) ? 1.0f : 0.0f);
+            MessageBus.Instance.UserInput.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.AimModeDown, usedKey) ? 1.0f : 0.0f);
         }
 
         void CheckSpotter()

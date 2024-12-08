@@ -34,7 +34,7 @@ namespace AloneSpace
         public class UserInputRotateToLookAtDirection : MessageBusBroadcaster<bool>{}
 
         public class UserCommandSetActorOperationMode : MessageBusBroadcaster<ActorOperationMode> {}
-
+        
         public class UserInputOpenContentQuickView : MessageBusBroadcaster<IContentQuickViewData, Func<bool>, bool>{}
         public class UserInputCloseContentQuickView : MessageBusBroadcaster{}
 

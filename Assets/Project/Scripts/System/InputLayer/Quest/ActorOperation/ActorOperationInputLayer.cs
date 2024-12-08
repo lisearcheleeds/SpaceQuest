@@ -13,44 +13,9 @@ namespace AloneSpace
         protected override KeyBindKey[] UseBindKeys =>
             new[]
             {
-                KeyBindKey.Forward, KeyBindKey.Backward, KeyBindKey.Right, KeyBindKey.Left, KeyBindKey.Up,
-                KeyBindKey.Down, KeyBindKey.YawPlus, KeyBindKey.YawMinus, KeyBindKey.Forward, KeyBindKey.Backward,
-                KeyBindKey.Right, KeyBindKey.Left, KeyBindKey.Up, KeyBindKey.Down, KeyBindKey.Trigger,
                 KeyBindKey.Trigger, KeyBindKey.Reload, KeyBindKey.WeaponGroup1, KeyBindKey.WeaponGroup2,
                 KeyBindKey.WeaponGroup3, KeyBindKey.WeaponGroup4, KeyBindKey.WeaponGroup5
             };
-
-        protected void CheckObserveMoving(ButtonControl[] usedKey)
-        {
-            MessageBus.Instance.UserInput.UserInputForwardBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputBackBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputRightBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputLeftBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputTopBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputBottomBoosterPowerRatio.Broadcast(0.0f);
-        }
-
-        protected void CheckCockpitMoving(ButtonControl[] usedKey)
-        {
-            MessageBus.Instance.UserInput.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputRightBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputLeftBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputTopBoosterPowerRatio.Broadcast(0.0f);
-            MessageBus.Instance.UserInput.UserInputBottomBoosterPowerRatio.Broadcast(0.0f);
-            
-            MessageBus.Instance.UserInput.UserInputYawBoosterPowerRatio.Broadcast((IsPressed(KeyBindKey.YawPlus, usedKey) ? 1.0f : 0.0f) + (IsPressed(KeyBindKey.YawMinus, usedKey) ? -1.0f : 0.0f));
-        }
-
-        protected void CheckSpotterMoving(ButtonControl[] usedKey)
-        {
-            MessageBus.Instance.UserInput.UserInputForwardBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Forward, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputBackBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Backward, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputRightBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Right, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputLeftBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Left, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputTopBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Up, usedKey) ? 1.0f : 0.0f);
-            MessageBus.Instance.UserInput.UserInputBottomBoosterPowerRatio.Broadcast(IsPressed(KeyBindKey.Down, usedKey) ? 1.0f : 0.0f);
-        }
 
         protected virtual void CheckWeaponKeys(ButtonControl[] usedKey)
         {
@@ -91,18 +56,6 @@ namespace AloneSpace
             if (WasPressedThisFrame(KeyBindKey.WeaponGroup5, usedKey))
             {
                 MessageBus.Instance.UserInput.UserInputSetCurrentWeaponGroupIndex.Broadcast(4);
-            }
-        }
-
-        protected virtual void CheckWeapon()
-        {
-            if (Mouse.current.leftButton.isPressed && Cursor.lockState == CursorLockMode.Locked)
-            {
-                MessageBus.Instance.UserInput.UserInputSetExecuteWeapon.Broadcast(true);
-            }
-            else
-            {
-                MessageBus.Instance.UserInput.UserInputSetExecuteWeapon.Broadcast(false);
             }
         }
     }

@@ -57,26 +57,21 @@ namespace AloneSpace.UI
             
             switch (questData.UserData.ActorOperationMode)
             {
-                case ActorOperationMode.Observe:
+                case ActorOperationMode.ObserverMode:
                     break;
-                case ActorOperationMode.ObserveFreeCamera:
-                    break;
-                case ActorOperationMode.Cockpit:
+                case ActorOperationMode.FighterMode:
                     WeaponBaseReticleUpdate(true);
                     BulletReticleUpdate();
                     RocketReticleUpdate();
                     MissileReticleUpdate();
                     break;
-                case ActorOperationMode.CockpitFreeCamera:
-                    WeaponBaseReticleUpdate(false);
-                    break;
-                case ActorOperationMode.Spotter:
+                case ActorOperationMode.AttackerMode:
                     WeaponBaseReticleUpdate(false);
                     BulletReticleUpdate();
                     RocketReticleUpdate();
                     MissileReticleUpdate();
                     break;
-                case ActorOperationMode.SpotterFreeCamera:
+                case ActorOperationMode.LockOnMode:
                     WeaponBaseReticleUpdate(false);
                     break;
             }
@@ -84,9 +79,9 @@ namespace AloneSpace.UI
 
         void UserCommandSetActorOperationMode(ActorOperationMode actorOperationMode)
         {
-            flightInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.Cockpit);
-            weaponInstruments.gameObject.SetActive(actorOperationMode != ActorOperationMode.Observe && actorOperationMode != ActorOperationMode.ObserveFreeCamera);
-            commonInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.Observe || actorOperationMode == ActorOperationMode.ObserveFreeCamera);
+            flightInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.FighterMode);
+            weaponInstruments.gameObject.SetActive(actorOperationMode != ActorOperationMode.ObserverMode);
+            commonInstruments.gameObject.SetActive(actorOperationMode == ActorOperationMode.ObserverMode);
             
             ResetPositions();
         }

@@ -9,7 +9,7 @@ namespace AloneSpace
         public IPositionData ObserveTarget { get; private set; }
         public AreaData ObserveAreaData { get; private set; }
 
-        public ActorOperationMode ActorOperationMode { get; private set; } = ActorOperationMode.Observe;
+        public ActorOperationMode ActorOperationMode { get; private set; } = ActorOperationMode.ObserverMode;
 
         public Vector3 LookAtAngle { get; private set; } = Vector3.zero;
         public Quaternion LookAtSpace { get; private set; } = Quaternion.identity;

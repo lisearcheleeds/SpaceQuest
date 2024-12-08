@@ -41,12 +41,10 @@ namespace AloneSpace.UI
         {
             return actorOperationMode switch
             {
-                ActorOperationMode.Observe => 0,
-                ActorOperationMode.ObserveFreeCamera => 0,
-                ActorOperationMode.Cockpit => 1,
-                ActorOperationMode.CockpitFreeCamera => 2,
-                ActorOperationMode.Spotter => 3,
-                ActorOperationMode.SpotterFreeCamera => 4,
+                ActorOperationMode.ObserverMode => 0,
+                ActorOperationMode.FighterMode => 1,
+                ActorOperationMode.AttackerMode => 2,
+                ActorOperationMode.LockOnMode => 3,
             };
         }
     }

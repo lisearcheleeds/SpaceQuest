@@ -46,13 +46,13 @@ namespace AloneSpace
 
             if (otherModelCollider == null)
             {
-                Debug.LogError($"衝突相手がnullです {other.gameObject.name}");
+                Debug.LogError($"衝突相手にModelColliderがついてません {other.gameObject.name}");
                 return;
             }
 
             if (otherModelCollider.CollisionEventModule == null)
             {
-                Debug.LogError($"衝突相手のCollisionがnullです {otherModelCollider.gameObject.name}");
+                Debug.LogError($"衝突相手のCollisionにイベントがついてません {otherModelCollider.gameObject.name}");
                 return;
             }
 

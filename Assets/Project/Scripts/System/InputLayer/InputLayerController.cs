@@ -65,22 +65,23 @@ namespace AloneSpace
 
         public void SetupKeyMap()
         {
-            KeyBindMap.Clear();
-
             // FIXME: 設定で変えられるようにする
-            KeyBindMap[KeyBindKey.Forward] = Keyboard.current[Key.W];
-            KeyBindMap[KeyBindKey.Backward] = Keyboard.current[Key.S];
-            KeyBindMap[KeyBindKey.Right] = Keyboard.current[Key.D];
-            KeyBindMap[KeyBindKey.Left] = Keyboard.current[Key.A];
-            KeyBindMap[KeyBindKey.Up] = Keyboard.current[Key.Space];
-            KeyBindMap[KeyBindKey.Down] = Keyboard.current[Key.LeftCtrl];
+            KeyBindMap.Clear();
+            
+            KeyBindMap[KeyBindKey.FighterModeForward] = Keyboard.current[Key.W];
+            KeyBindMap[KeyBindKey.FighterModeBackward] = Keyboard.current[Key.S];
 
-            KeyBindMap[KeyBindKey.PitchPlus] = Keyboard.current[Key.UpArrow];
-            KeyBindMap[KeyBindKey.PitchMinus] = Keyboard.current[Key.DownArrow];
-            KeyBindMap[KeyBindKey.YawPlus] = Keyboard.current[Key.D];
-            KeyBindMap[KeyBindKey.YawMinus] = Keyboard.current[Key.A];
-            KeyBindMap[KeyBindKey.RollPlus] = Keyboard.current[Key.RightArrow];
-            KeyBindMap[KeyBindKey.RollMinus] = Keyboard.current[Key.LeftArrow];
+            KeyBindMap[KeyBindKey.AttackerModeVerticalPlus] = Keyboard.current[Key.W];
+            KeyBindMap[KeyBindKey.AttackerModeVerticalMinus] = Keyboard.current[Key.S];
+            KeyBindMap[KeyBindKey.AttackerModeHorizontalPlus] = Keyboard.current[Key.A];
+            KeyBindMap[KeyBindKey.AttackerModeHorizontalMinus] = Keyboard.current[Key.D];
+            
+            KeyBindMap[KeyBindKey.AimModeForward] = Keyboard.current[Key.W];
+            KeyBindMap[KeyBindKey.AimModeBackward] = Keyboard.current[Key.S];
+            KeyBindMap[KeyBindKey.AimModeRight] = Keyboard.current[Key.D];
+            KeyBindMap[KeyBindKey.AimModeLeft] = Keyboard.current[Key.A];
+            KeyBindMap[KeyBindKey.AimModeUp] = Keyboard.current[Key.Space];
+            KeyBindMap[KeyBindKey.AimModeDown] = Keyboard.current[Key.LeftCtrl];
 
             KeyBindMap[KeyBindKey.Trigger] = Mouse.current.leftButton;
             KeyBindMap[KeyBindKey.Reload] = Keyboard.current[Key.R];
@@ -98,10 +99,12 @@ namespace AloneSpace
 
             KeyBindMap[KeyBindKey.MouseModeSwitch] = Keyboard.current[Key.LeftAlt];
 
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchObserve] = Keyboard.current[Key.Z];
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchCockpit] = Keyboard.current[Key.X];
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchSpotter] = Keyboard.current[Key.C];
-            KeyBindMap[KeyBindKey.ActorOperationModeSwitchFreeCamera] = Mouse.current.middleButton;
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchObserverMode] = Keyboard.current[Key.Z];
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchFighterMode] = Keyboard.current[Key.X];
+            KeyBindMap[KeyBindKey.ActorOperationModeSwitchAttackerMode] = Keyboard.current[Key.C];
+            
+            KeyBindMap[KeyBindKey.LockOn] = Mouse.current.rightButton;
+            KeyBindMap[KeyBindKey.FreeCamera] = Mouse.current.middleButton;
 
             KeyBindMap[KeyBindKey.Escape] = Keyboard.current[Key.Escape];
         }
@@ -123,15 +126,7 @@ namespace AloneSpace
         {
             for (var i = 0; i < reversedInputLayerStack.Count; i++)
             {
-                if (reversedInputLayerStack[i].InputLayer.UpdatePointer() || isDirty)
-                {
-                    break;
-                }
-            }
-
-            for (var i = 0; i < reversedInputLayerStack.Count; i++)
-            {
-                if (reversedInputLayerStack[i].InputLayer.UpdateKey(reversedInputLayerStack[i].UsedKeys) || isDirty)
+                if (reversedInputLayerStack[i].InputLayer.UpdateInput(reversedInputLayerStack[i].UsedKeys) || isDirty)
                 {
                     break;
                 }

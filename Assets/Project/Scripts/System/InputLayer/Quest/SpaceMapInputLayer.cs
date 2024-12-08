@@ -22,17 +22,10 @@ namespace AloneSpace
             this.userData = userData;
         }
 
-        public override bool UpdatePointer()
+        public override bool UpdateInput(ButtonControl[] usedKey)
         {
             CheckCamera();
-            return true;
-        }
-
-        public override bool UpdateKey(ButtonControl[] usedKey)
-        {
             CheckMenu(usedKey);
-            
-            // 下位レイヤーの入力は全てブロック
             return true;
         }
         
